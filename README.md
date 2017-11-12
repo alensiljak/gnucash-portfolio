@@ -9,7 +9,7 @@ For this reason, the code will (probably) mostly be written in Python.
 
 Initially, [MoneyManagerEx for Android](http://android.moneymanagerex.org/) will be used to download the current currency exchange rates and prices for securities. This provides .csv files with the latest prices. Effectively, this is used instead of Finance::Quote library.
 
-To Do:
+## To Do
 
 - import .csv exchange rates into GnuCash file
 - import .csv security prices into GnuCash file
@@ -29,6 +29,8 @@ There are several options available (and require further examination). There is 
 - [QPython](http://www.qpython.com/)
     - [Python 2](https://play.google.com/store/apps/details?id=org.qpython.qpy)
     - [Python 3](https://play.google.com/store/apps/details?id=org.qpython.qpy3)
+    - [Community](http://qpython.org/)
+    - [repo](https://github.com/qpython-android/qpython)
 
 There are two technologies providing underlying access to Android functions:
 
