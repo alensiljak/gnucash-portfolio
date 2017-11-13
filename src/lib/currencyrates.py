@@ -80,7 +80,7 @@ class CurrencyRatesRetriever:
 
         # download rates
         latestRates = self.__download_rates(base_currency)
-        print(latestRates)
+        #print(latestRates)
 
         # todo: get only the requested rates
         print(latestRates["rates"])

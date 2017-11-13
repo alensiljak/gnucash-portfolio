@@ -6,8 +6,13 @@ The code will mostly be written in Python.
 
 Initially, [MoneyManagerEx for Android](http://android.moneymanagerex.org/) will be used to download the current currency exchange rates and prices for securities. This provides .csv files with the latest prices. Effectively, this is used instead of Finance::Quote library.
 
+## Running
+
+In order to run the scripts, copy `settings.json.template` into `settings.json` and customize the settings by editing the file.
+
 ## To Do
 
+- download currency exchange rates
 - import .csv exchange rates into GnuCash file
 - import .csv security prices into GnuCash file
 - display currency pair chart over selected period (report?)

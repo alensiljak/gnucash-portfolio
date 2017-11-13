@@ -1,3 +1,8 @@
+# Ignore the settings file.
+src/settings.json
+
+
+#####################################################
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]

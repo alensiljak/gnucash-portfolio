@@ -1,0 +1,9 @@
+{
+    "gnucash.database": "test.gnucash",
+    "currencies": [
+        "AUD",
+        "EUR",
+        "USD"
+    ],
+    "exchangeRates": "exchangeRates.csv"
+}
