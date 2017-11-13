@@ -28,6 +28,15 @@ In order to run the scripts, copy `settings.json.template` into `settings.json` 
 - [piecash](https://github.com/sdementen/piecash). Access to GnuCash database.
 - [Fixerio](http://fixerio.readthedocs.io/en/latest/). Fixer API for currency rates.
 
+## Explore
+
+## UI
+
+- UI using GTK. GTK, Gio. See [First steps with GSettings](https://blog.gtk.org/2017/05/01/first-steps-with-gsettings/).
+- See [PyGObject](http://pygobject.readthedocs.io/en/latest/getting_started.html)
+- [GAction](https://wiki.gnome.org/HowDoI/GAction)
+
+
 ## Python on Android
 
 In order to use the available functionality, Python scripts can also be run on a mobile device. 
