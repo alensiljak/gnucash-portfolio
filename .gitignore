@@ -1,5 +1,6 @@
 # Ignore the settings file.
 src/settings.json
+src/data/alen.gnucash
 
 
 #####################################################
