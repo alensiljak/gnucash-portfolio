@@ -20,8 +20,11 @@ def load_rates():
             print(', '.join(row))
     return ['rate1', 'rate2']
 
+def get_settings():
+    return settings.Settings(settings_path)
+
 def main(book):
-    config = settings.Settings(settings_path)
+    config = get_settings()
     currencies = config.get_currencies()
     print("requested currencies: ", currencies)
 
@@ -31,7 +34,10 @@ def main(book):
     for rate in rates:
         print(rate)
 
-with database.open_book() as book:
+#with Database().open_book() as book:
     # do something
-    main(book)
+    #main(book)
+if __name__ == "__main__":
+    db = database.Database()
+    db.display_db_info()
     

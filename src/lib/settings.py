@@ -5,18 +5,19 @@ import json
 from os import path
 from pprint import pprint
 
-FILENAME = "../settings.json"
+#FILENAME = "../settings.json"
+FILENAME = "settings.json"
 
 class Settings:
     """Provides access to user settings from settings.json file."""
     data = None
 
-    def __init__(self, file_path):
-        if not file_path:
-            file_path = FILENAME
+    def __init__(self, settings_file_path = None):
+        if not settings_file_path:
+            settings_file_path = FILENAME
         
-        file_path = path.relpath(file_path)
-        self.data = json.load(open(file_path))
+        file_path = path.relpath(settings_file_path)
+        self.data = json.load(open(settings_file_path))
         return
 
     # def get_default_currency():
