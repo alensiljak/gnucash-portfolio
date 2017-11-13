@@ -1,14 +1,16 @@
 """
 GnuCash database operations
 """
-import settings
+from lib import settings
 import piecash
 
 # Use the settings file.
-#settings.show_settings()
 config = settings.load_settings()
 filename = config["gnucash.database"]
-#print("Working with " + filename)
+
+#class Database:
+#def __init__(self):
+    #self.data = []
 
 def open_book():
     """Opens the database"""

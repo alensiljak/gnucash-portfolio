@@ -2,8 +2,8 @@
 Import currency exchange rates from .csv file into GnuCash
 """
 #from pprint import pprint
-import database
-import settings
+from lib import database
+from lib import settings
 from piecash import Commodity
 
 def test():
