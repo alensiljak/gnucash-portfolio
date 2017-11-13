@@ -33,6 +33,7 @@ class Settings:
 
     @property
     def base_currency(self):
+        """Returns the base currency setting"""
         return self.data["baseCurrency"]
 
 
