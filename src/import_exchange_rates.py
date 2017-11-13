@@ -25,8 +25,11 @@ def get_settings():
 
 def main(book):
     config = get_settings()
+    # Currencies to be downloaded/imported.
     currencies = config.get_currencies()
     print("requested currencies: ", currencies)
+
+    print("Base currency:", config.base_currency)
 
     # todo: load the rates from the file
     rates = load_rates()
@@ -34,10 +37,10 @@ def main(book):
     for rate in rates:
         print(rate)
 
-#with Database().open_book() as book:
-    # do something
-    #main(book)
 if __name__ == "__main__":
-    db = database.Database()
-    db.display_db_info()
+
+    with database.Database().open_book() as book:
+        main(book)
+        #db = database.Database()
+        #db.display_db_info()
     

@@ -11,14 +11,13 @@ class Database:
 
     def __init__(self):
         # Use the settings file.
-        self.config = settings.Settings().load_settings()
-        self.filename = self.config["gnucash.database"]
+        self.config = settings.Settings()
+        self.filename = self.config.data["gnucash.database"]
 
     def display_db_info(self):
         """Displays some basic info about the GnuCash book"""
         with self.open_book() as book:
             default_currency = book.default_currency
-            
             print("Default currency is ", default_currency.mnemonic)
 
     def open_book(self):
