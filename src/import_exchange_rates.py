@@ -8,10 +8,10 @@ from piecash import Commodity
 import csv
 from os import path
 
-def test():
-    print("yo")
+settings_path = "settings.json"
 
 def load_rates():
+    """Loads rates from .csv file"""
     # todo: load rates from .csv
     file_path = path.relpath('data/exchangeRates.csv')
     with open(file_path, newline='') as csvfile:
@@ -20,10 +20,10 @@ def load_rates():
             print(', '.join(row))
     return ['rate1', 'rate2']
 
-def main():
-    currencies = settings.get_currencies()
-    # "currencies: " + 
-    print(currencies)
+def main(book):
+    config = settings.Settings(settings_path)
+    currencies = config.get_currencies()
+    print("requested currencies: ", currencies)
 
     # todo: load the rates from the file
     rates = load_rates()
@@ -33,6 +33,5 @@ def main():
 
 with database.open_book() as book:
     # do something
-    test()
-    main()
+    main(book)
     

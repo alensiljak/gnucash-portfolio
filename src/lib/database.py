@@ -5,7 +5,7 @@ from lib import settings
 import piecash
 
 # Use the settings file.
-config = settings.load_settings()
+config = settings.Settings().load_settings()
 filename = config["gnucash.database"]
 
 #class Database:

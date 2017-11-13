@@ -2,7 +2,8 @@
     "gnucash.database": "test.gnucash",
     "currencies": [
         "AUD",
-        "EUR"
+        "EUR",
+        "USD"
     ],
     "exchangeRates": "exchangeRates.csv"
 }
