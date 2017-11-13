@@ -5,12 +5,19 @@ Import currency exchange rates from .csv file into GnuCash
 from lib import database
 from lib import settings
 from piecash import Commodity
+import csv
+from os import path
 
 def test():
     print("yo")
 
 def load_rates():
     # todo: load rates from .csv
+    file_path = path.relpath('data/exchangeRates.csv')
+    with open(file_path, newline='') as csvfile:
+        spamreader = csv.reader(csvfile, delimiter=' ', quotechar='|')
+        for row in spamreader:
+            print(', '.join(row))
     return ['rate1', 'rate2']
 
 def main():

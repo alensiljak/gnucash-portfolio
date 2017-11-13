@@ -1,11 +1,8 @@
 # gnucash-portfolio
-Tools for managing a portfolio with GnuCash
+A collection of tools for managing a portfolio with GnuCash
 
 The purpose of the project is to provide tools that help in managing a portfolio in GnuCash.
-
-The functionality is (to be) built on top of [gnucash-utilities](https://github.com/sdementen/gnucash-utilities) and [piecash](https://github.com/sdementen/piecash).
-
-For this reason, the code will (probably) mostly be written in Python.
+The code will mostly be written in Python.
 
 Initially, [MoneyManagerEx for Android](http://android.moneymanagerex.org/) will be used to download the current currency exchange rates and prices for securities. This provides .csv files with the latest prices. Effectively, this is used instead of Finance::Quote library.
 
@@ -17,6 +14,12 @@ Initially, [MoneyManagerEx for Android](http://android.moneymanagerex.org/) will
 - display security price over selected period (report?)
 - list all dividends for security (?!). This requires some conventions as to where to expect them since there is no direct linking between a commodity and the dividends/interest it earns.
 - Asset Allocation. This is implemented in MoneyManagerEx for Android and there needs to be a more universal option available. Look into running Python scripts on Android.
+
+## Related Projects
+
+- [gnucash-utilities](https://github.com/sdementen/gnucash-utilities). The underlying utilities.
+- [piecash](https://github.com/sdementen/piecash). Access to GnuCash database.
+- [Fixerio](http://fixerio.readthedocs.io/en/latest/). Fixer API for currency rates.
 
 ## Python on Android
 
