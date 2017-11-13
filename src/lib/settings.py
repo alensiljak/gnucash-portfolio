@@ -19,6 +19,9 @@ class Settings:
         self.data = json.load(open(file_path))
         return
 
+    # def get_default_currency():
+    #     return self.data[]
+
     def show_settings(self):
         """Displays the contents of the settings file"""
         self.data = self.load_settings()
