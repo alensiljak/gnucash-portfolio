@@ -44,9 +44,12 @@ def main(book):
 
     # iterate over rates and import for specified currencies only.
     rates = latest["rates"]
+    print("Rates for", latest["date"])
     for currency in currencies:
         value = rates[currency]
-        print(config.base_currency, currency, value)
+        print(config.base_currency + '/' + currency, value)
+
+    # todo import rates into gnucash file.
 
 if __name__ == "__main__":
     with database.Database().open_book() as book:

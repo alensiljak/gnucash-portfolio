@@ -175,9 +175,9 @@ class CurrencyRatesRetriever:
 
     def display_rates(self):
         """Display the latest rates"""
-        # latest = self.get_latest_rates()
-        # if latest:
-        #     print(latest)
+        latest = self.get_latest_rates()
+        if latest:
+            print(latest)
         return
 
 # If run directly, download the latest rates if not found, and display the rates.
