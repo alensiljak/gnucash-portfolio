@@ -1,3 +1,4 @@
+#!/usr/bin/python3
 """
 Fetches the current exchange rates.
 Currently uses Fixer API.
@@ -10,30 +11,113 @@ To-Do:
 import glob
 import json
 from fixerio import Fixerio
-import settings
+from lib import settings
+import os
+#import path
 import time
-
-# if run from editor:
-#settings_path = "settings.json"
-# if run from command-line:
-settings_path = "../settings.json"
 
 class CurrencyRatesRetriever:
     """Retrieves prices from data files or online provider(s)"""
 
-    __settings = None
+    settings = None
+    cache_path = "data/"
 
-    def __init__(self):
-        __settings = settings.Settings(settings_path)
+    def __init__(self, _settings):
+        settings = _settings #.Settings(settings_path)
         return
 
     def get_latest_rates(self):
-        """Returns the latest rates. Reads from the file and downloads the latest
-        rates if the file is not current."""
+        """
+        Retrieves the latest rates. If cached, loads cached file, otherwise
+        downloads the rates.
+        """
+        # todo: check cached rates
+        if self.latest_rates_exist:
+            # returned cached content
+            return self.__read_rates_from_file()
+        else:
+            base = self.settings.base_currency
+            symbols = self.settings.get_currencies()
+            return self.__download_rates(base, symbols)
 
-        # find the current date
-        today = time.strftime("%Y-%m-%d")
-        print("Today's date: " + today)
+    def __download_rates(self, base_currency, symbols):
+        """
+        Downloads the latest rates. Requires base currency and a list of currencies to
+        retrieve.
+        """
+        # get default currency
+        if not base_currency:
+            # use the base currency from the settings.
+            base_currency = self.settings.base_currency
+            print("Base currency not sent to currency rates retrieval. Using settings:", base_currency)
+
+        # Downloads the latest rates using Fixerio. Returns dict.
+        # https://pypi.python.org/pypi/fixerio
+        fxrio = Fixerio(base=base_currency, symbols=symbols)
+        latest_rates = fxrio.latest()
+
+        # todo: since these are daily rates, cache them into a file
+        self.__save_rates(latest_rates)
+        
+        return latest_rates
+
+    def get_today(self):
+        """
+        Returns the current date string in ISO format.
+        """
+        return time.strftime("%Y-%m-%d")
+
+    def get_todays_file_path(self):
+        '''
+        Full path to the today's rates file.
+        '''
+        today = self.get_today()
+        return self.__get_rate_file_path(today)
+
+    @property
+    def latest_rates_exist(self):
+        '''
+        Check if latest rates cached file exists.
+        '''
+        file_path = self.get_todays_file_path()
+        #print("Checking for", file_path)
+        exists = os.path.isfile(file_path)
+
+        if exists:
+            print("Cached file found for", file_path)
+            
+        return exists
+
+    def __get_rate_file_path(self, filename):
+        """
+        Assemble full file path for the given name (date).
+        """
+        return os.path.relpath(self.cache_path + filename + ".json")
+
+    def __read_rates_from_file(self):
+        file_path = self.get_todays_file_path()
+
+        with open(file_path, 'r') as file:
+            content = file.read()
+            return json.loads(content)
+
+    def __save_rates(self, rates):
+        """
+        Saves the retrieved rates into a cache file
+        """
+        file_date = rates["date"]
+        filename = self.__get_rate_file_path(file_date)
+
+        content = json.dumps(rates)
+
+        with open(filename, 'w') as file:
+            file.write(content)
+
+    def __x_get_latest_rates(self):
+        """
+        Returns the latest rates. Reads from the file and downloads the latest
+        rates if the file is not current.
+        """
 
         # todo get the latest downloaded rates file
         latest = self.__get_latest_downloaded_rates_date()
@@ -89,16 +173,11 @@ class CurrencyRatesRetriever:
         #rates = json.loads(latestJson)
         #print(rates)
 
-    def __download_rates(self, base_currency):
-        """Downloads the latest rates using Fixerio. Returns json."""
-        fxrio = Fixerio(base=base_currency)
-        return fxrio.latest()
-
     def display_rates(self):
         """Display the latest rates"""
-        latest = self.get_latest_rates()
-        if latest:
-            print(latest)
+        # latest = self.get_latest_rates()
+        # if latest:
+        #     print(latest)
         return
 
 # If run directly, download the latest rates if not found, and display the rates.
@@ -107,5 +186,9 @@ if __name__ == "__main__":
     #latest = download_rates()
     #latest = get_latest_rates()
     #output = __get_all_currency_files()
-    runner = CurrencyRatesRetriever()
+    runner = CurrencyRatesRetriever(None)
     runner.display_rates()
+    # if run from editor:
+    #settings_path = "settings.json"
+    # if run from command-line:
+    #settings_path = "../settings.json"

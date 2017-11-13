@@ -3,7 +3,6 @@
     "baseCurrency": "EUR",
     "currencies": [
         "AUD",
-        "EUR",
         "USD"
     ],
     "exchangeRates": "exchangeRates.csv"

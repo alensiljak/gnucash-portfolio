@@ -1,13 +1,13 @@
+#!/usr/bin/python3
 """
 Import currency exchange rates from .csv file into GnuCash
 """
-#from pprint import pprint
 from lib import database
 from lib import settings
 from piecash import Commodity
 import csv
 from os import path
-from lib import currencyrates
+from lib import currencyratesretriever
 
 settings_path = "settings.json"
 
@@ -21,6 +21,8 @@ settings_path = "settings.json"
 #             print(', '.join(row))
 #     return ['rate1', 'rate2']
 
+config = None
+
 def get_settings():
     return settings.Settings(settings_path)
 
@@ -33,11 +35,18 @@ def main(book):
     print("Base currency:", config.base_currency)
 
     # Show the latest rate info?
-    rate_manager = currencyrates.CurrencyRates()
+    rateman = currencyratesretriever.CurrencyRatesRetriever(config)
 
-    # todo: iterate over rates and import for specified currencies only.
-    # for rate in rates:
-    #     print(rate)
+    # download latest rates.
+    print("Downloading rates...")
+    latest = rateman.get_latest_rates()
+    #print(latest)
+
+    # iterate over rates and import for specified currencies only.
+    rates = latest["rates"]
+    for currency in currencies:
+        value = rates[currency]
+        print(config.base_currency, currency, value)
 
 if __name__ == "__main__":
     with database.Database().open_book() as book:

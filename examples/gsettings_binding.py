@@ -1,9 +1,8 @@
+#!/usr/bin/python3
 """
 Source
 https://marianochavero.wordpress.com/2012/04/03/short-example-of-gsettings-bindings-in-python/
 """
-#! /usr/bin/python
- 
 from gi.repository import Gtk, Gio
  
 class Example(Gtk.Window):

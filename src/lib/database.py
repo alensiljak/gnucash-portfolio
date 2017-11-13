@@ -1,8 +1,10 @@
+#!/usr/bin/python3
 """
 GnuCash database operations
 """
 from lib import settings
 import piecash
+import os
 from os import path
 
 class Database:
@@ -21,7 +23,13 @@ class Database:
             print("Default currency is ", default_currency.mnemonic)
 
     def open_book(self):
-        """Opens the database. Call this using 'with'."""
+        """
+        Opens the database. Call this using 'with'. 
+        If database file is not found, an in-memory database will be created.
+        """
+        if not os.path.isfile(self.filename):
+            return self.create_book()
+
         print("Using " + self.filename)
         file_path = path.relpath(self.filename)
 
@@ -36,4 +44,7 @@ class Database:
 
 # If run directly, just display some diagnostics data.
 if __name__ == "__main__":
-    Database().display_db_info()
+    db = Database()
+    db.display_db_info()
+    with db.open_book() as book:
+        print(book.default_currency)
