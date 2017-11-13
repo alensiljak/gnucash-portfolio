@@ -1,6 +1,10 @@
 """
 Fetches the current exchange rates.
 Currently uses Fixer API.
+
+To-Do:
+- download only the requested rates
+
 """
 #import os
 import glob
@@ -10,9 +14,13 @@ def get_latest_rates():
     """Returns the latest rates. Reads from the file and downloads the latest
     rates if the file is not current."""
     # todo find the current date
-    latest = __get_latest_downloaded_rates_date()
-    print("latest downloaded rates are from " + latest)
     # todo get the latest downloaded rates file
+    latest = __get_latest_downloaded_rates_date()
+    if not latest:
+        print("No files available")
+    else:
+        print("latest downloaded rates are from ")
+        print(latest)
 
     return latest
 
@@ -20,7 +28,15 @@ def __get_latest_downloaded_rates_date():
     """Checks for the latest date of the downloaded rates"""
     # iterate over .json files in the data directory
     all_files = __get_all_currency_files()
+    if not all_files:
+        return
+
     print(all_files)
+    # todo get the largest date, not the smallest!
+    smallest = min(all_files)
+    print(smallest)
+    index = all_files.index(smallest)
+    print(index)
     # todo get the latest one
     return
 
