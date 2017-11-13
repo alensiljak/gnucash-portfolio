@@ -4,7 +4,9 @@ A collection of tools for managing a portfolio with GnuCash
 The purpose of the project is to provide tools that help in managing a portfolio in GnuCash.
 The code will mostly be written in Python.
 
-Initially, [MoneyManagerEx for Android](http://android.moneymanagerex.org/) will be used to download the current currency exchange rates and prices for securities. This provides .csv files with the latest prices. Effectively, this is used instead of Finance::Quote library.
+Initially, [MoneyManagerEx for Android](http://android.moneymanagerex.org/) will be used to download the current prices for securities. This provides .csv files with the latest prices. Effectively, this is used instead of Finance::Quote library.
+
+Retrieving currency exchange rates will be part of this suite.
 
 ## Running
 
