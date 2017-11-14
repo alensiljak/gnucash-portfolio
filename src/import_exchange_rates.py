@@ -67,7 +67,7 @@ def __save_rates(config, latest_rates):
     '''
     base_symbol = config.base_currency
 
-    with database.Database().open_book() as book:
+    with database.Database().open_book(for_writing=True) as book:
         base_currency = book.currencies.get(mnemonic=base_symbol)
 
         #session = book.session
@@ -83,15 +83,17 @@ def __save_rates(config, latest_rates):
             currency = book.currencies.get(mnemonic=rate)
             amount = rates[rate]
 
+            # todo Do not import duplicate prices!
+
             print("Creating entry for", base_currency, currency, rate_date, amount)
             p = Price(commodity=base_currency,
                         currency=currency,
                         date=datetime.strptime(rate_date, "%Y-%m-%d"),
                         value=str(amount))
-            
-            #base_currency.prices.add(p)
-            #book.add(p)
-            book.flush()
+        
+        # Save the book after the prices have been created.
+        book.flush()
+        book.save()
     return
 
 def get_count(q):

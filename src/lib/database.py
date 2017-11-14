@@ -22,7 +22,7 @@ class Database:
             default_currency = book.default_currency
             print("Default currency is ", default_currency.mnemonic)
 
-    def open_book(self):
+    def open_book(self, for_writing=False):
         """
         Opens the database. Call this using 'with'. 
         If database file is not found, an in-memory database will be created.
@@ -33,7 +33,10 @@ class Database:
         print("Using " + self.filename)
         file_path = path.relpath(self.filename)
 
-        book = piecash.open_book(file_path, open_if_lock=True)
+        if not for_writing:
+            book = piecash.open_book(file_path, open_if_lock=True)
+        else:
+            book = piecash.open_book(file_path, open_if_lock=True, readonly=False)
         #book = create_book()
         return book
 
@@ -46,5 +49,6 @@ class Database:
 if __name__ == "__main__":
     db = Database()
     db.display_db_info()
-    with db.open_book() as book:
-        print(book.default_currency)
+    
+    with db.open_book() as test_book:
+        print(test_book.default_currency)
