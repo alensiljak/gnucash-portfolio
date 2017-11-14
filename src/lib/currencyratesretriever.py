@@ -7,14 +7,12 @@ To-Do:
 - download only the requested rates
 
 """
-#import os
 import glob
 import json
 from fixerio import Fixerio
+from lib import generic
 from lib import settings
 import os
-#import path
-import time
 
 class CurrencyRatesRetriever:
     """Retrieves prices from data files or online provider(s)"""
@@ -63,17 +61,11 @@ class CurrencyRatesRetriever:
         
         return latest_rates
 
-    def get_today(self):
-        """
-        Returns the current date string in ISO format.
-        """
-        return time.strftime("%Y-%m-%d")
-
     def get_todays_file_path(self):
         '''
         Full path to the today's rates file.
         '''
-        today = self.get_today()
+        today = generic.get_today()
         return self.__get_rate_file_path(today)
 
     @property
@@ -165,7 +157,7 @@ class CurrencyRatesRetriever:
         rates_to_download = ["AUD"]
 
         # download rates
-        latestRates = self.__download_rates(base_currency)
+        latestRates = self.__download_rates(base_currency, rates_to_download)
         #print(latestRates)
 
         # todo: get only the requested rates

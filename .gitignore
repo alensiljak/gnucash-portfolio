@@ -1,7 +1,8 @@
 # Ignore the settings file.
 src/settings.json
-src/data/alen.gnucash
-
+src/data/*.gnucash
+src/data/*.gnucash-journal
+src/data/*.json
 
 #####################################################
 # Byte-compiled / optimized / DLL files
