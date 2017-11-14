@@ -81,11 +81,13 @@ def __save_rates(config, latest_rates):
             currency = book.currencies.get(mnemonic=rate)
             amount = rates[rate]
 
-            # Do not import duplicate prices!
-            #exists = base_currency.prices.get(Price.date == rate_date)
-            exists = base_currency.prices.filter(Price.date == rate_date).all()
+            # Do not import duplicate prices.
+            # todo: if the price differs, update it!
+            exists = currency.prices.filter(Price.date == rate_date).all()
             if not exists:
                 print("Creating entry for", base_currency, currency, rate_date_string, amount)
+                # todo Save the price in the exchange currency, not the default.
+                # todo Invert the rate in that case.
                 p = Price(commodity=base_currency,
                             currency=currency,
                             date=rate_date,
