@@ -44,42 +44,54 @@ def __get_latest_rates(config):
         value = rates[currency]
         print(config.base_currency + '/' + currency, value)
 
-    return rates
+    return latest
 
 def __display_gnucash_rates(config):
     with database.Database().open_book() as book:
         base_currency = book.get(Commodity, mnemonic=config.base_currency)
-        print("Base currency:", base_currency)
+        print("For base currency:", base_currency)
 
         prices = base_currency.prices
         #filter = prices.filter(Price.currency == base_currency)
         #today = dateutil.parser.parse(generic.get_today())
-        yesterday = datetime.today() - timedelta(days=1)
+        yesterday = generic.get_yesterday()
         filter = prices.filter(Price.date == yesterday)
-        print(filter.count())
+        print("there are following prices (", filter.count(), ")")
 
         for price in prices:
             print(price)
 
-def __save_rates(rates):
+def __save_rates(config, latest_rates):
     '''
     Saves the rates to GnuCash
     '''
-    with database.Database().open_book() as book:
-        session = book.session
-        #currencies = session.query(Commodity).filter(Commodity.namespace == "CURRENCY").all()
-        currencies_query = session.query(Commodity).filter(Commodity.namespace == "CURRENCY")
-        print("Commodities:", get_count(currencies_query))
+    base_symbol = config.base_currency
 
-    # quotes = quandl_fx(self.mnemonic, default_currency.mnemonic, start_date)
-    for rate in rates:
-        print(rate)
-        # todo: save
-        
-    #     p = Price(commodity=self,
-    #                 currency=default_currency,
-    #                 date=datetime.datetime.strptime(q.date, "%Y-%m-%d"),
-    #                 value=str(q.rate))
+    with database.Database().open_book() as book:
+        base_currency = book.currencies.get(mnemonic=base_symbol)
+
+        #session = book.session
+        #currencies = session.query(Commodity).filter(Commodity.namespace == "CURRENCY").all()
+        #currencies_query = session.query(Commodity).filter(Commodity.namespace == "CURRENCY")
+        #print("Commodities:", get_count(currencies_query))
+
+        rate_date = latest_rates["date"]
+        # quotes = quandl_fx(self.mnemonic, default_currency.mnemonic, start_date)
+        rates = latest_rates["rates"]
+        for rate in rates:
+            #print(rate, rates[rate])
+            currency = book.currencies.get(mnemonic=rate)
+            amount = rates[rate]
+
+            print("Creating entry for", base_currency, currency, rate_date, amount)
+            p = Price(commodity=base_currency,
+                        currency=currency,
+                        date=datetime.strptime(rate_date, "%Y-%m-%d"),
+                        value=str(amount))
+            
+            #base_currency.prices.add(p)
+            #book.add(p)
+            book.flush()
     return
 
 def get_count(q):
@@ -96,11 +108,14 @@ def main():
     """
     config = get_settings()
 
-    rates = __get_latest_rates(config)
+    print("####################################")
+    latest_rates = __get_latest_rates(config)
 
+    print("####################################")
     # todo import rates into gnucash
-    __save_rates(rates)
+    __save_rates(config, latest_rates)
 
+    print("####################################")
     # display rates from gnucash
     __display_gnucash_rates(config)
 

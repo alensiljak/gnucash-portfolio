@@ -2,16 +2,13 @@
 """
 Fetches the current exchange rates.
 Currently uses Fixer API.
-
-To-Do:
-- download only the requested rates
-
 """
 import glob
 import json
 from fixerio import Fixerio
 from lib import generic
 from lib import settings
+from datetime import datetime, timedelta
 import os
 
 class CurrencyRatesRetriever:
@@ -61,19 +58,20 @@ class CurrencyRatesRetriever:
         
         return latest_rates
 
-    def get_todays_file_path(self):
+    def get_yesterdays_file_path(self):
         '''
         Full path to the today's rates file.
         '''
-        today = generic.get_today()
-        return self.__get_rate_file_path(today)
+        #today = generic.get_today()
+        yesterday = generic.get_date_iso_string(generic.get_yesterday())
+        return self.__get_rate_file_path(yesterday)
 
     @property
     def latest_rates_exist(self):
         '''
         Check if latest rates cached file exists.
         '''
-        file_path = self.get_todays_file_path()
+        file_path = self.get_yesterdays_file_path()
         #print("Checking for", file_path)
         exists = os.path.isfile(file_path)
 
@@ -89,7 +87,7 @@ class CurrencyRatesRetriever:
         return os.path.relpath(self.cache_path + filename + ".json")
 
     def __read_rates_from_file(self):
-        file_path = self.get_todays_file_path()
+        file_path = self.get_yesterdays_file_path()
 
         with open(file_path, 'r') as file:
             content = file.read()
