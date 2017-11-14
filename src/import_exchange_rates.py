@@ -2,16 +2,16 @@
 """
 Import currency exchange rates from .csv file into GnuCash
 """
+import csv
+from sqlalchemy import func
 from datetime import datetime, timedelta
 import dateutil.parser
 from piecash import Commodity, Price
-import csv
 from os import path
 from lib import currencyratesretriever
 from lib import database
 from lib import generic
 from lib import settings
-
 
 settings_path = "settings.json"
 
@@ -57,19 +57,38 @@ def __display_gnucash_rates(config):
         yesterday = datetime.today() - timedelta(days=1)
         filter = prices.filter(Price.date == yesterday)
         print(filter.count())
-        
+
         for price in prices:
             print(price)
 
-def __save_rates():
-    # through Quandl for exchange rates
+def __save_rates(rates):
+    '''
+    Saves the rates to GnuCash
+    '''
+    with database.Database().open_book() as book:
+        session = book.session
+        #currencies = session.query(Commodity).filter(Commodity.namespace == "CURRENCY").all()
+        currencies_query = session.query(Commodity).filter(Commodity.namespace == "CURRENCY")
+        print("Commodities:", get_count(currencies_query))
+
     # quotes = quandl_fx(self.mnemonic, default_currency.mnemonic, start_date)
-    # for q in quotes:
+    for rate in rates:
+        print(rate)
+        # todo: save
+        
     #     p = Price(commodity=self,
     #                 currency=default_currency,
     #                 date=datetime.datetime.strptime(q.date, "%Y-%m-%d"),
     #                 value=str(q.rate))
     return
+
+def get_count(q):
+    """
+    Returns a number of query results. This is faster than .count() on the query
+    """
+    count_q = q.statement.with_only_columns([func.count()]).order_by(None)
+    count = q.session.execute(count_q).scalar()
+    return count
 
 def main():
     """
@@ -80,11 +99,12 @@ def main():
     rates = __get_latest_rates(config)
 
     # todo import rates into gnucash
-    #__import_rates(rates)
+    __save_rates(rates)
 
-    # todo display rates from gnucash
+    # display rates from gnucash
     __display_gnucash_rates(config)
 
+###############################################################################
 if __name__ == "__main__":
     main()
     
