@@ -1,2 +1,3 @@
 fixerio
 piecash
+kivy==1.10.0

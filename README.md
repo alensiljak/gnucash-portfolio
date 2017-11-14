@@ -14,8 +14,8 @@ In order to run the scripts, copy `settings.json.template` into `settings.json` 
 
 ## To Do
 
-- [] download currency exchange rates
-- [] import .csv exchange rates into GnuCash file
+- [x] download currency exchange rates
+- [] import exchange rates into GnuCash file
 - [] import .csv security prices into GnuCash file
 - [] display currency pair chart over selected period (report?)
 - [] display security price over selected period (report?)
@@ -32,9 +32,13 @@ In order to run the scripts, copy `settings.json.template` into `settings.json` 
 
 ## UI
 
-- UI using GTK. GTK, Gio. See [First steps with GSettings](https://blog.gtk.org/2017/05/01/first-steps-with-gsettings/).
-- See [PyGObject](http://pygobject.readthedocs.io/en/latest/getting_started.html)
-- [GAction](https://wiki.gnome.org/HowDoI/GAction)
+There are several options for Python GUI.
+
+- [Kivy](https://kivy.org). Multiplatform.
+    - [Installation instructions](https://kivy.org/docs/installation/installation-windows.html)
+- GTK. GTK, Gio. See [First steps with GSettings](https://blog.gtk.org/2017/05/01/first-steps-with-gsettings/).
+    - See [PyGObject](http://pygobject.readthedocs.io/en/latest/getting_started.html)
+    - [GAction](https://wiki.gnome.org/HowDoI/GAction)
 
 
 ## Python on Android
