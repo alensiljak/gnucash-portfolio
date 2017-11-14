@@ -70,30 +70,34 @@ def __save_rates(config, latest_rates):
     with database.Database().open_book(for_writing=True) as book:
         base_currency = book.currencies.get(mnemonic=base_symbol)
 
-        #session = book.session
-        #currencies = session.query(Commodity).filter(Commodity.namespace == "CURRENCY").all()
-        #currencies_query = session.query(Commodity).filter(Commodity.namespace == "CURRENCY")
-        #print("Commodities:", get_count(currencies_query))
-
-        rate_date = latest_rates["date"]
+        rate_date_string = latest_rates["date"]
+        rate_date = datetime.strptime(rate_date_string, "%Y-%m-%d")
         # quotes = quandl_fx(self.mnemonic, default_currency.mnemonic, start_date)
         rates = latest_rates["rates"]
+        have_new_rates = False
+
         for rate in rates:
             #print(rate, rates[rate])
             currency = book.currencies.get(mnemonic=rate)
             amount = rates[rate]
 
-            # todo Do not import duplicate prices!
-
-            print("Creating entry for", base_currency, currency, rate_date, amount)
-            p = Price(commodity=base_currency,
-                        currency=currency,
-                        date=datetime.strptime(rate_date, "%Y-%m-%d"),
-                        value=str(amount))
+            # Do not import duplicate prices!
+            #exists = base_currency.prices.get(Price.date == rate_date)
+            exists = base_currency.prices.filter(Price.date == rate_date).all()
+            if not exists:
+                print("Creating entry for", base_currency, currency, rate_date_string, amount)
+                p = Price(commodity=base_currency,
+                            currency=currency,
+                            date=rate_date,
+                            value=str(amount))
+                have_new_rates = True
         
         # Save the book after the prices have been created.
-        book.flush()
-        book.save()
+        if have_new_rates:
+            book.flush()
+            book.save()
+        else:
+            print("No prices imported.")
     return
 
 def get_count(q):
