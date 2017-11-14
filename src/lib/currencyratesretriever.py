@@ -22,8 +22,8 @@ class CurrencyRatesRetriever:
     settings = None
     cache_path = "data/"
 
-    def __init__(self, _settings):
-        settings = _settings #.Settings(settings_path)
+    def __init__(self, settings):
+        self.settings = settings #.Settings(settings_path)
         return
 
     def get_latest_rates(self):
@@ -50,6 +50,8 @@ class CurrencyRatesRetriever:
             # use the base currency from the settings.
             base_currency = self.settings.base_currency
             print("Base currency not sent to currency rates retrieval. Using settings:", base_currency)
+
+        print("Downloading rates...")
 
         # Downloads the latest rates using Fixerio. Returns dict.
         # https://pypi.python.org/pypi/fixerio

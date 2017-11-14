@@ -21,26 +21,25 @@ settings_path = "settings.json"
 #             print(', '.join(row))
 #     return ['rate1', 'rate2']
 
-config = None
+__config = None
 
 def get_settings():
-    return settings.Settings(settings_path)
+    global __config
+    if __config is None:
+        __config = settings.Settings(settings_path)
+    return __config
 
-def main(book):
+def __get_latest_rates():
     config = get_settings()
     # Currencies to be downloaded/imported.
     currencies = config.get_currencies()
     print("requested currencies: ", currencies)
 
+    # Base currency. Required for downloading the currency pairs.
     print("Base currency:", config.base_currency)
 
-    # Show the latest rate info?
     rateman = currencyratesretriever.CurrencyRatesRetriever(config)
-
-    # download latest rates.
-    print("Downloading rates...")
     latest = rateman.get_latest_rates()
-    #print(latest)
 
     # iterate over rates and import for specified currencies only.
     rates = latest["rates"]
@@ -49,11 +48,20 @@ def main(book):
         value = rates[currency]
         print(config.base_currency + '/' + currency, value)
 
-    # todo import rates into gnucash file.
+    return rates
+
+def main():
+    config = get_settings()
+
+    rates = __get_latest_rates()
+
+    # todo import rates into gnucash
+
+    # todo display rates from gnucash
+    with database.Database().open_book() as book:
+        book.get(Commodity, mnemonic=config.base_currency)
+
 
 if __name__ == "__main__":
-    with database.Database().open_book() as book:
-        main(book)
-        #db = database.Database()
-        #db.display_db_info()
+    main()
     
