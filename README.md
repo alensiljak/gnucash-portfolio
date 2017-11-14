@@ -14,13 +14,13 @@ In order to run the scripts, copy `settings.json.template` into `settings.json` 
 
 ## To Do
 
-[x] download currency exchange rates
-[ ] import exchange rates into GnuCash file
-[ ] import .csv security prices into GnuCash file
-[ ] display currency pair chart over selected period (report?)
-[ ] display security price over selected period (report?)
-[ ] list all dividends for security (?!). This requires some conventions as to where to expect them since there is no direct linking between a commodity and the dividends/interest it earns.
-[ ] Asset Allocation. This is implemented in MoneyManagerEx for Android and there needs to be a more universal option available. Look into running Python scripts on Android.
+- [x] download currency exchange rates
+- [ ] import exchange rates into GnuCash file
+- [ ] import .csv security prices into GnuCash file
+- [ ] display currency pair chart over selected period (report?)
+- [ ] display security price over selected period (report?)
+- [ ] list all dividends for security (?!). This requires some conventions as to where to expect them since there is no direct linking between a commodity and the dividends/interest it earns.
+- [ ] Asset Allocation. This is implemented in MoneyManagerEx for Android and there needs to be a more universal option available. Look into running Python scripts on Android.
 
 ## Related Projects
 
