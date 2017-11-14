@@ -48,18 +48,15 @@ def __get_latest_rates(config):
 
 def __display_gnucash_rates(config):
     with database.Database().open_book() as book:
-        base_currency = book.get(Commodity, mnemonic=config.base_currency)
-        print("For base currency:", base_currency)
+        #base_currency = book.get(Commodity, mnemonic=config.base_currency)
 
-        prices = base_currency.prices
-        #filter = prices.filter(Price.currency == base_currency)
-        #today = dateutil.parser.parse(generic.get_today())
-        yesterday = generic.get_yesterday()
-        filter = prices.filter(Price.date == yesterday)
-        print("there are following prices (", filter.count(), ")")
-
-        for price in prices:
-            print(price)
+        # display prices for all currencies as the rates are expressed in the base currency.
+        for currency in book.currencies:
+            prices = currency.prices.all()
+            if prices:
+                print(currency.mnemonic)
+                for price in prices:
+                    print(price)
 
 def __save_rates(config, latest_rates):
     '''
@@ -85,13 +82,14 @@ def __save_rates(config, latest_rates):
             # todo: if the price differs, update it!
             exists = currency.prices.filter(Price.date == rate_date).all()
             if not exists:
-                print("Creating entry for", base_currency, currency, rate_date_string, amount)
-                # todo Save the price in the exchange currency, not the default.
-                # todo Invert the rate in that case.
-                p = Price(commodity=base_currency,
-                            currency=currency,
+                print("Creating entry for", base_currency.mnemonic, currency.mnemonic, rate_date_string, amount)
+                # Save the price in the exchange currency, not the default.
+                # Invert the rate in that case.
+                inverted_rate = 1 / amount;
+                p = Price(commodity=currency,
+                            currency=base_currency,
                             date=rate_date,
-                            value=str(amount))
+                            value=str(inverted_rate))
                 have_new_rates = True
         
         # Save the book after the prices have been created.
