@@ -9,9 +9,11 @@ AEF.AX,128.02,"10/11/2017"
 """
 import sys
 import os
-from lib import Price
-from lib import database
+import lib
+#from lib import Price
+#from lib import database
 import csv
+import piecash
 from piecash import Commodity
 from sqlalchemy import func, or_
 #import piecash
@@ -24,7 +26,7 @@ def import_file(filename):
     print("Loading prices from", file_path)
 
     prices = __read_prices_from_file(file_path)
-    db = database.Database()
+    db = lib.database.Database()
     with db.open_book(for_writing=False) as book:
         for price in prices:
             #print(price.name, price.date, price.currency, price.value)
@@ -37,7 +39,7 @@ def __read_prices_from_file(file_path):
     with open(file_path, "r") as file_object:
         reader = csv.reader(file_object)
         for row in reader:
-            price = Price.Price()
+            price = lib.Price.Price()
             price.date = price.parse_euro_date(row[2])
             price.name = row[0]
             price.value = price.parse_value(row[1])
@@ -55,19 +57,34 @@ def __import_price(book, price):
     """
     Import individual price
     """
+    stock = __get_commodity(book, price.name)
+    price = None
+
+    # check if there is already a price for the date
+    exists = stock.prices.filter(piecash.Price.date == price.date).all()
+    if not exists:
+        # todo create price for the commodity
+        print("here we would create a new price for", price.name)
+        price = None
+    else:
+        print("price already exists for", stock)
+        price = exists.first
+
+def __get_commodity(book, symbol):
     #temp = book.session.query(Commodity).filter(Commodity.namespace != "template", Commodity.namespace != "CURRENCY").first()
     #print(temp.namespace, temp.mnemonic, temp.fullname, temp.cusip, temp.fraction)
 
-    symbol_only = price.name.split(".")[0]
+    symbol_only = symbol.split(".")[0]
 
     #security = book.commodities(namespace="CURRENCY").get(mnemonic=price.name)
     #security = book.session.query(Commodity).filter(Commodity.namespace != "template", Commodity.namespace != "CURRENCY", func.lower(Commodity.mnemonic) == func.lower(price.name)).first()
-    securities = book.session.query(Commodity).filter(Commodity.namespace != "template", Commodity.namespace != "CURRENCY", or_(Commodity.mnemonic.ilike(symbol_only), Commodity.mnemonic.ilike(price.name))).all()
+    securities = book.session.query(Commodity).filter(Commodity.namespace != "template", Commodity.namespace != "CURRENCY", or_(Commodity.mnemonic.ilike(symbol_only), Commodity.mnemonic.ilike(symbol))).all()
     if len(securities) > 1:
-        raise ValueError("More than one commodity found for", price.name)
+        raise ValueError("More than one commodity found for", symbol)
     
     security = securities[0]
-    print("Security", price.name, security)
+    print("Security", symbol, security)
+    return security
 
 ###############################################################################
 if __name__ == "__main__":
