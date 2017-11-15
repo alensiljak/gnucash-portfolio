@@ -3,6 +3,7 @@ Represents a price.
 """
 import dateutil
 import datetime
+from decimal import Decimal
 
 class Price:
     # Example values
@@ -24,5 +25,6 @@ class Price:
         """
         Parses the amount string.
         """
-        self.value = float(value_string)
+        #self.value = float(value_string)
+        self.value = Decimal(value_string)
         return self.value

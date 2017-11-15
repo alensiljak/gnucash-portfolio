@@ -12,6 +12,9 @@ import os
 from lib import Price
 from lib import database
 import csv
+from piecash import Commodity
+from sqlalchemy import func, or_
+#import piecash
 
 def import_file(filename):
     """
@@ -21,9 +24,11 @@ def import_file(filename):
     print("Loading prices from", file_path)
 
     prices = __read_prices_from_file(file_path)
-    for price in prices:
-        #print(price.name, price.date, price.currency, price.value)
-        __import_price(price)
+    db = database.Database()
+    with db.open_book(for_writing=False) as book:
+        for price in prices:
+            #print(price.name, price.date, price.currency, price.value)
+            __import_price(book, price)
 
 def __read_prices_from_file(file_path):
     # open file and read prices
@@ -46,13 +51,23 @@ def __read_prices_from_file(file_path):
     # return list of prices
     return prices
 
-def __import_price(price):
-    # import individual price
-    db = database.Database()
-    with db.open_book(for_writing=True) as book:
-        security = book.commodities.get(mnemonic=price.name)
-        print(security)
-    return
+def __import_price(book, price):
+    """
+    Import individual price
+    """
+    #temp = book.session.query(Commodity).filter(Commodity.namespace != "template", Commodity.namespace != "CURRENCY").first()
+    #print(temp.namespace, temp.mnemonic, temp.fullname, temp.cusip, temp.fraction)
+
+    symbol_only = price.name.split(".")[0]
+
+    #security = book.commodities(namespace="CURRENCY").get(mnemonic=price.name)
+    #security = book.session.query(Commodity).filter(Commodity.namespace != "template", Commodity.namespace != "CURRENCY", func.lower(Commodity.mnemonic) == func.lower(price.name)).first()
+    securities = book.session.query(Commodity).filter(Commodity.namespace != "template", Commodity.namespace != "CURRENCY", or_(Commodity.mnemonic.ilike(symbol_only), Commodity.mnemonic.ilike(price.name))).all()
+    if len(securities) > 1:
+        raise ValueError("More than one commodity found for", price.name)
+    
+    security = securities[0]
+    print("Security", price.name, security)
 
 ###############################################################################
 if __name__ == "__main__":

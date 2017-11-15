@@ -30,7 +30,7 @@ class Database:
         if not os.path.isfile(self.filename):
             return self.create_book()
 
-        print("Using " + self.filename)
+        print("Opening " + self.filename)
         file_path = path.relpath(self.filename)
 
         if not for_writing:
