@@ -118,11 +118,11 @@ def main():
     latest_rates = __get_latest_rates(config)
 
     print("####################################")
-    # todo import rates into gnucash
+    print("importing rates into gnucash...")
     __save_rates(config, latest_rates)
 
     print("####################################")
-    # display rates from gnucash
+    print("displaying rates from gnucash...")
     __display_gnucash_rates(config)
 
 ###############################################################################
