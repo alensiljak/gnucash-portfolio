@@ -20,7 +20,7 @@ def main(symbol):
 		total = Decimal(0)
 		for account in security.accounts:
 			# exclude Trading accouns explicitly.
-			if account.parent.parent.fullname == "Trading":
+			if account.type == "TRADING":
 				continue
 
 			balance = account.get_balance()
