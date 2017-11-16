@@ -30,6 +30,10 @@ In order to run the scripts, copy `settings.json.template` into `settings.json` 
 - [ ] list all dividends for security (?!). This requires some conventions as to where to expect them since there is no direct linking between a commodity and the dividends/interest it earns.
 - [ ] Asset Allocation. This is currently implemented in MoneyManagerEx for Android and there needs to be a more universal option available. Look into running Python scripts on Android or creating a separate app for this purpose.
 
+## References
+
+- [Custom Reports](https://wiki.gnucash.org/wiki/Custom_Reports)
+
 ## Explore
 
 ## UI
