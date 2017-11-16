@@ -2,12 +2,15 @@
 """
 GnuCash database operations
 """
-from lib import settings
-import piecash
 import os
 from os import path
+from lib import settings
+import piecash
 
 class Database:
+    """
+    Provides access to the GnuCash book.
+    """
     config = None
     filename = None   # database file path
 
@@ -31,7 +34,7 @@ class Database:
             print("Creating an in-memory book.")
             return self.create_book()
 
-        print("Opening " + self.filename)
+        print("Using", self.filename)
         file_path = path.relpath(self.filename)
 
         if not for_writing:
@@ -50,6 +53,6 @@ class Database:
 if __name__ == "__main__":
     db = Database()
     db.display_db_info()
-    
+
     with db.open_book() as test_book:
         print(test_book.default_currency)
