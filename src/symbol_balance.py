@@ -3,6 +3,7 @@ Displays the balance of a security across all accounts.
 """
 import sys
 from piecash import Commodity
+from decimal import *
 from lib import database
 
 def main(symbol):
@@ -16,11 +17,11 @@ def main(symbol):
 		security = book.get(Commodity, mnemonic=symbol)
 		#print(security.transactions)
 		# security.prices
-		total = 0
+		total = Decimal(0)
 		for account in security.accounts:
 			balance = account.get_balance()
 			print(account.fullname, balance)
-			total += balance
+			total = total + balance
 		
 		print(total)
 
