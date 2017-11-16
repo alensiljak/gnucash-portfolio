@@ -19,7 +19,7 @@ def main(symbol):
 		total = 0
 		for account in security.accounts:
 			balance = account.get_balance()
-			print(account.name, balance)
+			print(account.fullname, balance)
 			total += balance
 		
 		print(total)
