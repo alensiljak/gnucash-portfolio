@@ -22,15 +22,31 @@ def main(symbol):
 
         # TODO Calculate average price.
         avg_price = get_avg_price(security)
-        print(avg_price)
+        print("Average price:", avg_price)
 
 def get_avg_price(security):
+    """
+    Calculates the average price paid for the security.
+    """
     avg_price = Decimal(0)
 
-    for account in security.accounts:
-        for split in account.splits:
-            print(split)
+    #return sum([sp.quantity for sp in self.splits]) * self.sign
 
+    for account in security.accounts:
+        # Ignore trading accounts.
+        if account.type == "TRADING":
+            continue
+
+        price_total = Decimal(0)
+        price_count = 0
+
+        for split in account.splits:
+            price = split.value / split.quantity
+            #print(price)
+            price_count += 1
+            price_total += price
+
+    avg_price = price_total / price_count
     return avg_price
 
 def get_number_of_shares(security):
@@ -49,7 +65,7 @@ def get_number_of_shares(security):
         balance = account.get_balance()
         quantity = account.get_quantity()
 
-        print(account.fullname, balance, quantity)
+        #print(account.fullname, quantity, balance)
         #total_balance += balance
         total_quantity += quantity
 
@@ -58,7 +74,8 @@ def get_number_of_shares(security):
 
 #############################################################
 # get the name of the security
-symbol = None
+#symbol = None
+symbol = "VTIP"
 
 if symbol:
 	# When debugging, adjust the symbol manually.
