@@ -4,9 +4,17 @@ A collection of tools for managing a portfolio with GnuCash
 The purpose of the project is to provide tools that help in managing a portfolio in GnuCash.
 The code will mostly be written in Python.
 
-Initially, [MoneyManagerEx for Android](http://android.moneymanagerex.org/) will be used to download the current prices for securities. This provides .csv files with the latest prices. Effectively, this is used instead of Finance::Quote library.
+The gratification is the sense of freedom by having direct access to your financial data and being able to retrieve any statistic or information you want, and not depending on others to do it for you.
 
-Retrieving currency exchange rates will be part of this suite.
+Retrieving currency exchange rates is a part of this suite.
+
+## Related Projects
+
+- [MoneyManagerEx for Android](http://android.moneymanagerex.org/) can be used to download the current prices for securities. This provides .csv files with the latest prices. 
+- Finance::Quote - The default GnuCash method for fetching commodity prices.
+- [gnucash-utilities](https://github.com/sdementen/gnucash-utilities). The suite of tools that provide Python reports for GnuCash data.
+- [piecash](https://github.com/sdementen/piecash). Provides access to GnuCash database and schema.
+- [Fixerio](http://fixerio.readthedocs.io/en/latest/). Fixer API for online currency rates.
 
 ## Running
 
@@ -15,18 +23,12 @@ In order to run the scripts, copy `settings.json.template` into `settings.json` 
 ## To Do
 
 - [x] download currency exchange rates
-- [ ] import exchange rates into GnuCash file
-- [ ] import .csv security prices into GnuCash file
+- [x] import exchange rates into GnuCash file
+- [x] import .csv security prices into GnuCash file
 - [ ] display currency pair chart over selected period (report?)
 - [ ] display security price over selected period (report?)
 - [ ] list all dividends for security (?!). This requires some conventions as to where to expect them since there is no direct linking between a commodity and the dividends/interest it earns.
-- [ ] Asset Allocation. This is implemented in MoneyManagerEx for Android and there needs to be a more universal option available. Look into running Python scripts on Android.
-
-## Related Projects
-
-- [gnucash-utilities](https://github.com/sdementen/gnucash-utilities). The underlying utilities.
-- [piecash](https://github.com/sdementen/piecash). Access to GnuCash database.
-- [Fixerio](http://fixerio.readthedocs.io/en/latest/). Fixer API for currency rates.
+- [ ] Asset Allocation. This is currently implemented in MoneyManagerEx for Android and there needs to be a more universal option available. Look into running Python scripts on Android or creating a separate app for this purpose.
 
 ## Explore
 
