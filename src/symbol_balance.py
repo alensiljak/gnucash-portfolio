@@ -15,28 +15,51 @@ def main(symbol):
     with db.open_book() as book:
         security = book.get(Commodity, mnemonic=symbol)
 		#security.transactions, security.prices
-        #total_balance = Decimal(0)
-        total_quantity = Decimal(0)
 
-        for account in security.accounts:
-			# exclude Trading accouns explicitly.
-            if account.type == "TRADING":
-                continue
+        # Display number of shares
+        shares_no = get_number_of_shares(security)
+        print("Quantity:", shares_no)
 
-            balance = account.get_balance()
-            quantity = account.get_quantity()
+        # TODO Calculate average price.
+        avg_price = get_avg_price(security)
+        print(avg_price)
 
-            print(account.fullname, balance, quantity)
-			#total_balance += balance
-            total_quantity += quantity
+def get_avg_price(security):
+    avg_price = Decimal(0)
 
-		#print("Balance:", total_balance)
-        print("Quantity:", total_quantity)
+    for account in security.accounts:
+        for split in account.splits:
+            print(split)
+
+    return avg_price
+
+def get_number_of_shares(security):
+    """
+    Returns the number of shares for the given security.
+    It gets the number from all the accounts in the book.
+    """
+    total_quantity = Decimal(0)
+    #total_balance = Decimal(0)
+
+    for account in security.accounts:
+        # exclude Trading accouns explicitly.
+        if account.type == "TRADING":
+            continue
+
+        balance = account.get_balance()
+        quantity = account.get_quantity()
+
+        print(account.fullname, balance, quantity)
+        #total_balance += balance
+        total_quantity += quantity
+
+    #print("Balance:", total_balance)
+    return total_quantity
 
 #############################################################
 # get the name of the security
 symbol = None
-print(AccountType)
+
 if symbol:
 	# When debugging, adjust the symbol manually.
     main(symbol)
