@@ -17,18 +17,23 @@ def main(symbol):
 		security = book.get(Commodity, mnemonic=symbol)
 		#print(security.transactions)
 		# security.prices
-		total = Decimal(0)
+		total_balance = Decimal(0)
+		total_quantity = Decimal(0)
+		
 		for account in security.accounts:
 			# exclude Trading accouns explicitly.
 			if account.type == "TRADING":
 				continue
 
 			balance = account.get_balance()
+			quantity = account.get_quantity()
 
-			print(account.fullname, balance)
-			total += balance
+			print(account.fullname, balance, quantity)
+			total_balance += balance
+			total_quantity += quantity
 		
-		print("Balance:", total)
+		print("Balance:", total_balance)
+		print("Quantity:", total_quantity)
 
 #############################################################
 # get the name of the security

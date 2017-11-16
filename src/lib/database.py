@@ -28,6 +28,7 @@ class Database:
         If database file is not found, an in-memory database will be created.
         """
         if not os.path.isfile(self.filename):
+            print("Creating an in-memory book.")
             return self.create_book()
 
         print("Opening " + self.filename)
