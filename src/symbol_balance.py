@@ -19,11 +19,16 @@ def main(symbol):
 		# security.prices
 		total = Decimal(0)
 		for account in security.accounts:
+			# exclude Trading accouns explicitly.
+			if account.parent.parent.fullname == "Trading":
+				continue
+
 			balance = account.get_balance()
+
 			print(account.fullname, balance)
-			total = total + balance
+			total += balance
 		
-		print(total)
+		print("Balance:", total)
 
 #############################################################
 # get the name of the security
