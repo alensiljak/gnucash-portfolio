@@ -1,3 +1,5 @@
+# Tests
+
 Just a few notes about running tests:
 
 ```
