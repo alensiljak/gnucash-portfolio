@@ -21,7 +21,6 @@ def generate_report(
     """
     Generates the report HTML.
     """
-    print("Book:", book_url)
     with piecash.open_book(book_url, readonly=True, open_if_lock=True) as book:
         accounts = [acc.fullname for acc in book.accounts]
 
@@ -36,5 +35,5 @@ def generate_report(
 if __name__ == '__main__':
     book_url = None
     if len(sys.argv) > 1:
-        book_url=sys.argv[1]
+        book_url = sys.argv[1]
     execute_report(generate_report, book_url)
