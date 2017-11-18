@@ -5,29 +5,11 @@ This logic is used in report_security_analysis.
 import sys
 from decimal import Decimal
 from piecash import Commodity
-from lib import database
-
-def main(symbol):
-    """
-	Displays the balance for the security symbol.
-	"""
-    print("Displaying the balance for", symbol)
-    db = database.Database()
-    with db.open_book() as book:
-        security = book.get(Commodity, mnemonic=symbol)
-		#security.transactions, security.prices
-
-        # Display number of shares
-        shares_no = get_number_of_shares(security)
-        print("Quantity:", shares_no)
-
-        # TODO Calculate average price.
-        avg_price = get_avg_price(security)
-        print("Average price:", avg_price)
 
 def get_avg_price(security):
     """
     Calculates the average price paid for the security.
+    security = Commodity
     """
     avg_price = Decimal(0)
 
@@ -72,18 +54,3 @@ def get_number_of_shares(security):
 
     #print("Balance:", total_balance)
     return total_quantity
-
-#############################################################
-# get the name of the security
-#symbol = None
-symbol = "VTIP"
-
-if symbol:
-	# When debugging, adjust the symbol manually.
-    main(symbol)
-else:
-    if len(sys.argv) == 1:
-        print("You need to provide the symbol for the security to be displayed.")
-    else:
-        symbol = sys.argv[1]
-        main(symbol)
