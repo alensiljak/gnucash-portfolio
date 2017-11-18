@@ -2,6 +2,7 @@
 Example on how to pass options to the report.
 http://gnucash-utilities.readthedocs.io/en/stable/doc/doc.html
 """
+import sys
 from piecash_utilities.report import report, RangeOption, DateOption, StringOption, execute_report
 
 
@@ -34,7 +35,7 @@ def generate_report(
             documentation_string="This is a number",
             default_value=3)
 ):
-    return """<html>
+    return f"""<html>
     <body>
         Hello world from python !<br>
         Using book: {book_url} <br/>
@@ -46,13 +47,8 @@ def generate_report(
         <li>another_number = {another_number}</li>
         </ul>
     </body>
-    </html>""".format(
-        a_str=a_str,
-        another_number=another_number,
-        a_date=a_date,
-        a_number=a_number,
-    )
+    </html>"""
 
 
 if __name__ == '__main__':
-    execute_report(generate_report)
+    execute_report(generate_report, book_url=sys.argv[1])

@@ -1,3 +1,5 @@
+import sys
+
 from piecash_utilities.report import report, execute_report
 
 
@@ -10,8 +12,13 @@ from piecash_utilities.report import report, execute_report
 def generate_report(
         book_url,
 ):
-    return "<html><body>Hello world from python !</body></html>"
+    return f"""<html><body>
+        Hello world from python !
+        <p>
+            The current file: {book_url}
+        </p>
+    </body></html>"""
 
 
 if __name__ == '__main__':
-    execute_report(generate_report)
+    execute_report(generate_report, book_url=sys.argv[1])
