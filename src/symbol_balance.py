@@ -1,10 +1,12 @@
 """
 Displays the balance of a security across all accounts.
+This logic is used in report_security_analysis.
 """
 import sys
 from decimal import Decimal
 from piecash import Commodity
-from lib import database
+#from lib import database
+import piecash
 
 def main(symbol):
     """

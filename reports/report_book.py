@@ -15,9 +15,7 @@ from piecash_utilities.report import report, execute_report
     menu_tip="A simple report that opens a book",
     options_default_section="general",
 )
-def generate_report(
-        book_url,
-):
+def generate_report(book_url):
     """
     Generates the report HTML.
     """

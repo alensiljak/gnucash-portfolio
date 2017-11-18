@@ -1,7 +1,8 @@
+"""
+Simplest report example.
+"""
 import sys
-
 from piecash_utilities.report import report, execute_report
-
 
 @report(
     title="My simplest report",
@@ -19,6 +20,6 @@ def generate_report(
         </p>
     </body></html>"""
 
-
+####################################################################
 if __name__ == '__main__':
     execute_report(generate_report, book_url=sys.argv[1])
