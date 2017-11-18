@@ -3,8 +3,8 @@
 A report that access the book
 http://gnucash-utilities.readthedocs.io/en/stable/doc/doc.html#a-report-that-access-the-book
 """
-import piecash
 import sys
+import piecash
 
 from piecash_utilities.report import report, execute_report
 
@@ -18,8 +18,12 @@ from piecash_utilities.report import report, execute_report
 def generate_report(
         book_url,
 ):
+    """
+    Generates the report HTML.
+    """
+    print("Book:", book_url)
     with piecash.open_book(book_url, readonly=True, open_if_lock=True) as book:
-        accounts=[acc.fullname for acc in book.accounts]
+        accounts = [acc.fullname for acc in book.accounts]
 
         return f"""<html>
         <body>
@@ -30,4 +34,7 @@ def generate_report(
         </html>"""
 
 if __name__ == '__main__':
-    execute_report(generate_report, book_url=sys.argv[1])
+    book_url = None
+    if len(sys.argv) > 1:
+        book_url=sys.argv[1]
+    execute_report(generate_report, book_url)
