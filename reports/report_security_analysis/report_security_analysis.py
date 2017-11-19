@@ -42,7 +42,7 @@ def generate_report(book_url
     # Load HTML template file.
     template = load_html_template("template.html")
     stock_template = load_html_template("stock_template.html")
-    stock_info = ""
+    stock_rows = ""
 
     with piecash.open_book(book_url, readonly=True, open_if_lock=True) as book:
         # get all commodities that are not currencies.
@@ -50,7 +50,7 @@ def generate_report(book_url
                                                           Commodity.mnemonic != "template").order_by(Commodity.mnemonic).all()
         for stock in all_stocks:
             #print("Found", c.mnemonic)
-            stock_info += generate_stock_output(stock, stock_template)
+            stock_rows += generate_stock_output(stock, stock_template)
 
     # Render the full report.
     return template.format(**locals())
@@ -61,8 +61,12 @@ def generate_stock_output(commodity, template):
     """
     #security = book.get(Commodity, mnemonic=symbol)
     symbol = commodity.mnemonic
+    
     shares_no = get_number_of_shares(commodity)
+    shares_no = "{:,.2f}".format(shares_no)
+
     avg_price = get_avg_price(commodity)
+    avg_price = "{:,.4f}".format(avg_price)
 
     return template.format(**locals())
 
@@ -80,6 +84,7 @@ def get_avg_price(security):
     """
     Calculates the average price paid for the security.
     security = Commodity
+    Returns Decimal value.
     """
     #print("Calculating stats for", security.mnemonic)
     avg_price = Decimal(0)
