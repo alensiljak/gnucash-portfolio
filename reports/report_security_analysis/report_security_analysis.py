@@ -68,6 +68,8 @@ def generate_stock_output(commodity, template):
     avg_price = get_avg_price(commodity)
     avg_price = "{:,.4f}".format(avg_price)
 
+    #base_currency = commodity.base_currency
+
     return template.format(**locals())
 
 def load_html_template(file_name):
