@@ -7,7 +7,8 @@ import sys
 import os
 import piecash
 from piecash import Commodity
-from piecash_utilities.report import report, execute_report, CommodityOption, CommodityListOption
+from piecash_utilities.report import report, execute_report
+#CommodityOption, CommodityListOption
 #import symbol_balance
 from decimal import Decimal
 
@@ -18,37 +19,48 @@ from decimal import Decimal
     menu_tip="Security details",
     options_default_section="general",
 )
-def generate_report(book_url,
-                    commodity: CommodityOption(
-                        section="Commodity",
-                        sort_tag="a",
-                        documentation_string="This is a stock",
-                        default_value="VTIP"),
-                    commodity_list: CommodityListOption(
-                        section="Commodity",
-                        sort_tag="a",
-                        documentation_string="This is a stock",
-                        default_value="VTIP")
+def generate_report(book_url
+                    # commodity: CommodityOption(
+                    #     section="Commodity",
+                    #     sort_tag="a",
+                    #     documentation_string="This is a stock",
+                    #     default_value="VTIP"),
+                    # commodity_list: CommodityListOption(
+                    #     section="Commodity",
+                    #     sort_tag="a",
+                    #     documentation_string="This is a stock",
+                    #     default_value="VTIP")
                     ):
     """
     Generates an HTML report content.
     """
-    print("Symbol requested:", commodity)
-    #print(commodity.name)
-    print(commodity_list)
-
     # TODO replace this with the received parameter / list.
-    symbol = "VTIP"
+    #symbol = "VTIP"
     shares_no = None
     avg_price = None
 
-    with piecash.open_book(book_url, readonly=True, open_if_lock=True) as book:
-        security = book.get(Commodity, mnemonic=symbol)
-        shares_no = get_number_of_shares(security)
-        avg_price = get_avg_price(security)
-
     # Load HTML template file.
     template = load_html_template()
+    output = ""
+
+    with piecash.open_book(book_url, readonly=True, open_if_lock=True) as book:
+        # get all commodities that are not currencies.
+        all_stocks = book.session.query(Commodity).filter(Commodity.namespace != "CURRENCY", Commodity.mnemonic != "template").all()
+        for c in all_stocks:
+            #print("Found", c.mnemonic)
+            output += generate_stock_output(c, template)
+
+    return output
+
+def generate_stock_output(commodity, template):
+    """
+    Generates statistics per symbol
+    """
+    #security = book.get(Commodity, mnemonic=symbol)
+    symbol = commodity.mnemonic
+    shares_no = get_number_of_shares(commodity)
+    avg_price = get_avg_price(commodity)
+
     return template.format(**locals())
 
 def load_html_template():
@@ -67,17 +79,18 @@ def get_avg_price(security):
     Calculates the average price paid for the security.
     security = Commodity
     """
+    #print("Calculating stats for", security.mnemonic)
     avg_price = Decimal(0)
 
     #return sum([sp.quantity for sp in self.splits]) * self.sign
+
+    price_total = Decimal(0)
+    price_count = 0
 
     for account in security.accounts:
         # Ignore trading accounts.
         if account.type == "TRADING":
             continue
-
-        price_total = Decimal(0)
-        price_count = 0
 
         for split in account.splits:
             price = split.value / split.quantity
@@ -85,7 +98,9 @@ def get_avg_price(security):
             price_count += 1
             price_total += price
 
-    avg_price = price_total / price_count
+    #print(price_total, price_count)
+    if price_count:
+        avg_price = price_total / price_count
     return avg_price
 
 def get_number_of_shares(security):
