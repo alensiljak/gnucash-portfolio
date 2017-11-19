@@ -40,17 +40,20 @@ def generate_report(book_url
     avg_price = None
 
     # Load HTML template file.
-    template = load_html_template()
-    output = ""
+    template = load_html_template("template.html")
+    stock_template = load_html_template("stock_template.html")
+    stock_info = ""
 
     with piecash.open_book(book_url, readonly=True, open_if_lock=True) as book:
         # get all commodities that are not currencies.
-        all_stocks = book.session.query(Commodity).filter(Commodity.namespace != "CURRENCY", Commodity.mnemonic != "template").all()
-        for c in all_stocks:
+        all_stocks = book.session.query(Commodity).filter(Commodity.namespace != "CURRENCY",
+                                                          Commodity.mnemonic != "template").order_by(Commodity.mnemonic).all()
+        for stock in all_stocks:
             #print("Found", c.mnemonic)
-            output += generate_stock_output(c, template)
+            stock_info += generate_stock_output(stock, stock_template)
 
-    return output
+    # Render the full report.
+    return template.format(**locals())
 
 def generate_stock_output(commodity, template):
     """
@@ -63,13 +66,12 @@ def generate_stock_output(commodity, template):
 
     return template.format(**locals())
 
-def load_html_template():
+def load_html_template(file_name):
     """
     Loads the template from a file. This makes it easier to edit the template in an editor.
     """
     script_path = os.path.dirname(os.path.realpath(__file__))
-    template_file_name = "template.html"
-    file_path = os.path.join(script_path, template_file_name)
+    file_path = os.path.join(script_path, file_name)
 
     with open(file_path, 'r') as template_file:
         return template_file.read()
