@@ -20,15 +20,23 @@ Retrieving currency exchange rates is a part of this suite.
 
 In order to run the scripts, copy `settings.json.template` into `settings.json` and customize the settings by editing the file.
 
-## To Do
+# Goals
+
+## Done
 
 - [x] download currency exchange rates
 - [x] import exchange rates into GnuCash file
 - [x] import .csv security prices into GnuCash file
+- [x] securities report
+
+## To Do
+
 - [ ] display currency pair chart over selected period (report?)
 - [ ] display security price over selected period (report?)
 - [ ] list all dividends for security (?!). This requires some conventions as to where to expect them since there is no direct linking between a commodity and the dividends/interest it earns.
-- [ ] Asset Allocation. This is currently implemented in MoneyManagerEx for Android and there needs to be a more universal option available. Look into running Python scripts on Android or creating a separate app for this purpose. The issue is where to store the links between asset classes and the securities, as well as the allocation percentages.
+- [ ] Asset Allocation. This is currently implemented in MoneyManagerEx for Android and there needs to be a more universal option available. Look into running Python scripts on Android or creating a separate app for this purpose. The issue is where to store the links between asset classes and the securities, as well as the allocation percentages. This might be possible manually with a .json file and Python script/report.
+
+# Other
 
 ## References
 
