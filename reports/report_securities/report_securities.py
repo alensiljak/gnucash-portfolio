@@ -14,8 +14,8 @@ from decimal import Decimal
 
 ####################################################################
 @report(
-    title="Security Analysis",
-    name="security-analysis-report",
+    title="Securities Report",
+    name="securities-report",
     menu_tip="Security details",
     options_default_section="general",
 )
