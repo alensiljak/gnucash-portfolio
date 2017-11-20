@@ -28,7 +28,7 @@ In order to run the scripts, copy `settings.json.template` into `settings.json` 
 - [ ] display currency pair chart over selected period (report?)
 - [ ] display security price over selected period (report?)
 - [ ] list all dividends for security (?!). This requires some conventions as to where to expect them since there is no direct linking between a commodity and the dividends/interest it earns.
-- [ ] Asset Allocation. This is currently implemented in MoneyManagerEx for Android and there needs to be a more universal option available. Look into running Python scripts on Android or creating a separate app for this purpose.
+- [ ] Asset Allocation. This is currently implemented in MoneyManagerEx for Android and there needs to be a more universal option available. Look into running Python scripts on Android or creating a separate app for this purpose. The issue is where to store the links between asset classes and the securities, as well as the allocation percentages.
 
 ## References
 
