@@ -1,6 +1,8 @@
-Here are the reports that can be used through gnucash-utilities bridge.
-These are to be placed in your <profile dir>\<report name>\
-where the report name is the name without extension. i.e.:
+# Reports
+
+Here are the reports that can be used through `gnucash-utilities` bridge.
+These are to be placed, together with their subfolder, in your <profile dir>\.gnucash folder.
+i.e.:
 
 ```
 C:\Users\me\.gnucash\report_simple\report_simple.py

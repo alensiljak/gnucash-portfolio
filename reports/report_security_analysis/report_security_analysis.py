@@ -102,6 +102,10 @@ def get_avg_price(security):
             continue
 
         for split in account.splits:
+            # Don't count the non-transactions.
+            if split.quantity == 0:
+                continue
+
             price = split.value / split.quantity
             #print(price)
             price_count += 1
