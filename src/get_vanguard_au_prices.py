@@ -66,9 +66,13 @@ def load_fund_data():
 
 def get_fund_price(fund_data, fund_id):
     fund_info = fund_data[fund_id]
-    
+
     # name
-    print(fund_info["name"], fund_info["asOfDate"], fund_info["navPrice"])
+    print(fund_info["identifier"],
+          fund_info["navPrice"],
+          fund_info["asOfDate"],
+          fund_info["mStarID"],
+          fund_info["name"])
 
 ###########################################################
 fund_data = load_fund_data()
