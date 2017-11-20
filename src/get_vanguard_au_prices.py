@@ -3,14 +3,14 @@
 The script downloads fund prices from Vanguard Australia site.
 Retail Funds
 Vanguard Diversified Bond Index Fund                  VAN0101AU   8123
+Vanguard International Shares Index Fund (Hedged)     VAN0107AU   8146
 Vanguard Australian Property Securities Index Fund    VAN0012AU   8147
 Vanguard Australian Shares High Yield Fund            VAN0017AU   8148
-Vanguard International Shares Index Fund (Hedged)     VAN0107AU   8146
 """
 import requests
 import json
 
-user_funds = ["8123", "8147", "8148", "8146"]
+user_funds = ["8123", "8146", "8148", "8147"]
 
 def get_json_prices():
     """
