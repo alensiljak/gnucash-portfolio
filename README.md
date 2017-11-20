@@ -8,14 +8,6 @@ The gratification is the sense of freedom by having direct access to your financ
 
 Retrieving currency exchange rates is a part of this suite.
 
-## Related Projects
-
-- [MoneyManagerEx for Android](http://android.moneymanagerex.org/) can be used to download the current prices for securities. This provides .csv files with the latest prices. 
-- Finance::Quote - The default GnuCash method for fetching commodity prices.
-- [gnucash-utilities](https://github.com/sdementen/gnucash-utilities). The suite of tools that provide Python reports for GnuCash data.
-- [piecash](https://github.com/sdementen/piecash). Provides access to GnuCash database and schema.
-- [Fixerio](http://fixerio.readthedocs.io/en/latest/). Fixer API for online currency rates.
-
 ## Running
 
 In order to run the scripts, copy `settings.json.template` into `settings.json` and customize the settings by editing the file.
@@ -38,13 +30,25 @@ In order to run the scripts, copy `settings.json.template` into `settings.json` 
 
 # Other
 
+## Related Projects
+
+- [MoneyManagerEx for Android](http://android.moneymanagerex.org/) can be used to download the current prices for securities. This provides .csv files with the latest prices. 
+- Finance::Quote - The default GnuCash method for fetching commodity prices.
+- [gnucash-utilities](https://github.com/sdementen/gnucash-utilities). The suite of tools that provide Python reports for GnuCash data.
+- [piecash](https://github.com/sdementen/piecash). Provides access to GnuCash database and schema.
+- [Fixerio](http://fixerio.readthedocs.io/en/latest/). Fixer API for online currency rates.
+
 ## References
 
-- [Custom Reports](https://wiki.gnucash.org/wiki/Custom_Reports)
-
-## Explore
+- [GnuCash Wiki](https://wiki.gnucash.org/wiki/GnuCash)
+    - [Custom Reports](https://wiki.gnucash.org/wiki/Custom_Reports)
 
 ## UI
+
+- [pandas](http://pandas.pydata.org/), library for data analysis. Check DataFrame and [exports](http://piecash.readthedocs.io/en/latest/api/piecash.core.book.html#piecash.core.book.Book.splits_df) from piecash.
+- [plot.ly](https://plot.ly), plotting service/library with offline Python bindings. For data presentation.
+
+## GUI
 
 There are several options for Python GUI.
 
