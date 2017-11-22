@@ -7,6 +7,9 @@ i.e.:
 ```
 C:\Users\me\.gnucash\report_simple\report_simple.py
 ```
+
+The script `deploy.py` will copy all the reports to their destination, overwriting any reports found(!).
+
 After placing the reports in the correct location, run ```gc_report``` to generate the resulting report (.scm) files for GnuCash.
 
 # gnucash-utilities
