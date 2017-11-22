@@ -4,7 +4,7 @@ GnuCash database operations
 """
 import os
 from os import path
-from lib import settings
+from .settings import Settings
 import piecash
 
 class Database:
@@ -16,7 +16,7 @@ class Database:
 
     def __init__(self):
         # Use the settings file.
-        self.config = settings.Settings()
+        self.config = Settings()
         self.filename = self.config.data["gnucash.database"]
 
     def display_db_info(self):

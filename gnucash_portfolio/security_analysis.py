@@ -7,7 +7,7 @@ This logic is used in report_security_analysis.
 import sys
 from decimal import Decimal
 from piecash import Commodity
-from lib import database
+from gnucash_portfolio.lib import database
 
 def main(symbol):
     """
