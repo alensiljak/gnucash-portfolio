@@ -18,7 +18,11 @@ class Settings:
             settings_file_path = FILENAME
 
         file_path = path.relpath(settings_file_path)
-        self.data = json.load(open(settings_file_path))
+        #file_path = path.abspath(settings_file_path)
+        try:
+            self.data = json.load(open(file_path))
+        except FileNotFoundError:
+            print("Could not load", file_path)
 
     def show_settings(self):
         """Displays the contents of the settings file"""
@@ -37,6 +41,12 @@ class Settings:
         """Returns the base currency setting"""
         return self.data["baseCurrency"]
 
+    @property
+    def database_path(self):
+        """
+        The database path.
+        """
+        return self.data["gnucash.database"]
 
 # If run directly, just display the settings file.
 if __name__ == "__main__":

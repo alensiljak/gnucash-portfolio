@@ -17,7 +17,7 @@ class Database:
     def __init__(self):
         # Use the settings file.
         self.config = Settings()
-        self.filename = self.config.data["gnucash.database"]
+        self.filename = self.config.database_path
 
     def display_db_info(self):
         """Displays some basic info about the GnuCash book"""

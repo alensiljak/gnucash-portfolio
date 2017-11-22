@@ -5,7 +5,6 @@ Displays the quantity of the selected commodity and the average price paid.
 """
 import sys
 import os
-#from decimal import Decimal
 import piecash
 from piecash import Commodity
 from piecash_utilities.report import report, execute_report
@@ -84,4 +83,9 @@ def load_html_template(file_name):
 
 ####################################################################
 if __name__ == '__main__':
-    execute_report(generate_report, book_url=sys.argv[1])
+    if len(sys.argv) > 1:
+        execute_report(generate_report, book_url=sys.argv[1])
+    else:
+        #cfg = gnucash_portfolio.lib.Settings()
+        #cfg.
+        print("book_url parameter expected")
