@@ -4,7 +4,7 @@ The fund codes should be specified as report parameters.
 """
 import sys
 import os
-from piecash_utilities.report import report, execute_report
+from piecash_utilities.report import report, execute_report, StringOption
 import jinja2
 from gnucash_portfolio import get_vanguard_au_prices
 
@@ -14,11 +14,20 @@ from gnucash_portfolio import get_vanguard_au_prices
     menu_tip="Latest retail fund prices from Vanguard Australia",
     options_default_section="general",
 )
-def generate_report(book_url):
+def generate_report(
+        book_url,
+        fund_ids: StringOption(
+            section="Funds",
+            sort_tag="c",
+            documentation_string="Comma-separated list of fund ids.",
+            default_value="8123,8146,8148,8147")
+    ):
     # with piecash.open_book ...
     env = jinja2.Environment(loader=jinja2.PackageLoader(__name__, '.'))
 
-    user_funds = ["8123", "8146", "8148", "8147"]
+    #user_funds = ["8123", "8146", "8148", "8147"]
+    user_funds = fund_ids.strip().split(",")
+    #print(user_funds)
     prices = get_vanguard_au_prices.download_fund_prices(user_funds)
 
     return env.get_template("template.html").render(
