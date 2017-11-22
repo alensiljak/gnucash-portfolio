@@ -7,19 +7,12 @@ Vanguard International Shares Index Fund (Hedged)     VAN0107AU   8146
 Vanguard Australian Property Securities Index Fund    VAN0012AU   8147
 Vanguard Australian Shares High Yield Fund            VAN0017AU   8148
 """
+import os
 import json
 import requests
-#import gnucash_portfolio.lib.Price
-
-# class VanguardPrice:
-#     def __init__(self, **kwargs):
-#         self.__dict__ = kwargs
-#     identifier=None
-#     nav_price
-#     date
-#     mstar_id
-#     name
+import tempfile
 from .lib import messenger
+from .lib.generic import get_today
 
 def __get_json_prices():
     """
@@ -55,6 +48,12 @@ def __load_fund_data():
     """
     Fetches retail fund prices.
     """
+    #todaysdate = 
+    # TODO do we have a cached version?
+    #tempdir = tempfile.gettempdir()
+    #cache_file = os.path.join(tempdir, get_today())
+    #cache = 
+
     #url = "https://www.vanguardinvestments.com.au/retail/ret/investments/product.html"
     #url = "https://www.vanguardinvestments.com.au/retail/mvc/getNavPrice?portId=" + fund_id
     url = "https://intlgra-globm-209.gra.international.vgdynamic.info/rs/gre/gra/datasets/auw-retail-listview-data.jsonp"
@@ -69,6 +68,8 @@ def __load_fund_data():
     if content.startswith("callback("):
         length = len(content) - 1
         content = content[9:length]
+
+    # TODO cache the downloaded page.
 
     content_json = json.loads(content)
     return content_json["fundData"]
