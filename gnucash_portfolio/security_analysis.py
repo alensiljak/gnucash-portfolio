@@ -1,4 +1,6 @@
 """
+Various operations on commodities / securities / stocks.
+
 Displays the balance of a security across all accounts.
 This logic is used in report_security_analysis.
 """
@@ -28,26 +30,35 @@ def main(symbol):
 def get_avg_price(security):
     """
     Calculates the average price paid for the security.
+    security = Commodity
+    Returns Decimal value.
     """
+    #print("Calculating stats for", security.mnemonic)
     avg_price = Decimal(0)
 
     #return sum([sp.quantity for sp in self.splits]) * self.sign
+
+    price_total = Decimal(0)
+    price_count = 0
 
     for account in security.accounts:
         # Ignore trading accounts.
         if account.type == "TRADING":
             continue
 
-        price_total = Decimal(0)
-        price_count = 0
-
         for split in account.splits:
+            # Don't count the non-transactions.
+            if split.quantity == 0:
+                continue
+
             price = split.value / split.quantity
             #print(price)
             price_count += 1
             price_total += price
 
-    avg_price = price_total / price_count
+    #print(price_total, price_count)
+    if price_count:
+        avg_price = price_total / price_count
     return avg_price
 
 def get_number_of_shares(security):
@@ -73,17 +84,25 @@ def get_number_of_shares(security):
     #print("Balance:", total_balance)
     return total_quantity
 
-#############################################################
-# get the name of the security
-#symbol = None
-symbol = "VTIP"
+def demo():
+    # generate a dummy security
+    sec = Commodity(namespace="ASX", mnemonic="VHY", fullname="Vanguard High Yield ETF")
+    # TODO add transactions.
 
-if symbol:
-	# When debugging, adjust the symbol manually.
-    main(symbol)
-else:
+    # display output
+
+    num_shares = get_number_of_shares(sec)
+    print("Number of shares", num_shares)
+
+    avg_price = get_avg_price(sec)
+    print("Average price", avg_price)
+
+#####################################################################
+if __name__ == "__main__":
     if len(sys.argv) == 1:
         print("You need to provide the symbol for the security to be displayed.")
+        # Show the demo.
+        demo()
     else:
         symbol = sys.argv[1]
         main(symbol)

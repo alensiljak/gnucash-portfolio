@@ -41,7 +41,7 @@ except ImportError:
 sys.path.append('.')
 
 # # Constants
-CODE_DIRECTORY = 'src'
+CODE_DIRECTORY = 'gnucash_portfolio'
 DOCS_DIRECTORY = 'doc'
 TESTS_DIRECTORY = 'tests'
 DATA_DIRECTORY = 'src/data'
