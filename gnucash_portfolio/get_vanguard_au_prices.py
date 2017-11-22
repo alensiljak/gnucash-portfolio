@@ -7,12 +7,21 @@ Vanguard International Shares Index Fund (Hedged)     VAN0107AU   8146
 Vanguard Australian Property Securities Index Fund    VAN0012AU   8147
 Vanguard Australian Shares High Yield Fund            VAN0017AU   8148
 """
-import requests
 import json
+import requests
+#import gnucash_portfolio.lib.Price
 
-user_funds = ["8123", "8146", "8148", "8147"]
+# class VanguardPrice:
+#     def __init__(self, **kwargs):
+#         self.__dict__ = kwargs
+#     identifier=None
+#     nav_price
+#     date
+#     mstar_id
+#     name
+from .lib import messenger
 
-def get_json_prices():
+def __get_json_prices():
     """
     Downloads the latest prices in JSON.
     """
@@ -24,11 +33,11 @@ def get_json_prices():
     content = json.loads(response.content)
     return content
 
-def fetch_json_prices():
+def __fetch_json_prices():
     """
     This example loads the prices JSON. There are no retail funds there, however.
     """
-    prices_json = get_json_prices()
+    prices_json = __get_json_prices()
 
     for line in prices_json:
         port_id = line["portId"]
@@ -42,7 +51,7 @@ def fetch_json_prices():
         
         print(port_id, price_date, price)
 
-def load_fund_data():
+def __load_fund_data():
     """
     Fetches retail fund prices.
     """
@@ -64,17 +73,47 @@ def load_fund_data():
     content_json = json.loads(content)
     return content_json["fundData"]
 
-def get_fund_price(fund_data, fund_id):
+def __get_fund_price(fund_data, fund_id):
+    """
+    Returns the Price object with name, identifier, date, value, mstar_id.
+    """
     fund_info = fund_data[fund_id]
 
+    price = messenger.Messenger(
+                name=fund_info["name"],
+                identifier=fund_info["identifier"],
+                date=fund_info["asOfDate"],
+                value=fund_info["navPrice"],
+                mstar_id=fund_info["mStarID"]
+            )
     # name
-    print(fund_info["identifier"],
-          fund_info["navPrice"],
-          fund_info["asOfDate"],
-          fund_info["mStarID"],
-          fund_info["name"])
+    # print(fund_info["identifier"],
+    #       fund_info["navPrice"],
+    #       fund_info["asOfDate"],
+    #       fund_info["mStarID"],
+    #       fund_info["name"])
+    return price
+
+def download_fund_prices(user_funds):
+    """
+    displays the prices
+    """
+    prices = []
+
+    fund_data = __load_fund_data()
+    for fund_id in user_funds:
+        price = __get_fund_price(fund_data, fund_id)
+        #print(price.identifier, price.date)
+        prices.append(price)
+    
+    return prices
+
+def main(user_funds):
+    prices = download_fund_prices(user_funds)
+    for price in prices:
+        print(price.identifier)
 
 ###########################################################
-fund_data = load_fund_data()
-for fund_id in user_funds:
-    get_fund_price(fund_data, fund_id)
+if __name__ == "__main__":
+    user_funds = ["8123", "8146", "8148", "8147"]
+    main(user_funds)
