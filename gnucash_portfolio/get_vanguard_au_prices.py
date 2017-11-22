@@ -11,8 +11,6 @@ import os
 import json
 import requests
 import tempfile
-from .lib import messenger
-from .lib.generic import get_today
 
 def __get_json_prices():
     """
@@ -48,6 +46,8 @@ def __load_fund_data():
     """
     Fetches retail fund prices.
     """
+    #from .lib.generic import get_today
+
     #todaysdate = 
     # TODO do we have a cached version?
     #tempdir = tempfile.gettempdir()
@@ -78,6 +78,8 @@ def __get_fund_price(fund_data, fund_id):
     """
     Returns the Price object with name, identifier, date, value, mstar_id.
     """
+    from lib import messenger
+
     fund_info = fund_data[fund_id]
 
     price = messenger.Messenger(
@@ -109,12 +111,12 @@ def download_fund_prices(user_funds):
     
     return prices
 
-def main(user_funds):
+def test(user_funds):
     prices = download_fund_prices(user_funds)
     for price in prices:
-        print(price.identifier)
+        print(price.identifier, price.date, price.value, price.name)
 
 ###########################################################
 if __name__ == "__main__":
     user_funds = ["8123", "8146", "8148", "8147"]
-    main(user_funds)
+    test(user_funds)
