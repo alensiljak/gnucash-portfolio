@@ -1,2 +1,2 @@
 from . import Price, database
-from .settings import Settings
+#from .settings import Settings
