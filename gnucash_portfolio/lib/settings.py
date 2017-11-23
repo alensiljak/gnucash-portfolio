@@ -3,6 +3,7 @@
 Provides access to the settings file.
 """
 import json
+import pathlib
 from os import path
 from pprint import pprint
 
@@ -17,8 +18,9 @@ class Settings:
         if not settings_file_path:
             settings_file_path = FILENAME
 
-        file_path = path.relpath(settings_file_path)
+        #file_path = path.relpath(settings_file_path)
         #file_path = path.abspath(settings_file_path)
+        file_path = path.abspath(path.join(__file__, "..", "..", FILENAME))
         try:
             self.data = json.load(open(file_path))
         except FileNotFoundError:
@@ -42,10 +44,24 @@ class Settings:
         return self.data["baseCurrency"]
 
     @property
+    def database_uri(self):
+        """
+        Returns the book database path as URI that can be used for opening
+        the book as sql database.
+        """
+        return pathlib.Path(self.database_path).as_uri()
+
+    @property
     def database_path(self):
         """
         The database path.
         """
+        filename = self.database_filename
+        db_path = path.abspath(path.join(__file__, "..", "..", "data", filename))
+        return db_path
+
+    @property
+    def database_filename(self):
         return self.data["gnucash.database"]
 
 # If run directly, just display the settings file.

@@ -13,12 +13,12 @@ import gnucash_portfolio
 
 ####################################################################
 @report(
-    title="Securities Report",
-    name="securities-report",
-    menu_tip="Security details",
+    title="Portfolio Value Report",
+    name="portfolio-value-report",
+    menu_tip="Portfolio securities details",
     options_default_section="general",
 )
-def generate_report(book_url
+def generate_report(book_url):
                     # commodity: CommodityOption(
                     #     section="Commodity",
                     #     sort_tag="a",
@@ -29,12 +29,14 @@ def generate_report(book_url
                     #     sort_tag="a",
                     #     documentation_string="This is a stock",
                     #     default_value="VTIP")
-                    ):
+                    #):
     """
     Generates an HTML report content.
     """
-    # TODO replace this with the received parameter / list.
+    # TODO replace this with the received parameter / list?
     #symbol = "VTIP"
+
+    # Report variables
     shares_no = None
     avg_price = None
 
@@ -52,7 +54,9 @@ def generate_report(book_url
             stock_rows += generate_stock_output(stock, stock_template)
 
     # Render the full report.
-    return template.format(**locals())
+    #return template.format(**locals())
+    result = template.render(**locals())
+    return result
 
 def generate_stock_output(commodity, template):
     """
@@ -68,24 +72,31 @@ def generate_stock_output(commodity, template):
     avg_price = "{:,.4f}".format(avg_price)
 
     #base_currency = commodity.base_currency
-
-    return template.format(**locals())
+    #return template.format(**locals())
+    return template.render(**locals())
 
 def load_html_template(file_name):
     """
-    Loads the template from a file. This makes it easier to edit the template in an editor.
+    Loads the jinja2 HTML template from the given file. 
     """
     script_path = os.path.dirname(os.path.realpath(__file__))
-    file_path = os.path.join(script_path, file_name)
+    # file_path = os.path.join(script_path, file_name)
+    # with open(file_path, 'r') as template_file:
+    #     return template_file.read()
+    from jinja2 import Environment, FileSystemLoader
 
-    with open(file_path, 'r') as template_file:
-        return template_file.read()
+    env = Environment(loader=FileSystemLoader(script_path))
+    template = env.get_template(file_name)
+
+    return template
 
 ####################################################################
 if __name__ == '__main__':
     if len(sys.argv) > 1:
         execute_report(generate_report, book_url=sys.argv[1])
     else:
-        #cfg = gnucash_portfolio.lib.Settings()
-        #cfg.
+        cfg = gnucash_portfolio.lib.settings.Settings()
+        db_path_uri = cfg.database_uri
+        generate_report(db_path_uri)
         print("book_url parameter expected")
+ 
