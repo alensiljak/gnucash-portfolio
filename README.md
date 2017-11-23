@@ -112,3 +112,4 @@ https://nbviewer.jupyter.org/github/sdementen/piecash/blob/master/examples/ipyth
 - [Data Vision](http://datavision.sourceforge.net/)
 - [Top 7 open source business intelligence and reporting tools](https://opensource.com/business/16/6/top-business-intelligence-reporting-tools)
 - [Metabase](https://www.metabase.com/)
+- [Dynamic Reports](http://www.dynamicreports.org/)
