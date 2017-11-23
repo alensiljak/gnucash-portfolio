@@ -88,6 +88,8 @@ There are two technologies providing underlying access to Android functions:
 
 Some related technologies. [Reference](https://groups.google.com/forum/#!topic/piecash/YgrkL1MVL18)
 
+### jinja2
+
 Using piecash+jinja2 could ease the generation of :
 - invoices (via latex or other type setting),
 - reports (see http://pbpython.com/pdf-reports.html) 
@@ -98,3 +100,8 @@ With pandas, you get easy:
 - time series analysis (prices, account balances, ...) 
 - export of time series to json, csv, xlsx, ...
 - plotting
+
+## Pandas DataFrame
+
+You can see an example of a usage of these dataframes to do basic reporting here :
+https://nbviewer.jupyter.org/github/sdementen/piecash/blob/master/examples/ipython/piecash_dataframes.ipynb
