@@ -105,3 +105,8 @@ With pandas, you get easy:
 
 You can see an example of a usage of these dataframes to do basic reporting here :
 https://nbviewer.jupyter.org/github/sdementen/piecash/blob/master/examples/ipython/piecash_dataframes.ipynb
+
+### Reporting Engines
+
+- [Next Reports](http://www.next-reports.com/products/nextreports-designer.html)
+- [Data Vision](http://datavision.sourceforge.net/)
