@@ -13,8 +13,8 @@ import gnucash_portfolio
 
 ####################################################################
 @report(
-    title="Portfolio Value Report",
-    name="portfolio-value-report",
+    title="Portfolio Value",
+    name="portfolio-value",
     menu_tip="Portfolio securities details",
     options_default_section="general",
 )
