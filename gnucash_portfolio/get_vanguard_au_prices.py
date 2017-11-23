@@ -78,7 +78,7 @@ def __get_fund_price(fund_data, fund_id):
     """
     Returns the Price object with name, identifier, date, value, mstar_id.
     """
-    from lib import messenger
+    from gnucash_portfolio.lib import messenger
 
     fund_info = fund_data[fund_id]
 
