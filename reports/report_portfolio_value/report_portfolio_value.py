@@ -95,8 +95,9 @@ if __name__ == '__main__':
     if len(sys.argv) > 1:
         execute_report(generate_report, book_url=sys.argv[1])
     else:
+        print("book_url parameter expected")
+
         cfg = gnucash_portfolio.lib.settings.Settings()
         db_path_uri = cfg.database_uri
-        generate_report(db_path_uri)
-        print("book_url parameter expected")
- 
+        result = generate_report(db_path_uri)
+        print("test results:", result)
