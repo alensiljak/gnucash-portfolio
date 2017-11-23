@@ -24,13 +24,14 @@ def generate_report(
     ):
     # with piecash.open_book ...
     env = jinja2.Environment(loader=jinja2.PackageLoader(__name__, '.'))
-
+    template = env.get_template("template.html")
+    
     #user_funds = ["8123", "8146", "8148", "8147"]
     user_funds = fund_ids.strip().split(",")
     #print(user_funds)
     prices = get_vanguard_au_prices.download_fund_prices(user_funds)
 
-    return env.get_template("template.html").render(
+    return template.render(
             enumerate=enumerate,
             list=list,
             path_report=os.path.abspath(__file__),
