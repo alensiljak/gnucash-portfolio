@@ -83,3 +83,18 @@ There are two technologies providing underlying access to Android functions:
 
 - [PyJNIus](http://pyjnius.readthedocs.io/en/latest/)
 - [Python for Android: The Scripting Layer (SL4A)](http://pythoncentral.io/python-for-android-the-scripting-layer-sl4a/)
+
+## To Explore
+
+Some related technologies. [Reference](https://groups.google.com/forum/#!topic/piecash/YgrkL1MVL18)
+
+Using piecash+jinja2 could ease the generation of :
+- invoices (via latex or other type setting),
+- reports (see http://pbpython.com/pdf-reports.html) 
+- charts (with https://github.com/ellisonbg/altair or https://plot.ly/)
+- export to other formats (xml, ledger http://www.ledger-cli.org/, QIF, ...)
+
+With pandas, you get easy:
+- time series analysis (prices, account balances, ...) 
+- export of time series to json, csv, xlsx, ...
+- plotting
