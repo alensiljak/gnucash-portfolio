@@ -101,7 +101,7 @@ With pandas, you get easy:
 - export of time series to json, csv, xlsx, ...
 - plotting
 
-## Pandas DataFrame
+### Pandas DataFrame
 
 You can see an example of a usage of these dataframes to do basic reporting here :
 https://nbviewer.jupyter.org/github/sdementen/piecash/blob/master/examples/ipython/piecash_dataframes.ipynb
