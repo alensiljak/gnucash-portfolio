@@ -59,19 +59,21 @@ def __import_price(book, price):
     if stock is None:
         return
 
-    price = None
-
     # check if there is already a price for the date
     exists = stock.prices.filter(piecash.Price.date == price.date).all()
     if not exists:
         # todo create price for the commodity
-        print("here we would create a new price for", price.name)
-        price = None
+        #print("here we would create a new price for", price.name)
+        #price = None
+        __create_price_for(stock, price)
     else:
         print("price already exists for", stock)
         price = exists.first
 
 def __get_commodity(book, symbol):
+    """
+    Loads the stock from the book.
+    """
     #temp = book.session.query(Commodity).filter(Commodity.namespace != "template", Commodity.namespace != "CURRENCY").first()
     #print(temp.namespace, temp.mnemonic, temp.fullname, temp.cusip, temp.fraction)
 
@@ -85,13 +87,23 @@ def __get_commodity(book, symbol):
 
     if len(securities) == 0:
         print("Could not find", symbol_only)
+        return None
     if len(securities) > 1:
         raise ValueError("More than one commodity found for", symbol)
-    if len(securities) == 1:
-        security = securities[0]
 
+    #if len(securities) == 1:
+    security = securities[0]
     print("Security", symbol, security)
     return security
+
+def __create_price_for(commodity, price):
+    """
+    Creates a new Price entry in the book, for the given commodity.
+    """
+    print("Adding a new price for", commodity.mnemonic, price.date, price.value)
+    record = piecash.Price(commodity, commodity.base_currency, price.date, price.value)
+    # commodity.prices.append
+    print(record.currency)
 
 ###############################################################################
 if __name__ == "__main__":

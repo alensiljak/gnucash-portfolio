@@ -4,8 +4,8 @@ GnuCash database operations
 """
 import os
 from os import path
-from .settings import Settings
 import piecash
+from .settings import Settings
 
 class Database:
     """
