@@ -9,7 +9,7 @@ AEF.AX,128.02,"10/11/2017"
 """
 import sys
 import os
-import lib
+from gnucash_portfolio.lib import database, price
 #from lib import Price
 #from lib import database
 import csv
@@ -26,7 +26,7 @@ def import_file(filename):
     print("Loading prices from", file_path)
 
     prices = __read_prices_from_file(file_path)
-    db = lib.database.Database()
+    db = database.Database()
     with db.open_book(for_writing=False) as book:
         for price in prices:
             #print(price.name, price.date, price.currency, price.value)
@@ -39,7 +39,7 @@ def __read_prices_from_file(file_path):
     with open(file_path, "r") as file_object:
         reader = csv.reader(file_object)
         for row in reader:
-            price = lib.Price.Price()
+            price = price.Price()
             price.date = price.parse_euro_date(row[2])
             price.name = row[0]
             price.value = price.parse_value(row[1])
