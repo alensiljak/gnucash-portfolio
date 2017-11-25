@@ -25,10 +25,13 @@ def import_file(filename):
 
     prices = __read_prices_from_file(file_path)
     db = database.Database()
-    with db.open_book(for_writing=False) as book:
+    with db.open_book(for_writing=True) as book:
         for price in prices:
             #print(price.name, price.date, price.currency, price.value)
             __import_price(book, price)
+        
+        print("Saving book...")
+        book.save()
 
 def __read_prices_from_file(file_path):
     # open file and read prices
@@ -62,13 +65,13 @@ def __import_price(book, price):
     # check if there is already a price for the date
     exists = stock.prices.filter(piecash.Price.date == price.date).all()
     if not exists:
-        # todo create price for the commodity
-        #print("here we would create a new price for", price.name)
-        #price = None
+        # Create new price for the commodity (symbol).
         __create_price_for(stock, price)
     else:
-        print("price already exists for", stock)
-        price = exists.first
+        print("price already exists for", stock.mnemonic, price.date.strftime("%Y-%m-%d"))
+        existing_price = exists[0]
+        # update price
+        existing_price.value = price.value
 
 def __get_commodity(book, symbol):
     """
@@ -93,19 +96,44 @@ def __get_commodity(book, symbol):
 
     #if len(securities) == 1:
     security = securities[0]
-    print("Security", symbol, security)
+    #print("Security", symbol, security)
     return security
 
 def __create_price_for(commodity, price):
     """
     Creates a new Price entry in the book, for the given commodity.
     """
-    print("Adding a new price for", commodity.mnemonic, price.date, price.value)
-    record = piecash.Price(commodity, commodity.base_currency, price.date, price.value)
-    # commodity.prices.append
-    print(record.currency)
+    print("Adding a new price for", commodity.mnemonic, price.date.strftime("%Y-%m-%d"), price.value)
+
+    #currency = __get_stock_currency(commodity)
+    currency = __get_currency(commodity.book)
+
+    new_price = piecash.Price(commodity, currency, price.date, price.value)
+    commodity.prices.append(new_price)
+    #print(record.currency)
+
+def __get_stock_currency(stock):
+    """
+    Reads the currency from the first available price information,
+    assuming that all the prices are in the same currency for any symbol.
+    """
+    first_price = stock.prices.first()
+    if not first_price:
+        raise AssertionError("Price not found for", stock.mnemonic)
+
+    return first_price.currency
+
+def __get_currency(book):
+    """
+    Use the same currency for one file.
+    """
+    cur = book.currencies.get(mnemonic=currency_symbol)
+    #print("Using currency - ", cur.mnemonic)
+    return cur
 
 ###############################################################################
+currency_symbol = None
+
 if __name__ == "__main__":
     filename = None
     if not len(sys.argv) > 1:
@@ -117,8 +145,13 @@ if __name__ == "__main__":
         if not (os.path.exists(filename) and os.path.isfile(filename)):
             print(filename, "is not a valid file.")
             filename = None
+        
+        currency_symbol = input("Currency for the prices: ")
     else:
         filename = sys.argv[1]
+        currency_symbol = sys.argv[2]
+
+    currency_symbol = currency_symbol.upper()
 
     if filename:
         import_file(filename)
