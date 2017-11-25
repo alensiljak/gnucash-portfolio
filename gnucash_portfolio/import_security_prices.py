@@ -9,14 +9,12 @@ AEF.AX,128.02,"10/11/2017"
 """
 import sys
 import os
-from gnucash_portfolio.lib import database, price
-#from lib import Price
-#from lib import database
 import csv
 import piecash
 from piecash import Commodity
 from sqlalchemy import func, or_
 #import piecash
+from gnucash_portfolio.lib import database, price as pricelib
 
 def import_file(filename):
     """
@@ -39,7 +37,7 @@ def __read_prices_from_file(file_path):
     with open(file_path, "r") as file_object:
         reader = csv.reader(file_object)
         for row in reader:
-            price = price.Price()
+            price = pricelib.Price()
             price.date = price.parse_euro_date(row[2])
             price.name = row[0]
             price.value = price.parse_value(row[1])
@@ -58,6 +56,9 @@ def __import_price(book, price):
     Import individual price
     """
     stock = __get_commodity(book, price.name)
+    if stock is None:
+        return
+
     price = None
 
     # check if there is already a price for the date
@@ -79,10 +80,16 @@ def __get_commodity(book, symbol):
     #security = book.commodities(namespace="CURRENCY").get(mnemonic=price.name)
     #security = book.session.query(Commodity).filter(Commodity.namespace != "template", Commodity.namespace != "CURRENCY", func.lower(Commodity.mnemonic) == func.lower(price.name)).first()
     securities = book.session.query(Commodity).filter(Commodity.namespace != "template", Commodity.namespace != "CURRENCY", or_(Commodity.mnemonic.ilike(symbol_only), Commodity.mnemonic.ilike(symbol))).all()
+
+    security = None
+
+    if len(securities) == 0:
+        print("Could not find", symbol_only)
     if len(securities) > 1:
         raise ValueError("More than one commodity found for", symbol)
-    
-    security = securities[0]
+    if len(securities) == 1:
+        security = securities[0]
+
     print("Security", symbol, security)
     return security
 
@@ -90,11 +97,17 @@ def __get_commodity(book, symbol):
 if __name__ == "__main__":
     filename = None
     if not len(sys.argv) > 1:
-        print("You must send the file name as the first argument.")
-        print("Using test file for demo.")
-        filename = "data/AUD_2017-11-11_142445.csv"
+        #print("You must send the file name as the first argument.")
+        #print("Using test file for demo.")
+        #filename = "data/AUD_2017-11-11_142445.csv"
+        filename = input("Please enter the filename to import: ")
+        # check if it is a valid file
+        if not (os.path.exists(filename) and os.path.isfile(filename)):
+            print(filename, "is not a valid file.")
+            filename = None
     else:
         filename = sys.argv[1]
 
-    import_file(filename)
+    if filename:
+        import_file(filename)
     
