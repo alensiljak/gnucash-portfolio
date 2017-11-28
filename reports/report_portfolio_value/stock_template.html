@@ -6,6 +6,10 @@
     <!-- <td>base_currency</td> -->
     <td style="text-align: right;">{{ price }}</td>
     <td style="text-align: right;">{{ "{:,.2f}".format(cost) }}</td>
+    {% if gain_loss >= 0 %}
     <td style="text-align: right;">{{ "{:,.2f}".format(gain_loss) }}</td>
+    {% else %}
+    <td style="text-align: right; color: red;">{{ "{:,.2f}".format(gain_loss) }}</td>
+    {% endif %}
     <td style="text-align: right;">{{ "{:,.2f}".format(balance) }}</td>
 </tr>
