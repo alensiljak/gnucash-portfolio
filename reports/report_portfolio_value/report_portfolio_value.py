@@ -6,7 +6,8 @@ Displays the quantity of the selected commodity and the average price paid.
 import sys
 import os
 import piecash
-from piecash import Commodity
+from sqlalchemy import desc
+from piecash import Commodity, Price
 from piecash_utilities.report import report, execute_report
 #CommodityOption, CommodityListOption
 import gnucash_portfolio
@@ -64,12 +65,30 @@ def generate_stock_output(commodity, template):
     """
     #security = book.get(Commodity, mnemonic=symbol)
     symbol = commodity.mnemonic
-    
+
     shares_no = gnucash_portfolio.get_number_of_shares(commodity)
-    shares_no = "{:,.2f}".format(shares_no)
+    #shares_no_disp = "{:,.2f}".format(shares_no)
 
     avg_price = gnucash_portfolio.get_avg_price(commodity)
-    avg_price = "{:,.4f}".format(avg_price)
+    #avg_price_disp = "{:,.4f}".format(avg_price)
+
+    # Last price
+    last_price = commodity.prices.order_by(desc(Price.date)).first()
+    price = None
+    if last_price is not None:
+        price = last_price.value
+    #print("last price", last_price.value, last_price.currency.mnemonic)
+
+    # Cost
+    cost = shares_no * avg_price
+
+    # Balance
+    balance = 0
+    if shares_no and price:
+        balance = shares_no * price
+
+    # Gain/Loss
+    gain_loss = balance - cost
 
     #base_currency = commodity.base_currency
     #return template.format(**locals())
@@ -95,9 +114,15 @@ if __name__ == '__main__':
     if len(sys.argv) > 1:
         execute_report(generate_report, book_url=sys.argv[1])
     else:
-        print("book_url parameter expected")
+        print("The report uses a read-only access to the book.")
+        print("book_url parameter expected as the first argument.")
 
         cfg = gnucash_portfolio.lib.settings.Settings()
         db_path_uri = cfg.database_uri
         result = generate_report(db_path_uri)
-        print("test results:", result)
+
+        # Save results.
+        f = open("results.html", 'w')
+        f.write(result)
+        f.close()
+        print("results saved in results.html file.")
