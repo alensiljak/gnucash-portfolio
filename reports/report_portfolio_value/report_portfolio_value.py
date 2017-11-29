@@ -115,14 +115,19 @@ if __name__ == '__main__':
         execute_report(generate_report, book_url=sys.argv[1])
     else:
         print("The report uses a read-only access to the book.")
-        print("book_url parameter expected as the first argument.")
-
-        cfg = gnucash_portfolio.lib.settings.Settings()
-        db_path_uri = cfg.database_uri
+        db_path = input("Enter book_url or leave blank for the default settings value: ")
+        if db_path:
+            db_path_uri = "file://" + db_path
+        else:
+            cfg = gnucash_portfolio.lib.settings.Settings()
+            db_path_uri = cfg.database_uri
+        
         result = generate_report(db_path_uri)
 
         # Save results.
-        f = open("results.html", 'w')
+        output = "results.html"
+        #if os.path.exists(output) and os.path.isfile(output):
+        f = open(output, 'w')
         f.write(result)
         f.close()
         print("results saved in results.html file.")
