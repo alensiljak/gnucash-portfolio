@@ -29,7 +29,8 @@ as it is called from the reports.
 
 ## To Do
 
-- [ ] Asset Allocation. This is currently implemented in MoneyManagerEx for Android and there needs to be a more universal option available. Look into running Python scripts on Android or creating a separate app for this purpose. The issue is where to store the links between asset classes and the securities, as well as the allocation percentages. This might be possible manually with a .json file and Python script/report.
+- [ ] Asset Allocation. This is currently implemented in MoneyManagerEx for Android and there should be a more universal option available. Some options might be running Python scripts on Android or creating a separate app for this purpose.
+    - [ ] where to store the links between asset classes and the securities, as well as the allocation percentages. This might be possible with a .json file and a Python script/report. The file should be edited manually and the allocation totals are calculated in the report.
 - [ ] display currency pair chart over selected period (report?)
 - [ ] display security price over selected period (report?)
 - [ ] list all dividends for security (?!). This requires some conventions as to where to expect them since there is no direct linking between a commodity and the dividends/interest it earns.
