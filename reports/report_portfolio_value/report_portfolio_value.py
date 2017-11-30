@@ -116,4 +116,5 @@ if __name__ == '__main__':
     if len(sys.argv) > 1:
         execute_report(generate_report, book_url=sys.argv[1])
     else:
-        generic.run_report_from_console(generate_report, "report_portfolio_value.html")
+        book_url = generic.read_book_uri_from_console()
+        generic.run_report_from_console("report_portfolio_value.html", lambda: generate_report(book_url))
