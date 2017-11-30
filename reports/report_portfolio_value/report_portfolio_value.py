@@ -5,7 +5,7 @@ Displays the quantity of the selected commodity and the average price paid.
 """
 import sys
 import os
-import pathlib
+#import pathlib
 import piecash
 from sqlalchemy import desc
 from piecash import Commodity, Price
@@ -36,9 +36,6 @@ def generate_report(book_url):
     """
     Generates an HTML report content.
     """
-    # TODO replace this with the received parameter / list?
-    #symbol = "VTIP"
-
     # Report variables
     shares_no = None
     avg_price = None
@@ -91,6 +88,13 @@ def generate_stock_output(commodity, template):
 
     # Gain/Loss
     gain_loss = balance - cost
+
+    # Gain/loss percentage
+    gain_loss_perc = 0
+    if cost:
+        gain_loss_perc = abs(gain_loss) * 100 / cost
+        if gain_loss < 0:
+            gain_loss_perc *= -1
 
     #base_currency = commodity.base_currency
     #return template.format(**locals())

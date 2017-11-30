@@ -11,5 +11,13 @@
     {% else %}
     <td style="text-align: right; color: red;">{{ "{:,.2f}".format(gain_loss) }}</td>
     {% endif %}
+
+    <!-- gain/loss percentage -->
+    {% if gain_loss_perc >= 0 %}
+    <td style="text-align: right;">{{ "{:,.2f}".format(gain_loss_perc) }}</td>
+    {% else %}
+    <td style="text-align: right; color: red;">{{ "{:,.2f}".format(gain_loss_perc) }}</td>
+    {% endif %}
+    
     <td style="text-align: right;">{{ "{:,.2f}".format(balance) }}</td>
 </tr>
