@@ -6,14 +6,13 @@ Displays the quantity of the selected commodity and the average price paid.
 import sys
 import os
 import pathlib
-import webbrowser
-import tempfile
 import piecash
 from sqlalchemy import desc
 from piecash import Commodity, Price
 from piecash_utilities.report import report, execute_report
 #CommodityOption, CommodityListOption
 import gnucash_portfolio
+from gnucash_portfolio.lib import generic
 
 ####################################################################
 @report(
@@ -112,38 +111,9 @@ def load_html_template(file_name):
 
     return template
 
-def save_report(content):
-    """Save the report."""
-
-    #output = "results.html"
-    temp_dir = tempfile.gettempdir()
-    #tempfile.TemporaryDirectory()
-    #tempfile.NamedTemporaryFile(mode='w+t') as f:
-    out_file = os.path.join(temp_dir, "report_portfolio_value.html")
-    #if os.path.exists(output) and os.path.isfile(output):
-    f = open(out_file, 'w')
-    f.write(content)
-    f.close()
-    #print("results saved in results.html file.")
-    #return output
-    #output = str(pathlib.Path(f.name))
-    return out_file
-
 ####################################################################
 if __name__ == '__main__':
     if len(sys.argv) > 1:
         execute_report(generate_report, book_url=sys.argv[1])
     else:
-        print("The report uses a read-only access to the book.")
-        db_path = input("Enter book_url or leave blank for the default settings value: ")
-        if db_path:
-            db_path_uri = "file://" + db_path
-        else:
-            cfg = gnucash_portfolio.lib.settings.Settings()
-            db_path_uri = cfg.database_uri
-        print("Now enter the data or ^Z to continue...")
-
-        result = generate_report(db_path_uri)
-
-        output = save_report(result)
-        webbrowser.open(output)
+        generic.run_report_from_console(generate_report, "report_portfolio_value.html")
