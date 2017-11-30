@@ -20,7 +20,8 @@ def import_file(filename):
     """
     Imports the commodity prices from the given .csv file.
     """
-    file_path = os.path.relpath(filename)
+    #file_path = os.path.relpath(filename)
+    file_path = os.path.abspath(filename)
     print("Loading prices from", file_path)
 
     prices = __read_prices_from_file(file_path)
@@ -145,6 +146,7 @@ if __name__ == "__main__":
         if not (os.path.exists(filename) and os.path.isfile(filename)):
             print(filename, "is not a valid file.")
             filename = None
+            quit()
         
         currency_symbol = input("Currency for the prices: ")
     else:

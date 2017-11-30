@@ -35,7 +35,8 @@ class Database:
             return self.create_book()
 
         print("Using", self.filename)
-        file_path = path.relpath(self.filename)
+        #file_path = path.relpath(self.filename)
+        file_path = path.abspath(self.filename)
 
         if not for_writing:
             book = piecash.open_book(file_path, open_if_lock=True)
