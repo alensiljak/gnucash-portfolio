@@ -5,6 +5,9 @@ Displays the quantity of the selected commodity and the average price paid.
 """
 import sys
 import os
+import pathlib
+import webbrowser
+import tempfile
 import piecash
 from sqlalchemy import desc
 from piecash import Commodity, Price
@@ -109,6 +112,23 @@ def load_html_template(file_name):
 
     return template
 
+def save_report(content):
+    """Save the report."""
+
+    #output = "results.html"
+    temp_dir = tempfile.gettempdir()
+    #tempfile.TemporaryDirectory()
+    #tempfile.NamedTemporaryFile(mode='w+t') as f:
+    out_file = os.path.join(temp_dir, "report_portfolio_value.html")
+    #if os.path.exists(output) and os.path.isfile(output):
+    f = open(out_file, 'w')
+    f.write(content)
+    f.close()
+    #print("results saved in results.html file.")
+    #return output
+    #output = str(pathlib.Path(f.name))
+    return out_file
+
 ####################################################################
 if __name__ == '__main__':
     if len(sys.argv) > 1:
@@ -121,13 +141,9 @@ if __name__ == '__main__':
         else:
             cfg = gnucash_portfolio.lib.settings.Settings()
             db_path_uri = cfg.database_uri
-        
+        print("Now enter the data or ^Z to continue...")
+
         result = generate_report(db_path_uri)
 
-        # Save results.
-        output = "results.html"
-        #if os.path.exists(output) and os.path.isfile(output):
-        f = open(output, 'w')
-        f.write(result)
-        f.close()
-        print("results saved in results.html file.")
+        output = save_report(result)
+        webbrowser.open(output)
