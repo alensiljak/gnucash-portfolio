@@ -12,7 +12,7 @@ from piecash import Commodity, Price
 from piecash_utilities.report import report, execute_report
 #CommodityOption, CommodityListOption
 import gnucash_portfolio
-from gnucash_portfolio.lib import generic
+from gnucash_portfolio.lib import generic, templates
 
 ####################################################################
 @report(
@@ -41,8 +41,8 @@ def generate_report(book_url):
     avg_price = None
 
     # Load HTML template file.
-    template = load_html_template("template.html")
-    stock_template = load_html_template("stock_template.html")
+    template = templates.load_jinja_template("template.html")
+    stock_template = templates.load_jinja_template("stock_template.html")
     stock_rows = ""
 
     with piecash.open_book(book_url, readonly=True, open_if_lock=True) as book:
@@ -99,21 +99,6 @@ def generate_stock_output(commodity, template):
     #base_currency = commodity.base_currency
     #return template.format(**locals())
     return template.render(**locals())
-
-def load_html_template(file_name):
-    """
-    Loads the jinja2 HTML template from the given file. 
-    """
-    script_path = os.path.dirname(os.path.realpath(__file__))
-    # file_path = os.path.join(script_path, file_name)
-    # with open(file_path, 'r') as template_file:
-    #     return template_file.read()
-    from jinja2 import Environment, FileSystemLoader
-
-    env = Environment(loader=FileSystemLoader(script_path))
-    template = env.get_template(file_name)
-
-    return template
 
 ####################################################################
 if __name__ == '__main__':

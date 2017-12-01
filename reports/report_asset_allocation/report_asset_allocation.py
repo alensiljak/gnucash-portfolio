@@ -8,7 +8,7 @@ import sys
 import piecash
 from piecash_utilities.report import report, execute_report
 #import piecash_utilities
-#from gnucash_portfolio import load_fund_data
+from gnucash_portfolio.lib import generic, templates
 
 @report(
     title="Asset Allocation",
@@ -31,16 +31,26 @@ def generate_asset_allocation_report(book_url):
     # TODO read asset allocation file
     # TODO calculate allocation in the book.
 
-    return "YO!"
+    model = {
+        "test": None
+    }
+    model.test = "blah"
+    
+    # load display template
+    template = templates.load_jinja_template("report_asset_allocation.html")
+    # render template
+    result = template.render(model=model)
+    #**locals()
+
+    return result
 
 ###################################################
 if __name__ == "__main__":
     """
     Invoked from the command line.
     """
-    # TODO Get the test book url.
-    book_url = None
-    result = generate_asset_allocation_report(book_url)
-    print(result)
-    #execute_report(generate_report, sys.argv[1])
-    load_fund_data()
+    if len(sys.argv) > 1:
+        execute_report(generate_report, book_url=sys.argv[1])
+    else:
+        book_url = generic.read_book_uri_from_console()
+        generic.run_report_from_console("report_asset_allocation.html", lambda: generate_asset_allocation_report(book_url))
