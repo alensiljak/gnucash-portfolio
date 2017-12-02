@@ -13,7 +13,9 @@
         {%- if asset_class.stocks is defined %}
             <ul>
             {% for stock in asset_class.stocks %}
-            <li>{{ stock.symbol }}, {{ stock.quantity }}</li>
+            <li>{{ stock.symbol }}, 
+                {{ stock.quantity }} * {{ stock.price }} = 
+                {{ "{:,.2f}".format(stock.value) }}</li>
             {% endfor %}
             </ul>
         {%- endif %}

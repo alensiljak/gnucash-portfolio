@@ -6,7 +6,8 @@ This logic is used in report_security_analysis.
 """
 import sys
 from decimal import Decimal
-from piecash import Commodity, Book
+from sqlalchemy import desc
+from piecash import Commodity, Book, Price
 from gnucash_portfolio.lib import database
 
 def main(symbol: str):
@@ -90,6 +91,11 @@ def get_number_of_shares(security: Commodity) -> Decimal:
 
     #print("Balance:", total_balance)
     return total_quantity
+
+def get_last_available_price(security: Commodity) -> Decimal:
+    """Finds the last available price for commodity"""
+    last_price = security.prices.order_by(desc(Price.date)).first()
+    return last_price.value
 
 def demo():
     # generate a dummy security

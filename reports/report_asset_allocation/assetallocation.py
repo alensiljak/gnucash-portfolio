@@ -55,5 +55,13 @@ class Stock:
         """Parse json node"""
         self.symbol = symbol
         
-        # Number of shares
+        # Quantity (number of shares)
         self.quantity = Decimal(0)
+
+        # Price (last known)
+        self.price = Decimal(0)
+
+    @property
+    def value(self):
+        """Value of the shares. Value = Quantity * Price"""
+        return self.quantity * self.price

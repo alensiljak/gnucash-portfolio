@@ -4,6 +4,7 @@ Asset Allocation report.
 Asset Allocation is stored in the accompanying .json file and needs to be updated manually.
 TODO:
     - ensure no duplicate symbols in different asset classes
+    - convert the stock value to the base currency
 """
 import sys
 import json
@@ -67,9 +68,14 @@ def __add_values(book, aa: AssetGroup):
                 # then, for each stock, load information
                 symbol = stock.symbol
                 cdty = security_analysis.get_stock(book, symbol)
-                num_shares = security_analysis.get_number_of_shares(cdty)
 
+                # Quantity
+                num_shares = security_analysis.get_number_of_shares(cdty)
                 stock.quantity = num_shares
+
+                # last price
+                last_price = security_analysis.get_last_available_price(cdty)
+                stock.price = last_price
 
 
 def __parse_node(node):
