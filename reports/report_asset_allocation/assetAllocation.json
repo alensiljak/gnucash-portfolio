@@ -1,62 +1,100 @@
 {
     "name": "Asset Allocation",
     "classes": [
-    {
-        "name": "Equities",
-        "allocation": "55",
-        "classes": [
-            {
-                "name": "Aus",
-                "allocation": 15,
-                "classes": [
-                    {
-                        "name": "Aus Large",
-                        "allocation": 10,
-                        "stocks": ["VHY.ax"]
-                    }
-                ]
-            },
-            {
-                "name": "Eur",
-                "allocation": 10,
-                "stocks":[
-                    "VEUR.as"
-                ]
-            }
-        ]
-    },
-    {
-        "name": "Fixed",
-        "allocation": 33,
-        "classes":[
-            {
-                "name": "Fixed Aus",
-                "allocation": 14,
-                "classes":[
-                    {
-                        "name": "Government",
-                        "allocation": 4,
-                        "stocks":[
-                            "IGB",
-                            "VGB"
-                        ]
-                    }
-                ]
-            }
-        ]
-    },
-    {
-        "name": "Real Assets",
-        "allocation": 12,
-        "classes":[
-            {
-                "name": "Aus Property",
-                "allocation": 7,
-                "stocks":[
-                    "prop.vg"
-                ]
-            }
-        ]
-    }
-]
+        {
+            "name": "Equities",
+            "allocation": "55",
+            "classes": [
+                {
+                    "name": "Aus",
+                    "allocation": 15,
+                    "classes": [
+                        {
+                            "name": "Aus Large",
+                            "allocation": 15,
+                            "stocks": [
+                                "VHY.ax"
+                            ]
+                        },
+                        {
+                            "name": "Aus Small",
+                            "allocation": 9,
+                            "stocks": [
+                                "VSO.ax"
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "name": "International",
+                    "allocation": 31,
+                    "classes": [
+                        {
+                            "name": "Asia/Pacific",
+                            "allocation": 3,
+                            "stocks": [
+                                "VAPX.as"
+                            ]
+                        },
+                        {
+                            "name": "Emerging Markets",
+                            "allocation": 6
+                        },
+                        {
+                            "name": "Europe",
+                            "allocation": 10,
+                            "stocks": [
+                                "VEUR.as"
+                            ]
+                        },
+                        {
+                            "name": "Global",
+                            "allocation": 6.5
+                        },
+                        {
+                            "name": "North America",
+                            "allocation": 4
+                        },
+                        {
+                            "name": "NAm Small",
+                            "allocation": 1.5
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "name": "Fixed",
+            "allocation": 33,
+            "classes": [
+                {
+                    "name": "Fixed Aus",
+                    "allocation": 14,
+                    "classes": [
+                        {
+                            "name": "Government",
+                            "allocation": 4,
+                            "stocks": [
+                                "IGB",
+                                "VGB"
+                            ]
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "name": "Real Assets",
+            "allocation": 12,
+            "classes": [
+                {
+                    "name": "Aus Property",
+                    "allocation": 7,
+                    "stocks": [
+                        "prop.vg"
+                    ]
+                }
+            ]
+        }
+    ]
 }
