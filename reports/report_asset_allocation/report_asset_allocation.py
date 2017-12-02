@@ -5,6 +5,7 @@ Asset Allocation is stored in the accompanying .json file and needs to be update
 TODO:
     - ensure no duplicate symbols in different asset classes
     - convert the stock value to the base currency
+    - calculate sum of allocations and compare to the set allocation value per group.
 """
 import sys
 import json
