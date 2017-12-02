@@ -12,8 +12,15 @@
                     {
                         "name": "Aus Large",
                         "allocation": 10,
-                        "stocks": ["VHY"]
+                        "stocks": ["VHY.ax"]
                     }
+                ]
+            },
+            {
+                "name": "Eur",
+                "allocation": 10,
+                "stocks":[
+                    "VEUR.as"
                 ]
             }
         ]

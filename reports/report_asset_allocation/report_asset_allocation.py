@@ -2,12 +2,15 @@
 """
 Asset Allocation report.
 Asset Allocation is stored in the accompanying .json file and needs to be updated manually.
+TODO:
+    - ensure no duplicate symbols in different asset classes
 """
 import sys
 import json
 from piecash_utilities.report import report, execute_report
-from gnucash_portfolio.lib import generic, templates
-from assetallocation import AssetAllocation, AssetGroup, AssetClass, Stock
+from gnucash_portfolio.lib import generic, templates, database
+from gnucash_portfolio import security_analysis
+from assetallocation import AssetGroup, AssetClass, Stock
 
 @report(
     title="Asset Allocation",
@@ -27,17 +30,18 @@ def generate_asset_allocation_report(book_url):
     The otput is generated here. Separated from the generate_report function to allow executing
     from the command line.
     """
-    # TODO load security information from the book.
-
     # read asset allocation file
     root_node = load_asset_allocation_file()
     aa = __parse_node(root_node)
+
+    # TODO load security information from the book.
+    with database.Database(book_url).open_book() as book:
+        __add_values(book, aa)
 
     # TODO calculate allocation in the book.
     # TODO add all the stock values.
 
     model = {}
-    model['test'] = "blah"
     model["allocation"] = aa
 
     # load display template
@@ -47,6 +51,25 @@ def generate_asset_allocation_report(book_url):
     # **locals()
 
     return result
+
+def __add_values(book, aa: AssetGroup):
+    """
+    Populates the asset class values from the database.
+    Reads the stock values and fills the asset classes.
+    """
+    # iterate recursively until an Asset Class is found.
+    for child in aa.classes:
+        if isinstance(child, AssetGroup):
+            __add_values(book, child)
+
+        if isinstance(child, AssetClass):
+            for stock in child.stocks:
+                # then, for each stock, load information
+                symbol = stock.symbol
+                cdty = security_analysis.get_stock(book, symbol)
+                num_shares = security_analysis.get_number_of_shares(cdty)
+
+                stock.quantity = num_shares
 
 
 def __parse_node(node):

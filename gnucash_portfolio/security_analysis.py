@@ -6,10 +6,10 @@ This logic is used in report_security_analysis.
 """
 import sys
 from decimal import Decimal
-from piecash import Commodity
+from piecash import Commodity, Book
 from gnucash_portfolio.lib import database
 
-def main(symbol):
+def main(symbol: str):
     """
 	Displays the balance for the security symbol.
 	"""
@@ -27,7 +27,14 @@ def main(symbol):
         avg_price = get_avg_price(security)
         print("Average price:", avg_price)
 
-def get_avg_price(security):
+def get_stock(book: Book, symbol: str) -> Commodity:
+    """Returns the stock/commodity object for the given symbol"""
+    #with database.Database().open_book() as book:
+    security = book.get(Commodity, mnemonic=symbol)
+
+    return security
+
+def get_avg_price(security: Commodity) -> Decimal:
     """
     Calculates the average price paid for the security.
     security = Commodity
@@ -61,7 +68,7 @@ def get_avg_price(security):
         avg_price = price_total / price_count
     return avg_price
 
-def get_number_of_shares(security):
+def get_number_of_shares(security: Commodity) -> Decimal:
     """
     Returns the number of shares for the given security.
     It gets the number from all the accounts in the book.

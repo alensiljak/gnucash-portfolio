@@ -1,7 +1,7 @@
 """
 Asset Allocation class
 """
-from enum import Enum
+#from enum import Enum
 from decimal import Decimal
 #from assetallocation import AssetClass, AssetGroup
 
@@ -41,7 +41,7 @@ class AssetClass(AssetBase):
     def __init__(self, json_node):
         super().__init__(json_node)
 
-        self.stocks = []
+        self.stocks: list(Stock) = []
         # parse stocks
         for symbol in json_node["stocks"]:
             stock = Stock(symbol)
@@ -50,29 +50,10 @@ class AssetClass(AssetBase):
 
 class Stock:
     """Stock link"""
-    symbol = None
 
     def __init__(self, symbol: str):
         """Parse json node"""
         self.symbol = symbol
-
-
-class AssetAllocation:
-
-    def __map_group(self, item, node) -> AssetGroup:
-        """Create an asset class group"""
-        allocation_sum = 0
-        allocated_sum = 0
-
-        # TODO now add the totals
-        #item.allocation
-        return item
-
-    def test(self):
-        print("yo")
-
-
-class NodeType(Enum):
-    GROUP = 1
-    ASSETCLASS = 2
-    STOCK = 3
+        
+        # Number of shares
+        self.quantity = Decimal(0)
