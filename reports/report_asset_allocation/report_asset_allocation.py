@@ -3,12 +3,9 @@
 Asset Allocation report.
 Asset Allocation is stored in the accompanying .json file and needs to be updated manually.
 """
-import os
 import sys
 import json
-import piecash
 from piecash_utilities.report import report, execute_report
-#import piecash_utilities
 from gnucash_portfolio.lib import generic, templates
 from assetallocation import AssetAllocation, AssetGroup, AssetClass, Stock
 
@@ -24,18 +21,20 @@ def generate_report(book_url):
     """
     return generate_asset_allocation_report(book_url)
 
+
 def generate_asset_allocation_report(book_url):
     """
-    The otput is generated here. Separeted from the generate_report function to allow executing
+    The otput is generated here. Separated from the generate_report function to allow executing
     from the command line.
     """
     # TODO load security information from the book.
 
     # read asset allocation file
-    classes = load_asset_allocation_file()
-    aa = hydrate_asset_allocation(classes)
+    root_node = load_asset_allocation_file()
+    aa = __parse_node(root_node)
 
     # TODO calculate allocation in the book.
+    # TODO add all the stock values.
 
     model = {}
     model['test'] = "blah"
@@ -45,49 +44,40 @@ def generate_asset_allocation_report(book_url):
     template = templates.load_jinja_template("report_asset_allocation.html")
     # render template
     result = template.render(model=model)
-    #**locals()
+    # **locals()
 
     return result
 
-def hydrate_asset_allocation(classes) -> AssetAllocation:
-    """When the allocation is loaded from a file, populate the Asset Allocation object"""
-    aa = AssetAllocation()
-    # Children can only be other classes.
-    for asset_class in classes:
-        __hydrate_node(aa, asset_class)
 
-    return aa
+def __parse_node(node):
+    """Creates an appropriate entity for the node. Recursive."""
+    entity = None
 
-def __hydrate_node(parent, node):
-    """Populates the current node in the tree"""
     if "classes" in node:
-        # This is a group
-        item = AssetGroup(node)
-        parent.classes.append(node)
-
+        entity = AssetGroup(node)
         # Process child nodes
-        for child_class in node["classes"]:
-            __hydrate_node(item, child_class)
+        for child_node in node["classes"]:
+            child = __parse_node(child_node)
+            #allocation_sum +=
+            entity.classes.append(child)
 
     if "stocks" in node:
         # This is an Asset Class
-        item = AssetClass(node)
+        entity = AssetClass(node)
 
-        for symbol in node["stocks"]:
-            stock = Stock(symbol)
-            item.stocks.append(stock)
+    return entity
 
-    return node
 
-def load_asset_allocation_file() -> []:
+def load_asset_allocation_file():
     """
     Loads asset allocation from the file.
     Returns the list of asset classes.
     """
     with open("assetAllocation.json", 'r') as json_file:
-        classes = json.load(json_file)
+        allocation_json = json.load(json_file)
 
-    return classes
+    return allocation_json
+
 
 ###################################################
 if __name__ == "__main__":

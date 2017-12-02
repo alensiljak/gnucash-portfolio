@@ -3,22 +3,22 @@
 <body>
     <h1>Asset Allocation</h1>
     <ul>
-        {%- for asset_class in model["allocation"].classes recursive %}
+    {%- for asset_class in model["allocation"].classes recursive %}
         <li>{{ asset_class.name }} {{ asset_class.allocation }}%</li>
-        {%- if "classes" in asset_class -%} 
+        {%- if asset_class.classes is defined %}
             <ul>
-            {{ loop(asset_class["classes"]) }}
+            {{ loop(asset_class.classes) }}
             </ul>
         {%- endif %} 
-        {%- if "stocks" in asset_class -%}
+        {%- if asset_class.stocks is defined %}
             <ul>
-            {% for stock in asset_class["stocks"] %}
-            <li>{{ stock }}</li>
+            {% for stock in asset_class.stocks %}
+            <li>{{ stock.symbol }}</li>
             {% endfor %}
             </ul>
         {%- endif %}
 
-        {%- endfor %}
+    {%- endfor %}
     </ul>
 </body>
 

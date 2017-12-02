@@ -1,7 +1,9 @@
-[
+{
+    "name": "Asset Allocation",
+    "classes": [
     {
         "name": "Equities",
-        "allocation": "40",
+        "allocation": "55",
         "classes": [
             {
                 "name": "Aus",
@@ -18,10 +20,36 @@
     },
     {
         "name": "Fixed",
-        "allocation": 40
+        "allocation": 33,
+        "classes":[
+            {
+                "name": "Fixed Aus",
+                "allocation": 14,
+                "classes":[
+                    {
+                        "name": "Government",
+                        "allocation": 4,
+                        "stocks":[
+                            "IGB",
+                            "VGB"
+                        ]
+                    }
+                ]
+            }
+        ]
     },
     {
-        "name": "Real",
-        "allocation": 20
+        "name": "Real Assets",
+        "allocation": 12,
+        "classes":[
+            {
+                "name": "Aus Property",
+                "allocation": 7,
+                "stocks":[
+                    "prop.vg"
+                ]
+            }
+        ]
     }
 ]
+}
