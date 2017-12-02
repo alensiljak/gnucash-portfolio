@@ -1,0 +1,27 @@
+[
+    {
+        "name": "Equities",
+        "allocation": "40",
+        "classes": [
+            {
+                "name": "Aus",
+                "allocation": 15,
+                "classes": [
+                    {
+                        "name": "Aus Large",
+                        "allocation": 10,
+                        "stocks": ["VHY"]
+                    }
+                ]
+            }
+        ]
+    },
+    {
+        "name": "Fixed",
+        "allocation": 40
+    },
+    {
+        "name": "Real",
+        "allocation": 20
+    }
+]

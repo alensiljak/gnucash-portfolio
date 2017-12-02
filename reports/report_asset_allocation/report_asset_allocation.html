@@ -1,8 +1,25 @@
 <html>
-    <body>
-        <h1>Asset Allocation</h1>
-        <p>
-            {{ model.test }}
-        </p>
-    </body>
+
+<body>
+    <h1>Asset Allocation</h1>
+    <ul>
+        {%- for asset_class in model["allocation"].classes recursive %}
+        <li>{{ asset_class.name }} {{ asset_class.allocation }}%</li>
+        {%- if "classes" in asset_class -%} 
+            <ul>
+            {{ loop(asset_class["classes"]) }}
+            </ul>
+        {%- endif %} 
+        {%- if "stocks" in asset_class -%}
+            <ul>
+            {% for stock in asset_class["stocks"] %}
+            <li>{{ stock }}</li>
+            {% endfor %}
+            </ul>
+        {%- endif %}
+
+        {%- endfor %}
+    </ul>
+</body>
+
 </html>
