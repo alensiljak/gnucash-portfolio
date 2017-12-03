@@ -34,6 +34,7 @@ as it is called from the reports.
     - [ ] display currency pair chart over selected period (report?)
     - [ ] display security price over selected period (report?)
 - [ ] list all dividends for security (?!). This requires some conventions as to where to expect them since there is no direct linking between a commodity and the dividends/interest it earns. Search all accounts with the same name in the Income tree?
+- [ ] Enhance average price calculation. Take into account lots and sold securities. See how selling shares affects the average price.
 
 # Other
 
