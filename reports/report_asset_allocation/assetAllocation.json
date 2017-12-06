@@ -13,7 +13,7 @@
                             "name": "Aus Large",
                             "allocation": 15,
                             "stocks": [
-                                "HY.vg",
+                                "Vanguard:HY",
                                 "IHD.ax",
                                 "MPL.ax",
                                 "MYO.ax",
@@ -48,10 +48,10 @@
                             "name": "Asia/Pacific",
                             "allocation": 3,
                             "stocks": [
-                                "EXXW.de",
+                                "XETRA:EXXW",
                                 "ISG.ax",
-                                "VAPX.as",
-                                "VJPN.as",
+                                "AMS:VAPX",
+                                "AMS:VJPN",
                                 "VPL"
                             ]
                         },
@@ -62,10 +62,10 @@
                                 "DVYE",
                                 "EDIV",
                                 "ERUS",
-                                "EUNY.de",
+                                "XETRA:EUNY",
                                 "ILF",
-                                "SPYV.de",
-                                "VFEM.as",
+                                "XETRA:SPYV",
+                                "AMS:VFEM",
                                 "VWO"
                             ]
                         },
@@ -73,25 +73,25 @@
                             "name": "Europe",
                             "allocation": 10,
                             "stocks": [
-                                "DBK.de",
-                                "EL4G.de",
-                                "EL4X.de",
-                                "EXH9.de",
-                                "EXSE.de",
-                                "EXSG.de",
-                                "EXSH.de",
-                                "EXXX.de",
-                                "VEUR.as"
+                                "XETRA:DBK",
+                                "XETRA:EL4G",
+                                "XETRA:EL4X",
+                                "XETRA:EXH9",
+                                "XETRA:EXSE",
+                                "XETRA:EXSG",
+                                "XETRA:EXSH",
+                                "XETRA:EXXX",
+                                "AMS:VEUR"
                             ]
                         },
                         {
                             "name": "Global",
                             "allocation": 6.5,
                             "stocks":[
-                                "HINT.vg",
-                                "ISPA.de",
+                                "Vanguard:HINT",
+                                "XETRA:ISPA",
                                 "VEU.ax",
-                                "VHYL.as"
+                                "AMS:VHYL"
                             ]
                         },
                         {
@@ -103,10 +103,10 @@
                                 "PFXF",
                                 "PSK",
                                 "VIG",
-                                "VNRT.as",
+                                "AMS:VNRT",
                                 "VPU",
                                 "VTI",
-                                "VTS.as",
+                                "ASX:VTS",
                                 "VYM"
                             ]
                         },
@@ -166,7 +166,7 @@
                             "name": "EM Gov",
                             "allocation": 2.5,
                             "stocks":[
-                                "EMBE.L",
+                                "LSE:EMBE",
                                 "EMLC",
                                 "PCY",
                                 "VWOB"
@@ -189,29 +189,29 @@
                             "name": "EU Gov",
                             "allocation": 2.5,
                             "stocks":[
-                                "EL4K.de",
-                                "EL4L.de",
-                                "EL4M.de",
-                                "EL4N.de",
-                                "VETY.as"
+                                "XETRA:EL4K",
+                                "XETRA:EL4L",
+                                "XETRA:EL4M",
+                                "XETRA:EL4N",
+                                "AMS:VETY"
                             ]
                         },
                         {
                             "name": "EU Corp",
                             "allocation": 3,
                             "stocks":[
-                                "EL49.de",
-                                "EXHE.de",
-                                "IBCS.de",
-                                "TCBT.de",
-                                "VECP.as"
+                                "XETRA:EL49",
+                                "XETRA:EXHE",
+                                "XETRA:IBCS",
+                                "AMS:TCBT",
+                                "AMS:VECP"
                             ]
                         },
                         {
                             "name": "EU high yield",
                             "allocation": 1,
                             "stocks":[
-                                "SYBJ.de"
+                                "XETRA:SYBJ"
                             ]
                         }
                     ]
@@ -253,7 +253,7 @@
                     "name": "Fixed Global",
                     "allocation": 1,
                     "stocks":[
-                        "BOND.vg"
+                        "Vanguard:BOND"
                     ]
                 }
             ]
@@ -267,7 +267,7 @@
                     "allocation": 7,
                     "stocks": [
                         "FET.ax",
-                        "prop.vg",
+                        "Vanguard:PROP",
                         "VAP.ax"
                     ]
                 },
@@ -275,8 +275,8 @@
                     "name": "int prop",
                     "allocation": 2,
                     "stocks":[
-                        "EXI5.de",
-                        "IPRP.as",
+                        "XETRA:EXI5",
+                        "AMS:IPRP",
                         "VNQI"
                     ]
                 },
@@ -293,7 +293,7 @@
                     "name": "commodities",
                     "allocation": 1.2,
                     "stocks":[
-                        "EXV6.de",
+                        "XETRA:EXV6",
                         "MVR.ax",
                         "VAW",
                         "VDE"

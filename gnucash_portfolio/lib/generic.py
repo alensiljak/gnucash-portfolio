@@ -43,9 +43,14 @@ def save_to_temp(content, file_name=None):
     return out_file
 
 def read_book_uri_from_console():
-    db_path = input("Enter book_url or leave blank for the default settings value: ")
+    db_path: str = input("Enter book_url or leave blank for the default settings value: ")
     if db_path:
-        db_path_uri = "file:///" + db_path
+        # sqlite
+        if db_path.startswith("sqlite://"):
+            db_path_uri = db_path
+        else:
+            # TODO: check if file exists.
+            db_path_uri = "file:///" + db_path
     else:
         cfg = settings.Settings()
         db_path_uri = cfg.database_uri

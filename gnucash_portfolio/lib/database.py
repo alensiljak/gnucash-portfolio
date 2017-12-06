@@ -41,7 +41,7 @@ class Database:
 
         # check if the file path is already a URL.
         file_url = urllib.parse.urlparse(self.filename)
-        if file_url.scheme == "file":
+        if file_url.scheme == "file" or file_url.scheme == "sqlite":
             filename = file_url.path[1:]
 
         if not os.path.isfile(filename):

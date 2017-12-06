@@ -30,8 +30,17 @@ def main(symbol: str):
 
 def get_stock(book: Book, symbol: str) -> Commodity:
     """Returns the stock/commodity object for the given symbol"""
-    #with database.Database().open_book() as book:
-    security = book.get(Commodity, mnemonic=symbol)
+
+    # Check if we have the exchange name (namespace).
+    if ":" in symbol:
+        # We have a namespace
+        symbol_parts = symbol.split(":")
+        exchange = symbol_parts[0]
+        symbol = symbol_parts[1]
+        security = book.get(Commodity, namespace=exchange, mnemonic=symbol)
+    else:
+        #with database.Database().open_book() as book:
+        security = book.get(Commodity, mnemonic=symbol)
 
     return security
 

@@ -9,6 +9,8 @@ TODO:
 """
 import sys
 import json
+import os
+from os import path
 from piecash_utilities.report import report, execute_report
 from gnucash_portfolio.lib import generic, templates, database
 from gnucash_portfolio import security_analysis
@@ -103,7 +105,8 @@ def load_asset_allocation_file():
     Loads asset allocation from the file.
     Returns the list of asset classes.
     """
-    with open("assetAllocation.json", 'r') as json_file:
+    allocation_file = path.abspath(path.join(os.path.dirname(os.path.realpath(__file__)), "assetAllocation.json"))
+    with open(allocation_file, 'r') as json_file:
         allocation_json = json.load(json_file)
 
     return allocation_json
