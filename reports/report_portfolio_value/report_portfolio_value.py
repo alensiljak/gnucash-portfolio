@@ -58,11 +58,12 @@ def generate_report(book_url):
     result = template.render(**locals())
     return result
 
-def generate_stock_output(commodity, template):
+def generate_stock_output(commodity: Commodity, template):
     """
     Generates statistics per symbol
     """
     #security = book.get(Commodity, mnemonic=symbol)
+    exchange = commodity.namespace
     symbol = commodity.mnemonic
 
     shares_no = gnucash_portfolio.get_number_of_shares(commodity)
