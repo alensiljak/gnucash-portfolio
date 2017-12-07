@@ -21,8 +21,8 @@ class Database:
         self.config = Settings()
         if not book_url:
             self.filename = self.config.database_path
-        
-        self.filename = book_url
+        else:
+            self.filename = book_url
 
 
     def display_db_info(self):
@@ -43,6 +43,8 @@ class Database:
         file_url = urllib.parse.urlparse(self.filename)
         if file_url.scheme == "file" or file_url.scheme == "sqlite":
             filename = file_url.path[1:]
+        else:
+            filename = self.filename
 
         if not os.path.isfile(filename):
             print("Creating an in-memory book.")
