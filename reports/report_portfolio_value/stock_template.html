@@ -1,6 +1,6 @@
 <tr>
     <td>name</td>
-    <td>exchange</td>
+    <td>{{ exchange }}</td>
     <td>{{ symbol }}</td>
     <td style="text-align: right;">{{ "{:,.2f}".format(shares_no) }}</td>
     <td style="text-align: right;">{{ "{:,.2f}".format(avg_price) }}</td>
@@ -21,4 +21,5 @@
     {% endif %}
     
     <td style="text-align: right;">{{ "{:,.2f}".format(balance) }}</td>
+    <td style="text-align: right;">{{ "{:,.2f}".format(income) }}</td>
 </tr>

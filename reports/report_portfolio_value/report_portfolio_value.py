@@ -1,17 +1,19 @@
 #!/usr/bin/env python3
 """
 Security Analysis
-Displays the quantity of the selected commodity and the average price paid.
+Displays the quantity of the selected commodity and the average price paid,
+as well as income generated.
 """
 import sys
 import os
 #import pathlib
 import piecash
 from sqlalchemy import desc
-from piecash import Commodity, Price
+from piecash import Commodity, Price, Book
 from piecash_utilities.report import report, execute_report
 #CommodityOption, CommodityListOption
 import gnucash_portfolio
+from gnucash_portfolio import find_all_dividends
 from gnucash_portfolio.lib import generic, templates
 
 ####################################################################
@@ -51,14 +53,14 @@ def generate_report(book_url):
                                                           Commodity.mnemonic != "template").order_by(Commodity.mnemonic).all()
         for stock in all_stocks:
             #print("Found", c.mnemonic)
-            stock_rows += generate_stock_output(stock, stock_template)
+            stock_rows += generate_stock_output(book, stock, stock_template)
 
     # Render the full report.
     #return template.format(**locals())
     result = template.render(**locals())
     return result
 
-def generate_stock_output(commodity: Commodity, template):
+def generate_stock_output(book: Book, commodity: Commodity, template):
     """
     Generates statistics per symbol
     """
@@ -96,6 +98,9 @@ def generate_stock_output(commodity: Commodity, template):
         gain_loss_perc = abs(gain_loss) * 100 / cost
         if gain_loss < 0:
             gain_loss_perc *= -1
+
+    # Income
+    income = find_all_dividends.get_dividend_sum_for_symbol(book, symbol)
 
     #base_currency = commodity.base_currency
     #return template.format(**locals())
