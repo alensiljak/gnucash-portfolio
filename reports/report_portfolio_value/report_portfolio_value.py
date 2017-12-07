@@ -60,6 +60,7 @@ def generate_report(book_url):
     result = template.render(**locals())
     return result
 
+
 def generate_stock_output(book: Book, commodity: Commodity, template):
     """
     Generates statistics per symbol
@@ -80,7 +81,7 @@ def generate_stock_output(book: Book, commodity: Commodity, template):
     if last_price is not None:
         price = last_price.value
     #print("last price", last_price.value, last_price.currency.mnemonic)
-    # TODO currency
+    # currency
     if price:
         currency = last_price.currency.mnemonic
 
@@ -108,6 +109,7 @@ def generate_stock_output(book: Book, commodity: Commodity, template):
     #base_currency = commodity.base_currency
     #return template.format(**locals())
     return template.render(**locals())
+    #return template.render(model)
 
 ####################################################################
 if __name__ == '__main__':
