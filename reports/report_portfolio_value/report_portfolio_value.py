@@ -75,11 +75,14 @@ def generate_stock_output(book: Book, commodity: Commodity, template):
     #avg_price_disp = "{:,.4f}".format(avg_price)
 
     # Last price
-    last_price = commodity.prices.order_by(desc(Price.date)).first()
+    last_price: Price = commodity.prices.order_by(desc(Price.date)).first()
     price = None
     if last_price is not None:
         price = last_price.value
     #print("last price", last_price.value, last_price.currency.mnemonic)
+    # TODO currency
+    if price:
+        currency = last_price.currency.mnemonic
 
     # Cost
     cost = shares_no * avg_price
