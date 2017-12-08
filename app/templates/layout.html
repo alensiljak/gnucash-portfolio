@@ -1,0 +1,17 @@
+<!doctype html>
+<html>
+  <head>
+    {% block head %}
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <title>{% block title %}{% endblock %} - GnuCash Portfolio</title>
+    {% endblock %}
+  </head>
+  <body>
+    <div id="content">{% block content %}{% endblock %}</div>
+    <footer id="footer">
+      {% block footer %}
+      &copy; Copyright 2017 by <a href="http://alensiljak.tk/">Alen Šiljak</a>.
+      {% endblock %}
+    </footer>
+  </body>
+</html>
