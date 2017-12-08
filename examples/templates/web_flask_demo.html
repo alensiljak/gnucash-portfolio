@@ -4,6 +4,10 @@
         <title>{{ title }} - awesomeness</title>
     </head>
     <body>
-        <h1>Hello, {{ user.nickname }}!</h1>
+        {% if user %}
+        <h1>Hello {{ user.nickname }}!</h1>
+      {% else %}
+        <h1>Hello, World!</h1>
+      {% endif %}
     </body>
 </html>
