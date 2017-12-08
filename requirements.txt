@@ -1,4 +1,5 @@
 fixerio
+flask
 piecash
 kivy==1.10.0
 python-dateutil==2.6.1
