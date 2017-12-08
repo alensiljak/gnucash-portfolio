@@ -1,23 +1,45 @@
-{% extends "layout.html" %}
+{% extends "layout.html" %} {% block title %}Home{% endblock %} {% block head %} {{ super() }}
+<style type="text/css">
+  .important {
+    color: #336699;
+  }
+</style>
+{% endblock %} {% block content %}
+<h1>GnuCash Portfolio App</h1>
+<h2>Dashboard</h2>
+<p>Things to display:</p>
+<ul>
+  <li>
+    Account Search
+  </li>
+  <li>
+    <a href="/assetallocation">Asset Allocation</a>
+  </li>
+  <li>
+    See currency exchange rates
+  </li>
+  <li>
+    Dividends for security
+  </li>
+  <li>
+    Import currency exchange rates
+  </li>
+  <li>
+    Import security prices
+  </li>
+  <li>portfolio statistics with charts</li>
+  <li>
+    <a href="/portfoliovalue">Portfolio Value report</a>
+  </li>
+  <li>
+    Security Analysis
+  </li>
+  <li>
+    Settings
+  </li>
+  <li>
+    <a href="/vanguardprices">Vanguard Australia fund prices</a>
+  </li>
+</ul>
 
-{% block title %}Home{% endblock %}
-
-{% block head %}
-  {{ super() }}
-  <style type="text/css">
-    .important { color: #336699; }
-  </style>
-{% endblock %}
-
-{% block content %}
-  <h1>GnuCash Portfolio App</h1>
-  <h2>Dashboard</h2>
-  <p>Things to display:</p>
-  <ul>
-      <li><a href="/assetallocation">Asset Allocation</a></li>
-      <li>portfolio statistics with charts</li>
-      <li><a href="/portfoliovalue">Portfolio Value report</a></li>
-      <li><a href="/vanguardprices">Vanguard Australia fund prices</a></li>
-  </ul>
-    
 {% endblock %}

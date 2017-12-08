@@ -2,7 +2,7 @@
 A collection of tools for managing an investment portfolio in GnuCash
 
 The purpose of the project is to provide tools that help in managing an investment portfolio in a GnuCash book.
-The code is mostly written in Python.
+The code is (mostly) written in Python.
 
 The gratification comes from the sense of freedom, of having direct access to your financial data and being able to retrieve any statistic or information you might want, and not depending on others to do it for you.
 
