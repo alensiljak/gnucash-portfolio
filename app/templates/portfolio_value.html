@@ -1,0 +1,46 @@
+{% extends "layout.html" %} 
+
+{% block title %}Portfolio Value{% endblock %}
+
+{% block head %} 
+    {{ super() }}
+
+    <style>
+        table {
+            border-collapse: collapse;
+        }
+
+        table,
+        td,
+        th {
+            border: 1px solid black;
+            padding: 0.3em;
+        }
+    </style>
+{% endblock %} 
+{% block content %}
+<h1>Portfolio Value</h1>
+<table>
+    <caption>
+        <!-- Portfolio Value -->
+    </caption>
+    <thead>
+        <th>Security</th>
+        <th>Exchange</th>
+        <th>Symbol</th>
+        <th>Shares</th>
+        <th>Avg.Price</th>
+        <th>Price</th>
+        <th>Currency</th>
+        <th>Cost Basis</th>
+        <th>Gain/Loss</th>
+        <th>Gain/Loss %</th>
+        <th>Balance</th>
+        <th>Income</th>
+    </thead>
+    <tbody>
+        {{ stock_rows }}
+    </tbody>
+</table>
+
+{% endblock %}

@@ -8,13 +8,9 @@ TODO:
     - calculate sum of allocations and compare to the set allocation value per group.
 """
 import sys
-import json
-import os
-from os import path
 from piecash_utilities.report import report, execute_report
 from gnucash_portfolio.lib import generic, templates, database
-from gnucash_portfolio import security_analysis
-from assetallocation import AssetGroup, AssetClass, Stock
+from gnucash_portfolio.lib.assetallocation import AssetGroup, AssetClass, Stock, load_asset_allocation_model
 
 @report(
     title="Asset Allocation",
@@ -34,19 +30,7 @@ def generate_asset_allocation_report(book_url):
     The otput is generated here. Separated from the generate_report function to allow executing
     from the command line.
     """
-    # read asset allocation file
-    root_node = load_asset_allocation_file()
-    aa = __parse_node(root_node)
-
-    # TODO load security information from the book.
-    with database.Database(book_url).open_book() as book:
-        __add_values(book, aa)
-
-    # TODO calculate allocation in the book.
-    # TODO add all the stock values.
-
-    model = {}
-    model["allocation"] = aa
+    model = load_asset_allocation_model(book_url)
 
     # load display template
     template = templates.load_jinja_template("report_asset_allocation.html")
@@ -55,61 +39,6 @@ def generate_asset_allocation_report(book_url):
     # **locals()
 
     return result
-
-def __add_values(book, aa: AssetGroup):
-    """
-    Populates the asset class values from the database.
-    Reads the stock values and fills the asset classes.
-    """
-    # iterate recursively until an Asset Class is found.
-    for child in aa.classes:
-        if isinstance(child, AssetGroup):
-            __add_values(book, child)
-
-        if isinstance(child, AssetClass):
-            for stock in child.stocks:
-                # then, for each stock, load information
-                symbol = stock.symbol
-                cdty = security_analysis.get_stock(book, symbol)
-
-                # Quantity
-                num_shares = security_analysis.get_number_of_shares(cdty)
-                stock.quantity = num_shares
-
-                # last price
-                last_price = security_analysis.get_last_available_price(cdty)
-                stock.price = last_price
-
-
-def __parse_node(node):
-    """Creates an appropriate entity for the node. Recursive."""
-    entity = None
-
-    if "classes" in node:
-        entity = AssetGroup(node)
-        # Process child nodes
-        for child_node in node["classes"]:
-            child = __parse_node(child_node)
-            #allocation_sum +=
-            entity.classes.append(child)
-
-    if "stocks" in node:
-        # This is an Asset Class
-        entity = AssetClass(node)
-
-    return entity
-
-
-def load_asset_allocation_file():
-    """
-    Loads asset allocation from the file.
-    Returns the list of asset classes.
-    """
-    allocation_file = path.abspath(path.join(os.path.dirname(os.path.realpath(__file__)), "assetAllocation.json"))
-    with open(allocation_file, 'r') as json_file:
-        allocation_json = json.load(json_file)
-
-    return allocation_json
 
 
 ###################################################

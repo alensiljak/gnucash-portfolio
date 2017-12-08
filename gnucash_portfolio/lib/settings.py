@@ -20,7 +20,7 @@ class Settings:
 
         #file_path = path.relpath(settings_file_path)
         #file_path = path.abspath(settings_file_path)
-        file_path = path.abspath(path.join(__file__, "..", "..", FILENAME))
+        file_path = path.abspath(path.join(__file__, "..", "..", "data", FILENAME))
         try:
             self.data = json.load(open(file_path))
         except FileNotFoundError:
@@ -62,7 +62,9 @@ class Settings:
 
     @property
     def database_filename(self):
+        """ database file name only """
         return self.data["gnucash.database"]
+
 
 # If run directly, just display the settings file.
 if __name__ == "__main__":
