@@ -4,5 +4,11 @@
 
 {% block content %}
 <h1>Vanguard Australia Fund Prices</h1>
-<p>Example fund list: "8123,8146,8148,8147"</p>  
+<p>Example fund list: "8123,8146,8148,8147"</p>
+<form target="vanguard_prices_post" method="POST">
+    <label for="funds">Enter funds (comma-separated):</label>
+    <input type="text" name="funds" />
+
+    <button type="submit">OK</button>
+</form>
 {% endblock %}
