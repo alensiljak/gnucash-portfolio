@@ -2,25 +2,9 @@
 
 {% block title %}Portfolio Value{% endblock %}
 
-{% block head %} 
-    {{ super() }}
-
-    <style>
-        table {
-            border-collapse: collapse;
-        }
-
-        table,
-        td,
-        th {
-            border: 1px solid black;
-            padding: 0.3em;
-        }
-    </style>
-{% endblock %} 
 {% block content %}
 <h1>Portfolio Value</h1>
-<table>
+<table class="table table-bordered">
     <caption>
         <!-- Portfolio Value -->
     </caption>
@@ -39,7 +23,34 @@
         <th>Income</th>
     </thead>
     <tbody>
-        {{ stock_rows }}
+        {% for row in stock_rows %}
+        <tr>
+                <td>name</td>
+                <td>{{ row.exchange }}</td>
+                <td>{{ row.symbol }}</td>
+                <td style="text-align: right;">{{ "{:,.2f}".format(row.shares_no) }}</td>
+                <td style="text-align: right;">{{ "{:,.2f}".format(row.avg_price) }}</td>
+                <!-- <td>base_currency</td> -->
+                <td style="text-align: right;">{{ row.price }}</td>
+                <td>{{ row.currency }}</td>
+                <td style="text-align: right;">{{ "{:,.2f}".format(row.cost) }}</td>
+                {% if row.gain_loss >= 0 %}
+                <td style="text-align: right;">{{ "{:,.2f}".format(row.gain_loss) }}</td>
+                {% else %}
+                <td style="text-align: right; color: red;">{{ "{:,.2f}".format(row.gain_loss) }}</td>
+                {% endif %}
+            
+                <!-- gain/loss percentage -->
+                {% if row.gain_loss_perc >= 0 %}
+                <td style="text-align: right;">{{ "{:,.2f}".format(row.gain_loss_perc) }}</td>
+                {% else %}
+                <td style="text-align: right; color: red;">{{ "{:,.2f}".format(row.gain_loss_perc) }}</td>
+                {% endif %}
+                
+                <td style="text-align: right;">{{ "{:,.2f}".format(row.balance) }}</td>
+                <td style="text-align: right;">{{ "{:,.2f}".format(row.income) }}</td>
+            </tr>
+        {% endfor %}
     </tbody>
 </table>
 

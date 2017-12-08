@@ -73,6 +73,7 @@ class Stock:
 ###################################
 
 def load_asset_allocation_model(book_url: str):
+    """ Loads Asset Allocation model for display """
     # read asset allocation file
     root_node = __load_asset_allocation_config()
     aa = __parse_node(root_node)
@@ -84,8 +85,9 @@ def load_asset_allocation_model(book_url: str):
     with database.Database(book_url).open_book() as book:
         __add_values(book, aa)
 
-    model = {}
-    model["allocation"] = aa
+    model = {
+        'allocation': aa
+    }
 
     return model
 

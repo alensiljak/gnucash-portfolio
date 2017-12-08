@@ -5,7 +5,7 @@ import sys
 #import logging
 from flask import Flask, render_template, request
 from gnucash_portfolio import get_vanguard_au_prices
-from gnucash_portfolio.lib import assetallocation, settings
+from gnucash_portfolio.lib import assetallocation, settings, portfoliovalue, database
 
 # Define the WSGI application object
 app = Flask(__name__)
@@ -50,7 +50,16 @@ def asset_allocation():
 @app.route('/portfoliovalue')
 def portfolio_value():
     """ Portfolio Value report """
-    return render_template('portfolio_value.html')
+    stock_rows = []
+    with database.Database().open_book() as book:
+        all_stocks = portfoliovalue.get_all_stocks(book)
+        #print("found ", len(all_stocks), "records")
+        for stock in all_stocks:
+            model = portfoliovalue.get_stock_model_from(book, stock)
+            stock_rows.append(model)
+
+    #print(stock_rows)
+    return render_template('portfolio_value.html', stock_rows=stock_rows)
 
 ##################################################################################
 if __name__ == '__main__':
