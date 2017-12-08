@@ -18,25 +18,20 @@ def index():
     return render_template('index.html')
 
 
-@app.route('/vanguard_prices')
+@app.route('/vanguardprices')
 def vanguard():
     """ Prices for Vanguard funds """
-    return render_template('vanguard_prices.html')
+    #funds = "8123,8146,8148,8147"
+    #print(request.form.get("funds"))
+    funds = request.args.get("funds")
+    prices = None
 
+    if funds:
+        print("funds:", funds)
+        user_funds = funds.strip().split(",")
+        prices = get_vanguard_au_prices.download_fund_prices(user_funds)
 
-@app.route('/vanguard_prices', methods=['POST'])
-def vanguard_display():
-    """ Example of accepting user input """
-    fund_ids = "8123,8146,8148,8147"
-    user_funds = fund_ids.strip().split(",")
-    prices = get_vanguard_au_prices.download_fund_prices(user_funds)
-
-    #logger = logging.getLogger(__name__)
-    #logger.
-
-    print(prices)
-    #print(prices, file=sys.stderr)
-    return render_template('vanguard_prices.html')
+    return render_template('vanguard_prices.html', prices=prices, funds=funds)
 
 
 @app.route('/assetallocation')

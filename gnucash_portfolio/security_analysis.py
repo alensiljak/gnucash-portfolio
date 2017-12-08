@@ -78,6 +78,7 @@ def get_avg_price(security: Commodity) -> Decimal:
         avg_price = price_total / price_count
     return avg_price
 
+
 def get_number_of_shares(security: Commodity) -> Decimal:
     """
     Returns the number of shares for the given security.

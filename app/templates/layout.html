@@ -7,14 +7,14 @@
   <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=yes"> {% block head %}
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/css/bootstrap.min.css" integrity="sha384-PsH8R72JQ3SOdhVi3uxftmaW6Vc51MKb0q5P2rRUpPvrszuE4W1povHYgTpBfshb"
     crossorigin="anonymous">
-  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+  {# <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}"> #}
   <title>{% block title %}{% endblock %} - GnuCash Portfolio</title>
   {% endblock %}
 </head>
 
 <body>
   <nav class="navbar navbar-dark bg-dark">
-    <a class="navbar-brand" href="/">Portfolio</a>
+    <a class="navbar-brand" href="/">GnuCash Portfolio</a>
   </nav>
 
   <div id="content" class="container-fluid">{% block content %}{% endblock %}</div>
