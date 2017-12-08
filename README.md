@@ -1,14 +1,16 @@
 # gnucash-portfolio
-A collection of tools for managing a portfolio with GnuCash
+A collection of tools for managing an investment portfolio in GnuCash
 
-The purpose of the project is to provide tools that help in managing a portfolio in GnuCash.
-The code will mostly be written in Python.
+The purpose of the project is to provide tools that help in managing an investment portfolio in a GnuCash book.
+The code is mostly written in Python.
 
-The gratification is the sense of freedom by having direct access to your financial data and being able to retrieve any statistic or information you want, and not depending on others to do it for you.
+The gratification comes from the sense of freedom, of having direct access to your financial data and being able to retrieve any statistic or information you might want, and not depending on others to do it for you.
 
 Retrieving currency exchange rates is a part of this suite.
 
 ## Running
+
+### Preparation
 
 - Config: In order to run the scripts, copy `settings.json.template` into `settings.json` and customize the settings by editing the file.
 - Register the library with 
@@ -17,15 +19,21 @@ pip install -e <path to>/gnucash-portfolio
 ```
 as it is called from the reports.
 
+### Execution
+
+All the functionality will be provided as a web application.
+Simply run `run.bat` in the app directory.
+
 # Goals
 
-## Done
+## Implemented
 
 - [x] download currency exchange rates
 - [x] import exchange rates into GnuCash file
 - [x] import .csv security prices into GnuCash file
 - [x] securities report
 - [x] create a library of callable functions, to be used from the reports.
+- [x] list all dividends for security. This requires some conventions as to where to expect them since there is no direct linking between a commodity and the dividends/interest it earns. Search all accounts with the same name in the Income tree.
 
 ## To Do
 
@@ -33,7 +41,6 @@ as it is called from the reports.
 - [ ] Charts:
     - [ ] display currency pair chart over selected period (report?)
     - [ ] display security price over selected period (report?)
-- [ ] list all dividends for security (?!). This requires some conventions as to where to expect them since there is no direct linking between a commodity and the dividends/interest it earns. Search all accounts with the same name in the Income tree?
 - [ ] Enhance average price calculation. Take into account lots and sold securities. See how selling shares affects the average price.
 
 # Other
@@ -51,12 +58,19 @@ as it is called from the reports.
 - [GnuCash Wiki](https://wiki.gnucash.org/wiki/GnuCash)
     - [Custom Reports](https://wiki.gnucash.org/wiki/Custom_Reports)
 
-## UI
+## GUI
+
+### Web
+
+- Flask server
+- jinja2 templates
+
+### Charts
 
 - [pandas](http://pandas.pydata.org/), library for data analysis. Check DataFrame and [exports](http://piecash.readthedocs.io/en/latest/api/piecash.core.book.html#piecash.core.book.Book.splits_df) from piecash.
 - [plot.ly](https://plot.ly), plotting service/library with offline Python bindings. For data presentation.
 
-## GUI
+### Desktop
 
 There are several options for Python GUI.
 
@@ -66,8 +80,7 @@ There are several options for Python GUI.
     - See [PyGObject](http://pygobject.readthedocs.io/en/latest/getting_started.html)
     - [GAction](https://wiki.gnome.org/HowDoI/GAction)
 
-
-## Python on Android
+### Python on Android
 
 In order to use the available functionality, Python scripts can also be run on a mobile device. 
 There are several options available (and require further examination). There is a comparison [page](https://wiki.python.org/moin/Android) available at python.org.
@@ -90,8 +103,6 @@ There are two technologies providing underlying access to Android functions:
 
 Some related technologies. [Reference](https://groups.google.com/forum/#!topic/piecash/YgrkL1MVL18)
 
-### jinja2
-
 Using piecash+jinja2 could ease the generation of :
 - invoices (via latex or other type setting),
 - reports (see http://pbpython.com/pdf-reports.html) 
@@ -109,6 +120,8 @@ You can see an example of a usage of these dataframes to do basic reporting here
 https://nbviewer.jupyter.org/github/sdementen/piecash/blob/master/examples/ipython/piecash_dataframes.ipynb
 
 ### Reporting Engines
+
+The approach using a specialized reporting engine seems to be dying off as HTML is more than capable of providing a decent visual representation of the data.
 
 - [Next Reports](http://www.next-reports.com/products/nextreports-designer.html)
 - [Data Vision](http://datavision.sourceforge.net/)
