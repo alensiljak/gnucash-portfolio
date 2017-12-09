@@ -19,24 +19,6 @@ def index():
     return render_template('index.html')
 
 
-@app.route('/vanguardprices')
-@templated()
-def vanguardprices():
-    """ Prices for Vanguard funds """
-    #funds = "8123,8146,8148,8147"
-    #print(request.form.get("funds"))
-    funds = request.args.get("funds")
-    prices = None
-
-    if funds:
-        print("funds:", funds)
-        user_funds = funds.strip().split(",")
-        prices = get_vanguard_au_prices.download_fund_prices(user_funds)
-
-    #return render_template('vanguard_prices.html', prices=prices, funds=funds)
-    return dict(prices=prices, funds=funds)
-
-
 @app.route('/assetallocation')
 @templated()
 def assetallocation():
@@ -62,6 +44,24 @@ def portfoliovalue():
     #print(stock_rows)
     #return render_template('portfolio_value.html', stock_rows=stock_rows)
     return dict(stock_rows=stock_rows)
+
+
+@app.route('/vanguard/prices')
+@templated()
+def vanguardprices():
+    """ Prices for Vanguard funds """
+    #funds = "8123,8146,8148,8147"
+    #print(request.form.get("funds"))
+    funds = request.args.get("funds")
+    prices = None
+
+    if funds:
+        print("funds:", funds)
+        user_funds = funds.strip().split(",")
+        prices = get_vanguard_au_prices.download_fund_prices(user_funds)
+
+    #return render_template('vanguard_prices.html', prices=prices, funds=funds)
+    return dict(prices=prices, funds=funds)
 
 
 ##################################################################################
