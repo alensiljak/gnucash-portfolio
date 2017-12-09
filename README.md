@@ -62,8 +62,7 @@ Simply run `run.bat` in the app directory.
 
 ### Web
 
-- Flask server
-- jinja2 templates
+- Flask server + jinja2 templates
 
 ### Charts
 
@@ -80,13 +79,15 @@ There are several options for Python GUI.
     - See [PyGObject](http://pygobject.readthedocs.io/en/latest/getting_started.html)
     - [GAction](https://wiki.gnome.org/HowDoI/GAction)
 
-### Python on Android
+### Android
 
 In order to use the available functionality, Python scripts can also be run on a mobile device. 
 There are several options available (and require further examination). There is a comparison [page](https://wiki.python.org/moin/Android) available at python.org.
 
-- [chaquopy](https://chaquo.com/chaquopy/)
 - [Kivy](https://kivy.org/docs/guide/android.html)
+    - python 4 android [repo]](https://github.com/kivy/python-for-android)
+    - p4a [docs](https://python-for-android.readthedocs.io)
+- [chaquopy](https://chaquo.com/chaquopy/)
 - [PySide](http://wiki.qt.io/PySide_for_Android_guide) for Android. 
 - [QPython](http://www.qpython.com/)
     - [Python 2](https://play.google.com/store/apps/details?id=org.qpython.qpy)
