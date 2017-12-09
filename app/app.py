@@ -7,11 +7,14 @@ from decorators import templated
 from flask import Flask, render_template, request
 from gnucash_portfolio import get_vanguard_au_prices
 from gnucash_portfolio.lib import assetallocation as aalloc, settings, portfoliovalue as pvalue, database
+from vanguardcontroller import vanguard_controller
 
 # Define the WSGI application object
 app = Flask(__name__)
 # Configurations
 app.config.from_object('config')
+# Register blueprints
+app.register_blueprint(vanguard_controller)
 
 @app.route('/')
 def index():
@@ -44,24 +47,6 @@ def portfoliovalue():
     #print(stock_rows)
     #return render_template('portfolio_value.html', stock_rows=stock_rows)
     return dict(stock_rows=stock_rows)
-
-
-@app.route('/vanguard/prices')
-@templated()
-def vanguardprices():
-    """ Prices for Vanguard funds """
-    #funds = "8123,8146,8148,8147"
-    #print(request.form.get("funds"))
-    funds = request.args.get("funds")
-    prices = None
-
-    if funds:
-        print("funds:", funds)
-        user_funds = funds.strip().split(",")
-        prices = get_vanguard_au_prices.download_fund_prices(user_funds)
-
-    #return render_template('vanguard_prices.html', prices=prices, funds=funds)
-    return dict(prices=prices, funds=funds)
 
 
 ##################################################################################
