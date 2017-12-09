@@ -1,5 +1,5 @@
-fixerio
-flask
-piecash
+fixerio==0.1.1
+flask==0.12.2
+piecash=0.13.0
 kivy==1.10.0
 python-dateutil==2.6.1
