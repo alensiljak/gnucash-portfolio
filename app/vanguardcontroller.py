@@ -23,7 +23,7 @@ def vanguardprices():
     prices = None
 
     if funds:
-        print("funds:", funds)
+        #print("funds:", funds)
         user_funds = funds.strip().split(",")
         prices = get_vanguard_au_prices.download_fund_prices(user_funds)
 
