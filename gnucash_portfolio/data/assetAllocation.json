@@ -266,7 +266,7 @@
                     "name": "Aus Property",
                     "allocation": 7,
                     "stocks": [
-                        "FET.ax",
+                        "ASX:FET",
                         "Vanguard:PROP",
                         "ASX:VAP"
                     ]
