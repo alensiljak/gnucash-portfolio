@@ -2,7 +2,8 @@
 gnucash_portfolio/settings.json
 gnucash_portfolio/data/alen.gnucash
 gnucash_portfolio/data/*.gnucash-journal
-gnucash_portfolio/data/*.json
+#gnucash_portfolio/data/*.json
+gnucash_portfolio/data/settings.json
 
 #####################################################
 # Byte-compiled / optimized / DLL files

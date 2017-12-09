@@ -1,0 +1,320 @@
+{
+    "name": "Asset Allocation",
+    "classes": [
+        {
+            "name": "Equities",
+            "allocation": "55",
+            "classes": [
+                {
+                    "name": "Aus",
+                    "allocation": 15,
+                    "classes": [
+                        {
+                            "name": "Aus Large",
+                            "allocation": 15,
+                            "stocks": [
+                                "Vanguard:HY",
+                                "ASX:IHD",
+                                "ASX:MPL",
+                                "ASX:MYO",
+                                "ASX:RFG",
+                                "ASX:STW",
+                                "ASX:SYI",
+                                "ASX:VAS",
+                                "ASX:VHY",
+                                "ASX:YMAX"
+                            ]
+                        },
+                        {
+                            "name": "Aus Small",
+                            "allocation": 9,
+                            "stocks": [
+                                "ASX:AEF",
+                                "ASX:CAB",
+                                "ASX:CTN",
+                                "ASX:IPE",
+                                "ASX:MVS",
+                                "ASX:OZG",
+                                "ASX:VSO"
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "name": "International",
+                    "allocation": 31,
+                    "classes": [
+                        {
+                            "name": "Asia/Pacific",
+                            "allocation": 3,
+                            "stocks": [
+                                "XETRA:EXXW",
+                                "ASX:ISG",
+                                "AMS:VAPX",
+                                "AMS:VJPN",
+                                "VPL"
+                            ]
+                        },
+                        {
+                            "name": "Emerging Markets",
+                            "allocation": 6,
+                            "stocks":[
+                                "DVYE",
+                                "EDIV",
+                                "ERUS",
+                                "XETRA:EUNY",
+                                "ILF",
+                                "XETRA:SPYV",
+                                "AMS:VFEM",
+                                "VWO"
+                            ]
+                        },
+                        {
+                            "name": "Europe",
+                            "allocation": 10,
+                            "stocks": [
+                                "XETRA:DBK",
+                                "XETRA:EL4G",
+                                "XETRA:EL4X",
+                                "XETRA:EXH9",
+                                "XETRA:EXSE",
+                                "XETRA:EXSG",
+                                "XETRA:EXSH",
+                                "XETRA:EXXX",
+                                "AMS:VEUR"
+                            ]
+                        },
+                        {
+                            "name": "Global",
+                            "allocation": 6.5,
+                            "stocks":[
+                                "Vanguard:HINT",
+                                "XETRA:ISPA",
+                                "ASX:VEU",
+                                "AMS:VHYL"
+                            ]
+                        },
+                        {
+                            "name": "North America",
+                            "allocation": 4,
+                            "stocks":[
+                                "AMLP",
+                                "MLPX",
+                                "PFXF",
+                                "PSK",
+                                "VIG",
+                                "AMS:VNRT",
+                                "VPU",
+                                "VTI",
+                                "ASX:VTS",
+                                "VYM"
+                            ]
+                        },
+                        {
+                            "name": "NAm Small",
+                            "allocation": 1.5,
+                            "stocks":[
+                                "VBR",
+                                "VTWV"
+                            ]
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "name": "Fixed",
+            "allocation": 33,
+            "classes": [
+                {
+                    "name": "Fixed Aus",
+                    "allocation": 14,
+                    "classes": [
+                        {
+                            "name": "Aus Gov",
+                            "allocation": 4,
+                            "stocks": [
+                                "ASX:IGB",
+                                "ASX:VGB"
+                            ]
+                        },
+                        {
+                            "name": "Aus Corp",
+                            "allocation": 10,
+                            "stocks":[
+                                "ASX:AGLHA",
+                                "ASX:ANZPC",
+                                "ASX:ANZPD",
+                                "ASX:AYF",
+                                "ASX:CWNHA",
+                                "ASX:CWNHB",
+                                "ASX:NABPB",
+                                "ASX:SUNPD",
+                                "ASX:SUNPE",
+                                "ASX:VAF",
+                                "ASX:WBCPD",
+                                "ASX:WBCPE"
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "name": "Fixed EM",
+                    "allocation": 3,
+                    "classes":[
+                        {
+                            "name": "EM Gov",
+                            "allocation": 2.5,
+                            "stocks":[
+                                "LSE:EMBE",
+                                "EMLC",
+                                "PCY",
+                                "VWOB"
+                            ]
+                        },
+                        {
+                            "name": "EM Corp",
+                            "allocation": 0.5,
+                            "stocks":[
+                                "HYEM"
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "name": "Fixed Euro",
+                    "allocation": 6.5,
+                    "classes":[
+                        {
+                            "name": "EU Gov",
+                            "allocation": 2.5,
+                            "stocks":[
+                                "XETRA:EL4K",
+                                "XETRA:EL4L",
+                                "XETRA:EL4M",
+                                "XETRA:EL4N",
+                                "AMS:VETY"
+                            ]
+                        },
+                        {
+                            "name": "EU Corp",
+                            "allocation": 3,
+                            "stocks":[
+                                "XETRA:EL49",
+                                "XETRA:EXHE",
+                                "XETRA:IBCS",
+                                "AMS:TCBT",
+                                "AMS:VECP"
+                            ]
+                        },
+                        {
+                            "name": "EU high yield",
+                            "allocation": 1,
+                            "stocks":[
+                                "XETRA:SYBJ"
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "name": "Fixed US",
+                    "allocation": 5.5,
+                    "classes":[
+                        {
+                            "name": "US Gov",
+                            "allocation": 3.5,
+                            "stocks":[
+                                "BBN",
+                                "BLV",
+                                "BND",
+                                "BSV"
+                            ]
+                        },
+                        {
+                            "name": "US Corp",
+                            "allocation": 1.5,
+                            "stocks":[
+                                "VCIT",
+                                "VCLT",
+                                "VCSH"
+                            ]
+                        },
+                        {
+                            "name": "US high yield",
+                            "allocation": 0.5,
+                            "stocks":[
+                                "ANGL",
+                                "SHYG"
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "name": "Fixed Global",
+                    "allocation": 1,
+                    "stocks":[
+                        "Vanguard:BOND"
+                    ]
+                }
+            ]
+        },
+        {
+            "name": "Real Assets",
+            "allocation": 12,
+            "classes": [
+                {
+                    "name": "Aus Property",
+                    "allocation": 7,
+                    "stocks": [
+                        "FET.ax",
+                        "Vanguard:PROP",
+                        "ASX:VAP"
+                    ]
+                },
+                {
+                    "name": "int prop",
+                    "allocation": 2,
+                    "stocks":[
+                        "XETRA:EXI5",
+                        "AMS:IPRP",
+                        "VNQI"
+                    ]
+                },
+                {
+                    "name": "NAm Prop",
+                    "allocation": 1,
+                    "stocks":[
+                        "GOV",
+                        "KBWY",
+                        "VNQ"
+                    ]
+                },
+                {
+                    "name": "commodities",
+                    "allocation": 1.2,
+                    "stocks":[
+                        "XETRA:EXV6",
+                        "ASX:MVR",
+                        "VAW",
+                        "VDE"
+                    ]
+                },
+                {
+                    "name": "gold",
+                    "allocation": 0.55,
+                    "stocks":[
+                        "GDX",
+                        "RING"
+                    ]
+                },
+                {
+                    "name": "TIPS",
+                    "allocation": 0.25,
+                    "stocks":[
+                        "VTIP"
+                    ]
+                }
+            ]
+        }
+    ]
+}
