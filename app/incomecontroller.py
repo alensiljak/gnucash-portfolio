@@ -19,6 +19,8 @@ def income_in_period():
     """ Investment income in time period, parameters """
 
     # TODO get income accounts from settings?
+    # TODO add collapsible indicator icon to the filter header
+    # https://stackoverflow.com/questions/18325779/bootstrap-3-collapse-show-state-with-chevron-icon
 
     return render_template('income_in_period.html', model=None)
 
@@ -80,6 +82,10 @@ def __get_input_model():
     if to_str:
         model["date_to"] = dateutil.parser.parse(to_str)
         model["date_to_str"] = to_str
+
+    period = request.form.get("period")
+    if period:
+        model["period"] = period
 
     currency = request.form.get("currency")
     if currency:

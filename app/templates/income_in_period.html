@@ -4,9 +4,10 @@
 {# Parameters #}
 <div id="accordion" role="tablist">
     <div class="card">
-        <div id="filterHeader" class="card-header" role="tab">
+        <div id="filterHeader" class="card-header" role="tab" data-toggle="collapse" data-target="#filter" aria-expanded="{% if model %}false{% else %}true{% endif%}"
+            aria-controls="filter">
             <h5 class="mb-0">
-                <a data-toggle="collapse" href="#filter" aria-expanded="{% if model %}false{% else %}true{% endif%}" aria-controls="filter">Filters</a>
+                <a href="#">Filters</a>
             </h5>
         </div>
         <div id="filter" role="tabpanel" class="collapse {% if not model %}show{% endif %}" aria-labelledby="filterHeader" data-parent="#accordion">
@@ -14,28 +15,41 @@
                 <form method="POST">
 
                     <div class="form-row">
-                        <div class="form-group">
+                        <div class="col form-group">
                             <label for="accounts">Income account(s)</label>
-                            <input type="text" name="accounts" class="form-control" value="{% if model.accounts %}{{ model.accounts }}{% else %}Income:Investment{% endif %}" />
+                            <input type="text" name="accounts" class="form-control" value="{% if model.accounts %}{{ model.accounts }}{% else %}Income:Investment{% endif %}"
+                            />
                         </div>
                     </div>
+
+                    {#
                     <div class="form-row">
-                        <div class="form-group">
+                        <div class="col form-group">
                             <label for="datefrom">From</label>
-                            <input type="date" name="datefrom" id="datefrom" class="form-control" {% if model.datefrom %}value="{{ model.datefrom }}"
+                            <input type="date" class="form-control">
+                        </div>
+                        <div class="col form-group">
+                            <label for="dateto">To</label>
+                            <input type="date" class="form-control">
+                        </div>
+                    </div>
+                    #}
+                    <input type="hidden" name="datefrom" id="datefrom" {% if model.datefrom %}value="{{ model.datefrom }}" {% endif %}>
+                    <input type="hidden" name="dateto" id="dateto" {% if model.dateto %}value="{{ model.dateto }}" {% endif
+                        %}>
+
+                    <div class="form-row">
+                        <div class="col form-group">
+                            <label for="period">Period</label>
+                            <input type="text" name="period" id="period" class="form-control daterange" {% if model.period %}value="{{ model.period }}"
                                 {% endif %}>
                         </div>
-                        <div class="form-group">
-                            <label for="dateto">To</label>
-                            <input type="date" name="dateto" id="dateto" class="form-control" {% if model.dateto %}value="{{ model.dateto }}" {% endif
-                                %}>
-                        </div>
                     </div>
+
                     <div class="form-row">
                         <div class="form-group">
                             <label for="currency">Currency</label>
-                            <input name="currency" type="text" class="form-control"
-                            {% if model.currency %}value="{{ model.currency }}"{% endif %}>
+                            <input name="currency" type="text" class="form-control" {% if model.currency %}value="{{ model.currency }}" {% endif %}>
                         </div>
                     </div>
                     <div class="text-center">
@@ -65,5 +79,5 @@
         {% endfor %}
     </tbody>
 </table>
-{% endif %} 
-{% endblock %}
+{% endif %} {% endblock %} {% block scripts %}
+<script src="/static/income_in_period.js"></script> {% endblock %}
