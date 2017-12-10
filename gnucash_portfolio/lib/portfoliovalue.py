@@ -4,7 +4,7 @@ Provides functions for Portfolio Value report
 from sqlalchemy import desc
 from piecash import Book, Commodity, Price
 import gnucash_portfolio
-from gnucash_portfolio import find_all_dividends
+from gnucash_portfolio import symbol_dividends
 
 def get_stock_model_from(book: Book, commodity: Commodity):
     """ Parses stock/commodity and returns the model for display """
@@ -59,7 +59,7 @@ def get_stock_model_from(book: Book, commodity: Commodity):
     model["gain_loss_perc"] = float(gain_loss_perc)
 
     # Income
-    income = find_all_dividends.get_dividend_sum_for_symbol(book, symbol)
+    income = symbol_dividends.get_dividend_sum_for_symbol(book, symbol)
     model["income"] = float(income)
 
     return model

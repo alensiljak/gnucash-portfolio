@@ -26,9 +26,9 @@ def get_dividend_accounts(book: Book, symbol: str):
     return income_accounts
 
 
-def get_dividend_sum(book: Book, account: Account):
+def get_dividend_sum(book: Book, income_account: Account):
     """    Adds all distributions (income)    """
-    splits = book.session.query(Split).filter(Split.account == account).all()
+    splits = book.session.query(Split).filter(Split.account == income_account).all()
     dividend_sum = Decimal(0)
 
     for split in splits:
@@ -64,5 +64,5 @@ if __name__ == "__main__":
 
     with db.open_book() as book:
         amount = get_dividend_sum_for_symbol(book, symbol)
-        
+
         print("Income for", symbol, "=", amount)

@@ -1,0 +1,36 @@
+{% extends "layout.html" %} {% block title %}Income in Period{% endblock %} {% block content %}
+<h1>Income in Period</h1>
+
+{# Date pickers #}
+<form>
+    <div class="form-group">
+        <label for="datefrom">From</label>
+        <input type="date" name="datefrom" id="datefrom" class="form-control" {% if model.datefrom %}value="{{ model.datefrom }}"
+            {% endif %}>
+    </div>
+    <div class="form-group">
+        <label for="dateto">To</label>
+        <input type="date" name="dateto" id="dateto" class="form-control" {% if model.dateto %}value="{{ model.dateto }}" {% endif
+            %}>
+    </div>
+    <div class="text-center">
+        <button type="submit" class="btn btn-primary">OK</button>
+    </div>
+</form>
+
+{% if model %}
+<table class="tbl">
+    <thead>
+        <th>Account</th>
+        <th>Value</th>
+    </thead>
+    <tbody>
+        {% for split in model.splits %}
+        <tr>
+            <td>{{ split.account.fullname }}</td>
+            <td>{{ split.value }}</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% endif %} {% endblock %}

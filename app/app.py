@@ -7,7 +7,9 @@ from decorators import templated
 from flask import Flask, render_template, request
 from gnucash_portfolio import get_vanguard_au_prices
 from gnucash_portfolio.lib import assetallocation as aalloc, settings, portfoliovalue as pvalue, database
+# Controllers/blueprints
 from vanguardcontroller import vanguard_controller
+from incomecontroller import income_controller
 
 # Define the WSGI application object
 app = Flask(__name__)
@@ -15,6 +17,7 @@ app = Flask(__name__)
 app.config.from_object('config')
 # Register blueprints
 app.register_blueprint(vanguard_controller)
+app.register_blueprint(income_controller)
 
 @app.route('/')
 def index():
