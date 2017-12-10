@@ -1,34 +1,61 @@
 {% extends "layout.html" %} {% block title %}Income in Period{% endblock %} {% block content %}
 <h1>Income in Period</h1>
 
-{# Date pickers #}
-<form>
-    <div class="form-group">
-        <label for="datefrom">From</label>
-        <input type="date" name="datefrom" id="datefrom" class="form-control" {% if model.datefrom %}value="{{ model.datefrom }}"
-            {% endif %}>
+{# Parameters #}
+<div id="accordion" role="tablist">
+    <div class="card">
+        <div id="filterHeader" class="card-header" role="tab">
+            <h5 class="mb-0">
+                <a data-toggle="collapse" href="#filter" aria-expanded="{% if model %}false{% else %}true{% endif%}" aria-controls="filter">Filters</a>
+            </h5>
+        </div>
+        <div id="filter" role="tabpanel" class="collapse {% if not model %}show{% endif %}" aria-labelledby="filterHeader" data-parent="#accordion">
+            <div class="card-body">
+                <form>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="accounts">Income account(s)</label>
+                            <input type="text" name="accounts" class="form-control" value="Income:Investment" />
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="datefrom">From</label>
+                            <input type="date" name="datefrom" id="datefrom" class="form-control" {% if model.datefrom %}value="{{ model.datefrom }}"
+                                {% endif %}>
+                        </div>
+                        <div class="form-group">
+                            <label for="dateto">To</label>
+                            <input type="date" name="dateto" id="dateto" class="form-control" {% if model.dateto %}value="{{ model.dateto }}" {% endif
+                                %}>
+                        </div>
+                    </div>
+                    <div class="form-group">
+
+                    </div>
+                    <div class="text-center">
+                        <button type="reset" class="btn">Reset</button>
+                        <button type="submit" class="btn btn-primary">OK</button>
+                    </div>
+                </form>
+            </div>
+        </div>
     </div>
-    <div class="form-group">
-        <label for="dateto">To</label>
-        <input type="date" name="dateto" id="dateto" class="form-control" {% if model.dateto %}value="{{ model.dateto }}" {% endif
-            %}>
-    </div>
-    <div class="text-center">
-        <button type="submit" class="btn btn-primary">OK</button>
-    </div>
-</form>
+</div>
 
 {% if model %}
-<table class="tbl">
-    <thead>
+<table class="table table-striped table-sm mt-3">
+    <thead class="thead-dark">
+        <th>Date</th>
         <th>Account</th>
         <th>Value</th>
     </thead>
     <tbody>
         {% for split in model.splits %}
         <tr>
+            <td>{{ "{:%Y-%m-%d}".format(split.transaction.post_date) }}</td>
             <td>{{ split.account.fullname }}</td>
-            <td>{{ split.value }}</td>
+            <td>{{ split.value * (-1) }}</td>
         </tr>
         {% endfor %}
     </tbody>
