@@ -7,7 +7,7 @@ import dateutil
 #from decimal import Decimal
 from flask import Blueprint, request, render_template
 #from sqlalchemy.dialects import sqlite
-from piecash import Account, Split, Book, Transaction
+from piecash import Account, Commodity, Split, Book, Transaction
 from gnucash_portfolio.lib import database
 
 income_controller = Blueprint('income_controller', __name__,
@@ -16,53 +16,73 @@ income_controller = Blueprint('income_controller', __name__,
 
 @income_controller.route('/inperiod')
 def income_in_period():
-    """ Investment income in time period """
+    """ Investment income in time period, parameters """
+
+    # TODO get income accounts from settings?
+
+    return render_template('income_in_period.html', model=None)
+
+
+@income_controller.route('/inperiod', methods=['POST'])
+def income_in_period_data():
+    """ Displays the results """
     input_model = __get_input_model()
 
-    # Allow selecting the income accounts.
-    # TODO Save to the settings?
-    income_accounts = [
-        "Income:Investment"
-    ]
+    # load data
+    with database.Database().open_book() as book:
+        #            splits = __load_income_in_period(
+        #                book, income_accounts, date_from, date_to)
+        # Sort by date
+        #            splits.sort(key=lambda split: split.transaction.post_date)
 
-    model = {}
-    if "date_from" in input_model:
-        model = {
-            "datefrom": input_model["date_from_str"],
-            "dateto": input_model["date_to_str"]
-        }
-        # load data
-        with database.Database().open_book() as book:
-            #            splits = __load_income_in_period(
-            #                book, income_accounts, date_from, date_to)
-            # Sort by date
-            #            splits.sort(key=lambda split: split.transaction.post_date)
+        model = __get_model_inperiod(input_model, book)
+        return render_template('income_in_period.html', model=model)
 
-            account_ids = __get_income_account_ids(book, income_accounts)
-            splits = __load_income_in_period_query(book, account_ids,
-                                                   input_model["date_from"], input_model["date_to"])
 
-            model["splits"] = splits
-            output = render_template('income_in_period.html', model=model)
-    else:
-        output = render_template('income_in_period.html', model=model)
+def __get_model_inperiod(input_model, book: Book):
+    """ Creates the data model for the prices in period """
+    model = {
+        "datefrom": input_model["date_from_str"],
+        "dateto": input_model["date_to_str"]
+    }
 
-    return output
+    if "currency" in input_model:
+        model["currency"] = input_model["currency"]
+
+    # income accounts
+    account_names = input_model["accounts"].split(",")
+
+    account_ids = __get_income_account_ids(book, account_names)
+    splits = __load_income_in_period_query(
+        book, account_ids, input_model)
+
+    model["splits"] = splits
+
+    return model
 
 
 def __get_input_model():
-    """ Parses user input """
+    """ Parses user input into a data-transfer object (DTO) """
     model = {}
+    # request.args.get
 
-    from_str = request.args.get("datefrom")
+    accounts = request.form.get("accounts")
+    if accounts:
+        model["accounts"] = accounts
+
+    from_str = request.form.get("datefrom")
     if from_str:
         model["date_from"] = dateutil.parser.parse(from_str)
         model["date_from_str"] = from_str
 
-    to_str = request.args.get("dateto")
+    to_str = request.form.get("dateto")
     if to_str:
         model["date_to"] = dateutil.parser.parse(to_str)
         model["date_to_str"] = to_str
+
+    currency = request.form.get("currency")
+    if currency:
+        model["currency"] = currency
 
     return model
 
@@ -142,9 +162,12 @@ def __load_all_income_for_account(account: Account, date_from: date, date_to: da
 
 
 def __load_income_in_period_query(
-        book: Book, account_ids: List[hex],
-        date_from: date, date_to: date) -> List[Split]:
+        book: Book, account_ids: List[hex], input_model) -> List[Split]:
     """ Load all data by using the query directly """
+
+    date_from = input_model["date_from"]
+    date_to = input_model["date_to"]
+
     query = (book.query(Split)
              .join(Transaction)
              .join(Account)
@@ -152,6 +175,14 @@ def __load_income_in_period_query(
                      Account.guid.in_(account_ids))
              .order_by(Transaction.post_date)
             )
+
+    if "currency" in input_model:
+        currency = input_model["currency"]
+        query = (query
+                 .join(Commodity)
+                 .filter(Commodity.mnemonic == currency)
+                )
+
     # Check the generated SQL
 #    sql = str(query.statement.compile(dialect=sqlite.dialect(),
 #       compile_kwargs={"literal_binds": True}))

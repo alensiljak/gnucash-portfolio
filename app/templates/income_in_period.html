@@ -11,7 +11,7 @@
         </div>
         <div id="filter" role="tabpanel" class="collapse {% if not model %}show{% endif %}" aria-labelledby="filterHeader" data-parent="#accordion">
             <div class="card-body">
-                <form>
+                <form method="POST">
                     <div class="form-row">
                         <div class="form-group">
                             <label for="accounts">Income account(s)</label>
@@ -30,8 +30,12 @@
                                 %}>
                         </div>
                     </div>
-                    <div class="form-group">
-
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="currency">Currency</label>
+                            <input name="currency" type="text" class="form-control"
+                            {% if model.currency %}value="{{ model.currency }}"{% endif %}>
+                        </div>
                     </div>
                     <div class="text-center">
                         <button type="reset" class="btn">Reset</button>
