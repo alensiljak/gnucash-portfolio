@@ -42,6 +42,7 @@ def income_in_period_data():
 def __get_model_inperiod(input_model, book: Book):
     """ Creates the data model for the prices in period """
     model = {
+        "accounts": input_model["accounts"],
         "datefrom": input_model["date_from_str"],
         "dateto": input_model["date_to_str"]
     }

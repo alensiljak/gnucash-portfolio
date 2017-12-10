@@ -12,10 +12,11 @@
         <div id="filter" role="tabpanel" class="collapse {% if not model %}show{% endif %}" aria-labelledby="filterHeader" data-parent="#accordion">
             <div class="card-body">
                 <form method="POST">
+
                     <div class="form-row">
                         <div class="form-group">
                             <label for="accounts">Income account(s)</label>
-                            <input type="text" name="accounts" class="form-control" value="Income:Investment" />
+                            <input type="text" name="accounts" class="form-control" value="{% if model.accounts %}{{ model.accounts }}{% else %}Income:Investment{% endif %}" />
                         </div>
                     </div>
                     <div class="form-row">
@@ -59,9 +60,10 @@
         <tr>
             <td>{{ "{:%Y-%m-%d}".format(split.transaction.post_date) }}</td>
             <td>{{ split.account.fullname }}</td>
-            <td>{{ split.value * (-1) }}</td>
+            <td class="text-right">{{ "{:.2f}".format(split.value * (-1)) }}</td>
         </tr>
         {% endfor %}
     </tbody>
 </table>
-{% endif %} {% endblock %}
+{% endif %} 
+{% endblock %}
