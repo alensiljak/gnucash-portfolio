@@ -1,5 +1,8 @@
 """
-Asset Allocation controller
+Asset Allocation
+- display of asset allocation state
+- editing of allocations (store in .json)
+- manual adjustments to allocation (offset for imbalance)
 """
 from flask import Blueprint, request, render_template
 from gnucash_portfolio.lib import settings, assetallocation as aalloc

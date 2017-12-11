@@ -56,3 +56,5 @@ Some operations that are targeted:
 - [ ] check other gnucash-related sites from [here](http://piecash.readthedocs.io/en/latest/doc/github_links.html)
 
 [Other](other)
+
+[Links](links)

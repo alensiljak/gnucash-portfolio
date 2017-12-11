@@ -71,6 +71,13 @@ There are two technologies providing underlying access to Android functions:
 - [gnucash stock portfolio](https://github.com/hjacobs/gnucash-stock-portfolio)
 - [gnucash qif import](https://github.com/hjacobs/gnucash-qif-import)
 
+### Data Tables
+
+Client-side data tables (JavaScript), to be used for quick search, i.e. by typing in a part of account name:
+- [datatables](https://datatables.net/)
+- [dynatable](https://www.dynatable.com/)
+- list of jquery data table plugins at [sitepoint](https://www.sitepoint.com/12-amazing-jquery-tables/)
+
 ### Other
 
 Some related technologies. [Reference](https://groups.google.com/forum/#!topic/piecash/YgrkL1MVL18)
