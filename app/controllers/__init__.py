@@ -1,4 +1,4 @@
 """
 Exports for the controllers package
 """
-from . import incomecontroller, vanguardcontroller
+from . import income, vanguard
