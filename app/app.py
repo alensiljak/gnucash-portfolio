@@ -2,7 +2,7 @@
 This is the entry point to the application
 """
 import sys
-from decorators import templated
+#from decorators import templated
 #import logging
 from flask import Flask, render_template, request
 from gnucash_portfolio import get_vanguard_au_prices
@@ -26,17 +26,17 @@ def index():
 
 
 @app.route('/assetallocation')
-@templated()
+#@templated()
 def assetallocation():
     """ Asset Allocation """
     book_url = settings.Settings().database_uri
     model = aalloc.load_asset_allocation_model(book_url)
-    #return render_template('assetallocation.html', model=model)
-    return dict(model=model)
+    return render_template('assetallocation.html', model=model)
+    #return dict(model=model)
 
 
 @app.route('/portfoliovalue')
-@templated()
+#@templated()
 def portfoliovalue():
     """ Portfolio Value report """
     stock_rows = []
@@ -48,8 +48,8 @@ def portfoliovalue():
             stock_rows.append(model)
 
     #print(stock_rows)
-    #return render_template('portfolio_value.html', stock_rows=stock_rows)
-    return dict(stock_rows=stock_rows)
+    return render_template('portfolio_value.html', stock_rows=stock_rows)
+    #return dict(stock_rows=stock_rows)
 
 
 ##################################################################################

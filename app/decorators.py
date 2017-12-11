@@ -1,5 +1,7 @@
 """
-Decorators for Flask
+Decorators for Flask.
+This is a test for custom decorators.
+Templated is not used, however, as it is not compatible with setting up template location in flask.
 """
 from functools import wraps
 from flask import request, render_template
