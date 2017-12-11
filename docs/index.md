@@ -1,3 +1,9 @@
+<style>
+body {
+    background-color: #ccdfcb;
+}
+</style>
+
 # GnuCash Portfolio
 
 This project adds portfolio management functionality to a GnuCash book saved as an SQLite database.
