@@ -4,6 +4,10 @@
   "version": "0.0.2",
   "homepage": "http://portfolio.alensiljak.tk/",
   "license": "GPL-3.0",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/MisterY/gnucash-portfolio"
+  },
   "devDependencies": {
     "bootstrap": "^4.0.0-beta.2",
     "jquery": "^3.2.1",

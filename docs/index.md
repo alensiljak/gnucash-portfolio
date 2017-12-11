@@ -43,11 +43,14 @@ Some operations that are targeted:
 - [x] create a library of callable functions, to be used from the reports.
 - [x] list all dividends for security. This requires some conventions as to where to expect them since there is no direct linking between a commodity and the dividends/interest it earns. Search all accounts with the same name in the Income tree.
 
-## To Do
+## In Progress
 
 - [ ] Asset Allocation. This is currently implemented in MoneyManagerEx for Android and there should be a version that works with GnuCash book directly. 
+
+## To Do
+
 - [ ] Charts:
-    - [ ] display currency pair chart over selected period (report?)
-    - [ ] display security price over selected period (report?)
+    - [ ] display currency pair chart over selected period
+    - [ ] display security price over selected period
 
 [Other](other)

@@ -19,5 +19,5 @@ as it is called from the reports.
 
 ### Execution
 
-All the functionality will be provided as a web application.
+All the functionality will be provided as a web application. There are parts of code that are not yet exposed through the web interface, though.
 Simply run `run.bat` in the app directory.
