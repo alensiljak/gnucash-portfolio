@@ -32,7 +32,7 @@ Some operations that are targeted:
 - import security prices
 - maintain asset allocation
 
-# Goals
+# Targets
 
 ## Implemented
 
@@ -52,5 +52,8 @@ Some operations that are targeted:
 - [ ] Charts:
     - [ ] display currency pair chart over selected period
     - [ ] display security price over selected period
+- [ ] site styling with scss. See [Theming](https://getbootstrap.com/docs/4.0/getting-started/theming/).
 
+<footer>
 [Other](other)
+</footer>
