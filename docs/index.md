@@ -53,7 +53,6 @@ Some operations that are targeted:
     - [ ] display currency pair chart over selected period
     - [ ] display security price over selected period
 - [ ] site styling with scss. See [Theming](https://getbootstrap.com/docs/4.0/getting-started/theming/).
+- [ ] check other gnucash-related sites from [here](http://piecash.readthedocs.io/en/latest/doc/github_links.html)
 
-<footer>
 [Other](other)
-</footer>

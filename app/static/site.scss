@@ -1,11 +1,48 @@
 /*
     Styles
-    matte: #414141
-    fresh: #ccdfcb
-    watermelon: #ff6a5c
-    teal: #056571
+    Custom palette.
  */
+$colors: (
+    "matte": #414141,
+    "fresh": #ccdfcb,
+    "watermelon": #ff6a5c,
+    "teal": #056571
+);
+@function color($key: "teal") {
+    @return map-get($colors, $key);
+}
 
+/*
+    Redefined defaults
+*/
 body {
-    background-color: #ccdfcb;
+    background-color: color("fresh");
+}
+
+h1, h2 {
+    color: color("teal")
+}
+
+a.active {
+    color: color("watermelon")
+}
+
+/*
+    Custom styles
+*/
+.bg-matte {
+    background-color: color("matte")
+}
+.bg-fresh {
+    background-color: color("fresh")
+}
+.bg-watermelon {
+    background-color: color("watermelon")
+}
+.bg-teal {
+    background-color: color("teal")
+}
+
+.fg-teal {
+    color: color("teal")
 }

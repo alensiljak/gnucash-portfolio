@@ -1,2 +1,23 @@
 body {
   background-color: #ccdfcb; }
+
+  h1, h2 {
+    color: #056571; }
+
+    a.active {
+      color: #ff6a5c; }
+
+      .bg-matte {
+        background-color: #414141; }
+
+        .bg-fresh {
+          background-color: #ccdfcb; }
+
+          .bg-watermelon {
+            background-color: #ff6a5c; }
+
+            .bg-teal {
+              background-color: #056571; }
+
+              .fg-teal {
+                color: #056571; }
