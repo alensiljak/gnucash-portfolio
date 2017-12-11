@@ -65,6 +65,14 @@ There are two technologies providing underlying access to Android functions:
 
 ## To Explore
 
+### Similar projects
+
+- [pygnucash](https://github.com/MatzeB/pygnucash)
+- [gnucash stock portfolio](https://github.com/hjacobs/gnucash-stock-portfolio)
+- [gnucash qif import](https://github.com/hjacobs/gnucash-qif-import)
+
+### Other
+
 Some related technologies. [Reference](https://groups.google.com/forum/#!topic/piecash/YgrkL1MVL18)
 
 Using piecash+jinja2 could ease the generation of :
