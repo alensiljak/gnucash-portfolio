@@ -1,3 +1,9 @@
+<style>
+body {
+    background-color: #ccdfcb;
+}
+</style>
+
 # Other
 
 ## Related Projects
