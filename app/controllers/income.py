@@ -4,14 +4,12 @@ Income reports
 from typing import List
 from datetime import date
 import dateutil
-#from decimal import Decimal
 from flask import Blueprint, request, render_template
 #from sqlalchemy.dialects import sqlite
 from piecash import Account, Commodity, Split, Book, Transaction
 from gnucash_portfolio.lib import database
 
-income_controller = Blueprint('income_controller', __name__,
-                              url_prefix='/income')
+income_controller = Blueprint('income_controller', __name__, url_prefix='/income')
 
 
 @income_controller.route('/inperiod')

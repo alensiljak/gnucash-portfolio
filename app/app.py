@@ -1,20 +1,18 @@
 """
 This is the entry point to the application
 """
-import sys
-#from decorators import templated
-#import logging
 from flask import Flask, render_template, request
 from gnucash_portfolio import get_vanguard_au_prices
-from gnucash_portfolio.lib import assetallocation as aalloc, settings, portfoliovalue as pvalue, database
+from gnucash_portfolio.lib import portfoliovalue as pvalue, database
 # Controllers/blueprints
-from controllers import vanguard, income
+from controllers import vanguard, income, assetallocation
 
 # Define the WSGI application object
 app = Flask(__name__)
 # Configurations
 app.config.from_object('config')
 # Register blueprints
+app.register_blueprint(assetallocation.assetallocation_controller)
 app.register_blueprint(vanguard.vanguard_controller)
 app.register_blueprint(income.income_controller)
 
@@ -22,16 +20,6 @@ app.register_blueprint(income.income_controller)
 def index():
     """ The default route. Homepage. """
     return render_template('index.html')
-
-
-@app.route('/assetallocation')
-#@templated()
-def assetallocation():
-    """ Asset Allocation """
-    book_url = settings.Settings().database_uri
-    model = aalloc.load_asset_allocation_model(book_url)
-    return render_template('assetallocation.html', model=model)
-    #return dict(model=model)
 
 
 @app.route('/portfoliovalue')
