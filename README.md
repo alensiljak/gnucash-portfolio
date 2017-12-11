@@ -1,12 +1,10 @@
 # gnucash-portfolio
 A collection of tools for managing an investment portfolio in GnuCash
 
+User-oriented documentation is at http://portfolio.alensiljak.tk
+
 The purpose of the project is to provide tools that help in managing an investment portfolio in a GnuCash book.
 The code is (mostly) written in Python.
-
-The gratification comes from the sense of freedom, of having direct access to your financial data and being able to retrieve any statistic or information you might want, and not depending on others to do it for you.
-
-Retrieving currency exchange rates is a part of this suite.
 
 ## Running
 
@@ -23,25 +21,6 @@ as it is called from the reports.
 
 All the functionality will be provided as a web application.
 Simply run `run.bat` in the app directory.
-
-# Goals
-
-## Implemented
-
-- [x] download currency exchange rates
-- [x] import exchange rates into GnuCash file
-- [x] import .csv security prices into GnuCash file
-- [x] securities report
-- [x] create a library of callable functions, to be used from the reports.
-- [x] list all dividends for security. This requires some conventions as to where to expect them since there is no direct linking between a commodity and the dividends/interest it earns. Search all accounts with the same name in the Income tree.
-
-## To Do
-
-- [ ] Asset Allocation. This is currently implemented in MoneyManagerEx for Android and there should be a version that works with GnuCash book directly. 
-- [ ] Charts:
-    - [ ] display currency pair chart over selected period (report?)
-    - [ ] display security price over selected period (report?)
-- [ ] Enhance average price calculation. Take into account lots and sold securities. See how selling shares affects the average price.
 
 # Other
 

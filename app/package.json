@@ -2,6 +2,7 @@
     "name": "gnucash-portfolio-app",
     "description": "GnuCash Portfolio web application",
     "version": "0.0.2",
+    "homepage": "http://portfolio.alensiljak.tk/",
     "devDependencies": {
         "bootstrap": "4.0.0-beta2"
     }
