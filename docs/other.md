@@ -29,6 +29,8 @@ body {
 
 - [pandas](http://pandas.pydata.org/), library for data analysis. Check DataFrame and [exports](http://piecash.readthedocs.io/en/latest/api/piecash.core.book.html#piecash.core.book.Book.splits_df) from piecash.
 - [plot.ly](https://plot.ly), plotting service/library with offline Python bindings. For data presentation.
+    - [dash](https://plot.ly/products/dash/) framework for analytics.
+    - [plotly Python](https://plot.ly/python/)
 
 ### Desktop
 
