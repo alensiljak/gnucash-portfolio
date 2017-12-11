@@ -5,6 +5,9 @@ gnucash_portfolio/data/*.gnucash-journal
 #gnucash_portfolio/data/*.json
 gnucash_portfolio/data/settings.json
 
+# Node modules
+app/node_modules/*
+
 #####################################################
 # Byte-compiled / optimized / DLL files
 __pycache__/
