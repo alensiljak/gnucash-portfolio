@@ -21,3 +21,8 @@ as it is called from the reports.
 
 All the functionality will be provided as a web application. There are parts of code that are not yet exposed through the web interface, though.
 Simply run `run.bat` in the app directory.
+
+### Web Application
+
+To prepare the web application, install npm dependencies listed in package.json.
+Install Python dependencies in requirements.txt.
