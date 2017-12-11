@@ -1,9 +1,12 @@
 {
-    "name": "gnucash-portfolio-app",
-    "description": "GnuCash Portfolio web application",
-    "version": "0.0.2",
-    "homepage": "http://portfolio.alensiljak.tk/",
-    "devDependencies": {
-        "bootstrap": "4.0.0-beta2"
-    }
+  "name": "gnucash-portfolio-app",
+  "description": "GnuCash Portfolio web application",
+  "version": "0.0.2",
+  "homepage": "http://portfolio.alensiljak.tk/",
+  "license": "GPL-3.0",
+  "devDependencies": {
+    "bootstrap": "^4.0.0-beta.2",
+    "jquery": "^3.2.1",
+    "popper.js": "^1.12.9"
+  }
 }

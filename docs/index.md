@@ -49,3 +49,5 @@ Some operations that are targeted:
 - [ ] Charts:
     - [ ] display currency pair chart over selected period (report?)
     - [ ] display security price over selected period (report?)
+
+[Other](other)
