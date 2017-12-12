@@ -39,9 +39,10 @@ Some operations that are targeted:
 - [x] download currency exchange rates
 - [x] import exchange rates into GnuCash file
 - [x] import .csv security prices into GnuCash file
-- [x] securities report
+- [x] portfolio value report
 - [x] create a library of callable functions, to be used from the reports.
 - [x] list all dividends for security. This requires some conventions as to where to expect them since there is no direct linking between a commodity and the dividends/interest it earns. Search all accounts with the same name in the Income tree.
+- [x] site styling with scss. See [Theming](https://getbootstrap.com/docs/4.0/getting-started/theming/).
 
 ## In Progress
 
@@ -52,7 +53,7 @@ Some operations that are targeted:
 - [ ] Charts:
     - [ ] display currency pair chart over selected period
     - [ ] display security price over selected period
-- [ ] site styling with scss. See [Theming](https://getbootstrap.com/docs/4.0/getting-started/theming/).
+- [ ] security analysis, including return in a period, dividend income in period, income return %, total return %.
 - [ ] check other gnucash-related sites from [here](http://piecash.readthedocs.io/en/latest/doc/github_links.html)
 
 [Other](other)
