@@ -21,13 +21,21 @@ app.register_blueprint(portfolio.portfolio_controller),
 app.register_blueprint(securities.stock_controller)
 
 # Bundles
-# bundles = {
-#     'vendor_css': Bundle(
-#         '../node_modules/@fortawesome/fontawesome/styles.css',
-#         output='vendor.css'),
-# }
-# assets = Environment(app)
-# assets.register(bundles)
+bundles = {
+    'vendor_css': Bundle(
+        '../node_modules/@fortawesome/fontawesome/styles.css',
+        '../node_modules/daterangepicker/daterangepicker.css',
+        output='vendor.css'),
+    'vendor_js': Bundle(
+        '../node_modules/daterangepicker/daterangepicker.js',
+        output='vendor.js')
+    # 'site_css': Bundle(
+    #     'site.scss',
+    #     filters='pyscss',
+    #     output='site.css')
+}
+assets = Environment(app)
+assets.register(bundles)
 
 
 ##################################################################################

@@ -8,6 +8,20 @@ Developing reports on gnucash_utilities stack seems fairly straightforward and s
 - Performance
 Comparing the output through GnuCash reports to the native output using Python stack (piecash + HTML output), the advantage is significantly on the side of Python components.
 
+# Compiling
+
+To get the required development dependencies, run
+
+`npm install`
+
+## CSS
+
+`node run scss`
+
+## JS
+
+JavaScript is bundled through Flask Assets. It collects the vendor code from node modules.
+
 # Running
 
 There are two ways to run the web app:
