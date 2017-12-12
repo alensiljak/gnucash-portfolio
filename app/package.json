@@ -9,13 +9,12 @@
     "url": "https://github.com/MisterY/gnucash-portfolio"
   },
   "scripts": {
-    "build-css": "node-sass --include-path static static/site.scss   static/site.css"
+    "scss": "node-sass --watch static -o static"
   },
   "devDependencies": {
     "bootstrap": "^4.0.0-beta.2",
     "jquery": "^3.2.1",
     "node-sass": "^4.7.2",
-    "nodemon": "^1.12.5",
     "popper.js": "^1.12.9"
   }
 }

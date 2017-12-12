@@ -1,9 +1,17 @@
 /*
     Styles
-    Custom palette.
  */
+
+/*
+    Customize Bootstrap
+*/
+$body-bg: color("fresh");
+
 @import '../node_modules/bootstrap/scss/bootstrap';
 
+/*
+    Custom palette.
+*/
 $colors: (
     "matte": #414141,
     "fresh": #ccdfcb,
@@ -17,9 +25,9 @@ $colors: (
 /*
     Redefined defaults
 */
-body {
-    background-color: color("fresh");
-}
+// body {
+//     background-color: color("fresh");
+// }
 
 h1, h2 {
     color: color("teal");
