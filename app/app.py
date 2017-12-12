@@ -21,7 +21,9 @@ app.register_blueprint(income.income_controller)
 app.register_blueprint(portfolio.portfolio_controller),
 app.register_blueprint(securities.stock_controller)
 
-scripts_route = Blueprint('scripts', __name__, static_url_path='/npm', static_folder='node_modules')
+npm_route = Blueprint('npm', __name__, static_url_path='/npm', static_folder='node_modules')
+app.register_blueprint(npm_route)
+scripts_route = Blueprint('scripts', __name__, static_url_path='/scripts', static_folder='scripts')
 app.register_blueprint(scripts_route)
 
 # Bundles
@@ -31,9 +33,11 @@ bundles = {
         '../node_modules/daterangepicker/daterangepicker.css',
         output='vendor.css'),
     'vendor_js': Bundle(
+        '../node_modules/popper.js/dist/popper.min.js',
         '../node_modules/jquery/dist/jquery.min.js',
         '../node_modules/moment/min/moment.min.js',
         '../node_modules/daterangepicker/daterangepicker.js',
+        '../node_modules/bootstrap/dist/js/bootstrap.min.js',
         output='vendor.js'),
     # 'site_css': Bundle(
     #     'site.scss',

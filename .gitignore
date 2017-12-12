@@ -10,6 +10,7 @@ app/node_modules/*
 
 # Compiled web assets
 app/static/site.css
+app/static/site.js
 app/static/vendor.css
 app/static/vendor.js
 
