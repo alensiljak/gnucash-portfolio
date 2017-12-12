@@ -1,0 +1,62 @@
+{% extends "layout.html" %} {% block title %}Transaction Details{% endblock %} {% block content %}
+<h1>Transaction Details</h1>
+
+<form>
+    <div class="form-row">
+        <div class="form-group">
+            <label for="num">Num</label>
+            <input class="form-control" name="num" disabled type="text" 
+                value="{{ model.transaction.num }}">
+        </div>
+        <div class="form-group">
+            <label for="post_date">Date posted</label>
+            <input class="form-control" name="post_date" disabled type="text" 
+                value="{{ model.transaction.post_date }}">
+        </div>
+        <div class="form-group">
+            <label for="enter_date">Date entered</label>
+            <input class="form-control" name="enter_date" disabled type="text" 
+                value="{{ model.transaction.enter_date }}">
+        </div>
+    </div>
+    <div class="form-group">
+        <label for="description">Description</label>
+        <input class="form-control" name="description" disabled type="text" 
+            value="{{ model.transaction.description }}">
+    </div>
+    <div class="form-group">
+        <label for="notes">Notes</label>
+        <input class="form-control" name="notes" disabled type="text" 
+            value="{{ model.transaction.notes }}">
+    </div>
+</form>
+
+<table class="table">
+    <caption>Splits</caption>
+    <thead>
+        <th>Account</th>
+        <th>Value</th>
+        <th>Quantity</th>
+        <th>Memo</th>
+        <th>Action</th>
+        <th>Reconciled</th>
+        <th>State</th>
+        <th>Lot</th>
+    </thead>
+    <tbody>
+        {% for split in model.transaction.splits %}
+        <tr>
+            <td>{{ split.account.fullname }}</td>
+            <td class="text-right">{{ split.value }}</td>
+            <td class="text-right">{{ split.quantity }}</td>
+            <td>{{ split.memo }}</td>
+            <td>{{ split.action }}</td>
+            <td>{{ split.reconcile_date }}</td>
+            <td>{{ split.reconcile_state }}</td>
+            <td>{{ split.lot }}</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+{% endblock %}

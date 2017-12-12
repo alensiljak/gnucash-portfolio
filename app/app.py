@@ -7,7 +7,7 @@ from gnucash_portfolio import get_vanguard_au_prices
 from flask import Blueprint
 
 # Controllers/blueprints
-from controllers import vanguard, income, assetallocation, index, portfolio, securities
+from controllers import vanguard, income, assetallocation, index, portfolio, securities, transaction
 
 # Define the WSGI application object
 app = Flask(__name__, static_url_path='/static')
@@ -18,11 +18,10 @@ app.register_blueprint(index.index_controller)
 app.register_blueprint(assetallocation.assetallocation_controller)
 app.register_blueprint(vanguard.vanguard_controller)
 app.register_blueprint(income.income_controller)
-app.register_blueprint(portfolio.portfolio_controller),
+app.register_blueprint(portfolio.portfolio_controller)
 app.register_blueprint(securities.stock_controller)
+app.register_blueprint(transaction.transaction_controller)
 
-npm_route = Blueprint('npm', __name__, static_url_path='/npm', static_folder='node_modules')
-app.register_blueprint(npm_route)
 scripts_route = Blueprint('scripts', __name__, static_url_path='/scripts', static_folder='scripts')
 app.register_blueprint(scripts_route)
 

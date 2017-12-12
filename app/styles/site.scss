@@ -60,3 +60,11 @@ a {
 .fg-teal {
     color: color("teal");
 }
+
+#leftnav a {
+    color: color("fresh");
+
+    &.active {
+        color: color("watermelon");
+    }
+}

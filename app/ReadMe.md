@@ -16,6 +16,7 @@ To get the required development and runtime dependencies, run
 `pip install -r requirements.txt`
 
 in the app directory.
+Besides this, piecash, gnucash_utilities, and gnucash_portfolio packages must be installed.
 
 ## CSS
 
