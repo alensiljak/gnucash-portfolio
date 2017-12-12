@@ -21,14 +21,14 @@ $(function () {
     /*
         mark the active nav-item by comparing the current url to the nav link.
     */
-    var getLocation = function(href) {
+    var getLocation = function (href) {
         var l = document.createElement("a");
         l.href = href;
         return l;
     };
     currentLocation = getLocation(window.location);
     // Now find the link with the current path.
-    $("#leftnav").find("a[href^='" + currentLocation.pathname + "']")
+    $("#leftnav").find("a[href='" + currentLocation.pathname + "']")
         .addClass("active");
     //console.log(found);
 });

@@ -8,8 +8,12 @@ vanguard_controller = Blueprint('vanguard_controller', __name__,
                                 url_prefix='/vanguard')
 
 
+@vanguard_controller.route('/')
+def index():
+    return render_template("incomplete.html")
+
+
 @vanguard_controller.route('/prices')
-#@templated()
 def vanguardprices():
     """ Prices for Vanguard funds """
     #funds = "8123,8146,8148,8147"

@@ -19,4 +19,6 @@ def assetallocation():
 @assetallocation_controller.route('/')
 def asset_allocation():
     """ Asset Allocation without the securities """
-    return render_template('asset_allocation.html', model=None)
+    # TODO load asset allocation but do not show securities (?)
+    return render_template("incomplete.html")
+    #return render_template('asset_allocation.html', model=None)
