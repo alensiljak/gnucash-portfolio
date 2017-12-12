@@ -7,8 +7,8 @@
   <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=yes"> {% block head %}
 
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
-  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/css/bootstrap.min.css" integrity="sha384-PsH8R72JQ3SOdhVi3uxftmaW6Vc51MKb0q5P2rRUpPvrszuE4W1povHYgTpBfshb"
-    crossorigin="anonymous">
+  <!-- <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/css/bootstrap.min.css" integrity="sha384-PsH8R72JQ3SOdhVi3uxftmaW6Vc51MKb0q5P2rRUpPvrszuE4W1povHYgTpBfshb"
+    crossorigin="anonymous"> -->
   <link rel="stylesheet" type="text/css" href="//cdn.jsdelivr.net/bootstrap.daterangepicker/2/daterangepicker.css" /> 
   <link rel="stylesheet" href="{{ url_for('static', filename='site.css') }}">
 
@@ -24,12 +24,7 @@
   <div id="content" class="container-fluid">
     <div class="row">
       <div class="col-2">
-        <nav class="nav flex-column pt-2 bg-matte">
-          <a class="nav-link active" href="#">1</a>
-          <a class="nav-link" href="#">2</a>
-          <a class="nav-link" href="#">3</a>
-          <a class="nav-link disabled" href="#">4</a>
-        </nav>
+        {% include 'leftnav.html' %}
       </div>
       <div class="col-10">
         {% block content %}{% endblock %}
