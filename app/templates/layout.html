@@ -10,15 +10,6 @@
   {% assets "vendor_css" %}
   <link rel="stylesheet" href="{{ ASSET_URL }}" />
   {% endassets %}
-
-  <link href="https://use.fontawesome.com/releases/v5.0.1/css/all.css" rel="stylesheet">
-  {# now included via scss <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/css/bootstrap.min.css" integrity="sha384-PsH8R72JQ3SOdhVi3uxftmaW6Vc51MKb0q5P2rRUpPvrszuE4W1povHYgTpBfshb"
-    crossorigin="anonymous"> #}
-  <link rel="stylesheet" type="text/css" href="//cdn.jsdelivr.net/bootstrap.daterangepicker/2/daterangepicker.css" /> 
-
-  {#% assets "site_css" %}
-  <link rel="stylesheet" href="{{ ASSET_URL }}" />
-  {% endassets %#}
   <link rel="stylesheet" href="{{ url_for('static', filename='site.css') }}">
 
   <title>{% block title %}{% endblock %} - GnuCash Portfolio</title>
