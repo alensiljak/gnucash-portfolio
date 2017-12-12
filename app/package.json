@@ -9,7 +9,8 @@
     "url": "https://github.com/MisterY/gnucash-portfolio"
   },
   "scripts": {
-    "scss": "node-sass --watch static -o static"
+    "scss": "node-sass static -o static",
+    "scss:watch": "npm run scss && node-sass static -wo static"
   },
   "devDependencies": {
     "@fortawesome/fontawesome": "^1.0.1",
