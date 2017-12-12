@@ -4,6 +4,7 @@ This is the entry point to the application
 from flask import Flask, render_template, request
 from flask_assets import Bundle, Environment
 from gnucash_portfolio import get_vanguard_au_prices
+from flask import Blueprint
 
 # Controllers/blueprints
 from controllers import vanguard, income, assetallocation, index, portfolio, securities
@@ -20,6 +21,9 @@ app.register_blueprint(income.income_controller)
 app.register_blueprint(portfolio.portfolio_controller),
 app.register_blueprint(securities.stock_controller)
 
+scripts_route = Blueprint('scripts', __name__, static_url_path='/npm', static_folder='node_modules')
+app.register_blueprint(scripts_route)
+
 # Bundles
 bundles = {
     'vendor_css': Bundle(
@@ -27,12 +31,18 @@ bundles = {
         '../node_modules/daterangepicker/daterangepicker.css',
         output='vendor.css'),
     'vendor_js': Bundle(
+        '../node_modules/jquery/dist/jquery.min.js',
+        '../node_modules/moment/min/moment.min.js',
         '../node_modules/daterangepicker/daterangepicker.js',
-        output='vendor.js')
+        output='vendor.js'),
     # 'site_css': Bundle(
     #     'site.scss',
     #     filters='pyscss',
     #     output='site.css')
+    'site_js': Bundle(
+        '../scripts/basic.js',
+        output='site.js'
+    )
 }
 assets = Environment(app)
 assets.register(bundles)

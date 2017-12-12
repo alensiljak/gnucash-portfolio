@@ -16,11 +16,14 @@ To get the required development dependencies, run
 
 ## CSS
 
+SCSS is compiled using node-sass:
+
 `node run scss`
 
 ## JS
 
-JavaScript is bundled through Flask Assets. It collects the vendor code from node modules.
+JavaScript is bundled through Flask Assets. It collects the vendor code from node modules. Make sure all the npm dependencies are installed. 
+The bundle will be built automatically when the app is started.
 
 # Running
 

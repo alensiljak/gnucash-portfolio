@@ -8,6 +8,11 @@ gnucash_portfolio/data/settings.json
 # Node modules
 app/node_modules/*
 
+# Compiled web assets
+app/static/site.css
+app/static/vendor.css
+app/static/vendor.js
+
 #####################################################
 # Byte-compiled / optimized / DLL files
 __pycache__/
