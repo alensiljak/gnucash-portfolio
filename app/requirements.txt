@@ -10,6 +10,7 @@ flake8==3.5.0
 Flask==0.12.2
 -e git+https://github.com/MisterY/gnucash-portfolio@c972dceb6a553e063f6523ab50baa198b3aec7dd#egg=gnucash_portfolio
 -e git+https://github.com/MisterY/gnucash-utilities@6d7e1094e2943df962373c79b40dd922fc1521f4#egg=gnucash_utilities
+Flask-Assets==0.12
 idna==2.6
 isort==4.2.15
 itsdangerous==0.24

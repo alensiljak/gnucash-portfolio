@@ -1,17 +1,7 @@
 /*
     Styles
- */
-
-/*
-    Customize Bootstrap
-*/
-$body-bg: color("fresh");
-
-@import '../node_modules/bootstrap/scss/bootstrap';
-
-/*
     Custom palette.
-*/
+ */
 $colors: (
     "matte": #414141,
     "fresh": #ccdfcb,
@@ -21,6 +11,16 @@ $colors: (
 @function color($key: "teal") {
     @return map-get($colors, $key);
 }
+
+/*
+    Customize Bootstrap
+*/
+$body-bg: color("fresh");
+$theme-colors: (
+    "primary": color("teal"),
+    "danger": color("watermelon")
+  );
+@import '../node_modules/bootstrap/scss/bootstrap';
 
 /*
     Redefined defaults

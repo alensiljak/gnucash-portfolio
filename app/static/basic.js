@@ -18,4 +18,6 @@ $(function () {
         }
     });
 
+    // mark the active nav-item
+    $("")
 });

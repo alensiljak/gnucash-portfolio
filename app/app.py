@@ -2,24 +2,30 @@
 This is the entry point to the application
 """
 from flask import Flask, render_template, request
+from flask_assets import Bundle, Environment
 from gnucash_portfolio import get_vanguard_au_prices
 from gnucash_portfolio.lib import portfoliovalue as pvalue, database
 # Controllers/blueprints
-from controllers import vanguard, income, assetallocation
+from controllers import vanguard, income, assetallocation, index
 
 # Define the WSGI application object
-app = Flask(__name__)
+app = Flask(__name__, static_url_path='/static')
 # Configurations
 app.config.from_object('config')
 # Register blueprints
+app.register_blueprint(index.index_controller)
 app.register_blueprint(assetallocation.assetallocation_controller)
 app.register_blueprint(vanguard.vanguard_controller)
 app.register_blueprint(income.income_controller)
 
-@app.route('/')
-def index():
-    """ The default route. Homepage. """
-    return render_template('index.html')
+# Bundles
+bundles = {
+    'home_css': Bundle(
+        '../node_modules/@fortawesome/fontawesome/styles.css',
+        output='vendor.css'),
+}
+assets = Environment(app)
+assets.register(bundles)
 
 
 @app.route('/portfoliovalue')
@@ -34,9 +40,9 @@ def portfoliovalue():
             model = pvalue.get_stock_model_from(book, stock)
             stock_rows.append(model)
 
-    #print(stock_rows)
+    # print(stock_rows)
     return render_template('portfolio_value.html', stock_rows=stock_rows)
-    #return dict(stock_rows=stock_rows)
+    # return dict(stock_rows=stock_rows)
 
 
 ##################################################################################

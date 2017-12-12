@@ -14,7 +14,7 @@ def assetallocation():
     """ Asset Allocation with stocks """
     book_url = settings.Settings().database_uri
     model = aalloc.load_asset_allocation_model(book_url)
-    return render_template('assetallocation.html', model=model)
+    return render_template('asset_allocation.html', model=model)
 
 @assetallocation_controller.route('/')
 def asset_allocation():
