@@ -2,6 +2,8 @@
     Styles
     Custom palette.
  */
+@import '../node_modules/bootstrap/scss/bootstrap';
+
 $colors: (
     "matte": #414141,
     "fresh": #ccdfcb,
@@ -20,29 +22,33 @@ body {
 }
 
 h1, h2 {
-    color: color("teal")
+    color: color("teal");
 }
 
-a.active {
-    color: color("watermelon")
+a {
+    color: color("teal");
+    
+    &.active {
+        color: color("watermelon");
+    }
 }
 
 /*
     Custom styles
 */
 .bg-matte {
-    background-color: color("matte")
+    background-color: color("matte");
 }
 .bg-fresh {
-    background-color: color("fresh")
+    background-color: color("fresh");
 }
 .bg-watermelon {
-    background-color: color("watermelon")
+    background-color: color("watermelon");
 }
 .bg-teal {
-    background-color: color("teal")
+    background-color: color("teal");
 }
 
 .fg-teal {
-    color: color("teal")
+    color: color("teal");
 }
