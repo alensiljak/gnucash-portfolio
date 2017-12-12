@@ -10,9 +10,12 @@ Comparing the output through GnuCash reports to the native output using Python s
 
 # Compiling
 
-To get the required development dependencies, run
+To get the required development and runtime dependencies, run
 
 `npm install`
+`pip install -r requirements.txt`
+
+in the app directory.
 
 ## CSS
 
