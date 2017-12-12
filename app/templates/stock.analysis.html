@@ -5,7 +5,18 @@
 <p>
     TODO: input symbol; display prices, balance, link to transactions
 </p>
-<div>
-    Enter or select a commodity symbol:
-</div>
+<form method="POST">
+    <div>
+        Enter or select a commodity symbol:
+        {% for symbol in model.securities %}
+        <p>{{ symbol }} - {{ model.securities[symbol] }} ({{ symbol }})</p>
+        {% endfor %}
+    </div>
+   <div class="form-group">
+       <label></label>
+       
+   </div>
+
+</form>
+
 {% endblock %}

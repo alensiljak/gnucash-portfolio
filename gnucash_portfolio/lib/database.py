@@ -50,7 +50,8 @@ class Database:
             print("Creating an in-memory book.")
             return self.create_book()
 
-        print("Using", filename)
+        access_type = "read/write" if for_writing else "readonly"
+        print("Using", filename, "in", access_type, "mode.")
         #file_path = path.relpath(self.filename)
         file_path = path.abspath(filename)
 

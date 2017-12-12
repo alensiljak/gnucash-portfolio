@@ -6,7 +6,7 @@ from flask_assets import Bundle, Environment
 from gnucash_portfolio import get_vanguard_au_prices
 
 # Controllers/blueprints
-from controllers import vanguard, income, assetallocation, index, portfolio, stocks
+from controllers import vanguard, income, assetallocation, index, portfolio, securities
 
 # Define the WSGI application object
 app = Flask(__name__, static_url_path='/static')
@@ -18,7 +18,7 @@ app.register_blueprint(assetallocation.assetallocation_controller)
 app.register_blueprint(vanguard.vanguard_controller)
 app.register_blueprint(income.income_controller)
 app.register_blueprint(portfolio.portfolio_controller),
-app.register_blueprint(stocks.stock_controller)
+app.register_blueprint(securities.stock_controller)
 
 # Bundles
 # bundles = {
