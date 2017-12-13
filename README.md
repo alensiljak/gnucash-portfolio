@@ -24,5 +24,4 @@ Simply run `run.bat` in the app directory.
 
 ### Web Application
 
-To prepare the web application, install npm dependencies listed in package.json.
-Install Python dependencies in requirements.txt.
+Tu run the web application, please see readme in app folder.
