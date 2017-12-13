@@ -23,5 +23,5 @@ def portfolio_value():
             stock_rows.append(model)
 
     # print(stock_rows)
-    return render_template('portfolio_value.html', stock_rows=stock_rows)
+    return render_template('portfolio.value.html', stock_rows=stock_rows)
     # return dict(stock_rows=stock_rows)
