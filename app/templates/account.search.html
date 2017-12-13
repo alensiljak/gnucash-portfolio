@@ -1,0 +1,47 @@
+{% extends "layout.html" %} {% block title %}Account Search{% endblock %} {% block content %}
+<h1>Account Search</h1>
+<p>
+    TODO: type in a part of the name, display the results with full account name
+</p>
+<form>
+    <div class="form-group">
+        <label></label>
+        <input type="text" placeholder="Type to search">
+    </div>
+</form>
+
+<table id="accounts" class="table table-bordered table-sm table-striped">
+    <thead class="thead-dark">
+        <tr>
+            <th>Name</th>
+            <th>Full Name</th>
+        </tr>
+    </thead>
+    <tfoot>
+        <tr>
+            <th>Name</th>
+            <th>Full Name</th>
+        </tr>
+    </tfoot>
+</table>
+
+{% endblock %} {% block scripts %}
+<script type="text/javascript">
+    $(function () {
+        // register datatables
+        $("#accounts").DataTable({
+            "serverSide": true,
+            "ajax": "/account/find",
+            "columns": [
+                {
+                    "data": "name",
+                    "title": "Name"
+                },
+                {
+                    "data": "fullname",
+                    "title": "Full Name"
+                }
+            ]
+        });
+    });
+</script> {% endblock %}

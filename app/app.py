@@ -36,6 +36,7 @@ bundles = {
         #'../node_modules/@fortawesome/fontawesome-free-solid',
         '../node_modules/font-awesome/css/font-awesome.min.css',
         '../node_modules/daterangepicker/daterangepicker.css',
+        '../node_modules/datatables.net-bs4/css/dataTables.bootstrap4.css',
         output='vendor.css'),
     'vendor_js': Bundle(
         '../node_modules/popper.js/dist/umd/popper.min.js',
@@ -43,6 +44,8 @@ bundles = {
         '../node_modules/moment/min/moment.min.js',
         '../node_modules/daterangepicker/daterangepicker.js',
         '../node_modules/bootstrap/dist/js/bootstrap.min.js',
+        '../node_modules/datatables.net/js/jquery.dataTables.js',
+        '../node_modules/datatables.net-bs4/js/dataTables.bootstrap4.js',
         output='vendor.js'),
     # 'site_css': Bundle(
     #     'site.scss',
