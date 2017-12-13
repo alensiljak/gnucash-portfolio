@@ -13,7 +13,7 @@
     "scss:watch": "npm run scss && node-sass styles -wo static"
   },
   "devDependencies": {
-    "@fortawesome/fontawesome": "^1.0.1",
+    "font-awesome": "^4.7.0",
     "bootstrap": "^4.0.0-beta.2",
     "daterangepicker": "^2.1.27",
     "jquery": "^3.2.1",
