@@ -1,7 +1,13 @@
 fixerio==0.1.1
-flask==0.12.2
-#piecash==0.13.0
-piecash==-e c:\\src\\piecash
+Flask==0.12.2
+#gnucash-utilities==-e c:\\src\\gnucash-utilities
+Flask-Assets==0.12
+Jinja2==2.10
 kivy==1.10.0
+#piecash==0.13.0
+#piecash==-e c:\\src\\piecash
+pyScss==1.3.5
+pytest==3.2.5
 python-dateutil==2.6.1
-gnucash-utilities==-e c:\\src\\gnucash-utilities
+#SQLAlchemy==1.1.15
+SQLAlchemy-Utils==0.32.21
