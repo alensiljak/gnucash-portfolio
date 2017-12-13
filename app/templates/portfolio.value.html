@@ -29,7 +29,7 @@
             <td>{{ row.currency }}</td>
             <td class="text-right">{{ "{:,.2f}".format(row.cost) }}</td>
             
-            <td class="text-right {% if row.gain_loss >= 0 %}text-danger{% endif %}">{{ "{:,.2f}".format(row.gain_loss) }}</td>
+            <td class="text-right {% if row.gain_loss < 0 %}text-danger{% endif %}">{{ "{:,.2f}".format(row.gain_loss) }}</td>
 
             <!-- gain/loss percentage -->
             {% if row.gain_loss_perc >= 0 %}
