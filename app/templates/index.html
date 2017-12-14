@@ -4,23 +4,30 @@
   {{ super() }}
 {% endblock %} 
 {% block content %}
-<h1>GnuCash Portfolio App</h1>
-<h2>Dashboard</h2>
+<h1>GnuCash Portfolio</h1>
+
+<p>
+  GnuCash Portfolio web app provides portfolio management and analysis tools for GnuCash book stored in SQLite format.
+</p>
 
 <ul>
   <li>
     Reports
     <ul>
       <li>
-        See currency exchange rates
+        See currency exchange rates, with chart
       </li>
-      <li>portfolio statistics with charts</li>
-      <li>
-        Distributions per security
-      </li>
+      <li>portfolio statistics, with charts</li>
       <li>
         Security Analysis
+        <ul>
+            <li>
+                Distributions per security
+            </li>
+            <li>ROI</li>
+        </ul>
       </li>
+      <li>Scheduled Transactions</li>
     </ul>
   </li>
   <li>

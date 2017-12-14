@@ -132,13 +132,13 @@ def __load_cash_balances(root_account_name: str):
                 "name": account.name,
                 "fullname": account.fullname,
                 "currency": currency,
-                "balance": account.get_balance()
+                "balance": account.get_quantity()
             }
             model[currency]["rows"].append(row)
 
             # add to total
             total = Decimal(model[currency]["total"])
-            total += account.get_balance()
+            total += account.get_quantity()
             model[currency]["total"] = total
 
     return model
