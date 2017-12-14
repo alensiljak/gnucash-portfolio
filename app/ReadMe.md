@@ -22,7 +22,7 @@ Besides this, piecash, gnucash_utilities, and gnucash_portfolio packages must be
 
 SCSS is compiled using node-sass:
 
-`node run scss`
+`npm run css`
 
 ## JS
 

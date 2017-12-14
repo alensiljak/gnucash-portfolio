@@ -9,8 +9,8 @@
     "url": "https://github.com/MisterY/gnucash-portfolio"
   },
   "scripts": {
-    "scss": "node-sass styles -o static",
-    "scss:watch": "npm run scss && node-sass styles -wo static"
+    "css": "node-sass styles -o static",
+    "css:watch": "npm run scss && node-sass styles -wo static"
   },
   "devDependencies": {
     "bootstrap": "^4.0.0-beta.2",
