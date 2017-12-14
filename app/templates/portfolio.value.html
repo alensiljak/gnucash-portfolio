@@ -1,6 +1,6 @@
 {% extends "layout.html" %} {% block title %}Portfolio Value{% endblock %} {% block content %}
 <h1>Portfolio Value</h1>
-<table class="table table-striped table-sm">
+<table id="results" class="table table-striped table-sm">
     <caption>
         <!-- Portfolio Value -->
     </caption>
@@ -45,4 +45,14 @@
     </tbody>
 </table>
 
+{% endblock %}
+{% block scripts %}
+<script type="text/javascript">
+$(function() {
+    // initialize datatables.
+    $("#results").DataTable({
+        lengthMenu: [10, 20, 30, 50, 100, -1]
+    });
+});
+</script>
 {% endblock %}
