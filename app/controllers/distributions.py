@@ -9,10 +9,10 @@ from flask import Blueprint, request, render_template
 from piecash import Account, Commodity, Split, Book, Transaction
 from gnucash_portfolio.lib import database
 
-income_controller = Blueprint('income_controller', __name__, url_prefix='/income')
+distribution_controller = Blueprint('distribution_controller', __name__, url_prefix='/distributions')
 
 
-@income_controller.route('/inperiod')
+@distribution_controller.route('/')
 def income_in_period():
     """ Investment income in time period, parameters """
 
@@ -20,10 +20,10 @@ def income_in_period():
     # TODO add collapsible indicator icon to the filter header
     # https://stackoverflow.com/questions/18325779/bootstrap-3-collapse-show-state-with-chevron-icon
 
-    return render_template('income_in_period.html', model=None)
+    return render_template('distributions.html', model=None)
 
 
-@income_controller.route('/inperiod', methods=['POST'])
+@distribution_controller.route('/', methods=['POST'])
 def income_in_period_data():
     """ Displays the results """
     input_model = __get_input_model()
@@ -36,7 +36,19 @@ def income_in_period_data():
         #            splits.sort(key=lambda split: split.transaction.post_date)
 
         model = __get_model_inperiod(input_model, book)
-        return render_template('income_in_period.html', model=model)
+        return render_template('distributions.html', model=model)
+
+
+@distribution_controller.route('/<symbol>')
+def for_security(symbol):
+    """ Income for specific security """
+    if not symbol:
+        return render_template('incomplete.html', model=None)
+
+    # TODO see how many securities we find with this sybol. We need to have only one.
+    # TODO If more than one found, show a selector.
+
+    return render_template('incomplete.html', model=None)
 
 
 def __get_model_inperiod(input_model, book: Book):
@@ -188,7 +200,4 @@ def __load_income_in_period_query(
                  .filter(Commodity.mnemonic == currency)
                 )
 
-    # Check the generated SQL
-#    sql = str(query.statement.compile(dialect=sqlite.dialect(),
-#       compile_kwargs={"literal_binds": True}))
     return query.all()

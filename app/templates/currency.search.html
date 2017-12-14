@@ -1,0 +1,11 @@
+{# contains the search form only #}
+{% set search_model = model["search"] %}
+
+<form method="POST">
+    <div class="card bg-fresh p-2">
+        <p>Currency symbol</p>
+        {% for currency in search_model["currencies"] %}
+        <p>{{ currency }}</p>
+        {% endfor %}
+    </div>
+</form>

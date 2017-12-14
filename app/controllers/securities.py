@@ -25,7 +25,7 @@ def security_analysis():
     # load all non-currency symbols
     with Database().open_book() as book:
         service = securities.Securities(book)
-        all_securities = service.load_all_stocks()
+        all_securities = service.get_all()
         # retrieve the view model
         security_list = {}
         for stock in all_securities:
@@ -36,3 +36,9 @@ def security_analysis():
 
     # render output
     return render_template('stock.analysis.html', model=model)
+
+
+@stock_controller.route('/transactions/<symbol>')
+def transactions():
+    """ Lists all transactions for security. Symbol must include namespace. """
+

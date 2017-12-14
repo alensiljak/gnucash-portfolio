@@ -3,6 +3,7 @@ Securities service layer
 """
 from piecash import Book, Commodity
 from gnucash_portfolio.lib import database
+from typing import List
 
 class Securities:
     """ Provides various functionality related to securities """
@@ -10,15 +11,32 @@ class Securities:
     def __init__(self, book: Book):
         self.book = book
 
-    def load_all_stocks(self):
-        """ Loads all non-currency commodities, assuming they are stocks """
-        all_securities = (
-            self.book.session.query(Commodity)
-            .filter(Commodity.namespace != "CURRENCY", Commodity.namespace != "template")
+    def get_all(self):
+        """ Loads all non-currency commodities, assuming they are stocks. """
+        query = (
+            self.__get_base_query()
             .order_by(Commodity.mnemonic)
-            .all()
         )
-        return all_securities
+        return query.all()
+
+
+    def get_by_symbol(self, symbol: str) -> List[Commodity]:
+        """ Returns all commodities with the given symbol """
+        query = (
+            self.__get_base_query()
+            .filter(Commodity.mnemonic == symbol)
+        )
+        return query.all()
+
+
+    def __get_base_query(self):
+        """ Returns the base query which filters out data for all queries. """
+        query = (
+            self.book.session.query(Commodity)
+            .filter(Commodity.namespace != "CURRENCY",
+                    Commodity.namespace != "template")
+        )
+        return query
 
 
     def test(self):
