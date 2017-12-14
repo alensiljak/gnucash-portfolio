@@ -21,7 +21,10 @@ def get_account_id_by_fullname(book: Book, fullname: str) -> str:
 def get_all_child_accounts_as_array(account: Account) -> List[Account]:
     """ Returns all child accounts in a list """
     result = []
-    result.append(account)
+    # ignore placeholders
+    if not account.placeholder:
+        #continue
+        result.append(account)
 
     for child in account.children:
         sub_accounts = get_all_child_accounts_as_array(child)

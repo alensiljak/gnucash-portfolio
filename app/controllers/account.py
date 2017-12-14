@@ -7,7 +7,7 @@ Account operations
 import json
 from decimal import Decimal
 from flask import Blueprint, request, render_template
-from piecash import Account
+from piecash import Account, Commodity
 #from sqlalchemy.ext.serializer import dumps
 from gnucash_portfolio import lib
 from gnucash_portfolio.lib.database import Database
@@ -98,7 +98,9 @@ def __load_cash_balances(root_account_name: str):
         root_account_id = lib.accounts.get_account_id_by_fullname(book, root_account_name)
         query = (
             book.session.query(Account)
+            .join(Commodity)
             .filter(Account.guid == root_account_id)
+            .order_by(Commodity.mnemonic, Account.name)
         )
         # Check the generated SQL
         #generic.print_sql(query)
