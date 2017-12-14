@@ -6,8 +6,7 @@
 {% include "currency.search.html" %}
 
 {% if currency %}
-    <h2>Results</h2>
-    <p>Symbol: {{ currency.mnemonic }}</p>
+{% include "currency.results.html" with context %}
 {% endif %}
 {% endblock %}
 {% block scripts %}
