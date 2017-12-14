@@ -8,6 +8,7 @@ Currencies
 from flask import Blueprint, request, render_template
 from piecash import Book, Commodity
 from gnucash_portfolio.lib.database import Database
+from gnucash_portfolio.lib.currencies import CurrencyAggregate
 
 currency_controller = Blueprint('currency_controller', __name__, url_prefix='/currency')
 
@@ -31,9 +32,8 @@ def post():
 
     with Database().open_book() as book:
         search_model.initialize(book, request)
-
-        model = __search(book, search_model)
-        return render_template('currency.html', model=model, search_model=search_model)
+        currency = __search(book, search_model)
+        return render_template('currency.html', currency=currency, search_model=search_model)
 
 
 class SearchModel:
@@ -53,7 +53,11 @@ class SearchModel:
 
     def init_from_book(self, book: Book):
         """ Populate the static model from the database """
-        self.currencies = book.currencies
+        #splits.sort(key=lambda split: split.transaction.post_date)
+        self.currencies = (
+            CurrencyAggregate(book).get_book_currencies_query()
+            .order_by(Commodity.mnemonic)
+        )
 
     def init_from_request(self, request):
         """ Initialize selected values """
@@ -66,12 +70,9 @@ class SearchModel:
 
 def __search(book: Book, model: SearchModel):
     """ performs the search """
-    query = (
-        book.session.query(Commodity)
-        .filter(Commodity.namespace == "CURRENCY")
-    )
+    query = CurrencyAggregate(book).get_book_currencies_query()
 
     if model.currency:
-        query.filter(Commodity.mnemonic == model.currency)
+        query = query.filter(Commodity.mnemonic == model.currency)
 
-    return query.all()
+    return query.one()
