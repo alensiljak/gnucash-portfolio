@@ -67,10 +67,20 @@ a {
     color: color("watermelon");
 }
 
-#leftnav a {
+#leftnav {
+    hr {
+        border: 1px solid color("fresh")
+    }
+
+    a {
     color: color("fresh");
 
+    &:hover {
+        color: color("teal")
+    }
+    
     &.active {
         color: color("watermelon");
     }
+}
 }

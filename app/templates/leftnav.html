@@ -1,58 +1,44 @@
-<div class="bg-matte" id="leftnav">
-    <nav class="m-2 navbar-primary">
-        <ul class="navbar-nav">
-            <li class="nav-item">
-                <a class="nav-link" href="/">Home</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" href="/account/">Account</a>
-                <ul>
-                    <li class="nav-item">
-                        <a href="/account/search">Search</a>
-                    </li>
-                </ul>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" href="/assetallocation/">
-                    <span class="fa fa-chart-pie"></span>
-                    Asset Allocation</a>
-                <ul>
-                    <li class="nav-item">
-                        <a class="nav-link" href="/assetallocation/full">Full</a>
-                    </li>
-                </ul>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" href="/income/inperiod">Income in period</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" href="/portfolio/value">Portfolio Value Report</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" href="/stock/">Stocks</a>
-                <ul>
-                    <li class="nav-item">
-                        <a class="nav-link" href="/stock/analysis">Security Analysis</a>
-                    </li>
-                </ul>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" href="/vanguard/">Vanguard</a>
-                <ul>
-                    <li>
-                        <a class="nav-link" href="/vanguard/prices">Fund Prices</a>
-                    </li>
-                </ul>
-            </li>
-
-        </ul>
-        <hr class="bg-fresh">
-        <ul class="navbar-nav">
-            <li class="nav-item">
-                <a class="nav-link" href="/settings/edit">
-                    <i class="fa fa-cog"></i>
-                    Settings</a>
-            </li>
-        </ul>
+<nav class="bg-matte navbar" id="leftnav">
+    {#
+    <a class="navbar-brand" href="#">Menu</a> #}
+    <a class="nav-link" href="/">Home</a>
+    {# Account #}
+    <nav class="nav nav-pills flex-column">
+        <a class="nav-link" href="/account/">Account</a>
+        <nav class="nav nav-pills flex-column">
+            <a class="nav-link ml-3" href="/account/search">Search</a>
+            <a class="nav-link ml-3" href="/account/cash">Cash Balances</a>
+        </nav>
     </nav>
-</div>
+    <nav class="nav nav-pills flex-column">
+        <a class="nav-link" href="/assetallocation/">
+            <span class="fa fa-chart-pie"></span>
+            Asset Allocation</a>
+        <nav class="nav nav-pills flex-column">
+            <a class="nav-link ml-3" href="/assetallocation/full">Full</a>
+        </nav>
+    </nav>
+    <nav class="nav nav-pills flex-column"></nav>
+    <a class="nav-link" href="/income/inperiod">Income in period</a>
+    <a class="nav-link" href="/portfolio/value">Portfolio Value Report</a>
+
+    <nav class="nav nav-pills flex-column">
+        <a class="nav-link" href="/stock/">Stocks</a>
+        <a class="nav-link ml-3" href="/stock/analysis">Security Analysis</a>
+    </nav>
+
+    <nav class="nav nav-pills flex-column">
+        <a class="nav-link" href="/vanguard/">Vanguard</a>
+        <a class="nav-link ml-3" href="/vanguard/prices">Fund Prices</a>
+    </nav>
+
+    <hr class="bg-fresh fg-fresh">
+
+    <ul class="navbar-nav">
+        <li class="nav-item">
+            <a class="nav-link" href="/settings/edit">
+                <i class="fa fa-cog"></i>
+                Settings</a>
+        </li>
+    </ul>
+</nav>

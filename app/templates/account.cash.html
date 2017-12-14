@@ -1,0 +1,49 @@
+{% extends "layout.html" %} {% block title %}Cash Balances{% endblock %} {% block content %}
+<h1>Cash Balances</h1>
+<p>
+    Displays cash balances in the selected accounts.
+</p>
+
+<form>
+    <div class="form-group">
+        <label>Enter the root investment account(s)</label>
+        <input name="accounts" type="text" placeholder="Type to search" value="{{ model.accounts }}">
+    </div>
+    <div class="text-center">
+        <button class="btn btn-primary">OK</button>
+    </div>
+</form>
+
+<hr>
+
+<table id="accounts" class="table table-bordered table-sm table-striped">
+    <thead class="thead-dark">
+        <tr>
+            <th>Name</th>
+            <th>Full Name</th>
+            <th>Currency</th>
+            <th>Balance</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for account in model.data %}
+        <tr>
+            <td>{{ account.name }}</td>
+            <td>{{ account.fullname }}</td>
+            <td>{{ account.currency }}</td>
+            <td class="text-right">{{ "{:,.2f}".format(account.balance) }}</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+    <tfoot>
+        <tr>
+            <th>Name</th>
+            <th>Full Name</th>
+        </tr>
+    </tfoot>
+</table>
+
+{% endblock %}
+{% block scripts %}
+
+{% endblock %}
