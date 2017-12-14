@@ -78,7 +78,7 @@ def cash_balances():
         "data": []
     }
     # Selection of accounts. Display the default values the first time.
-    model = __load_cash_balances(account_names)
+    model["data"] = __load_cash_balances(account_names)
     # Display the report
     return render_template('account.cash.html', model=model)
 

@@ -26,12 +26,12 @@
         </tr>
     </thead>
     <tbody>
-        {% for currency in model %}
+        {% for currency in model["data"] %}
         <tr>
-            <td class="font-weight-bold" colspan="3">{{ model[currency]["name"] }}</td>
-            <td class="font-weight-bold text-right">{{ "{:,.2f}".format(model[currency]["total"]) }}</td>
+            <td class="font-weight-bold" colspan="3">{{ model["data"][currency]["name"] }}</td>
+            <td class="font-weight-bold text-right">{{ "{:,.2f}".format(model["data"][currency]["total"]) }}</td>
         </tr>
-        {% for account in model[currency]["rows"] %}
+        {% for account in model["data"][currency]["rows"] %}
         <tr>
             <td>{{ account.name }}</td>
             <td>{{ account.fullname }}</td>
