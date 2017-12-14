@@ -92,14 +92,10 @@ def get_number_of_shares(security: Commodity) -> Decimal:
         if account.type == "TRADING":
             continue
 
-        balance = account.get_value()
-        quantity = account.get_quantity()
+        quantity = account.get_balance()
 
-        #print(account.fullname, quantity, balance)
-        #total_balance += balance
         total_quantity += quantity
 
-    #print("Balance:", total_balance)
     return total_quantity
 
 def get_last_available_price(security: Commodity) -> Decimal:
