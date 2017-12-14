@@ -31,4 +31,7 @@ $(function () {
     $("#leftnav").find("a[href='" + currentLocation.pathname + "']")
         .addClass("active");
     //console.log(found);
+    
+    // Activate select2 components.
+    $('select.select2').select2();
 });

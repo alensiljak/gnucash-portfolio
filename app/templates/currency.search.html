@@ -1,17 +1,18 @@
-{# contains the search form only #} {% set search_model = model["search"] %}
+{# contains the search form only #} 
+{# example on how to set variables: set search_model = model["search"] #}
 
 <div class="card bg-fresh p-2">
     <form method="POST" id="searchForm" name="searchForm">
         <div class="form-group">
             <label for="symbol">Currency symbol</label>
-            <select name="symbol" class="form-control">
-                {% for currency in search_model["currencies"] %}
-                <option>{{ currency.mnemonic }}</option>
+            <select name="search.currency" class="form-control select2">
+                {% for currency in search_model.currencies %}
+                <option {% if currency.mnemonic==search_model.currency %}selected{% endif %}>{{ currency.mnemonic }}</option>
                 {% endfor %}
             </select>
         </div>
         <div class="text-center">
-            <button class="btn btn-primary">Apply</button>
+            <button formaction="{{ search_model["action"] }}" class="btn btn-primary">Apply</button>
         </div>
     </form>
 </div>
