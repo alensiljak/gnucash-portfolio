@@ -5,6 +5,7 @@ Account operations
 - list of transactions / register -> see transaction controller
 """
 import json
+from decimal import Decimal
 from flask import Blueprint, request, render_template
 from piecash import Account
 #from sqlalchemy.ext.serializer import dumps
@@ -76,10 +77,19 @@ def cash_balances():
         "accounts": account_names,
         "data": []
     }
-    # TODO selection of accounts. Display the default values the first time.
-    model["data"] = __load_cash_balances(account_names)
-    # TODO display the report
+    # Selection of accounts. Display the default values the first time.
+    model = __load_cash_balances(account_names)
+    # Display the report
     return render_template('account.cash.html', model=model)
+
+
+# class CashBalanceRow:
+#     """ Represents a row in the cash balances report """
+#     def __init__(self):
+#         self.name = None
+#         self.fullname = None
+#         self.currency = None
+#         self.balance = None
 
 
 def __load_cash_balances(root_account_name: str):
@@ -94,19 +104,39 @@ def __load_cash_balances(root_account_name: str):
         #generic.print_sql(query)
         root_account = query.one()
 
-        # TODO get cash balances
+        # get cash balances
         accounts = lib.accounts.get_all_child_accounts_as_array(root_account)
 
-        result = []
+        model = {}
         for account in accounts:
-            result.append({
+            # filter currencies only
+            if account.commodity.namespace != "CURRENCY":
+                continue
+
+            # separate per currency
+            currency = account.commodity.mnemonic
+
+            if not currency in model:
+                # Add the currency branch.
+                currency_record = {
+                    "name": currency,
+                    "total": 0,
+                    "rows": []
+                }
+                # Append to the root.
+                model[currency] = currency_record
+
+            row = {
                 "name": account.name,
                 "fullname": account.fullname,
-                "currency": account.commodity.mnemonic,
+                "currency": currency,
                 "balance": account.get_balance()
-            })
+            }
+            model[currency]["rows"].append(row)
 
-        # TODO filter currencies only
-        # TODO separate per currency
-        
-    return result
+            # add to total
+            total = Decimal(model[currency]["total"])
+            total += account.get_balance()
+            model[currency]["total"] = total
+
+    return model

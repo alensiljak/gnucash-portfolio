@@ -1,18 +1,19 @@
 """
 Represents a price.
 """
-import dateutil
 import datetime
+import dateutil
 from decimal import Decimal
 
 class Price:
+    """ Price model """
     # Example values
     date = datetime.date.today()
     value = 18.23
     name = "AUD"
     currency = "EUR"
 
-    def parse_euro_date(self, date_string):
+    def parse_euro_date(self, date_string: str):
         """
         Parses dd/MM/yyyy dates.
         """
@@ -21,7 +22,7 @@ class Price:
         self.date = datetime.datetime.strptime(date_string, "%d/%m/%Y")
         return self.date
 
-    def parse_value(self, value_string):
+    def parse_value(self, value_string: str):
         """
         Parses the amount string.
         """

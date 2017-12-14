@@ -26,7 +26,12 @@
         </tr>
     </thead>
     <tbody>
-        {% for account in model.data %}
+        {% for currency in model %}
+        <tr>
+            <td class="font-weight-bold" colspan="3">{{ model[currency]["name"] }}</td>
+            <td class="font-weight-bold text-right">{{ "{:,.2f}".format(model[currency]["total"]) }}</td>
+        </tr>
+        {% for account in model[currency]["rows"] %}
         <tr>
             <td>{{ account.name }}</td>
             <td>{{ account.fullname }}</td>
@@ -34,16 +39,17 @@
             <td class="text-right">{{ "{:,.2f}".format(account.balance) }}</td>
         </tr>
         {% endfor %}
+        <tr>
+            <td></td>
+        </tr>
+        {% endfor %}
     </tbody>
-    <tfoot>
+    {#<tfoot>
         <tr>
             <th>Name</th>
             <th>Full Name</th>
         </tr>
-    </tfoot>
+    </tfoot> #}
 </table>
 
-{% endblock %}
-{% block scripts %}
-
-{% endblock %}
+{% endblock %} {% block scripts %} {% endblock %}
