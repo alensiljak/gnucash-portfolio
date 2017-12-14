@@ -18,38 +18,24 @@ def index():
     """ This should be the query that other, more specific filters can use
     by passing parameters. """
     with Database().open_book() as book:
-        search_model = SearchModel()
-        search_model.init_from_book(book)
-
-        output = render_template('currency.html', search_model=search_model)
+        search_model = SearchModel().initialize(book, None)
+        output = render_template('currency.html', search=search_model)
     return output
 
 @currency_controller.route('/search', methods=['GET', 'POST'])
 def post():
     """ Receives post form """
-    # init the search form model
-    search_model = SearchModel()
-
     with Database().open_book() as book:
-        search_model.initialize(book, request)
+        search_model = SearchModel().initialize(book, request)
         currency = __search(book, search_model)
-        return render_template('currency.html', currency=currency, search_model=search_model)
+        output = render_template('currency.html', currency=currency, search=search_model)
+    return output
 
 
-class SearchModel:
-    """ Model with static data for the search form. """
+class SearchReferenceModel:
+    """ Model with reference data """
     def __init__(self):
-        self.action = "/currency/search"
         self.currencies = []
-        self.currency = None
-
-    def initialize(self, book: Book, request):
-        """ Initialize full search model """
-        if book:
-            self.init_from_book(book)
-
-        if request:
-            self.init_from_request(request)
 
     def init_from_book(self, book: Book):
         """ Populate the static model from the database """
@@ -58,6 +44,26 @@ class SearchModel:
             CurrencyAggregate(book).get_book_currencies_query()
             .order_by(Commodity.mnemonic)
         )
+
+
+class SearchModel:
+    """ Model with static data for the search form. """
+    def __init__(self):
+        # these are the selected values
+        self.action = "/currency/search"
+        self.currency = None
+
+        self.ref = SearchReferenceModel()
+
+    def initialize(self, book: Book, request):
+        """ Initialize full search model """
+        if book:
+            self.ref.init_from_book(book)
+
+        if request:
+            self.init_from_request(request)
+
+        return self
 
     def init_from_request(self, request):
         """ Initialize selected values """
@@ -74,5 +80,10 @@ def __search(book: Book, model: SearchModel):
 
     if model.currency:
         query = query.filter(Commodity.mnemonic == model.currency)
+
+        # TODO if not the main currency, load exchange rates and display chart
+        if model.ref.currencies != book.default_currency:
+            print("not the default currency. load data.")
+
 
     return query.one()
