@@ -34,6 +34,8 @@ Some operations that are targeted:
 
 # Targets
 
+See the [issues list](https://github.com/MisterY/gnucash-portfolio/issues) on GitHub for up-to-date list of implemented and open issues and features.
+
 ## Implemented
 
 - [x] download currency exchange rates
@@ -44,17 +46,7 @@ Some operations that are targeted:
 - [x] list all dividends for security. This requires some conventions as to where to expect them since there is no direct linking between a commodity and the dividends/interest it earns. Search all accounts with the same name in the Income tree.
 - [x] site styling with scss. See [Theming](https://getbootstrap.com/docs/4.0/getting-started/theming/).
 
-## In Progress
-
-- [ ] Asset Allocation. This is currently implemented in MoneyManagerEx for Android and there should be a version that works with GnuCash book directly. 
-
-## To Do
-
-- [ ] Charts:
-    - [ ] display currency pair chart over selected period
-    - [ ] display security price over selected period
-- [ ] security analysis, including return in a period, dividend income in period, income return %, total return %.
-- [ ] check other gnucash-related sites from [here](http://piecash.readthedocs.io/en/latest/doc/github_links.html)
+---
 
 [Other](other)
 
