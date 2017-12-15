@@ -11,11 +11,13 @@
         <label for="funds">Enter funds (comma-separated):</label>
         <input type="text" name="funds" {% if funds %}value="{{ funds }}"{% endif %} />
     </div>
-    <button type="submit" class="btn btn-primary">OK</button>
+    <div class="text-center">
+        <button type="submit" class="btn btn-primary">OK</button>
+    </div>
 </form>
 
 {% if prices %}
-<table class="table table-bordered">
+<table class="table table-bordered mt-4">
     <thead>
         <th>Id</th>
         <th>Date</th>
