@@ -11,12 +11,12 @@
         <div class="form-group">
             <label for="post_date">Date posted</label>
             <input class="form-control" name="post_date" disabled type="text" 
-                value="{{ model.transaction.post_date }}">
+                value="{{ "{:%Y-%m-%d %H:%M}".format(model.transaction.post_date) }}">
         </div>
         <div class="form-group">
             <label for="enter_date">Date entered</label>
             <input class="form-control" name="enter_date" disabled type="text" 
-                value="{{ model.transaction.enter_date }}">
+                value="{{ "{:%Y-%m-%d %H:%M}".format(model.transaction.enter_date) }}">
         </div>
     </div>
     <div class="form-group">
@@ -35,10 +35,10 @@
     <caption>Splits</caption>
     <thead>
         <th>Account</th>
-        <th>Value</th>
+        {# <th>Value</th> #}
         <th>Quantity</th>
         <th>Memo</th>
-        <th>Action</th>
+        {# <th>Action</th> #}
         <th>Reconciled</th>
         <th>State</th>
         <th>Lot</th>
@@ -47,11 +47,11 @@
         {% for split in model.transaction.splits %}
         <tr>
             <td>{{ split.account.fullname }}</td>
-            <td class="text-right">{{ split.value }}</td>
+            {# <td class="text-right">{{ split.value }}</td> #}
             <td class="text-right">{{ split.quantity }}</td>
             <td>{{ split.memo }}</td>
-            <td>{{ split.action }}</td>
-            <td>{{ split.reconcile_date }}</td>
+            {# <td>{{ split.action }}</td> #}
+            <td>{{ "{:%Y-%m-%d %H:%M}".format(split.reconcile_date) }}</td>
             <td>{{ split.reconcile_state }}</td>
             <td>{{ split.lot }}</td>
         </tr>
