@@ -19,14 +19,17 @@ as it is called from the reports.
 
 ### Execution
 
-All the functionality will be provided as a web application. There are parts of code that are not yet exposed through the web interface, though.
-Simply run `run.bat` in the app directory.
+All the functionality will be provided as a web application (see below). There are parts of code that are not yet exposed through the web interface, though.
 
 # Web Application
 
 This project contains the web application implemented in Flask. It is intended to be used as the full GUI for accepting user input (parameters) and displaying the output.
 
 The app is located in the /app directory.
+
+It is intended to run on a desktop workstation, with direct access to the GnuCash book file, stored as an SQLite database.
+
+## Benefits
 
 Considering several factors below, it might be preferrable to use an independent application to work with Portfolio then to provide the UI functionality through GnuCash reports using gnucash_utilities project. This approach would utilize the gnucash book/database directly.
 
