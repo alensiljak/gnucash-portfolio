@@ -48,6 +48,4 @@ See the [issues list](https://github.com/MisterY/gnucash-portfolio/issues) on Gi
 
 ---
 
-[Other](other)
-
-[Links](links)
+[Other](other) * [Links](links)
