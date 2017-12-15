@@ -44,6 +44,8 @@ class BookAggregate:
             return self.book["default-currency"].value
         except KeyError:
             def_currency = self.__get_default_currency()
+            self.book["default-currency"] = def_currency
+            return def_currency
 
 
     def get_currency_aggregate(self, currency: Commodity):
@@ -77,8 +79,8 @@ class BookAggregate:
             return None
 
         key = "currency-other"
-        custom_currency = self.__get_registry_key(key)
-        def_curr = self.book["default-currency"] = self.__get_locale_currency()
+        custom_symbol = self.__get_registry_key(key)
+        def_curr = self.book["default-currency"] = self.book.currencies(mnemonic=custom_symbol)
         return def_curr
 
     def __get_registry_key(self, key):
