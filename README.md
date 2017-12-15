@@ -30,10 +30,10 @@ The app is located in the /app directory.
 
 Considering several factors below, it might be preferrable to use an independent application to work with Portfolio then to provide the UI functionality through GnuCash reports using gnucash_utilities project. This approach would utilize the gnucash book/database directly.
 
-- Ease of development
+- Ease of development  
 Developing reports on piecash stack seems fairly straightforward and much simpler than Scheme, GnuCash reporting engine. The control of the output is also easier by directly editing HTML templates and CSS styles.
 
-- Performance
+- Performance  
 Comparing the output through GnuCash reports on Windows to the output produced using the Python stack (flask + jinja HTML output + piecash), the advantage is significantly on the side of the Python components.
 
 ## Compiling
@@ -55,17 +55,17 @@ SCSS is compiled using node-sass:
 
 ### JS
 
-JavaScript is bundled through Flask Assets. It collects the vendor code from node modules. Make sure all the npm dependencies are installed. 
-The bundle will be built automatically when the app is started.
+JavaScript is bundled through Flask Assets. It collects the vendor code from installed development node modules. Make sure all the npm dependencies are installed in order for this to work.
+The bundle will be built automatically during the app runtime. No additional actions required by the user.
 
-## Running
+## Running the web app
 
 There are two ways to run the web app:
 
-1. Run app.py
-2. "run.py run"
+1. Run `app.py` directly
+2. Run "run.py run"
 
-The second is created so that the app can be debugged by Python extension for Visual Studio Code.
+The second script was created so that the app could be debugged with Python extension for Visual Studio Code.
 
 # Reports
 
