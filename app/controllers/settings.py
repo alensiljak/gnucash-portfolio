@@ -6,7 +6,7 @@ import json
 #import pprint
 
 settings_controller = Blueprint('settings_controller', __name__, url_prefix='/settings')
-settings_file_path = '../gnucash_portfolio/data/settings.json'
+settings_file_path = '../config/settings.json'
 
 
 @settings_controller.route('/edit')

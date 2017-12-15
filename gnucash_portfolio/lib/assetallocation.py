@@ -140,7 +140,7 @@ def __load_asset_allocation_config():
     Loads asset allocation from the file.
     Returns the list of asset classes.
     """
-    allocation_file = path.abspath(path.join(os.path.dirname(os.path.realpath(__file__)), "../data/assetAllocation.json"))
+    allocation_file = path.abspath(path.join(os.path.dirname(os.path.realpath(__file__)), "../../config/assetAllocation.json"))
     with open(allocation_file, 'r') as json_file:
         allocation_json = json.load(json_file)
 

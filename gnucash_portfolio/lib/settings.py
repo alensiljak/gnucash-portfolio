@@ -7,7 +7,6 @@ import pathlib
 from os import path
 from pprint import pprint
 
-#FILENAME = "../settings.json"
 FILENAME = "settings.json"
 
 class Settings:

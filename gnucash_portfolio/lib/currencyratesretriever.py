@@ -180,7 +180,3 @@ if __name__ == "__main__":
     #output = __get_all_currency_files()
     runner = CurrencyRatesRetriever(None)
     runner.display_rates()
-    # if run from editor:
-    #settings_path = "settings.json"
-    # if run from command-line:
-    #settings_path = "../settings.json"

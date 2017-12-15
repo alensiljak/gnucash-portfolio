@@ -8,10 +8,7 @@ from datetime import datetime, timedelta
 import dateutil.parser
 from piecash import Commodity, Price
 from os import path
-from lib import currencyratesretriever
-from lib import database
-from lib import generic
-from lib import settings
+from gnucash_portfolio.lib import currencyratesretriever, database, generic, settings
 
 settings_path = "settings.json"
 
