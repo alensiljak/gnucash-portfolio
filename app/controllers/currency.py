@@ -9,7 +9,7 @@ from flask import Blueprint, request, render_template
 from piecash import Book, Commodity
 from gnucash_portfolio.lib.database import Database
 from gnucash_portfolio.lib.currencies import CurrencyAggregate
-from gnucash_portfolio.lib.bookaggregate import BookAggregate
+from gnucash_portfolio.bookaggregate import BookAggregate
 
 currency_controller = Blueprint('currency_controller', __name__, url_prefix='/currency')
 

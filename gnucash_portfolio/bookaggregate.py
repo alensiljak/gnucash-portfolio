@@ -7,14 +7,30 @@ import winreg
 from typing import List
 from piecash import Book, Commodity
 from gnucash_portfolio.lib.currencies import CurrencyAggregate
+from gnucash_portfolio.lib.database import Database
 
 
 class BookAggregate:
     """ Encapsulates operations with GnuCash book """
-    def __init__(self, book: Book):
+    def __init__(self):
         """ constructor """
-        self.book = book
+        self.book: Book = None
+        self.default_currency = None
 
+    def __enter__(self):
+        return self
+
+    def __exit__(self, exc_type, exc_value, traceback):
+        if not self.book:
+            return
+
+        self.book.close()
+
+
+    @property
+    def session(self):
+        """ Access to sql session """
+        return self.book.session
 
     def get_currencies(self):
         """ Returns the currencies used in the book """
@@ -32,19 +48,13 @@ class BookAggregate:
             result.append(cur.mnemonic)
         return result
 
-    # @property
-    # def query(self):
-    #     """ DAL query """
-    #     return self.book.session.query
-
-
-    def get_default_currency(self):
+    def get_default_currency(self) -> Commodity:
         """ returns the book default currency """
-        try:
-            return self.book["default-currency"].value
-        except KeyError:
+        if self.default_currency:
+            return self.default_currency
+        else:
             def_currency = self.__get_default_currency()
-            self.book["default-currency"] = def_currency
+            self.default_currency = def_currency
             return def_currency
 
 
@@ -80,7 +90,8 @@ class BookAggregate:
 
         key = "currency-other"
         custom_symbol = self.__get_registry_key(key)
-        def_curr = self.book["default-currency"] = self.book.currencies(mnemonic=custom_symbol)
+        # self.default_currency =
+        def_curr = self.get_book().currencies(mnemonic=custom_symbol)
         return def_curr
 
     def __get_registry_key(self, key):
@@ -96,3 +107,10 @@ class BookAggregate:
             locale.setlocale(locale.LC_ALL, '')
         mnemonic = locale.localeconv()['int_curr_symbol'].strip() or "EUR"
         return self.book.currencies(mnemonic=mnemonic)
+
+    def get_book(self):
+        """ Returns an open GnuCash book. Intended for internal use. """
+        if not self.book:
+            self.book = Database().open_book()
+
+        return self.book

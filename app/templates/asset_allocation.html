@@ -6,12 +6,14 @@
 <h1>Asset Allocation</h1>
 <ul>
 {%- for asset_class in model["allocation"].classes recursive %}
-    <li>{{ asset_class.name }} {{ "{:,.2f}".format(asset_class.allocation) }}%</li>
+    <li>{{ asset_class.name }} {{ "{:,.2f}".format(asset_class.allocation) }}, 
+        value: {{ "{:,.2f}".format(asset_class.value) }}</li>
     {%- if asset_class.classes is defined %}
         <ul>
         {{ loop(asset_class.classes) }}
         </ul>
-    {%- endif %} 
+    {%- endif %}
+    {#
     {%- if asset_class.stocks is defined %}
         <ul>
         {% for stock in asset_class.stocks %}
@@ -22,6 +24,7 @@
         {% endfor %}
         </ul>
     {%- endif %}
+    #}
 
 {%- endfor %}
 </ul>

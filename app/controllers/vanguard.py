@@ -2,7 +2,7 @@
 Vanguard controller
 """
 from flask import Blueprint, request, render_template
-from gnucash_portfolio import get_vanguard_au_prices
+from gnucash_portfolio.actions import get_vanguard_au_prices
 
 vanguard_controller = Blueprint('vanguard_controller', __name__, 
                                 url_prefix='/vanguard')

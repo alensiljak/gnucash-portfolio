@@ -3,7 +3,7 @@ This is the entry point to the application
 """
 from flask import Flask, render_template, request
 from flask_assets import Bundle, Environment
-from gnucash_portfolio import get_vanguard_au_prices
+from gnucash_portfolio.actions import get_vanguard_au_prices
 from flask import Blueprint
 
 # Controllers/blueprints
