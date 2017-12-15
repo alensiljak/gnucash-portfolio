@@ -11,9 +11,6 @@ from gnucash_portfolio.securityaggregate import StockAggregate
 
 class AssetBase:
     """Base class for asset group & class"""
-    data = None
-    allocation = 0
-
     def __init__(self, json_node):
         self.data = json_node
 
@@ -21,6 +18,8 @@ class AssetBase:
 
         if "allocation" in json_node:
             self.allocation = Decimal(json_node["allocation"])
+        else:
+            self.allocation = Decimal(0)
 
     @property
     def name(self):
@@ -90,10 +89,8 @@ class AllocationLoader:
         root_node = self.__load_asset_allocation_config()
         asset_allocation = self.__parse_node(root_node)
 
-        # TODO calculate allocation in the book.
-        # TODO add all the stock values.
-
-        self.__load_values(asset_allocation)
+        # Populate values from database.
+        self.__load_values_into(asset_allocation)
 
         model = {
             'allocation': asset_allocation
@@ -101,7 +98,7 @@ class AllocationLoader:
 
         return model
 
-    def __load_values(self, asset_group: AssetGroup):
+    def __load_values_into(self, asset_group: AssetGroup):
         """
         Populates the asset class values from the database.
         Reads the stock values and fills the asset classes.
@@ -109,9 +106,10 @@ class AllocationLoader:
         # iterate recursively until an Asset Class is found.
         for child in asset_group.classes:
             if isinstance(child, AssetGroup):
-                self.__load_values(child)
+                self.__load_values_into(child)
 
             if isinstance(child, AssetClass):
+                # Add all the stock values.
                 svc = StockAggregate(self.book)
                 for stock in child.stocks:
                     # then, for each stock, calculate value
@@ -128,6 +126,8 @@ class AllocationLoader:
 
                     stock_value = last_price.value * num_shares
                     child.value += stock_value
+
+            asset_group.value += child.value
 
 
     def __parse_node(self, node):

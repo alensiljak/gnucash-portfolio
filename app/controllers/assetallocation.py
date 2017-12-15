@@ -18,7 +18,7 @@ def asset_allocation():
     """ Asset Allocation without the securities """
     with BookAggregate() as book:
         base_currency = book.get_default_currency()
-        print(base_currency)
+
         loader = AllocationLoader(base_currency.mnemonic)
         model = loader.load_asset_allocation_model(book.book)
         output = render_template('asset_allocation.html', model=model)

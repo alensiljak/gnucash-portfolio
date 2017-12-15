@@ -1,7 +1,6 @@
 # Ignore the settings file.
 gnucash_portfolio/data/alen.gnucash
 gnucash_portfolio/data/*.gnucash-journal
-#gnucash_portfolio/data/*.json
 config/settings.json
 
 # Node modules
