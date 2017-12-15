@@ -7,6 +7,7 @@ import os
 from os import path
 from piecash import Book, Commodity, Price
 from gnucash_portfolio.lib import generic, templates
+from gnucash_portfolio.accountaggregate import AccountAggregate
 from gnucash_portfolio.securityaggregate import StockAggregate
 from gnucash_portfolio.currencyaggregate import CurrencyAggregate
 
@@ -54,6 +55,8 @@ class AssetClass(AssetBase):
 
     def __init__(self, json_node):
         super().__init__(json_node)
+        # For cash asset class
+        self.root_account = None
 
         self.stocks: list(Stock) = []
         # parse stocks
@@ -88,14 +91,12 @@ class Stock:
 
 class AllocationLoader:
     """ Parses the allocation settings and loads the current allocation from database """
-    def __init__(self, currency: Commodity):
+    def __init__(self, currency: Commodity, book: Book):
         self.currency = currency
-        self.book = None
-
-    def load_asset_allocation_model(self, book: Book):
-        """ Loads Asset Allocation model for display """
         self.book = book
 
+    def load_asset_allocation_model(self):
+        """ Loads Asset Allocation model for display """
         # read asset allocation file
         root_node = self.__load_asset_allocation_config()
         asset_allocation = self.__parse_node(root_node)
@@ -104,7 +105,8 @@ class AllocationLoader:
         self.__load_values_into(asset_allocation)
 
         model = {
-            'allocation': asset_allocation
+            'allocation': asset_allocation,
+            'currency': self.currency.mnemonic
         }
 
         return model
@@ -139,13 +141,14 @@ class AllocationLoader:
                     stock_value = last_price.value * num_shares
                     if last_price.currency != self.currency:
                         # Recalculate into the base currency.
-                        stock_value = self.get_value_in_base_currency(stock_value, last_price.currency)
+                        stock_value = self.get_value_in_base_currency(
+                            stock_value, last_price.currency)
 
                     child.value += stock_value
 
             if child.name == "Cash":
                 # load cash balances
-                child.value = self.get_cash_balance()
+                child.value = self.get_cash_balance(child.root_account)
 
             asset_group.value += child.value
 
@@ -153,8 +156,8 @@ class AllocationLoader:
     def get_value_in_base_currency(self, value: Decimal, currency: Commodity) -> Decimal:
         """ Recalculates the given value into base currency """
         base_cur = self.currency
-        svc = CurrencyAggregate(currency)
-        last_price = svc.get_latest_price()
+        svc = CurrencyAggregate(self.book)
+        last_price = svc.get_latest_price(currency)
 
         result = value * last_price.value
 
@@ -162,11 +165,12 @@ class AllocationLoader:
         return result
 
 
-    def get_cash_balance(self) -> Decimal:
+    def get_cash_balance(self, root_account_name: str) -> Decimal:
         """ Loads investment cash balance in base currency """
-        #self.book
-        # TODO incomplete
-        return Decimal(0)
+        svc = AccountAggregate(self.book)
+        root_account = svc.get_account_by_fullname(root_account_name)
+        result = svc.get_cash_balance_with_children(root_account, self.currency)
+        return result
 
     def __parse_node(self, node):
         """Creates an appropriate entity for the node. Recursive."""
@@ -187,6 +191,7 @@ class AllocationLoader:
         if node["name"] == "Cash":
             # Cash node
             entity = AssetClass(node)
+            entity.root_account = node["rootAccount"]
 
         return entity
 

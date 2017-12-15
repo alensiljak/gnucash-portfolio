@@ -4,6 +4,8 @@ Accounts business layer
 from typing import List
 from decimal import Decimal
 from piecash import Book, Account, Commodity
+from gnucash_portfolio.currencyaggregate import CurrencyAggregate
+
 
 class AccountAggregate:
     """ Operations on accounts """
@@ -44,11 +46,66 @@ class AccountAggregate:
 
     def get_cash_balance_with_children(self, root_account: Account, currency: Commodity) -> Decimal:
         """ Loads cash balances in given currency """
+        total = Decimal(0)
+        cur_svc = CurrencyAggregate(self.book)
+
         # get all child accounts in a list
+        cash_balances = self.load_cash_balances_with_children(root_account.fullname)
+        # get the amounts
+        for cur_symbol in cash_balances:
+            # Currency symbol
+            value = cash_balances[cur_symbol]["total"]
+
+            if cur_symbol != currency.mnemonic:
+                # TODO convert to common currency
+                other_cur = cur_svc.get_currency_by_symbol(cur_symbol)
+                rate = cur_svc.get_latest_rate(other_cur, currency)
+                value = value * rate.value
+                #print("Found", cur_symbol, value, rate.value)
+
+            total += value
+
+        return total
+
+
+    def load_cash_balances_with_children(self, root_account_fullname: str):
+        """ loads data for cash balances """
+        root_account = self.get_account_by_fullname(root_account_fullname)
         accounts = self.get_all_child_accounts_as_array(root_account)
+
+        # read cash balances
+        model = {}
         for account in accounts:
-            # filter cash accounts only (currency accounts, not commodity)
             if account.commodity.namespace != "CURRENCY":
                 continue
 
-            print("Incomplete!", account)
+            # separate per currency
+            currency_symbol = account.commodity.mnemonic
+
+            if not currency_symbol in model:
+                # Add the currency branch.
+                currency_record = {
+                    "name": currency_symbol,
+                    "total": 0,
+                    "rows": []
+                }
+                # Append to the root.
+                model[currency_symbol] = currency_record
+            else:
+                currency_record = model[currency_symbol]
+
+            balance = account.get_balance()
+            row = {
+                "name": account.name,
+                "fullname": account.fullname,
+                "currency": currency_symbol,
+                "balance": balance
+            }
+            currency_record["rows"].append(row)
+
+            # add to total
+            total = Decimal(currency_record["total"])
+            total += balance
+            currency_record["total"] = total
+
+        return model

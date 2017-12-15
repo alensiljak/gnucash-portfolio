@@ -16,10 +16,10 @@ assetallocation_controller = Blueprint('assetallocation_controller', __name__, u
 @assetallocation_controller.route('/')
 def asset_allocation():
     """ Asset Allocation without the securities """
-    with BookAggregate() as book:
-        base_currency = book.get_default_currency()
+    with BookAggregate() as svc:
+        base_currency = svc.get_default_currency()
 
-        loader = AllocationLoader(base_currency)
-        model = loader.load_asset_allocation_model(book.book)
+        loader = AllocationLoader(base_currency, svc.book)
+        model = loader.load_asset_allocation_model()
         output = render_template('asset_allocation.html', model=model)
     return output

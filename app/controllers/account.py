@@ -81,50 +81,8 @@ def cash_balances():
         "data": []
     }
     # Selection of accounts. Display the default values the first time.
-    model["data"] = __load_cash_balances(account_names)
-    # Display the report
-    return render_template('account.cash.html', model=model)
-
-
-def __load_cash_balances(root_account_name: str):
-    """ loads data for cash balances """
     with BookAggregate() as book_svc:
         svc = AccountAggregate(book_svc.book)
-
-        root_account = svc.get_account_by_fullname(root_account_name)
-        accounts = svc.get_all_child_accounts_as_array(root_account)
-
-        # read cash balances
-        model = {}
-        for account in accounts:
-            if account.commodity.namespace != "CURRENCY":
-                continue
-
-            # separate per currency
-            currency = account.commodity.mnemonic
-
-            if not currency in model:
-                # Add the currency branch.
-                currency_record = {
-                    "name": currency,
-                    "total": 0,
-                    "rows": []
-                }
-                # Append to the root.
-                model[currency] = currency_record
-
-            balance = account.get_balance()
-            row = {
-                "name": account.name,
-                "fullname": account.fullname,
-                "currency": currency,
-                "balance": balance
-            }
-            model[currency]["rows"].append(row)
-
-            # add to total
-            total = Decimal(model[currency]["total"])
-            total += balance
-            model[currency]["total"] = total
-
-    return model
+        model["data"] = svc.load_cash_balances_with_children(account_names)
+    # Display the report
+    return render_template('account.cash.html', model=model)

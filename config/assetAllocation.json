@@ -258,7 +258,8 @@
                 },
                 {
                     "name": "Cash",
-                    "allocation": 3
+                    "allocation": 3,
+                    "rootAccount": "Assets:Investment"
                 }
             ]
         },

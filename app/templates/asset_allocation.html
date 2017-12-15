@@ -4,7 +4,7 @@
 
 {% block content %}
 <h1>Asset Allocation</h1>
-<p>Value: {{ "{:,.2f}".format(model.allocation.value) }}</p>
+<p>Value: {{ model.currency }} {{ "{:,.2f}".format(model.allocation.value) }}</p>
 <ul>
 {%- for asset_class in model["allocation"].classes recursive %}
     <li>{{ asset_class.name }} {{ "{:,.2f}".format(asset_class.allocation) }}, 
