@@ -16,6 +16,12 @@ class AssetBase:
     def __init__(self, json_node):
         self.data = json_node
 
+        # Set allocation %.
+        self.allocation = None
+        # How much is currently allocated, in %.
+        self.allocated = None
+
+        # Current value in currency.
         self.value = Decimal(0)
 
         if "allocation" in json_node:
@@ -51,6 +57,9 @@ class AssetClass(AssetBase):
 
         self.stocks: list(Stock) = []
         # parse stocks
+        if "stocks" not in json_node:
+            return
+
         for symbol in json_node["stocks"]:
             stock = Stock(symbol)
             self.stocks.append(stock)
@@ -134,6 +143,10 @@ class AllocationLoader:
 
                     child.value += stock_value
 
+            if child.name == "Cash":
+                # load cash balances
+                child.value = self.get_cash_balance()
+
             asset_group.value += child.value
 
 
@@ -147,6 +160,13 @@ class AllocationLoader:
 
         #print("recalculating", currency.mnemonic, value, "into", result, self.currency.mnemonic)
         return result
+
+
+    def get_cash_balance(self) -> Decimal:
+        """ Loads investment cash balance in base currency """
+        #self.book
+        # TODO incomplete
+        return Decimal(0)
 
     def __parse_node(self, node):
         """Creates an appropriate entity for the node. Recursive."""
@@ -162,6 +182,10 @@ class AllocationLoader:
 
         if "stocks" in node:
             # This is an Asset Class
+            entity = AssetClass(node)
+
+        if node["name"] == "Cash":
+            # Cash node
             entity = AssetClass(node)
 
         return entity

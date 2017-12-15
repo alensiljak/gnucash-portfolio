@@ -255,6 +255,10 @@
                     "stocks":[
                         "Vanguard:BOND"
                     ]
+                },
+                {
+                    "name": "Cash",
+                    "allocation": 3
                 }
             ]
         },

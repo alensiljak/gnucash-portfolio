@@ -12,6 +12,9 @@ from piecash import Account, Commodity
 from gnucash_portfolio import lib
 from gnucash_portfolio.lib.database import Database
 from gnucash_portfolio.lib import generic
+from gnucash_portfolio.bookaggregate import BookAggregate
+from gnucash_portfolio.accountaggregate import AccountAggregate
+
 
 account_controller = Blueprint('account_controller', __name__, url_prefix='/account')
 
@@ -83,35 +86,17 @@ def cash_balances():
     return render_template('account.cash.html', model=model)
 
 
-# class CashBalanceRow:
-#     """ Represents a row in the cash balances report """
-#     def __init__(self):
-#         self.name = None
-#         self.fullname = None
-#         self.currency = None
-#         self.balance = None
-
-
 def __load_cash_balances(root_account_name: str):
     """ loads data for cash balances """
-    with Database().open_book() as book:
-        root_account_id = lib.accounts.get_account_id_by_fullname(book, root_account_name)
-        query = (
-            book.session.query(Account)
-            .join(Commodity)
-            .filter(Account.guid == root_account_id)
-            .order_by(Commodity.mnemonic, Account.name)
-        )
-        # Check the generated SQL
-        #generic.print_sql(query)
-        root_account = query.one()
+    with BookAggregate() as book_svc:
+        svc = AccountAggregate(book_svc.book)
 
-        # get cash balances
-        accounts = lib.accounts.get_all_child_accounts_as_array(root_account)
+        root_account = svc.get_account_by_fullname(root_account_name)
+        accounts = svc.get_all_child_accounts_as_array(root_account)
 
+        # read cash balances
         model = {}
         for account in accounts:
-            # filter currencies only
             if account.commodity.namespace != "CURRENCY":
                 continue
 

@@ -18,12 +18,12 @@ class BookAggregate:
         self.default_currency = None
 
     def __enter__(self):
+        self.book = Database().open_book()
         return self
 
     def __exit__(self, exc_type, exc_value, traceback):
         if not self.book:
             return
-
         self.book.close()
 
 
