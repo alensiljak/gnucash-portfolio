@@ -9,6 +9,7 @@ from flask import Blueprint, request, render_template
 from piecash import Book, Commodity
 from gnucash_portfolio.lib.database import Database
 from gnucash_portfolio.lib.currencies import CurrencyAggregate
+from gnucash_portfolio.lib.bookaggregate import BookAggregate
 
 currency_controller = Blueprint('currency_controller', __name__, url_prefix='/currency')
 
@@ -40,8 +41,9 @@ class SearchReferenceModel:
     def init_from_book(self, book: Book):
         """ Populate the static model from the database """
         #splits.sort(key=lambda split: split.transaction.post_date)
+        svc = BookAggregate(book)
         self.currencies = (
-            CurrencyAggregate(book).get_book_currencies_query()
+            svc.get_currencies_query()
             .order_by(Commodity.mnemonic)
         )
 
@@ -76,7 +78,7 @@ class SearchModel:
 
 def __search(book: Book, model: SearchModel):
     """ performs the search """
-    query = CurrencyAggregate(book).get_book_currencies_query()
+    query = BookAggregate(book).get_currencies_query()
 
     if model.currency:
         query = query.filter(Commodity.mnemonic == model.currency)

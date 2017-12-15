@@ -4,17 +4,38 @@ Aggregate for GnuCash book.
 import locale
 import sys
 import winreg
-from piecash import Book
+from typing import List
+from piecash import Book, Commodity
+from gnucash_portfolio.lib.currencies import CurrencyAggregate
+
 
 class BookAggregate:
     """ Encapsulates operations with GnuCash book """
-    def __init__(self):
+    def __init__(self, book: Book):
         """ constructor """
-        self.book = Book()
+        self.book = book
 
-    def query(self):
-        """ DAL query """
-        return self.book.session.query
+
+    def get_currencies(self):
+        """ Returns the currencies used in the book """
+        return self.get_currencies_query().all()
+
+    def get_currencies_query(self):
+        """ returns the query only """
+        return self.book.session.query(Commodity).filter_by(namespace="CURRENCY")
+
+
+    def get_currency_symbols(self) -> List[str]:
+        """ Returns the used currencies' symbols as an array """
+        result = []
+        for cur in self.get_currencies():
+            result.append(cur.mnemonic)
+        return result
+
+    # @property
+    # def query(self):
+    #     """ DAL query """
+    #     return self.book.session.query
 
 
     def get_default_currency(self):
@@ -24,6 +45,11 @@ class BookAggregate:
         except KeyError:
             def_currency = self.__get_default_currency()
 
+
+    def get_currency_aggregate(self, currency: Commodity):
+        """ Creates a currency aggregate for the given currency """
+        result = CurrencyAggregate(currency)
+        return result
 
     def __get_default_currency(self):
         """Read the default currency from GnuCash preferences"""
