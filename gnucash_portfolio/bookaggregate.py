@@ -30,7 +30,7 @@ class BookAggregate:
     @property
     def session(self):
         """ Access to sql session """
-        return self.book.session
+        return self.get_book().session
 
     def get_currencies(self):
         """ Returns the currencies used in the book """
@@ -38,7 +38,7 @@ class BookAggregate:
 
     def get_currencies_query(self):
         """ returns the query only """
-        return self.book.session.query(Commodity).filter_by(namespace="CURRENCY")
+        return self.get_book().session.query(Commodity).filter_by(namespace="CURRENCY")
 
 
     def get_currency_symbols(self) -> List[str]:
@@ -57,11 +57,6 @@ class BookAggregate:
             self.default_currency = def_currency
             return def_currency
 
-
-    def get_currency_aggregate(self, currency: Commodity):
-        """ Creates a currency aggregate for the given currency """
-        result = CurrencyAggregate(currency)
-        return result
 
     def __get_default_currency(self):
         """Read the default currency from GnuCash preferences"""

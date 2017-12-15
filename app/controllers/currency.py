@@ -26,9 +26,9 @@ def index():
 @currency_controller.route('/search', methods=['GET', 'POST'])
 def post():
     """ Receives post form """
-    with Database().open_book() as book:
-        search_model = SearchModel().initialize(book, request)
-        currency = __search(book, search_model)
+    with BookAggregate as svc:
+        search_model = SearchModel().initialize(svc.book, request)
+        currency = __search(svc, search_model)
         output = render_template('currency.html', currency=currency, search=search_model)
     return output
 
@@ -41,7 +41,7 @@ class SearchReferenceModel:
     def init_from_book(self, book: Book):
         """ Populate the static model from the database """
         #splits.sort(key=lambda split: split.transaction.post_date)
-        svc = BookAggregate(book)
+        svc = BookAggregate()
         self.currencies = (
             svc.get_currencies_query()
             .order_by(Commodity.mnemonic)
@@ -76,15 +76,15 @@ class SearchModel:
 
 ###############################################################################
 
-def __search(book: Book, model: SearchModel):
+def __search(svc: BookAggregate, model: SearchModel):
     """ performs the search """
-    query = BookAggregate(book).get_currencies_query()
+    query = svc.get_currencies_query()
 
     if model.currency:
         query = query.filter(Commodity.mnemonic == model.currency)
 
         # TODO if not the main currency, load exchange rates and display chart
-        if model.ref.currencies != book.default_currency:
+        if model.ref.currencies != svc.get_default_currency():
             print("not the default currency. load data.")
 
 

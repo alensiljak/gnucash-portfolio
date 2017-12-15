@@ -8,7 +8,7 @@ from os import path
 from piecash import Book, Commodity, Price
 from gnucash_portfolio.lib import generic, templates
 from gnucash_portfolio.accountaggregate import AccountAggregate
-from gnucash_portfolio.securityaggregate import StockAggregate
+from gnucash_portfolio.securityaggregate import SecurityAggregate
 from gnucash_portfolio.currencyaggregate import CurrencyAggregate
 
 
@@ -123,7 +123,7 @@ class AllocationLoader:
 
             if isinstance(child, AssetClass):
                 # Add all the stock values.
-                svc = StockAggregate(self.book)
+                svc = SecurityAggregate(self.book)
                 for stock in child.stocks:
                     # then, for each stock, calculate value
                     symbol = stock.symbol

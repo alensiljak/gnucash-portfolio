@@ -3,7 +3,7 @@ from decimal import Decimal
 from sqlalchemy import desc
 from piecash import Book, Commodity, Price
 
-class StockAggregate:
+class SecurityAggregate:
     """ Stocks aggregate """
     def __init__(self, book: Book):
         self.book = book
@@ -48,3 +48,37 @@ class StockAggregate:
         last_price = security.prices.order_by(desc(Price.date)).first()
         #return last_price.value
         return last_price
+
+    def get_avg_price(self, security: Commodity) -> Decimal:
+        """
+        Calculates the average price paid for the security.
+        security = Commodity
+        Returns Decimal value.
+        """
+        #print("Calculating stats for", security.mnemonic)
+        avg_price = Decimal(0)
+
+        #return sum([sp.quantity for sp in self.splits]) * self.sign
+
+        price_total = Decimal(0)
+        price_count = 0
+
+        for account in security.accounts:
+            # Ignore trading accounts.
+            if account.type == "TRADING":
+                continue
+
+            for split in account.splits:
+                # Don't count the non-transactions.
+                if split.quantity == 0:
+                    continue
+
+                price = split.value / split.quantity
+                #print(price)
+                price_count += 1
+                price_total += price
+
+        #print(price_total, price_count)
+        if price_count:
+            avg_price = price_total / price_count
+        return avg_price

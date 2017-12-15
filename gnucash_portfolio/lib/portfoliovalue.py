@@ -5,6 +5,7 @@ from sqlalchemy import desc
 from piecash import Book, Commodity, Price
 import gnucash_portfolio
 from gnucash_portfolio.actions import symbol_dividends
+from gnucash_portfolio.securityaggregate import SecurityAggregate
 
 def get_stock_model_from(book: Book, commodity: Commodity):
     """ Parses stock/commodity and returns the model for display """
@@ -12,15 +13,17 @@ def get_stock_model_from(book: Book, commodity: Commodity):
 
     #security = book.get(Commodity, mnemonic=symbol)
     model["exchange"] = commodity.namespace
-    
+
     symbol = commodity.mnemonic
     model["symbol"] = symbol
 
-    shares_no = gnucash_portfolio.actions.get_number_of_shares(commodity)
+    svc = SecurityAggregate(book)
+
+    shares_no = svc.get_number_of_shares(commodity)
     model["shares_no"] = float(shares_no)
     #shares_no_disp = "{:,.2f}".format(shares_no)
 
-    avg_price = gnucash_portfolio.actions.get_avg_price(commodity)
+    avg_price = svc.get_avg_price(commodity)
     model["avg_price"] = float(avg_price)
     #avg_price_disp = "{:,.4f}".format(avg_price)
 
