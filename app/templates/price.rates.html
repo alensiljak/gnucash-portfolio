@@ -8,6 +8,7 @@
         <th>Rate</th>
         <th>Currency</th>
         <th>Base</th>
+        <th>Chart</th>
     </thead>
     <tbody>
 {% for rate in rates %}
@@ -16,6 +17,11 @@
     <td class="text-right">{{ rate.value }}</td>
     <td>{{ rate.currency }}</td>
     <td>{{ rate.base_currency }}</td>
+    <td>
+        {% if rate.base_currency %}
+        <a href="https://www.xe.com/currencycharts/?from={{ rate.currency}}&to={{ rate.base_currency }}&view=1Y" target="_blank">Chart</a>
+        {% endif %}
+    </td>
 </tr>
 {% endfor %}
 </tbody>
@@ -26,7 +32,9 @@
 <script type="text/javascript">
 $(function() {
     // initialize datatables.
-    $("#table").DataTable();
+    $("#table").DataTable({
+        "order": [[ 0, "desc" ]]
+    });
 });
 </script>
 {% endblock %}

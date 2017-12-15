@@ -31,8 +31,11 @@ def import_rates():
     # get all used currencies and their (latest?) rates
     with Database().open_book() as book:
         svc = BookAggregate(book)
+        #base_currency = svc.get_default_currency()
+
         currencies = svc.get_currencies()
         for cur in currencies:
+            # TODO skip the base currency
             # Name
             rate = RateViewModel()
             rate.currency = cur.mnemonic
