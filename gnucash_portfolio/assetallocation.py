@@ -5,9 +5,11 @@ from decimal import Decimal
 import json
 import os
 from os import path
-from piecash import Book, Price
+from piecash import Book, Commodity, Price
 from gnucash_portfolio.lib import generic, templates
 from gnucash_portfolio.securityaggregate import StockAggregate
+from gnucash_portfolio.currencyaggregate import CurrencyAggregate
+
 
 class AssetBase:
     """Base class for asset group & class"""
@@ -77,8 +79,8 @@ class Stock:
 
 class AllocationLoader:
     """ Parses the allocation settings and loads the current allocation from database """
-    def __init__(self, currency_symbol: str):
-        self.currency_symbol = currency_symbol
+    def __init__(self, currency: Commodity):
+        self.currency = currency
         self.book = None
 
     def load_asset_allocation_model(self, book: Book):
@@ -124,11 +126,27 @@ class AllocationLoader:
                     last_price: Price = svc.get_last_available_price(cdty)
                     stock.price = last_price.value
 
+                    # Value
                     stock_value = last_price.value * num_shares
+                    if last_price.currency != self.currency:
+                        # Recalculate into the base currency.
+                        stock_value = self.get_value_in_base_currency(stock_value, last_price.currency)
+
                     child.value += stock_value
 
             asset_group.value += child.value
 
+
+    def get_value_in_base_currency(self, value: Decimal, currency: Commodity) -> Decimal:
+        """ Recalculates the given value into base currency """
+        base_cur = self.currency
+        svc = CurrencyAggregate(currency)
+        last_price = svc.get_latest_price()
+
+        result = value * last_price.value
+
+        #print("recalculating", currency.mnemonic, value, "into", result, self.currency.mnemonic)
+        return result
 
     def __parse_node(self, node):
         """Creates an appropriate entity for the node. Recursive."""

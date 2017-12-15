@@ -6,7 +6,7 @@ import sys
 import winreg
 from typing import List
 from piecash import Book, Commodity
-from gnucash_portfolio.lib.currencies import CurrencyAggregate
+from gnucash_portfolio.currencyaggregate import CurrencyAggregate
 from gnucash_portfolio.lib.database import Database
 
 
