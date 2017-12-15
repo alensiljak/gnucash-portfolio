@@ -1,0 +1,376 @@
+!_TAG_FILE_FORMAT	2	/extended format; --format=1 will not append ;" to lines/
+!_TAG_FILE_SORTED	1	/0=unsorted, 1=sorted, 2=foldcase/
+!_TAG_OUTPUT_MODE	u-ctags	/u-ctags or e-ctags/
+!_TAG_PROGRAM_AUTHOR	Universal Ctags Team	//
+!_TAG_PROGRAM_NAME	Universal Ctags	/Derived from Exuberant Ctags/
+!_TAG_PROGRAM_URL	https://ctags.io/	/official site/
+!_TAG_PROGRAM_VERSION	0.0.0	/0ef4343e/
+Application	..\\examples\\gui_tk_minimal.py	/^class Application(tk.Frame):$/;"	kind:class	line:9
+AssetBase	..\\gnucash_portfolio\\lib\\assetallocation.py	/^class AssetBase:$/;"	kind:class	line:11
+AssetClass	..\\gnucash_portfolio\\lib\\assetallocation.py	/^class AssetClass(AssetBase):$/;"	kind:class	line:41
+AssetGroup	..\\gnucash_portfolio\\lib\\assetallocation.py	/^class AssetGroup(AssetBase):$/;"	kind:class	line:33
+BAT_TEMPLATE	..\\setup.py	/^BAT_TEMPLATE = \\$/;"	kind:variable	line:230
+BookAggregate	..\\gnucash_portfolio\\lib\\bookaggregate.py	/^class BookAggregate:$/;"	kind:class	line:9
+CODE_DIRECTORY	..\\setup.py	/^CODE_DIRECTORY = 'gnucash_portfolio'$/;"	kind:variable	line:44
+CurrencyAggregate	..\\gnucash_portfolio\\lib\\currencies.py	/^class CurrencyAggregate():$/;"	kind:class	line:4
+CurrencyRatesRetriever	..\\gnucash_portfolio\\lib\\currencyratesretriever.py	/^class CurrencyRatesRetriever:$/;"	kind:class	line:14
+DATA_DIRECTORY	..\\setup.py	/^DATA_DIRECTORY = 'src\/data'$/;"	kind:variable	line:47
+DEBUG	..\\app\\config.py	/^DEBUG = True$/;"	kind:variable	line:2
+DOCS_DIRECTORY	..\\setup.py	/^DOCS_DIRECTORY = 'doc'$/;"	kind:variable	line:45
+Database	..\\gnucash_portfolio\\lib\\database.py	/^class Database:$/;"	kind:class	line:12
+Example	..\\examples\\gsettings_binding.py	/^class Example(Gtk.Window):$/;"	kind:class	line:8
+FILENAME	..\\gnucash_portfolio\\lib\\settings.py	/^FILENAME = "settings.json"$/;"	kind:variable	line:10
+Messenger	..\\gnucash_portfolio\\lib\\messenger.py	/^class Messenger:$/;"	kind:class	line:4
+PYTEST_FLAGS	..\\setup.py	/^PYTEST_FLAGS = ['--doctest-modules']$/;"	kind:variable	line:48
+Price	..\\gnucash_portfolio\\lib\\price.py	/^class Price:$/;"	kind:class	line:8
+SearchModel	..\\app\\controllers\\currency.py	/^class SearchModel:$/;"	kind:class	line:49
+SearchReferenceModel	..\\app\\controllers\\currency.py	/^class SearchReferenceModel:$/;"	kind:class	line:35
+Securities	..\\gnucash_portfolio\\lib\\securities.py	/^class Securities:$/;"	kind:class	line:8
+Settings	..\\gnucash_portfolio\\lib\\settings.py	/^class Settings:$/;"	kind:class	line:12
+Stock	..\\gnucash_portfolio\\lib\\assetallocation.py	/^class Stock:$/;"	kind:class	line:54
+TESTS_DIRECTORY	..\\setup.py	/^TESTS_DIRECTORY = 'tests'$/;"	kind:variable	line:46
+TestAllCommand	..\\setup.py	/^class TestAllCommand(TestCommand):$/;"	kind:class	line:211
+TestApp	..\\examples\\gui_kivy.py	/^class TestApp(App):$/;"	kind:class	line:8
+TestCommand	..\\setup.py	/^from setuptools.command.test import test as TestCommand$/;"	kind:unknown	line:28
+__add_values	..\\gnucash_portfolio\\lib\\assetallocation.py	/^def __add_values(book, aa: AssetGroup):$/;"	kind:function	line:94
+__config	..\\gnucash_portfolio\\import_exchange_rates.py	/^__config = None$/;"	kind:variable	line:15
+__create_price_for	..\\gnucash_portfolio\\import_security_prices.py	/^def __create_price_for(commodity, price):$/;"	kind:function	line:103
+__display_gnucash_rates	..\\gnucash_portfolio\\import_exchange_rates.py	/^def __display_gnucash_rates(config):$/;"	kind:function	line:46
+__download_and_save_rates	..\\gnucash_portfolio\\lib\\currencyratesretriever.py	/^    def __download_and_save_rates(self):$/;"	kind:member	line:149
+__download_rates	..\\gnucash_portfolio\\lib\\currencyratesretriever.py	/^    def __download_rates(self, base_currency, symbols):$/;"	kind:member	line:38
+__fetch_json_prices	..\\gnucash_portfolio\\get_vanguard_au_prices.py	/^def __fetch_json_prices():$/;"	kind:function	line:27
+__get_accounts_by_name	..\\app\\controllers\\distributions.py	/^def __get_accounts_by_name(book: Book, account_fullnames: List[str]) -> List[Account]:$/;"	kind:function	line:124
+__get_all_currency_files	..\\gnucash_portfolio\\lib\\currencyratesretriever.py	/^    def __get_all_currency_files(self):$/;"	kind:member	line:144
+__get_base_query	..\\gnucash_portfolio\\lib\\securities.py	/^    def __get_base_query(self):$/;"	kind:member	line:32
+__get_children_ids	..\\app\\controllers\\distributions.py	/^def __get_children_ids(account: Account) -> List[str]:$/;"	kind:function	line:152
+__get_commodity	..\\gnucash_portfolio\\import_security_prices.py	/^def __get_commodity(book, symbol):$/;"	kind:function	line:77
+__get_currency	..\\gnucash_portfolio\\import_security_prices.py	/^def __get_currency(book):$/;"	kind:function	line:127
+__get_default_currency	..\\gnucash_portfolio\\lib\\bookaggregate.py	/^    def __get_default_currency(self):$/;"	kind:member	line:28
+__get_default_currency_windows	..\\gnucash_portfolio\\lib\\bookaggregate.py	/^    def __get_default_currency_windows(self):$/;"	kind:member	line:41
+__get_fund_price	..\\gnucash_portfolio\\get_vanguard_au_prices.py	/^def __get_fund_price(fund_data, fund_id):$/;"	kind:function	line:77
+__get_ids	..\\app\\controllers\\distributions.py	/^def __get_ids(accounts: List[Account]):$/;"	kind:function	line:135
+__get_income_account_ids	..\\app\\controllers\\distributions.py	/^def __get_income_account_ids(book: Book, account_names: List[str]) -> List[str]:$/;"	kind:function	line:140
+__get_input_model	..\\app\\controllers\\distributions.py	/^def __get_input_model():$/;"	kind:function	line:77
+__get_json_prices	..\\gnucash_portfolio\\get_vanguard_au_prices.py	/^def __get_json_prices():$/;"	kind:function	line:15
+__get_latest_downloaded_rates_date	..\\gnucash_portfolio\\lib\\currencyratesretriever.py	/^    def __get_latest_downloaded_rates_date(self):$/;"	kind:member	line:128
+__get_latest_rates	..\\gnucash_portfolio\\import_exchange_rates.py	/^def __get_latest_rates(config):$/;"	kind:function	line:26
+__get_locale_currency	..\\gnucash_portfolio\\lib\\bookaggregate.py	/^    def __get_locale_currency(self):$/;"	kind:member	line:66
+__get_model_inperiod	..\\app\\controllers\\distributions.py	/^def __get_model_inperiod(input_model, book: Book):$/;"	kind:function	line:54
+__get_rate_file_path	..\\gnucash_portfolio\\lib\\currencyratesretriever.py	/^    def __get_rate_file_path(self, filename):$/;"	kind:member	line:83
+__get_registry_key	..\\gnucash_portfolio\\lib\\bookaggregate.py	/^    def __get_registry_key(self, key):$/;"	kind:member	line:58
+__get_stock_currency	..\\gnucash_portfolio\\import_security_prices.py	/^def __get_stock_currency(stock):$/;"	kind:function	line:116
+__import_price	..\\gnucash_portfolio\\import_security_prices.py	/^def __import_price(book, price):$/;"	kind:function	line:58
+__init__	..\\app\\controllers\\currency.py	/^    def __init__(self):$/;"	kind:member	line:37
+__init__	..\\app\\controllers\\currency.py	/^    def __init__(self):$/;"	kind:member	line:51
+__init__	..\\examples\\gsettings_binding.py	/^    def __init__(self):$/;"	kind:member	line:10
+__init__	..\\examples\\gui_tk_minimal.py	/^    def __init__(self, master=None):$/;"	kind:member	line:10
+__init__	..\\gnucash_portfolio\\lib\\assetallocation.py	/^    def __init__(self, json_node):$/;"	kind:member	line:16
+__init__	..\\gnucash_portfolio\\lib\\assetallocation.py	/^    def __init__(self, json_node):$/;"	kind:member	line:36
+__init__	..\\gnucash_portfolio\\lib\\assetallocation.py	/^    def __init__(self, json_node):$/;"	kind:member	line:44
+__init__	..\\gnucash_portfolio\\lib\\assetallocation.py	/^    def __init__(self, symbol: str):$/;"	kind:member	line:57
+__init__	..\\gnucash_portfolio\\lib\\bookaggregate.py	/^    def __init__(self):$/;"	kind:member	line:11
+__init__	..\\gnucash_portfolio\\lib\\currencies.py	/^    def __init__(self, book: Book):$/;"	kind:member	line:6
+__init__	..\\gnucash_portfolio\\lib\\currencyratesretriever.py	/^    def __init__(self, settings):$/;"	kind:member	line:20
+__init__	..\\gnucash_portfolio\\lib\\database.py	/^    def __init__(self, book_url: str = None):$/;"	kind:member	line:19
+__init__	..\\gnucash_portfolio\\lib\\messenger.py	/^    def __init__(self, **kwargs):$/;"	kind:member	line:10
+__init__	..\\gnucash_portfolio\\lib\\securities.py	/^    def __init__(self, book: Book):$/;"	kind:member	line:11
+__init__	..\\gnucash_portfolio\\lib\\settings.py	/^    def __init__(self, settings_file_path=None):$/;"	kind:member	line:16
+__init__.py	..\\__init__.py	1;"	kind:file	line:1
+__init__.py	..\\app\\__init__.py	1;"	kind:file	line:1
+__init__.py	..\\app\\controllers\\__init__.py	1;"	kind:file	line:1
+__init__.py	..\\gnucash_portfolio\\__init__.py	1;"	kind:file	line:1
+__init__.py	..\\gnucash_portfolio\\lib\\__init__.py	1;"	kind:file	line:1
+__load_all_income_for_account	..\\app\\controllers\\distributions.py	/^def __load_all_income_for_account(account: Account, date_from: date, date_to: date):$/;"	kind:function	line:165
+__load_asset_allocation_config	..\\gnucash_portfolio\\lib\\assetallocation.py	/^def __load_asset_allocation_config():$/;"	kind:function	line:138
+__load_cash_balances	..\\app\\controllers\\account.py	/^def __load_cash_balances(root_account_name: str):$/;"	kind:function	line:95
+__load_fund_data	..\\gnucash_portfolio\\get_vanguard_au_prices.py	/^def __load_fund_data():$/;"	kind:function	line:45
+__load_income_in_period	..\\app\\controllers\\distributions.py	/^def __load_income_in_period($/;"	kind:function	line:107
+__load_income_in_period_query	..\\app\\controllers\\distributions.py	/^def __load_income_in_period_query($/;"	kind:function	line:181
+__load_search_model	..\\app\\controllers\\account.py	/^def __load_search_model(search_term):$/;"	kind:function	line:52
+__parse_node	..\\gnucash_portfolio\\lib\\assetallocation.py	/^def __parse_node(node):$/;"	kind:function	line:119
+__read_prices_from_file	..\\gnucash_portfolio\\import_security_prices.py	/^def __read_prices_from_file(file_path):$/;"	kind:function	line:37
+__read_rates_from_file	..\\gnucash_portfolio\\lib\\currencyratesretriever.py	/^    def __read_rates_from_file(self):$/;"	kind:member	line:89
+__save_rates	..\\gnucash_portfolio\\import_exchange_rates.py	/^def __save_rates(config, latest_rates):$/;"	kind:function	line:58
+__save_rates	..\\gnucash_portfolio\\lib\\currencyratesretriever.py	/^    def __save_rates(self, rates):$/;"	kind:member	line:96
+__search	..\\app\\controllers\\currency.py	/^def __search(book: Book, model: SearchModel):$/;"	kind:function	line:77
+__x_get_latest_rates	..\\gnucash_portfolio\\lib\\currencyratesretriever.py	/^    def __x_get_latest_rates(self):$/;"	kind:member	line:108
+_lint	..\\setup.py	/^def _lint():$/;"	kind:function	line:166
+_test	..\\setup.py	/^def _test():$/;"	kind:function	line:184
+_test_all	..\\setup.py	/^def _test_all():$/;"	kind:function	line:197
+aalloc	..\\app\\controllers\\assetallocation.py	/^from gnucash_portfolio.lib import settings, assetallocation as aalloc$/;"	kind:unknown	line:8
+account.py	..\\app\\controllers\\account.py	1;"	kind:file	line:1
+account_controller	..\\app\\controllers\\account.py	/^account_controller = Blueprint('account_controller', __name__, url_prefix='\/account')$/;"	kind:variable	line:16
+accounts.py	..\\gnucash_portfolio\\lib\\accounts.py	1;"	kind:file	line:1
+allocation	..\\gnucash_portfolio\\lib\\assetallocation.py	/^    allocation = 0$/;"	kind:variable	line:14
+amount	..\\gnucash_portfolio\\symbol_dividends.py	/^        amount = get_dividend_sum_for_symbol(book, symbol)$/;"	kind:variable	line:66
+app	..\\app\\app.py	/^app = Flask(__name__, static_url_path='\/static')$/;"	kind:variable	line:13
+app	..\\examples\\flask_demo.py	/^app = Flask(__name__)$/;"	kind:variable	line:5
+app	..\\examples\\flask_templates.py	/^app = Flask(__name__)$/;"	kind:variable	line:6
+app	..\\examples\\gui_tk_minimal.py	/^app = Application()$/;"	kind:variable	line:20
+app.py	..\\app\\app.py	1;"	kind:file	line:1
+asset_allocation	..\\app\\controllers\\assetallocation.py	/^def asset_allocation():$/;"	kind:function	line:20
+assetallocation	..\\app\\controllers\\assetallocation.py	/^def assetallocation():$/;"	kind:function	line:13
+assetallocation.py	..\\app\\controllers\\assetallocation.py	1;"	kind:file	line:1
+assetallocation.py	..\\gnucash_portfolio\\lib\\assetallocation.py	1;"	kind:file	line:1
+assetallocation_controller	..\\app\\controllers\\assetallocation.py	/^assetallocation_controller = Blueprint('assetallocation_controller', __name__, url_prefix='\/ass/;"	kind:variable	line:10
+assets	..\\app\\app.py	/^assets = Environment(app)$/;"	kind:variable	line:63
+authors	..\\gnucash_portfolio\\metadata.py	/^authors = ['alen.siljak']$/;"	kind:variable	line:14
+authors_string	..\\gnucash_portfolio\\metadata.py	/^authors_string = ', '.join(authors)$/;"	kind:variable	line:15
+backup-report-settings.py	..\\examples\\backup-report-settings.py	1;"	kind:file	line:1
+base_currency	..\\gnucash_portfolio\\lib\\settings.py	/^    def base_currency(self):$/;"	kind:member	line:41
+book_path	..\\gnucash_portfolio\\symbol_dividends.py	/^    book_path: str = input("Enter book path (or leave empty):")$/;"	kind:variable	line:56
+book_url	..\\examples\\report_book.py	/^        book_url = sys.argv[1]$/;"	kind:variable	line:36
+book_url	..\\examples\\report_book.py	/^    book_url = None$/;"	kind:variable	line:34
+bookaggregate.py	..\\gnucash_portfolio\\lib\\bookaggregate.py	1;"	kind:file	line:1
+build	..\\examples\\gui_kivy.py	/^    def build(self):$/;"	kind:member	line:9
+bundles	..\\app\\app.py	/^bundles = {$/;"	kind:variable	line:35
+cache_path	..\\gnucash_portfolio\\lib\\currencyratesretriever.py	/^    cache_path = "data\/"$/;"	kind:variable	line:18
+calculate	..\\examples\\gui_tk_real.py	/^def calculate(*args):$/;"	kind:function	line:8
+cash_balances	..\\app\\controllers\\account.py	/^def cash_balances():$/;"	kind:function	line:72
+cdty	..\\examples\\read_currencies.py	/^    cdty = book.get(Commodity, namespace="CURRENCY", mnemonic=symbol)$/;"	kind:variable	line:38
+cdty	..\\examples\\read_currencies_sa.py	/^    cdty = session.query(Commodity).filter(Commodity.namespace == "CURRENCY", Commodity.mnemonic/;"	kind:variable	line:42
+check_output	..\\setup.py	/^    def check_output(cmd_args, *args, **kwargs):$/;"	kind:function	line:15
+config	..\\gnucash_portfolio\\lib\\database.py	/^    config = None$/;"	kind:variable	line:16
+config	..\\gnucash_portfolio\\lib\\settings.py	/^    config = Settings()$/;"	kind:variable	line:70
+config.py	..\\app\\config.py	1;"	kind:file	line:1
+copyright	..\\gnucash_portfolio\\metadata.py	/^copyright = '2017 ' + authors_string$/;"	kind:variable	line:18
+createWidgets	..\\examples\\gui_tk_minimal.py	/^    def createWidgets(self):$/;"	kind:member	line:15
+create_book	..\\gnucash_portfolio\\lib\\database.py	/^    def create_book(self):$/;"	kind:member	line:66
+currencies	..\\examples\\read_currencies.py	/^    currencies = book.currencies$/;"	kind:variable	line:31
+currencies	..\\examples\\read_currencies_sa.py	/^    currencies = session.query(Commodity).filter(Commodity.namespace == "CURRENCY").all()$/;"	kind:variable	line:35
+currencies.py	..\\gnucash_portfolio\\lib\\currencies.py	1;"	kind:file	line:1
+currency	..\\gnucash_portfolio\\lib\\price.py	/^    currency = "EUR"$/;"	kind:variable	line:14
+currency.py	..\\app\\controllers\\currency.py	1;"	kind:file	line:1
+currency_controller	..\\app\\controllers\\currency.py	/^currency_controller = Blueprint('currency_controller', __name__, url_prefix='\/currency')$/;"	kind:variable	line:13
+currency_symbol	..\\gnucash_portfolio\\import_security_prices.py	/^        currency_symbol = input("Currency for the prices: ")$/;"	kind:variable	line:151
+currency_symbol	..\\gnucash_portfolio\\import_security_prices.py	/^        currency_symbol = sys.argv[2]$/;"	kind:variable	line:154
+currency_symbol	..\\gnucash_portfolio\\import_security_prices.py	/^    currency_symbol = currency_symbol.upper()$/;"	kind:variable	line:156
+currency_symbol	..\\gnucash_portfolio\\import_security_prices.py	/^currency_symbol = None$/;"	kind:variable	line:136
+currencyratesretriever.py	..\\gnucash_portfolio\\lib\\currencyratesretriever.py	1;"	kind:file	line:1
+data	..\\gnucash_portfolio\\lib\\assetallocation.py	/^    data = None$/;"	kind:variable	line:13
+data	..\\gnucash_portfolio\\lib\\settings.py	/^    data = None$/;"	kind:variable	line:14
+database.py	..\\gnucash_portfolio\\lib\\database.py	1;"	kind:file	line:1
+database_filename	..\\gnucash_portfolio\\lib\\settings.py	/^    def database_filename(self):$/;"	kind:member	line:63
+database_path	..\\gnucash_portfolio\\lib\\settings.py	/^    def database_path(self):$/;"	kind:member	line:54
+database_uri	..\\gnucash_portfolio\\lib\\settings.py	/^    def database_uri(self):$/;"	kind:member	line:46
+date	..\\gnucash_portfolio\\lib\\price.py	/^    date = datetime.date.today()$/;"	kind:variable	line:11
+db	..\\gnucash_portfolio\\lib\\database.py	/^    db = Database()$/;"	kind:variable	line:73
+db	..\\gnucash_portfolio\\symbol_dividends.py	/^        db = database.Database(book_path)$/;"	kind:variable	line:61
+decorated_function	..\\app\\decorators.py	/^        def decorated_function(*args, **kwargs):$/;"	kind:function	line:15
+decorator	..\\app\\decorators.py	/^    def decorator(f):$/;"	kind:function	line:13
+decorators.py	..\\app\\decorators.py	1;"	kind:file	line:1
+demo	..\\gnucash_portfolio\\security_analysis.py	/^def demo():$/;"	kind:function	line:106
+deploy.py	..\\reports\\deploy.py	1;"	kind:file	line:1
+description	..\\gnucash_portfolio\\metadata.py	/^description = 'Portfolio tools for GnuCash'$/;"	kind:variable	line:13
+destination	..\\examples\\backup-report-settings.py	/^destination = os.path.relpath(".\/")$/;"	kind:variable	line:19
+destination	..\\gnucash_portfolio\\find_report_settings.py	/^destination = get_reports_settings_path()$/;"	kind:variable	line:22
+display_db_info	..\\gnucash_portfolio\\lib\\database.py	/^    def display_db_info(self):$/;"	kind:member	line:28
+display_key	..\\examples\\windows_registry.py	/^def display_key(key):$/;"	kind:function	line:12
+display_rates	..\\gnucash_portfolio\\lib\\currencyratesretriever.py	/^    def display_rates(self):$/;"	kind:member	line:168
+distribution_controller	..\\app\\controllers\\distributions.py	/^distribution_controller = Blueprint('distribution_controller', __name__, url_prefix='\/distribut/;"	kind:variable	line:12
+distributions.py	..\\app\\controllers\\distributions.py	1;"	kind:file	line:1
+download_fund_prices	..\\gnucash_portfolio\\get_vanguard_au_prices.py	/^def download_fund_prices(user_funds):$/;"	kind:function	line:100
+dst	..\\reports\\deploy.py	/^    dst = path.join(gnucash_dir, report_name)$/;"	kind:variable	line:29
+edit	..\\app\\controllers\\settings.py	/^def edit():$/;"	kind:function	line:13
+emails	..\\gnucash_portfolio\\metadata.py	/^emails = ['alen.siljak@gmx.com']$/;"	kind:variable	line:16
+fa_route	..\\app\\app.py	/^fa_route = Blueprint('fa', __name__, static_url_path='\/fonts', static_folder='node_modules\/fon/;"	kind:variable	line:31
+feet	..\\examples\\gui_tk_real.py	/^feet = StringVar()$/;"	kind:variable	line:23
+feet_entry	..\\examples\\gui_tk_real.py	/^feet_entry = ttk.Entry(mainframe, width=7, textvariable=feet)$/;"	kind:variable	line:26
+filename	..\\examples\\read_currencies.py	/^    filename = "test.gnucash"$/;"	kind:variable	line:17
+filename	..\\examples\\read_currencies.py	/^filename = sys.argv[1]$/;"	kind:variable	line:14
+filename	..\\examples\\read_currencies_sa.py	/^    filename = "test.gnucash"$/;"	kind:variable	line:18
+filename	..\\examples\\read_currencies_sa.py	/^filename = sys.argv[1]$/;"	kind:variable	line:15
+filename	..\\gnucash_portfolio\\import_security_prices.py	/^            filename = None$/;"	kind:variable	line:148
+filename	..\\gnucash_portfolio\\import_security_prices.py	/^        filename = input("Please enter the filename to import: ")$/;"	kind:variable	line:144
+filename	..\\gnucash_portfolio\\import_security_prices.py	/^    filename = None$/;"	kind:variable	line:139
+filename	..\\gnucash_portfolio\\lib\\database.py	/^    filename = None   # database file path$/;"	kind:variable	line:17
+filename	..\\gnucash_portfolio\\search_for_account.py	/^filename = sys.argv[1]$/;"	kind:variable	line:16
+finalize_options	..\\setup.py	/^    def finalize_options(self):$/;"	kind:member	line:212
+find	..\\app\\controllers\\account.py	/^def find():$/;"	kind:function	line:32
+find_report_settings.py	..\\gnucash_portfolio\\find_report_settings.py	1;"	kind:file	line:1
+flask_demo.py	..\\examples\\flask_demo.py	1;"	kind:file	line:1
+flask_templates.py	..\\examples\\flask_templates.py	1;"	kind:file	line:1
+for_security	..\\app\\controllers\\distributions.py	/^def for_security(symbol):$/;"	kind:function	line:43
+generate_asset_allocation_report	..\\reports\\report_asset_allocation\\report_asset_allocation.py	/^def generate_asset_allocation_report(book_url):$/;"	kind:function	line:28
+generate_report	..\\examples\\report_book.py	/^def generate_report(book_url):$/;"	kind:function	line:18
+generate_report	..\\examples\\report_options.py	/^def generate_report($/;"	kind:function	line:15
+generate_report	..\\examples\\report_simple.py	/^def generate_report($/;"	kind:function	line:13
+generate_report	..\\examples\\report_testx\\report_testx.py	/^def generate_report($/;"	kind:function	line:15
+generate_report	..\\reports\\report_asset_allocation\\report_asset_allocation.py	/^def generate_report(book_url):$/;"	kind:function	line:21
+generate_report	..\\reports\\report_portfolio_value\\report_portfolio_value.py	/^def generate_report(book_url):$/;"	kind:function	line:23
+generate_report	..\\reports\\report_vanguard_prices\\report_vanguard_prices.py	/^def generate_report($/;"	kind:function	line:18
+generic.py	..\\gnucash_portfolio\\lib\\generic.py	1;"	kind:file	line:1
+get_account_id_by_fullname	..\\gnucash_portfolio\\lib\\accounts.py	/^def get_account_id_by_fullname(book: Book, fullname: str) -> str:$/;"	kind:function	line:7
+get_all	..\\gnucash_portfolio\\lib\\securities.py	/^    def get_all(self):$/;"	kind:member	line:14
+get_all_child_accounts_as_array	..\\gnucash_portfolio\\lib\\accounts.py	/^def get_all_child_accounts_as_array(account: Account) -> List[Account]:$/;"	kind:function	line:21
+get_all_stocks	..\\gnucash_portfolio\\lib\\portfoliovalue.py	/^def get_all_stocks(book: Book):$/;"	kind:function	line:67
+get_avg_price	..\\gnucash_portfolio\\security_analysis.py	/^def get_avg_price(security: Commodity) -> Decimal:$/;"	kind:function	line:47
+get_book_currencies_query	..\\gnucash_portfolio\\lib\\currencies.py	/^    def get_book_currencies_query(self):$/;"	kind:member	line:11
+get_by_symbol	..\\gnucash_portfolio\\lib\\securities.py	/^    def get_by_symbol(self, symbol: str) -> List[Commodity]:$/;"	kind:member	line:23
+get_count	..\\gnucash_portfolio\\import_exchange_rates.py	/^def get_count(q):$/;"	kind:function	line:100
+get_currencies	..\\gnucash_portfolio\\lib\\settings.py	/^    def get_currencies(self):$/;"	kind:member	line:36
+get_date_iso_string	..\\gnucash_portfolio\\lib\\generic.py	/^def get_date_iso_string(value: datetime):$/;"	kind:function	line:27
+get_default_currency	..\\gnucash_portfolio\\lib\\bookaggregate.py	/^    def get_default_currency(self):$/;"	kind:member	line:20
+get_dividend_accounts	..\\gnucash_portfolio\\symbol_dividends.py	/^def get_dividend_accounts(book: Book, symbol: str):$/;"	kind:function	line:11
+get_dividend_sum	..\\gnucash_portfolio\\symbol_dividends.py	/^def get_dividend_sum(book: Book, income_account: Account):$/;"	kind:function	line:29
+get_dividend_sum_for_symbol	..\\gnucash_portfolio\\symbol_dividends.py	/^def get_dividend_sum_for_symbol(book: Book, symbol: str):$/;"	kind:function	line:42
+get_git_project_files	..\\setup.py	/^def get_git_project_files():$/;"	kind:function	line:94
+get_gnucash_dir	..\\examples\\backup-report-settings.py	/^def get_gnucash_dir():$/;"	kind:function	line:10
+get_gnucash_dir	..\\gnucash_portfolio\\find_report_settings.py	/^def get_gnucash_dir():$/;"	kind:function	line:11
+get_last_available_price	..\\gnucash_portfolio\\security_analysis.py	/^def get_last_available_price(security: Commodity) -> Decimal:$/;"	kind:function	line:101
+get_latest_rates	..\\gnucash_portfolio\\lib\\currencyratesretriever.py	/^    def get_latest_rates(self):$/;"	kind:member	line:24
+get_number_of_shares	..\\gnucash_portfolio\\security_analysis.py	/^def get_number_of_shares(security: Commodity) -> Decimal:$/;"	kind:function	line:82
+get_project_files	..\\setup.py	/^def get_project_files():$/;"	kind:function	line:67
+get_rates	..\\gnucash_portfolio\\lib\\settings.py	/^    def get_rates(self):$/;"	kind:member	line:32
+get_reports_settings_path	..\\examples\\backup-report-settings.py	/^def get_reports_settings_path():$/;"	kind:function	line:14
+get_reports_settings_path	..\\gnucash_portfolio\\find_report_settings.py	/^def get_reports_settings_path():$/;"	kind:function	line:15
+get_settings	..\\gnucash_portfolio\\import_exchange_rates.py	/^def get_settings():$/;"	kind:function	line:17
+get_stock	..\\gnucash_portfolio\\security_analysis.py	/^def get_stock(book: Book, symbol: str) -> Commodity:$/;"	kind:function	line:31
+get_stock_model_from	..\\gnucash_portfolio\\lib\\portfoliovalue.py	/^def get_stock_model_from(book: Book, commodity: Commodity):$/;"	kind:function	line:9
+get_today	..\\gnucash_portfolio\\lib\\generic.py	/^def get_today():$/;"	kind:function	line:14
+get_vanguard_au_prices.py	..\\gnucash_portfolio\\get_vanguard_au_prices.py	1;"	kind:file	line:1
+get_yesterday	..\\gnucash_portfolio\\lib\\generic.py	/^def get_yesterday():$/;"	kind:function	line:21
+get_yesterdays_file_path	..\\gnucash_portfolio\\lib\\currencyratesretriever.py	/^    def get_yesterdays_file_path(self):$/;"	kind:member	line:61
+git_ls_files	..\\setup.py	/^def git_ls_files(*cmd_args):$/;"	kind:function	line:113
+gnucash_dir	..\\reports\\deploy.py	/^gnucash_dir = path.abspath(home + "\/.gnucash\/")$/;"	kind:variable	line:25
+gsettings.py	..\\examples\\gsettings.py	1;"	kind:file	line:1
+gsettings_binding.py	..\\examples\\gsettings_binding.py	1;"	kind:file	line:1
+gui_kivy.py	..\\examples\\gui_kivy.py	1;"	kind:file	line:1
+gui_tk.py	..\\examples\\gui_tk.py	1;"	kind:file	line:1
+gui_tk_minimal.py	..\\examples\\gui_tk_minimal.py	1;"	kind:file	line:1
+gui_tk_real.py	..\\examples\\gui_tk_real.py	1;"	kind:file	line:1
+home	..\\reports\\deploy.py	/^home = expanduser("~")$/;"	kind:variable	line:24
+import_exchange_rates.py	..\\gnucash_portfolio\\import_exchange_rates.py	1;"	kind:file	line:1
+import_file	..\\gnucash_portfolio\\import_security_prices.py	/^def import_file(filename):$/;"	kind:function	line:19
+import_prices	..\\app\\controllers\\price.py	/^def import_prices():$/;"	kind:function	line:12
+import_rates	..\\app\\controllers\\price.py	/^def import_rates():$/;"	kind:function	line:17
+import_security_prices.py	..\\gnucash_portfolio\\import_security_prices.py	1;"	kind:file	line:1
+income_in_period	..\\app\\controllers\\distributions.py	/^def income_in_period():$/;"	kind:function	line:16
+income_in_period_data	..\\app\\controllers\\distributions.py	/^def income_in_period_data():$/;"	kind:function	line:27
+index	..\\app\\controllers\\account.py	/^def index():$/;"	kind:function	line:20
+index	..\\app\\controllers\\currency.py	/^def index():$/;"	kind:function	line:17
+index	..\\app\\controllers\\index.py	/^def index():$/;"	kind:function	line:10
+index	..\\app\\controllers\\price.py	/^def index():$/;"	kind:function	line:7
+index	..\\app\\controllers\\vanguard.py	/^def index():$/;"	kind:function	line:12
+index	..\\examples\\flask_demo.py	/^def index():$/;"	kind:function	line:13
+index	..\\examples\\flask_templates.py	/^def index():$/;"	kind:function	line:9
+index.py	..\\app\\controllers\\index.py	1;"	kind:file	line:1
+index_controller	..\\app\\controllers\\index.py	/^index_controller = Blueprint('index_controller', __name__)$/;"	kind:variable	line:6
+init_from_book	..\\app\\controllers\\currency.py	/^    def init_from_book(self, book: Book):$/;"	kind:member	line:40
+init_from_request	..\\app\\controllers\\currency.py	/^    def init_from_request(self, request):$/;"	kind:member	line:68
+initialize	..\\app\\controllers\\currency.py	/^    def initialize(self, book: Book, request):$/;"	kind:member	line:58
+is_git_project	..\\setup.py	/^def is_git_project():$/;"	kind:function	line:90
+json_validate	..\\app\\controllers\\settings.py	/^def json_validate(data):$/;"	kind:function	line:58
+key	..\\examples\\windows_registry.py	/^key = "currency-choice-locale"$/;"	kind:variable	line:18
+key	..\\examples\\windows_registry.py	/^key = "currency-choice-other"$/;"	kind:variable	line:21
+key	..\\examples\\windows_registry.py	/^key = "currency-other"$/;"	kind:variable	line:24
+latest_rates_exist	..\\gnucash_portfolio\\lib\\currencyratesretriever.py	/^    def latest_rates_exist(self):$/;"	kind:member	line:70
+license	..\\gnucash_portfolio\\metadata.py	/^license = 'GPL3'$/;"	kind:variable	line:17
+load_asset_allocation_model	..\\gnucash_portfolio\\lib\\assetallocation.py	/^def load_asset_allocation_model(book_url: str):$/;"	kind:function	line:75
+load_jinja_template	..\\gnucash_portfolio\\lib\\templates.py	/^def load_jinja_template(file_name):$/;"	kind:function	line:7
+main	..\\gnucash_portfolio\\import_exchange_rates.py	/^def main():$/;"	kind:function	line:108
+main	..\\gnucash_portfolio\\security_analysis.py	/^def main(symbol: str):$/;"	kind:function	line:13
+main	..\\setup.py	/^def main():$/;"	kind:function	line:327
+mainframe	..\\examples\\gui_tk_real.py	/^mainframe = ttk.Frame(root, padding="3 3 12 12")$/;"	kind:variable	line:18
+messenger.py	..\\gnucash_portfolio\\lib\\messenger.py	1;"	kind:file	line:1
+metadata	..\\setup.py	/^metadata = imp.load_source($/;"	kind:variable	line:61
+metadata.py	..\\gnucash_portfolio\\metadata.py	1;"	kind:file	line:1
+meters	..\\examples\\gui_tk_real.py	/^meters = StringVar()$/;"	kind:variable	line:24
+my_install_scripts	..\\setup.py	/^class my_install_scripts(install_scripts):$/;"	kind:class	line:245
+name	..\\gnucash_portfolio\\lib\\assetallocation.py	/^    def name(self):$/;"	kind:member	line:22
+name	..\\gnucash_portfolio\\lib\\price.py	/^    name = "AUD"$/;"	kind:variable	line:13
+open_book	..\\gnucash_portfolio\\lib\\database.py	/^    def open_book(self, for_writing=False) -> piecash.Book:$/;"	kind:member	line:35
+package	..\\gnucash_portfolio\\metadata.py	/^package = 'gnucash-portfolio'$/;"	kind:variable	line:9
+parse_euro_date	..\\gnucash_portfolio\\lib\\price.py	/^    def parse_euro_date(self, date_string: str):$/;"	kind:member	line:16
+parse_value	..\\gnucash_portfolio\\lib\\price.py	/^    def parse_value(self, value_string: str):$/;"	kind:member	line:25
+pjoin	..\\setup.py	/^from os.path import join as pjoin, splitext, split as psplit$/;"	kind:unknown	line:10
+platform.py	..\\examples\\platform.py	1;"	kind:file	line:1
+portfolio.py	..\\app\\controllers\\portfolio.py	1;"	kind:file	line:1
+portfolio_controller	..\\app\\controllers\\portfolio.py	/^portfolio_controller = Blueprint('portfolio_controller', __name__, $/;"	kind:variable	line:9
+portfolio_value	..\\app\\controllers\\portfolio.py	/^def portfolio_value():$/;"	kind:function	line:15
+portfoliovalue.py	..\\gnucash_portfolio\\lib\\portfoliovalue.py	1;"	kind:file	line:1
+post	..\\app\\controllers\\currency.py	/^def post():$/;"	kind:function	line:26
+price.py	..\\app\\controllers\\price.py	1;"	kind:file	line:1
+price.py	..\\gnucash_portfolio\\lib\\price.py	1;"	kind:file	line:1
+price_controller	..\\app\\controllers\\price.py	/^price_controller = Blueprint('price_controller', __name__, url_prefix='\/price')$/;"	kind:variable	line:4
+pricelib	..\\gnucash_portfolio\\import_security_prices.py	/^from gnucash_portfolio.lib import database, price as pricelib$/;"	kind:unknown	line:17
+print_failure_message	..\\setup.py	/^def print_failure_message(message):$/;"	kind:function	line:139
+print_sql	..\\gnucash_portfolio\\lib\\generic.py	/^def print_sql(query):$/;"	kind:function	line:32
+print_success_message	..\\setup.py	/^def print_success_message(message):$/;"	kind:function	line:125
+project	..\\gnucash_portfolio\\metadata.py	/^project = "Portfolio tools for GnuCash"$/;"	kind:variable	line:10
+project_no_spaces	..\\gnucash_portfolio\\metadata.py	/^project_no_spaces = project.replace(' ', '')$/;"	kind:variable	line:11
+psplit	..\\setup.py	/^from os.path import join as pjoin, splitext, split as psplit$/;"	kind:unknown	line:10
+python_version_specific_requires	..\\setup.py	/^python_version_specific_requires = []$/;"	kind:variable	line:223
+query	..\\gnucash_portfolio\\lib\\bookaggregate.py	/^    def query(self):$/;"	kind:member	line:15
+read	..\\setup.py	/^def read(filename):$/;"	kind:function	line:154
+read_book_uri_from_console	..\\gnucash_portfolio\\lib\\generic.py	/^def read_book_uri_from_console():$/;"	kind:function	line:56
+read_currencies.py	..\\examples\\read_currencies.py	1;"	kind:file	line:1
+read_currencies_sa.py	..\\examples\\read_currencies_sa.py	1;"	kind:file	line:1
+render_report	..\\reports\\report_vanguard_prices\\report_vanguard_prices.py	/^def render_report(book_url, fund_ids):$/;"	kind:function	line:29
+report_asset_allocation.py	..\\reports\\report_asset_allocation\\report_asset_allocation.py	1;"	kind:file	line:1
+report_book.py	..\\examples\\report_book.py	1;"	kind:file	line:1
+report_folders	..\\reports\\deploy.py	/^report_folders = []$/;"	kind:variable	line:13
+report_name	..\\reports\\deploy.py	/^    report_name = report_dir.name$/;"	kind:variable	line:28
+report_options.py	..\\examples\\report_options.py	1;"	kind:file	line:1
+report_portfolio_value.py	..\\reports\\report_portfolio_value\\report_portfolio_value.py	1;"	kind:file	line:1
+report_simple.py	..\\examples\\report_simple.py	1;"	kind:file	line:1
+report_testx.py	..\\examples\\report_testx\\report_testx.py	1;"	kind:file	line:1
+report_vanguard_prices.py	..\\reports\\report_vanguard_prices\\report_vanguard_prices.py	1;"	kind:file	line:1
+root	..\\examples\\gui_tk.py	/^root = Tk()$/;"	kind:variable	line:4
+root	..\\examples\\gui_tk_real.py	/^root = Tk()$/;"	kind:variable	line:15
+run	..\\setup.py	/^    def run(self):$/;"	kind:member	line:246
+run.py	..\\app\\run.py	1;"	kind:file	line:1
+run_report_from_console	..\\gnucash_portfolio\\lib\\generic.py	/^def run_report_from_console(output_file_name, callback):$/;"	kind:function	line:72
+run_tests	..\\setup.py	/^    def run_tests(self):$/;"	kind:member	line:218
+runner	..\\gnucash_portfolio\\lib\\currencyratesretriever.py	/^    runner = CurrencyRatesRetriever(None)$/;"	kind:variable	line:181
+save	..\\app\\controllers\\settings.py	/^def save():$/;"	kind:function	line:36
+save_to_temp	..\\gnucash_portfolio\\lib\\generic.py	/^def save_to_temp(content, file_name=None):$/;"	kind:function	line:38
+scripts_route	..\\app\\app.py	/^scripts_route = Blueprint('scripts', __name__, static_url_path='\/scripts', static_folder='scrip/;"	kind:variable	line:29
+search	..\\app\\controllers\\account.py	/^def search():$/;"	kind:function	line:26
+searchAccount	..\\gnucash_portfolio\\search_for_account.py	/^def searchAccount(searchTerm, book):$/;"	kind:function	line:21
+searchTerm	..\\gnucash_portfolio\\search_for_account.py	/^searchTerm = input("Please enter the search term:")$/;"	kind:variable	line:19
+search_for_account.py	..\\gnucash_portfolio\\search_for_account.py	1;"	kind:file	line:1
+securities.py	..\\app\\controllers\\securities.py	1;"	kind:file	line:1
+securities.py	..\\gnucash_portfolio\\lib\\securities.py	1;"	kind:file	line:1
+security_analysis	..\\app\\controllers\\securities.py	/^def security_analysis():$/;"	kind:function	line:23
+security_analysis.py	..\\gnucash_portfolio\\security_analysis.py	1;"	kind:file	line:1
+session	..\\examples\\read_currencies_sa.py	/^    session = book.session$/;"	kind:variable	line:27
+settings	..\\gnucash_portfolio\\lib\\currencyratesretriever.py	/^    settings = None$/;"	kind:variable	line:17
+settings.py	..\\app\\controllers\\settings.py	1;"	kind:file	line:1
+settings.py	..\\gnucash_portfolio\\lib\\settings.py	1;"	kind:file	line:1
+settings_controller	..\\app\\controllers\\settings.py	/^settings_controller = Blueprint('settings_controller', __name__, url_prefix='\/settings')$/;"	kind:variable	line:8
+settings_file_path	..\\app\\controllers\\settings.py	/^settings_file_path = '..\/config\/settings.json'$/;"	kind:variable	line:9
+settings_path	..\\gnucash_portfolio\\import_exchange_rates.py	/^settings_path = "settings.json"$/;"	kind:variable	line:13
+setup.py	..\\setup.py	1;"	kind:file	line:1
+setup_dict	..\\setup.py	/^setup_dict = dict($/;"	kind:variable	line:274
+show_settings	..\\gnucash_portfolio\\lib\\settings.py	/^    def show_settings(self):$/;"	kind:member	line:28
+simple_piecash_query.py	..\\examples\\simple_piecash_query.py	1;"	kind:file	line:1
+source	..\\examples\\backup-report-settings.py	/^source = get_reports_settings_path$/;"	kind:variable	line:18
+stock_controller	..\\app\\controllers\\securities.py	/^stock_controller = Blueprint('stock_controller', __name__, url_prefix='\/stock')$/;"	kind:variable	line:14
+stocks	..\\app\\controllers\\securities.py	/^def stocks():$/;"	kind:function	line:18
+subdirs	..\\reports\\deploy.py	/^subdirs = os.scandir(".")$/;"	kind:variable	line:16
+symbol	..\\examples\\read_currencies.py	/^symbol = "AUD"$/;"	kind:variable	line:19
+symbol	..\\examples\\read_currencies_sa.py	/^symbol = "AUD"$/;"	kind:variable	line:20
+symbol	..\\gnucash_portfolio\\symbol_dividends.py	/^    symbol = symbol.upper()$/;"	kind:variable	line:58
+symbol	..\\gnucash_portfolio\\symbol_dividends.py	/^    symbol: str = input("Enter symbol:")$/;"	kind:variable	line:57
+symbol_dividends.py	..\\gnucash_portfolio\\symbol_dividends.py	1;"	kind:file	line:1
+templated	..\\app\\decorators.py	/^def templated(template=None):$/;"	kind:function	line:9
+templates.py	..\\gnucash_portfolio\\lib\\templates.py	1;"	kind:file	line:1
+test	..\\gnucash_portfolio\\get_vanguard_au_prices.py	/^def test(user_funds):$/;"	kind:function	line:114
+test	..\\gnucash_portfolio\\lib\\accounts.py	/^def test():$/;"	kind:function	line:36
+test	..\\gnucash_portfolio\\lib\\securities.py	/^    def test(self):$/;"	kind:member	line:42
+test	..\\reports\\report_vanguard_prices\\report_vanguard_prices.py	/^def test():$/;"	kind:function	line:45
+tk	..\\examples\\gui_tk_minimal.py	/^import tkinter as tk$/;"	kind:namespace	line:7
+transaction.py	..\\app\\controllers\\transaction.py	1;"	kind:file	line:1
+transaction_controller	..\\app\\controllers\\transaction.py	/^transaction_controller = Blueprint('transaction_controller', __name__, url_prefix='\/transaction/;"	kind:variable	line:11
+transactions	..\\app\\controllers\\securities.py	/^def transactions():$/;"	kind:function	line:42
+tx_details	..\\app\\controllers\\transaction.py	/^def tx_details(tx_id: str):$/;"	kind:function	line:14
+url	..\\gnucash_portfolio\\metadata.py	/^url = 'https:\/\/github.com\/MisterY\/gnucash-portfolio'$/;"	kind:variable	line:19
+user_funds	..\\gnucash_portfolio\\get_vanguard_au_prices.py	/^    user_funds = ["8123", "8146", "8148", "8147"]$/;"	kind:variable	line:121
+value	..\\gnucash_portfolio\\lib\\assetallocation.py	/^    def value(self):$/;"	kind:member	line:68
+value	..\\gnucash_portfolio\\lib\\price.py	/^    value = 18.23$/;"	kind:variable	line:12
+vanguard.py	..\\app\\controllers\\vanguard.py	1;"	kind:file	line:1
+vanguard_controller	..\\app\\controllers\\vanguard.py	/^vanguard_controller = Blueprint('vanguard_controller', __name__, $/;"	kind:variable	line:7
+vanguardprices	..\\app\\controllers\\vanguard.py	/^def vanguardprices():$/;"	kind:function	line:17
+version	..\\gnucash_portfolio\\metadata.py	/^version = '0.0.2'$/;"	kind:variable	line:12
+windows_registry.py	..\\examples\\windows_registry.py	1;"	kind:file	line:1

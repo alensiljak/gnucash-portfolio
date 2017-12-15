@@ -1,4 +1,5 @@
 # gnucash-portfolio
+
 A collection of tools for managing an investment portfolio in GnuCash
 
 User-oriented documentation is at http://portfolio.alensiljak.tk
@@ -6,16 +7,24 @@ User-oriented documentation is at http://portfolio.alensiljak.tk
 The purpose of the project is to provide tools that help in managing an investment portfolio in a GnuCash book.
 The code is (mostly) written in Python.
 
+## Development
+
+My development environment in on Windows and consists of the following:
+
+- Visual Studio Code with
+  - Python extension
+  - ctags
+- Python 3.6
+- node + npm
+
+All the libraries are listed in `requirements.txt` for Python and `package.json` for node.
+
 ## Running
 
 ### Preparation
 
 - Config: In order to run the scripts, copy `settings.json.template` into `settings.json` and customize the settings by editing the file.
-- Register the library with 
-```
-pip install -e <path to>/gnucash-portfolio
-```
-as it is called from the reports.
+- Register the library with ```pip install -e <path to>/gnucash-portfolio``` as it is called from the reports.
 
 ### Execution
 
