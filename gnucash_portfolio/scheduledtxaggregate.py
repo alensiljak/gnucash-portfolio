@@ -2,7 +2,10 @@
 from piecash import Book, ScheduledTransaction
 
 class ScheduledTxAggregate:
-    """ Handles scheduled transactions """
+    """ Handles scheduled transactions
+    Look for gsltma_get_sx_instances_from_orig_iter in GnuCash.
+    """
+
     def __init__(self, book: Book):
         self.book = book
 
