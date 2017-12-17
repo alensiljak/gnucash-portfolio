@@ -4,19 +4,60 @@ Transactions & Splits
 - editing of transaction splits
 - display transaction details with splits
 """
+from typing import List
 from flask import Blueprint, request, render_template
-from piecash import Transaction
-from gnucash_portfolio.lib.database import Database
+from piecash import Book, Transaction, ScheduledTransaction
+from gnucash_portfolio.bookaggregate import BookAggregate
+from gnucash_portfolio.scheduledtxaggregate import ScheduledTxAggregate
 
 transaction_controller = Blueprint('transaction_controller', __name__, url_prefix='/transaction')
 
 @transaction_controller.route('/details/<tx_id>')
 def tx_details(tx_id: str):
     """ Display transaction details """
-    with Database().open_book() as book:
-        tx = book.session.query(Transaction).filter(Transaction.guid == tx_id).one()
+    with BookAggregate() as svc:
+        tx = svc.book.session.query(Transaction).filter(Transaction.guid == tx_id).one()
         #print(tx.description)
         model = {
             "transaction": tx
         }
         return render_template('transaction.details.html', model=model)
+
+class ScheduledTxSearchModel:
+    def __init__(self):
+        self.date_from = None
+        self.date_to = None
+
+
+@transaction_controller.route('/scheduled', methods=['GET', 'POST'])
+def scheduled_transactions():
+    """ Lists scheduled transactions """
+    search_model = __parse_sch_tx_search_params(request)
+    if not search_model:
+        # Initial run
+        search_model = ScheduledTxSearchModel()
+
+    with BookAggregate() as svc:
+        model = {
+            "search": None,
+            "data": __load_model_for_scheduled_transactions(search_model, svc.book)
+        }
+        output = render_template('transaction.scheduled.html', model=model)
+    return output
+
+def __parse_sch_tx_search_params(request) -> ScheduledTxSearchModel:
+    """ Parses the search parameters from the request """
+    if not request.form:
+        return None
+
+    search_model = ScheduledTxSearchModel()
+    return search_model
+
+def __load_model_for_scheduled_transactions(search: ScheduledTxSearchModel, book: Book) -> List[ScheduledTransaction]:
+    """ loads data for scheduled transactions """
+    if not search:
+        return None
+
+    svc = ScheduledTxAggregate(book)
+    query = svc.get_all_query()
+    return query.all()

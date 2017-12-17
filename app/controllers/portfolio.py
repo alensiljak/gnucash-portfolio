@@ -11,7 +11,6 @@ portfolio_controller = Blueprint('portfolio_controller', __name__,
 
 
 @portfolio_controller.route('/value')
-#@templated()
 def portfolio_value():
     """ Portfolio Value report """
     stock_rows = []
@@ -22,6 +21,4 @@ def portfolio_value():
             model = portfoliovalue.get_stock_model_from(book, stock)
             stock_rows.append(model)
 
-    # print(stock_rows)
     return render_template('portfolio.value.html', stock_rows=stock_rows)
-    # return dict(stock_rows=stock_rows)
