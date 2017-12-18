@@ -9,6 +9,7 @@ from piecash import Book, Commodity, Price
 import gnucash_portfolio
 from gnucash_portfolio.actions import symbol_dividends
 from gnucash_portfolio.securityaggregate import SecurityAggregate
+from gnucash_portfolio.pricesaggregate import PricesAggregate, PriceAggregate
 
 class StockViewModel:
     """ View model for stock symbol """
@@ -33,16 +34,17 @@ def get_stock_model_from(book: Book, commodity: Commodity, as_of_date: date):
     model.exchange = commodity.namespace
     model.symbol = commodity.mnemonic
 
-    svc = SecurityAggregate(book)
+    svc = SecurityAggregate(book, commodity)
 
-    model.shares_num = svc.get_num_shares_on(commodity, as_of_date)
+    model.shares_num = svc.get_num_shares_on(as_of_date)
     # float
 
-    model.avg_price = svc.get_avg_price(commodity)
+    model.avg_price = svc.get_avg_price()
     #avg_price_disp = "{:,.4f}".format(avg_price)
 
     # Last price
-    last_price: Price = commodity.prices.order_by(desc(Price.date)).first()
+    price_svc = PricesAggregate(book)
+    last_price: Price = price_svc.get_price_as_of(commodity, as_of_date)
     if last_price is not None:
         model.price = last_price.value
     #print("last price", last_price.value, last_price.currency.mnemonic)

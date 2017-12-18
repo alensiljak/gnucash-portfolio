@@ -2,14 +2,15 @@
 from datetime import date
 from decimal import Decimal
 from sqlalchemy import desc
+from typing import List
 from piecash import Account, Book, Commodity, Price, Split, Transaction
 from gnucash_portfolio.accountaggregate import AccountAggregate, AccountsAggregate
 
 
-class SecurityAggregate:
-    """ Stocks aggregate """
+class SecuritiesAggregate:
+    """ Operates on security collections """
     def __init__(self, book: Book):
-        self.book = book
+        self.book: Book = book
 
     def get_stock(self, symbol: str) -> Commodity:
         """Returns the stock/commodity object for the given symbol"""
@@ -27,22 +28,37 @@ class SecurityAggregate:
 
         return security
 
+    def get_stocks(self, symbols: List[str]) -> List[Commodity]:
+        """ loads stocks by symbol """
+        query = (
+            self.book.session.query(Commodity)
+            .filter(Commodity.namespace != "CURRENCY",
+                    Commodity.mnemonic.in_(symbols))
+        )
+        return query.all()
 
-    def get_num_shares(self, security: Commodity) -> Decimal:
+
+class SecurityAggregate:
+    """ Stocks aggregate """
+    def __init__(self, book: Book, security: Commodity):
+        self.book = book
+        self.security = security
+
+    def get_num_shares(self) -> Decimal:
         """
         Returns the number of shares for the given security.
         It gets the number from all the accounts in the book.
         """
         today = date.today
-        return self.get_num_shares_on(security, today)
+        return self.get_num_shares_on(today)
 
 
-    def get_num_shares_on(self, security: Commodity, on_date: date) -> Decimal:
+    def get_num_shares_on(self, on_date: date) -> Decimal:
         """ Returns the number of shares for security on (and including) the given date. """
         total_quantity = Decimal(0)
         #accts_svc = AccountsAggregate(self.book)
 
-        for account in security.accounts:
+        for account in self.security.accounts:
             # exclude Trading accouns explicitly.
             if account.type == "TRADING":
                 continue
@@ -55,14 +71,14 @@ class SecurityAggregate:
         return total_quantity
 
 
-    def get_last_available_price(self, security: Commodity) -> Price:
+    def get_last_available_price(self) -> Price:
         """ Finds the last available price for security """
-        last_price = security.prices.order_by(desc(Price.date)).first()
+        last_price = self.security.prices.order_by(desc(Price.date)).first()
         #return last_price.value
         return last_price
 
 
-    def get_avg_price(self, security: Commodity) -> Decimal:
+    def get_avg_price(self) -> Decimal:
         """
         Calculates the average price paid for the security.
         security = Commodity
@@ -76,7 +92,7 @@ class SecurityAggregate:
         price_total = Decimal(0)
         price_count = 0
 
-        for account in security.accounts:
+        for account in self.security.accounts:
             # Ignore trading accounts.
             if account.type == "TRADING":
                 continue
