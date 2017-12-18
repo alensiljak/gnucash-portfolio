@@ -16,6 +16,7 @@ assetallocation_controller = Blueprint('assetallocation_controller', __name__, u
 @assetallocation_controller.route('/')
 def asset_allocation():
     """ Asset Allocation without the securities """
+    # TODO look at AssetAllocationService in mmex.
     with BookAggregate() as svc:
         base_currency = svc.get_default_currency()
 
