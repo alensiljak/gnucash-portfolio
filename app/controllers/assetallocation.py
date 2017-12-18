@@ -23,6 +23,7 @@ def asset_allocation():
 
         loader = AllocationLoader(base_currency, svc.book)
         model = loader.load_asset_allocation_model()
+        # TODO populate actual allocation & difference.
         output = render_template('asset_allocation.html', model=model)
     return output
 
