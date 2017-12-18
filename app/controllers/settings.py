@@ -3,7 +3,8 @@ Editor for settings
 """
 from flask import Blueprint, request, render_template
 import json
-#import pprint
+from gnucash_portfolio.lib import generic
+
 
 settings_controller = Blueprint('settings_controller', __name__, url_prefix='/settings')
 settings_file_path = '../config/settings.json'
@@ -13,23 +14,14 @@ settings_file_path = '../config/settings.json'
 def edit():
     """ Edit the global settings """
     # load json file
-    content = None
-    with open(settings_file_path) as settings_file:
-        content = settings_file.read()
-
-    # parse
-    json_object = json.loads(content)
-    # pretty-print
-    #pp = pprint.PrettyPrinter(indent=4)
-    #content = pp.pprint(json_object)
-    #content = pprint.pprint(json_object)
-    content = json.dumps(json_object, sort_keys=True, indent=4)
+    content = generic.load_json_file_contents(settings_file_path)
 
     # display in text editor for now
     model = {
+        "title": "Settings",
         "content": content
     }
-    return render_template('settings.edit.html', model=model)
+    return render_template('content.editor.html', model=model)
 
 
 @settings_controller.route('/edit', methods=['POST'])
@@ -38,7 +30,7 @@ def save():
     model = {
         "message": "Saved"
     }
-    content: str = request.form.get('settings')
+    content: str = request.form.get('content')
 
     # validate json
     if json_validate(content):

@@ -1,8 +1,8 @@
 {% extends "layout.html" %} {% block title %}Settings{% endblock %} {% block content %}
-<h1>Settings</h1>
+<h1>{{ model.title }}</h1>
 
 <form method="POST">
-    <textarea class="form-control" name="settings" rows="15">{{ model.content }}</textarea>
+    <textarea class="form-control" name="content" rows="15">{{ model.content }}</textarea>
     <footer class="text-center pt-2">
         <button class="btn btn-primary">Save</button>
     </footer>

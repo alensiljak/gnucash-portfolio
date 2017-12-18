@@ -3,10 +3,10 @@ Generic utilities
 """
 import tempfile
 import time
+import json
 import os
 import webbrowser
 from datetime import datetime, timedelta
-#from functools import partial
 from sqlalchemy.dialects import sqlite
 from gnucash_portfolio.lib import settings, generic
 
@@ -24,16 +24,28 @@ def get_yesterday():
     """
     return datetime.today() - timedelta(days=1)
 
+
 def get_date_iso_string(value: datetime):
     """ Gets the iso string representation of the given date """
     return value.strftime("%Y-%m-%d")
+
+
+def load_json_file_contents(path: str) -> str:
+    """ Loads contents from a json file """
+    content = None
+    with open(path) as settings_file:
+        content = settings_file.read()
+
+    json_object = json.loads(content)
+    content = json.dumps(json_object, sort_keys=True, indent=4)
+    return content
 
 
 def print_sql(query):
     """ prints alchemy sql command for debugging """
     sql = str(query.statement.compile(dialect=sqlite.dialect(), compile_kwargs={"literal_binds": True}))
     print(sql)
-    
+
 
 def save_to_temp(content, file_name=None):
     """Save the contents into a temp file."""
@@ -54,6 +66,7 @@ def save_to_temp(content, file_name=None):
 
 
 def read_book_uri_from_console():
+    """ Prompts the user to enter book url in console """
     db_path: str = input("Enter book_url or leave blank for the default settings value: ")
     if db_path:
         # sqlite

@@ -1,5 +1,6 @@
 {
     "name": "Asset Allocation",
+    "threshold": "20%",
     "classes": [
         {
             "name": "Equities",

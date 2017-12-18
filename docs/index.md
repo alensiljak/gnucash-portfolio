@@ -14,6 +14,12 @@ The project consists of two major area: reports and operations.
 
 Retrieving currency exchange rates is a part of this suite.
 
+---
+
+[Other](other) * [Links](links) * [User Manual](user_manual)
+
+---
+
 ## Reports
 
 The initial idea was to provide reports based on the data available in the book.
@@ -48,4 +54,3 @@ See the [issues list](https://github.com/MisterY/gnucash-portfolio/issues) on Gi
 
 ---
 
-[Other](other) * [Links](links)
