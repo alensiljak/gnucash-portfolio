@@ -1,16 +1,26 @@
 """
 Accounts business layer
 """
+from datetime import date, datetime, timedelta
 from typing import List
 from decimal import Decimal
-from piecash import Book, Account, Commodity
+from piecash import Book, Account, Commodity, Split, Transaction
 from gnucash_portfolio.currencyaggregate import CurrencyAggregate
 
 
-class AccountAggregate:
-    """ Operations on accounts """
+class AccountsAggregate:
+    """ Handles account collections """
     def __init__(self, book: Book):
         self.book = book
+
+
+class AccountAggregate:
+    """ Operations on single account """
+
+    def __init__(self, book: Book, account: Account):
+        self.account = account
+        self.book = book
+
 
     def get_account_id_by_fullname(self, fullname: str) -> str:
         """ Locates the account by fullname """
@@ -109,3 +119,23 @@ class AccountAggregate:
             currency_record["total"] = total
 
         return model
+
+    def get_balance_on(self, on_date: datetime) -> Decimal:
+        """ Returns the balance on (and including) a certain date """
+        total = Decimal(0)
+
+        splits = self.get_splits_up_to(on_date)
+
+        for split in splits:
+            total += split.quantity * self.account.sign
+        return total
+
+    def get_splits_up_to(self, date_to: datetime) -> List[Split]:
+        """ returns splits only up to the given date """
+        query = (
+            self.book.session.query(Split)
+            .join(Transaction)
+            .filter(Split.account == self.account,
+                    Transaction.post_date <= date_to)
+        )
+        return query.all()

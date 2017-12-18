@@ -1,7 +1,10 @@
 """ Stocks aggregate object """
+from datetime import date
 from decimal import Decimal
 from sqlalchemy import desc
-from piecash import Book, Commodity, Price
+from piecash import Account, Book, Commodity, Price, Split, Transaction
+from gnucash_portfolio.accountaggregate import AccountAggregate, AccountsAggregate
+
 
 class SecurityAggregate:
     """ Stocks aggregate """
@@ -24,30 +27,40 @@ class SecurityAggregate:
 
         return security
 
-    def get_number_of_shares(self, security: Commodity) -> Decimal:
+
+    def get_num_shares(self, security: Commodity) -> Decimal:
         """
         Returns the number of shares for the given security.
         It gets the number from all the accounts in the book.
         """
+        today = date.today
+        return self.get_num_shares_on(security, today)
+
+
+    def get_num_shares_on(self, security: Commodity, on_date: date) -> Decimal:
+        """ Returns the number of shares for security on (and including) the given date. """
         total_quantity = Decimal(0)
-        #total_balance = Decimal(0)
+        #accts_svc = AccountsAggregate(self.book)
 
         for account in security.accounts:
             # exclude Trading accouns explicitly.
             if account.type == "TRADING":
                 continue
 
-            quantity = account.get_balance()
+            acct_svc = AccountAggregate(self.book, account)
+            quantity = acct_svc.get_balance_on(on_date)
 
             total_quantity += quantity
 
         return total_quantity
+
 
     def get_last_available_price(self, security: Commodity) -> Price:
         """ Finds the last available price for security """
         last_price = security.prices.order_by(desc(Price.date)).first()
         #return last_price.value
         return last_price
+
 
     def get_avg_price(self, security: Commodity) -> Decimal:
         """

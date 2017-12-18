@@ -1,5 +1,13 @@
 {% extends "layout.html" %} {% block title %}Portfolio Value{% endblock %} {% block content %}
 <h1>Portfolio Value</h1>
+<form method="POST">
+    <div class="form-control">
+        <label>As of date:</label>
+        <input type="date" id="as_of_date" name="as_of_date" value="{{ '{:%Y-%m-%d}'.format(model.search.as_of_date) }}">
+        <button class="btn btn-outline-primary">Apply</button>
+    </div>
+</form>
+
 <table id="results" class="table table-striped table-sm">
     <caption>
         <!-- Portfolio Value -->
@@ -18,17 +26,17 @@
         <th>Income</th>
     </thead>
     <tbody>
-        {% for row in stock_rows %}
+        {% for row in model.stock_rows %}
         <tr>
             <td>{{ row.symbol }}</td>
             <td>{{ row.exchange }}</td>
-            <td class="text-right">{{ "{:,.2f}".format(row.shares_no) }}</td>
+            <td class="text-right">{{ "{:,.2f}".format(row.shares_num) }}</td>
             <td class="text-right">{{ "{:,.2f}".format(row.avg_price) }}</td>
             <!-- <td>base_currency</td> -->
             <td class="text-right">{{ row.price }}</td>
             <td>{{ row.currency }}</td>
             <td class="text-right">{{ "{:,.2f}".format(row.cost) }}</td>
-            
+
             <td class="text-right {% if row.gain_loss < 0 %}text-danger{% endif %}">{{ "{:,.2f}".format(row.gain_loss) }}</td>
 
             <!-- gain/loss percentage -->
@@ -45,14 +53,12 @@
     </tbody>
 </table>
 
-{% endblock %}
-{% block scripts %}
+{% endblock %} {% block scripts %}
 <script type="text/javascript">
-$(function() {
-    // initialize datatables.
-    $("#results").DataTable({
-        lengthMenu: [10, 20, 30, 50, 100, -1]
+    $(function () {
+        // initialize datatables.
+        $("#results").DataTable({
+            lengthMenu: [10, 20, 30, 50, 100, -1]
+        });
     });
-});
-</script>
-{% endblock %}
+</script> {% endblock %}
