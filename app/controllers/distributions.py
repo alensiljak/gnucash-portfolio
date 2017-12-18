@@ -2,7 +2,7 @@
 Income reports
 """
 from typing import List
-from datetime import date
+from datetime import date, timedelta
 import dateutil
 from flask import Blueprint, request, render_template
 #from sqlalchemy.dialects import sqlite
@@ -184,6 +184,8 @@ def __load_income_in_period_query(
 
     date_from = input_model["date_from"]
     date_to = input_model["date_to"]
+    # increase the destination date
+    date_to += timedelta(days=1)
 
     query = (book.query(Split)
              .join(Transaction)
