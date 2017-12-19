@@ -12,6 +12,22 @@ class SecuritiesAggregate:
     def __init__(self, book: Book):
         self.book: Book = book
 
+    def get_all(self):
+        """ Loads all non-currency commodities, assuming they are stocks. """
+        query = (
+            self.__get_base_query()
+            .order_by(Commodity.mnemonic)
+        )
+        return query.all()
+
+    def get_by_symbol(self, symbol: str) -> List[Commodity]:
+        """ Returns all commodities with the given symbol """
+        query = (
+            self.__get_base_query()
+            .filter(Commodity.mnemonic == symbol)
+        )
+        return query.all()
+
     def get_stock(self, symbol: str) -> Commodity:
         """Returns the stock/commodity object for the given symbol"""
 
@@ -31,11 +47,19 @@ class SecuritiesAggregate:
     def get_stocks(self, symbols: List[str]) -> List[Commodity]:
         """ loads stocks by symbol """
         query = (
-            self.book.session.query(Commodity)
-            .filter(Commodity.namespace != "CURRENCY",
-                    Commodity.mnemonic.in_(symbols))
+            self.__get_base_query()
+            .filter(Commodity.mnemonic.in_(symbols))
         )
         return query.all()
+
+    def __get_base_query(self):
+        """ Returns the base query which filters out data for all queries. """
+        query = (
+            self.book.session.query(Commodity)
+            .filter(Commodity.namespace != "CURRENCY",
+                    Commodity.namespace != "template")
+        )
+        return query
 
 
 class SecurityAggregate:

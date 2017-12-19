@@ -8,14 +8,15 @@ Stocks
 - calculation of ROI
 """
 from flask import Blueprint, request, render_template
-from gnucash_portfolio.lib import securities
-from gnucash_portfolio.lib.database import Database
+from gnucash_portfolio.bookaggregate import BookAggregate
+from gnucash_portfolio.securityaggregate import SecuritiesAggregate
 
 stock_controller = Blueprint('stock_controller', __name__, url_prefix='/stock')
 
 
 @stock_controller.route('/')
 def stocks():
+    """ Root """
     return render_template('incomplete.html')
 
 
@@ -23,8 +24,9 @@ def stocks():
 def security_analysis():
     """ Form for user input, entering the symbol """
     # load all non-currency symbols
-    with Database().open_book() as book:
-        service = securities.Securities(book)
+    with BookAggregate() as svc:
+        book = svc.book
+        service = SecuritiesAggregate(book)
         all_securities = service.get_all()
         # retrieve the view model
         security_list = {}
@@ -35,7 +37,7 @@ def security_analysis():
         }
 
     # render output
-    return render_template('stock.analysis.html', model=model)
+    return render_template('security.analysis.html', model=model)
 
 
 @stock_controller.route('/transactions/<symbol>')
