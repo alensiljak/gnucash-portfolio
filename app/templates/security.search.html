@@ -1,0 +1,22 @@
+{# contains the search form only #}
+
+<div class="card bg-fresh p-2">
+    <form method="POST" id="searchForm" name="searchForm">
+        <div class="form-group">
+            <label for="search.symbol">Security symbol</label>
+            <select name="search.symbol" class="form-control select2">
+                {% for symbol in model.securities %} {% set name = model.securities[symbol] %}
+                <option {% if symbol == filter.symbol %}selected{% endif %}
+                    value="{{ symbol }}">
+                    {{ symbol }} - {{ name }}
+                </option>
+                {% endfor %}
+            </select>
+        </div>
+
+        <div class="text-center">
+            <button formaction="{{ filter['action'] }}" class="btn btn-primary">Apply</button>
+        </div>
+
+    </form>
+</div>
