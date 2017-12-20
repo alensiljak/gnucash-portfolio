@@ -13,7 +13,7 @@ from gnucash_portfolio import lib
 from gnucash_portfolio.lib.database import Database
 from gnucash_portfolio.lib import generic
 from gnucash_portfolio.bookaggregate import BookAggregate
-from gnucash_portfolio.accountaggregate import AccountAggregate
+from gnucash_portfolio.accountaggregate import AccountAggregate, AccountsAggregate
 
 
 account_controller = Blueprint('account_controller', __name__, url_prefix='/account')
@@ -82,7 +82,9 @@ def cash_balances():
     }
     # Selection of accounts. Display the default values the first time.
     with BookAggregate() as book_svc:
-        svc = AccountAggregate(book_svc.book)
-        model["data"] = svc.load_cash_balances_with_children(account_names)
+        accts_svc = AccountsAggregate(book_svc.book)
+        acct = accts_svc.get_account_id_by_fullname
+        acct_svc = AccountAggregate(book_svc.book, None)
+        model["data"] = acct_svc.load_cash_balances_with_children(account_names)
     # Display the report
     return render_template('account.cash.html', model=model)
