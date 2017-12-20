@@ -7,8 +7,8 @@ import os
 from os import path
 from piecash import Book, Commodity, Price
 from gnucash_portfolio.lib import generic, templates
-from gnucash_portfolio.accountaggregate import AccountAggregate
-from gnucash_portfolio.securityaggregate import SecurityAggregate
+from gnucash_portfolio.accountaggregate import AccountAggregate, AccountsAggregate
+from gnucash_portfolio.securityaggregate import SecurityAggregate, SecuritiesAggregate
 from gnucash_portfolio.currencyaggregate import CurrencyAggregate
 
 
@@ -123,18 +123,19 @@ class AllocationLoader:
 
             if isinstance(child, AssetClass):
                 # Add all the stock values.
-                svc = SecurityAggregate(self.book)
+                svc = SecuritiesAggregate(self.book)
                 for stock in child.stocks:
                     # then, for each stock, calculate value
                     symbol = stock.symbol
                     cdty = svc.get_stock(symbol)
+                    stock_svc = SecurityAggregate(self.book, cdty)
 
                     # Quantity
-                    num_shares = svc.get_number_of_shares(cdty)
+                    num_shares = stock_svc.get_num_shares()
                     stock.quantity = num_shares
 
                     # last price
-                    last_price: Price = svc.get_last_available_price(cdty)
+                    last_price: Price = stock_svc.get_last_available_price()
                     stock.price = last_price.value
 
                     # Value
@@ -167,9 +168,10 @@ class AllocationLoader:
 
     def get_cash_balance(self, root_account_name: str) -> Decimal:
         """ Loads investment cash balance in base currency """
-        svc = AccountAggregate(self.book)
+        svc = AccountsAggregate(self.book)
         root_account = svc.get_account_by_fullname(root_account_name)
-        result = svc.get_cash_balance_with_children(root_account, self.currency)
+        acct_svc = AccountAggregate(self.book, root_account)
+        result = acct_svc.get_cash_balance_with_children(root_account, self.currency)
         return result
 
     def __parse_node(self, node):

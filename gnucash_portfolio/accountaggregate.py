@@ -13,20 +13,6 @@ class AccountsAggregate:
     def __init__(self, book: Book):
         self.book = book
 
-
-class AccountAggregate:
-    """ Operations on single account """
-
-    def __init__(self, book: Book, account: Account):
-        self.account = account
-        self.book = book
-
-
-    def get_account_id_by_fullname(self, fullname: str) -> str:
-        """ Locates the account by fullname """
-        account = self.get_account_by_fullname(fullname)
-        return account.guid
-
     def get_account_by_fullname(self, fullname: str) -> Account:
         """ Loads account by full name """
         # get all accounts and iterate, comparing the fullname. :S
@@ -39,6 +25,21 @@ class AccountAggregate:
         for account in all_accounts:
             if account.fullname == fullname:
                 return account
+
+
+    def get_account_id_by_fullname(self, fullname: str) -> str:
+        """ Locates the account by fullname """
+        account = self.get_account_by_fullname(fullname)
+        return account.guid
+
+
+class AccountAggregate:
+    """ Operations on single account """
+
+    def __init__(self, book: Book, account: Account):
+        self.account = account
+        self.book = book
+
 
     def get_all_child_accounts_as_array(self, account: Account) -> List[Account]:
         """ Returns all child accounts in a list """
@@ -80,7 +81,8 @@ class AccountAggregate:
 
     def load_cash_balances_with_children(self, root_account_fullname: str):
         """ loads data for cash balances """
-        root_account = self.get_account_by_fullname(root_account_fullname)
+        svc = AccountsAggregate(self.book)
+        root_account = svc.get_account_by_fullname(root_account_fullname)
         accounts = self.get_all_child_accounts_as_array(root_account)
 
         # read cash balances
