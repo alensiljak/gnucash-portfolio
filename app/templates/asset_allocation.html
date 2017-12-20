@@ -8,7 +8,9 @@
 <ul>
 {%- for asset_class in model["allocation"].classes recursive %}
     <li>{{ asset_class.name }} {{ "{:,.2f}".format(asset_class.allocation) }}, 
-        value: {{ "{:,.2f}".format(asset_class.value) }}</li>
+        value: {{ "{:,.2f}".format(asset_class.value) }},
+        Allocated: {{ asset_class.allocated }} %
+    </li>
     {%- if asset_class.classes is defined %}
         <ul>
         {{ loop(asset_class.classes) }}
@@ -21,7 +23,8 @@
         <li>
             {{ stock.symbol }},
             {{ stock.quantity }} * {{ stock.price }} = 
-            {{ "{:,.2f}".format(stock.value) }}</li>
+            {{ "{:,.2f}".format(stock.value) }}
+        </li>
         {% endfor %}
         </ul>
     {%- endif %}

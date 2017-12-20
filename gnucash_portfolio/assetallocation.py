@@ -106,7 +106,7 @@ class AllocationLoader:
 
         # calculate percentages
         total_value = asset_allocation.value
-        self.__calculate_percentages(asset_allocation)
+        self.__calculate_percentages(asset_allocation, total_value)
 
         # Return model.
         model = {
@@ -214,8 +214,11 @@ class AllocationLoader:
 
         return allocation_json
 
-    def __calculate_percentages(self, node):
+    def __calculate_percentages(self, asset_group: AssetGroup, total: Decimal):
         """ calculate the allocation percentages """
-        for asset_class in node['classes']:
-            print(asset_class)
+        for asset_class in asset_group.classes:
+            # todo calculate
+            asset_class.allocated = asset_class.value * 100 / total
+            
+            self.__calculate_percentages(asset_group, total)
         return None
