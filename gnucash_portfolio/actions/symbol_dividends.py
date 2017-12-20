@@ -5,25 +5,11 @@ This method does not require explicit linking of distribution payments to the
 stock (commodity).
 """
 from decimal import Decimal
+from typing import List
 from gnucash_portfolio.lib import database
 from piecash import Account, Commodity, Book, Split
-
-def get_dividend_accounts(book: Book, symbol: str):
-    """
-    Finds all the distribution accounts (they are in Income group and have the same name
-    as the stock symbol).
-    """
-    # get the stock
-    stock = book.session.query(Commodity).filter(Commodity.mnemonic == symbol)
-
-    # find all the income accounts with the same name.
-    related = book.session.query(Account).filter(Account.name == symbol).all()
-    income_accounts = []
-    for related_account in related:
-        if related_account.fullname.startswith("Income"):
-            income_accounts.append(related_account)
-
-    return income_accounts
+#from gnucash_portfolio.accountaggregate import AccountAggregate, AccountsAggregate
+from gnucash_portfolio.securityaggregate import SecurityAggregate, SecuritiesAggregate
 
 
 def get_dividend_sum(book: Book, income_account: Account):
@@ -41,7 +27,10 @@ def get_dividend_sum(book: Book, income_account: Account):
 
 def get_dividend_sum_for_symbol(book: Book, symbol: str):
     """    Calculates all income for a symbol    """
-    accounts = get_dividend_accounts(book, symbol)
+    svc = SecuritiesAggregate(book)
+    security = svc.get_by_symbol(symbol)
+    sec_svc = SecurityAggregate(book, security)
+    accounts = sec_svc.get_dividend_accounts()
     total = Decimal(0)
 
     for account in accounts:

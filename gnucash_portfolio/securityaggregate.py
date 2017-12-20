@@ -20,13 +20,17 @@ class SecuritiesAggregate:
         )
         return query.all()
 
-    def get_by_symbol(self, symbol: str) -> List[Commodity]:
-        """ Returns all commodities with the given symbol """
+    def get_by_symbol(self, symbol: str) -> Commodity:
+        """ 
+        Returns the commodity with the given symbol.
+        If more are found, an exception will be thrown.
+        """
         query = (
             self.__get_base_query()
             .filter(Commodity.mnemonic == symbol)
         )
-        return query.all()
+        #return query.all()
+        return query.first()
 
     def get_stock(self, symbol: str) -> Commodity:
         """Returns the stock/commodity object for the given symbol"""
@@ -76,7 +80,6 @@ class SecurityAggregate:
         today = datetime.today()
         return self.get_num_shares_on(today)
 
-
     def get_num_shares_on(self, on_date: datetime) -> Decimal:
         """ Returns the number of shares for security on (and including) the given date. """
         total_quantity = Decimal(0)
@@ -94,13 +97,11 @@ class SecurityAggregate:
 
         return total_quantity
 
-
     def get_last_available_price(self) -> Price:
         """ Finds the last available price for security """
         last_price = self.security.prices.order_by(desc(Price.date)).first()
         #return last_price.value
         return last_price
-
 
     def get_avg_price(self) -> Decimal:
         """
@@ -135,3 +136,24 @@ class SecurityAggregate:
         if price_count:
             avg_price = price_total / price_count
         return avg_price
+
+    def get_dividend_accounts(self) -> List[Account]:
+        """
+        Finds all the distribution accounts (they are in Income group and have the same name
+        as the stock symbol).
+        """
+        # get the stock
+        #stock = selfbook.session.query(Commodity).filter(Commodity.mnemonic == symbol)
+
+        # find all the income accounts with the same name.
+        acct_query = (
+            self.book.session.query(Account)
+            .filter(Account.name == self.security.mnemonic)
+        )
+        related = acct_query.all()
+        income_accounts = []
+        for related_account in related:
+            if related_account.fullname.startswith("Income"):
+                income_accounts.append(related_account)
+
+        return income_accounts
