@@ -106,6 +106,7 @@ class AccountAggregate:
             else:
                 currency_record = model[currency_symbol]
 
+            #acct_svc = AccountAggregate(self.book, account)
             balance = account.get_balance()
             row = {
                 "name": account.name,

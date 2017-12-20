@@ -1,8 +1,8 @@
 """ Stocks aggregate object """
-from datetime import date
+from datetime import datetime
 from decimal import Decimal
-from sqlalchemy import desc
 from typing import List
+from sqlalchemy import desc
 from piecash import Account, Book, Commodity, Price, Split, Transaction
 from gnucash_portfolio.accountaggregate import AccountAggregate, AccountsAggregate
 
@@ -73,11 +73,11 @@ class SecurityAggregate:
         Returns the number of shares for the given security.
         It gets the number from all the accounts in the book.
         """
-        today = date.today
+        today = datetime.today()
         return self.get_num_shares_on(today)
 
 
-    def get_num_shares_on(self, on_date: date) -> Decimal:
+    def get_num_shares_on(self, on_date: datetime) -> Decimal:
         """ Returns the number of shares for security on (and including) the given date. """
         total_quantity = Decimal(0)
         #accts_svc = AccountsAggregate(self.book)
