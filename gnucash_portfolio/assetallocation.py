@@ -104,6 +104,11 @@ class AllocationLoader:
         # Populate values from database.
         self.__load_values_into(asset_allocation)
 
+        # calculate percentages
+        total_value = asset_allocation.value
+        self.__calculate_percentages(asset_allocation)
+
+        # Return model.
         model = {
             'allocation': asset_allocation,
             'currency': self.currency.mnemonic
@@ -208,3 +213,9 @@ class AllocationLoader:
             allocation_json = json.load(json_file)
 
         return allocation_json
+
+    def __calculate_percentages(self, node):
+        """ calculate the allocation percentages """
+        for asset_class in node['classes']:
+            print(asset_class)
+        return None
