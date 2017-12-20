@@ -10,4 +10,9 @@
 <p>
     Details to be displayed here.
 </p>
+<form>
+<div class="form-group">
+    <input type="text" class="form-control" value="{{ filter.symbol }} - {{ model.securities[filter.symbol] }}">
+</div>
+</form>
 {% endblock %}
