@@ -18,12 +18,18 @@ class AssetBase:
         self.data = json_node
 
         # Set allocation %.
-        self.allocation = None
+        self.allocation = Decimal(0)
         # How much is currently allocated, in %.
-        self.allocated = None
+        self.curr_alloc = Decimal(0)
+        # Difference between allocation and allocated.
+        self.alloc_diff = Decimal(0)
 
         # Current value in currency.
         self.value = Decimal(0)
+        # Allocated value
+        self.alloc_value = Decimal(0)
+        # Difference between allocation and allocated
+        self.value_diff = Decimal(0)
 
         if "allocation" in json_node:
             self.allocation = Decimal(json_node["allocation"])
@@ -216,9 +222,17 @@ class AllocationLoader:
 
     def __calculate_percentages(self, asset_group: AssetGroup, total: Decimal):
         """ calculate the allocation percentages """
-        for asset_class in asset_group.classes:
-            # todo calculate
-            asset_class.allocated = asset_class.value * 100 / total
-            
-            self.__calculate_percentages(asset_group, total)
+        if not hasattr(asset_group, "classes"):
+            return
+
+        for child in asset_group.classes:
+            # TODO calculate
+            child.curr_alloc = child.value * 100 / total
+            child.alloc_diff = child.allocation - child.curr_alloc
+
+            # Values
+            #child.alloc_value
+            child.alloc_diff = child.alloc_value - child.value
+
+            self.__calculate_percentages(child, total)
         return None

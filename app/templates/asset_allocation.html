@@ -7,9 +7,14 @@
 <p>Value: {{ model.currency }} {{ "{:,.2f}".format(model.allocation.value) }}</p>
 <ul>
 {%- for asset_class in model["allocation"].classes recursive %}
-    <li>{{ asset_class.name }} {{ "{:,.2f}".format(asset_class.allocation) }}, 
+    <li>
+        {{ asset_class.name }},
+        alloc: {{ "{:,.2f}".format(asset_class.allocation) }}%, 
+        allocated: {{ "{:,.2f}".format(asset_class.curr_alloc) }}%,
+        diff: {{ "{:,.2f}".format(asset_class.alloc_diff) }},
         value: {{ "{:,.2f}".format(asset_class.value) }},
-        Allocated: {{ asset_class.allocated }} %
+        alloc.value: {{ "{:,.2f}".format(asset_class.alloc_value) }},
+        diff.value: {{ "{:,.2f}".format(asset_class.alloc_diff) }}
     </li>
     {%- if asset_class.classes is defined %}
         <ul>
