@@ -248,7 +248,7 @@ class AllocationLoader:
             child.value_diff = child.alloc_value - child.curr_value
 
             # Threshold
-            child.over_threshold = child.alloc_diff_perc > self.asset_allocation.threshold
+            child.over_threshold = abs(child.alloc_diff_perc) > self.asset_allocation.threshold
             print(child.over_threshold)
 
             self.__calculate_percentages(child, total)
