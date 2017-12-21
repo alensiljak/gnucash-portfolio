@@ -1,41 +1,50 @@
-{% extends "layout.html" %}
-
-{% block title %}Asset Allocation{% endblock %}
-
-{% block content %}
+{% extends "layout.html" %} {% block title %}Asset Allocation{% endblock %} {% block content %}
 <h1>Asset Allocation</h1>
 <p>Value: {{ model.currency }} {{ "{:,.2f}".format(model.allocation.curr_value) }}</p>
-<ul>
-{%- for asset_class in model["allocation"].classes recursive %}
-    <li>
-        {{ asset_class.name }},
-        alloc: {{ "{:,.2f}".format(asset_class.allocation) }}%, 
-        allocated: {{ "{:,.2f}".format(asset_class.curr_alloc) }}%,
-        diff: {{ "{:,.2f}".format(asset_class.alloc_diff) }},
-        diff %: {{ "{:,.2f}".format(asset_class.alloc_diff_perc) }}%,
-        value: {{ "{:,.2f}".format(asset_class.alloc_value) }},
-        alloc.value: {{ "{:,.2f}".format(asset_class.curr_value) }},
-        diff.value: {{ "{:,.2f}".format(asset_class.value_diff) }}
-    </li>
-    {%- if asset_class.classes is defined %}
-        <ul>
-        {{ loop(asset_class.classes) }}
-        </ul>
-    {%- endif %}
-    {#
-    {%- if asset_class.stocks is defined %}
-        <ul>
-        {% for stock in asset_class.stocks %}
-        <li>
-            {{ stock.symbol }},
-            {{ stock.quantity }} * {{ stock.price }} = 
-            {{ "{:,.2f}".format(stock.value) }}
-        </li>
-        {% endfor %}
-        </ul>
-    {%- endif %}
-    #}
 
-{%- endfor %}
-</ul>
+<table class="table">
+    <thead>
+        <th>Name</th>
+        <th>Allocation</th>
+        <th>Allocated</th>
+        <th>Alloc.Diff</th>
+        <th>Diff %</th>
+        <th>Value</th>
+        <th>Alloc.Value</th>
+        <th>Value Diff</th>
+    </thead>
+    {%- for asset_class in model["allocation"].classes recursive %}
+    <tr>
+        <td>
+            {{ asset_class.name }}
+        </td>
+        <td class="text-right">
+            {{ "{:,.2f}".format(asset_class.allocation) }}%
+        </td>
+        <td class="text-right">
+            {{ "{:,.2f}".format(asset_class.curr_alloc) }}%
+        </td>
+        <td class="text-right">
+            {{ "{:,.2f}".format(asset_class.alloc_diff) }}</td>
+        <td class="text-right">
+            <span class="{% if asset_class.over_threshold %}fg-watermelon{% endif %}">
+                {{ "{:,.2f}".format(asset_class.alloc_diff_perc) }}%,
+            </span>
+        </td>
+        <td class="text-right">
+            {{ "{:,.2f}".format(asset_class.alloc_value) }}</td>
+        <td class="text-right">
+            {{ "{:,.2f}".format(asset_class.curr_value) }}</td>
+        <td class="text-right">
+            {{ "{:,.2f}".format(asset_class.value_diff) }}</td>
+    </tr>
+    {%- if asset_class.classes is defined %} {{ loop(asset_class.classes) }} {%- endif %} {# {%- if asset_class.stocks is defined
+    %} {% for stock in asset_class.stocks %}
+    <tr>
+        <td>
+            {{ stock.symbol }}, {{ stock.quantity }} * {{ stock.price }} = {{ "{:,.2f}".format(stock.value) }}
+        </td>
+    </tr>
+    {% endfor %} {%- endif %} #} {%- endfor %}
+</table>
 {% endblock %}

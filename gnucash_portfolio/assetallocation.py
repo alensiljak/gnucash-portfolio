@@ -37,6 +37,10 @@ class AssetBase:
         # Difference between allocation and allocated
         self.value_diff = Decimal(0)
 
+        # Threshold. Expressed in %.
+        self.threshold = Decimal(0)
+        self.over_threshold = False
+
     @property
     def name(self):
         """Group name"""
@@ -101,23 +105,24 @@ class AllocationLoader:
     def __init__(self, currency: Commodity, book: Book):
         self.currency = currency
         self.book = book
+        self.asset_allocation = None
 
     def load_asset_allocation_model(self):
         """ Loads Asset Allocation model for display """
         # read asset allocation file
         root_node = self.__load_asset_allocation_config()
-        asset_allocation = self.__parse_node(root_node)
+        self.asset_allocation = self.__parse_node(root_node)
 
         # Populate values from database.
-        self.__load_values_into(asset_allocation)
+        self.__load_values_into(self.asset_allocation)
 
         # calculate percentages
-        total_value = asset_allocation.curr_value
-        self.__calculate_percentages(asset_allocation, total_value)
+        total_value = self.asset_allocation.curr_value
+        self.__calculate_percentages(self.asset_allocation, total_value)
 
         # Return model.
         model = {
-            'allocation': asset_allocation,
+            'allocation': self.asset_allocation,
             'currency': self.currency.mnemonic
         }
 
@@ -200,10 +205,16 @@ class AllocationLoader:
             # This is an Asset Class
             entity = AssetClass(node)
 
+        # Cash
         if node["name"] == "Cash":
             # Cash node
             entity = AssetClass(node)
             entity.root_account = node["rootAccount"]
+
+        # Threshold
+        if "threshold" in node:
+            threshold = node["threshold"].replace('%', '')
+            entity.threshold = Decimal(threshold)
 
         return entity
 
@@ -235,6 +246,10 @@ class AllocationLoader:
             # Value is calculated during load.
             #child.curr_value = total * child.curr_alloc / 100
             child.value_diff = child.alloc_value - child.curr_value
+
+            # Threshold
+            child.over_threshold = child.alloc_diff_perc > self.asset_allocation.threshold
+            print(child.over_threshold)
 
             self.__calculate_percentages(child, total)
         return None
