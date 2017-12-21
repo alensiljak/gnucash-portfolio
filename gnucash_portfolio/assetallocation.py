@@ -238,7 +238,7 @@ class AllocationLoader:
             # calculate
             # allocation is read from the config.
             child.curr_alloc = child.curr_value * 100 / total
-            child.alloc_diff = child.allocation - child.curr_alloc
+            child.alloc_diff = child.curr_alloc - child.allocation
             child.alloc_diff_perc = child.alloc_diff * 100 / child.allocation
 
             # Values
