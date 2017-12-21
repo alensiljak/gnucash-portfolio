@@ -2,6 +2,7 @@
 from flask import Blueprint, request, render_template
 from gnucash_portfolio.bookaggregate import BookAggregate
 from gnucash_portfolio.currencyaggregate import CurrencyAggregate
+from models.price_models import RateViewModel
 
 price_controller = Blueprint('price_controller', __name__, url_prefix='/price')
 
@@ -13,16 +14,24 @@ def index():
 @price_controller.route('/import')
 def import_prices():
     """ Stock price import """
+    return render_template('price.import.html')
+
+@price_controller.route('/import', methods=['POST'])
+def import_post():
+    """ Imports the file """
+    if 'import_file' not in request.files:
+        return "No file selected"
+
+    file_binary = request.files['import_file']
+    if file_binary.content_type != "application/octet-stream":
+        return "Wrong file type submitted"
+
+    content = file_binary.read()
+    file_binary.close()
+
+    print(content)
+
     return render_template('incomplete.html')
-
-class RateViewModel:
-    """ View model for exchange rate """
-    def __init__(self):
-        self.date = None
-        self.value = 0
-        self.currency = ""
-        self.base_currency = ""
-
 
 @price_controller.route('/rates')
 def import_rates():

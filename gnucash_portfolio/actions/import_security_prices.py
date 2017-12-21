@@ -78,13 +78,8 @@ def __get_commodity(book, symbol):
     """
     Loads the stock from the book.
     """
-    #temp = book.session.query(Commodity).filter(Commodity.namespace != "template", Commodity.namespace != "CURRENCY").first()
-    #print(temp.namespace, temp.mnemonic, temp.fullname, temp.cusip, temp.fraction)
-
     symbol_only = symbol.split(".")[0]
 
-    #security = book.commodities(namespace="CURRENCY").get(mnemonic=price.name)
-    #security = book.session.query(Commodity).filter(Commodity.namespace != "template", Commodity.namespace != "CURRENCY", func.lower(Commodity.mnemonic) == func.lower(price.name)).first()
     securities = book.session.query(Commodity).filter(Commodity.namespace != "template", Commodity.namespace != "CURRENCY", or_(Commodity.mnemonic.ilike(symbol_only), Commodity.mnemonic.ilike(symbol))).all()
 
     security = None
