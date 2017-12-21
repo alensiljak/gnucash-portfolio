@@ -2,7 +2,8 @@
 <h1>Asset Allocation</h1>
 <p>Value: {{ model.currency }} {{ "{:,.2f}".format(model.allocation.curr_value) }}</p>
 
-<table class="table">
+{# loop indentation https://stackoverflow.com/questions/12145434/how-to-output-loop-counter-in-python-jinja-template #}
+<table class="table table-sm">
     <thead>
         <th>Name</th>
         <th>Allocation</th>
@@ -14,9 +15,11 @@
         <th>Value Diff</th>
     </thead>
     {%- for asset_class in model["allocation"].classes recursive %}
-    <tr>
+    <tr class="{% if loop.depth0 == 0 %}bg-teal text-light{% endif %}">
         <td>
-            {{ asset_class.name }}
+            <span class="ml-{{ loop.depth0 * 2 }}">
+                {{ asset_class.name }}
+            </span>
         </td>
         <td class="text-right">
             {{ "{:,.2f}".format(asset_class.allocation) }}%
