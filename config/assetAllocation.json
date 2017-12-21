@@ -124,6 +124,64 @@
             ]
         },
         {
+            "name": "Real Assets",
+            "allocation": 12,
+            "classes": [
+                {
+                    "name": "Aus Property",
+                    "allocation": 7,
+                    "stocks": [
+                        "ASX:FET",
+                        "Vanguard:PROP",
+                        "ASX:VAP"
+                    ]
+                },
+                {
+                    "name": "int prop",
+                    "allocation": 2,
+                    "stocks":[
+                        "XETRA:EXI5",
+                        "AMS:IPRP",
+                        "VNQI"
+                    ]
+                },
+                {
+                    "name": "NAm Prop",
+                    "allocation": 1,
+                    "stocks":[
+                        "GOV",
+                        "KBWY",
+                        "VNQ"
+                    ]
+                },
+                {
+                    "name": "commodities",
+                    "allocation": 1.2,
+                    "stocks":[
+                        "XETRA:EXV6",
+                        "ASX:MVR",
+                        "VAW",
+                        "VDE"
+                    ]
+                },
+                {
+                    "name": "gold",
+                    "allocation": 0.55,
+                    "stocks":[
+                        "GDX",
+                        "RING"
+                    ]
+                },
+                {
+                    "name": "TIPS",
+                    "allocation": 0.25,
+                    "stocks":[
+                        "VTIP"
+                    ]
+                }
+            ]
+        },
+        {
             "name": "Fixed",
             "allocation": 33,
             "classes": [
@@ -261,64 +319,6 @@
                     "name": "Cash",
                     "allocation": 3,
                     "rootAccount": "Assets:Investment"
-                }
-            ]
-        },
-        {
-            "name": "Real Assets",
-            "allocation": 12,
-            "classes": [
-                {
-                    "name": "Aus Property",
-                    "allocation": 7,
-                    "stocks": [
-                        "ASX:FET",
-                        "Vanguard:PROP",
-                        "ASX:VAP"
-                    ]
-                },
-                {
-                    "name": "int prop",
-                    "allocation": 2,
-                    "stocks":[
-                        "XETRA:EXI5",
-                        "AMS:IPRP",
-                        "VNQI"
-                    ]
-                },
-                {
-                    "name": "NAm Prop",
-                    "allocation": 1,
-                    "stocks":[
-                        "GOV",
-                        "KBWY",
-                        "VNQ"
-                    ]
-                },
-                {
-                    "name": "commodities",
-                    "allocation": 1.2,
-                    "stocks":[
-                        "XETRA:EXV6",
-                        "ASX:MVR",
-                        "VAW",
-                        "VDE"
-                    ]
-                },
-                {
-                    "name": "gold",
-                    "allocation": 0.55,
-                    "stocks":[
-                        "GDX",
-                        "RING"
-                    ]
-                },
-                {
-                    "name": "TIPS",
-                    "allocation": 0.25,
-                    "stocks":[
-                        "VTIP"
-                    ]
                 }
             ]
         }
