@@ -40,6 +40,7 @@ class AssetBase:
         # Threshold. Expressed in %.
         self.threshold = Decimal(0)
         self.over_threshold = False
+        self.under_threshold = False
 
     @property
     def name(self):
@@ -249,7 +250,6 @@ class AllocationLoader:
 
             # Threshold
             child.over_threshold = abs(child.alloc_diff_perc) > self.asset_allocation.threshold
-            print(child.over_threshold)
 
             self.__calculate_percentages(child, total)
         return None
