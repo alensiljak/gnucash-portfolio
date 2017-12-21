@@ -4,7 +4,7 @@
 
 {% block content %}
 <h1>Asset Allocation</h1>
-<p>Value: {{ model.currency }} {{ "{:,.2f}".format(model.allocation.value) }}</p>
+<p>Value: {{ model.currency }} {{ "{:,.2f}".format(model.allocation.curr_value) }}</p>
 <ul>
 {%- for asset_class in model["allocation"].classes recursive %}
     <li>
@@ -13,9 +13,9 @@
         allocated: {{ "{:,.2f}".format(asset_class.curr_alloc) }}%,
         diff: {{ "{:,.2f}".format(asset_class.alloc_diff) }},
         diff %: {{ "{:,.2f}".format(asset_class.alloc_diff_perc) }}%,
-        value: {{ "{:,.2f}".format(asset_class.value) }},
+        value: {{ "{:,.2f}".format(asset_class.alloc_value) }},
         alloc.value: {{ "{:,.2f}".format(asset_class.curr_value) }},
-        diff.value: {{ "{:,.2f}".format(asset_class.alloc_diff) }}
+        diff.value: {{ "{:,.2f}".format(asset_class.value_diff) }}
     </li>
     {%- if asset_class.classes is defined %}
         <ul>

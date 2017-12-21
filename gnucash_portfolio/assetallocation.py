@@ -19,6 +19,10 @@ class AssetBase:
 
         # Set allocation %.
         self.allocation = Decimal(0)
+        if "allocation" in json_node:
+            self.allocation = Decimal(json_node["allocation"])
+        else:
+            self.allocation = Decimal(0)
         # How much is currently allocated, in %.
         self.curr_alloc = Decimal(0)
         # Difference between allocation and allocated.
@@ -27,16 +31,11 @@ class AssetBase:
         self.alloc_diff_perc = Decimal(0)
 
         # Current value in currency.
-        self.value = Decimal(0)
+        self.alloc_value = Decimal(0)
         # Allocated value
         self.curr_value = Decimal(0)
         # Difference between allocation and allocated
         self.value_diff = Decimal(0)
-
-        if "allocation" in json_node:
-            self.allocation = Decimal(json_node["allocation"])
-        else:
-            self.allocation = Decimal(0)
 
     @property
     def name(self):
@@ -113,7 +112,7 @@ class AllocationLoader:
         self.__load_values_into(asset_allocation)
 
         # calculate percentages
-        total_value = asset_allocation.value
+        total_value = asset_allocation.curr_value
         self.__calculate_percentages(asset_allocation, total_value)
 
         # Return model.
@@ -158,13 +157,13 @@ class AllocationLoader:
                         stock_value = self.get_value_in_base_currency(
                             stock_value, last_price.currency)
 
-                    child.value += stock_value
+                    child.curr_value += stock_value
 
             if child.name == "Cash":
                 # load cash balances
-                child.value = self.get_cash_balance(child.root_account)
+                child.curr_value = self.get_cash_balance(child.root_account)
 
-            asset_group.value += child.value
+            asset_group.curr_value += child.curr_value
 
     def get_value_in_base_currency(self, value: Decimal, currency: Commodity) -> Decimal:
         """ Recalculates the given value into base currency """
@@ -226,13 +225,16 @@ class AllocationLoader:
 
         for child in asset_group.classes:
             # calculate
-            child.curr_alloc = child.value * 100 / total
+            # allocation is read from the config.
+            child.curr_alloc = child.curr_value * 100 / total
             child.alloc_diff = child.allocation - child.curr_alloc
             child.alloc_diff_perc = child.alloc_diff * 100 / child.allocation
 
             # Values
-            child.curr_value = child.curr_alloc * 100 / total
-            child.value_diff = child.value - child.curr_value
+            child.alloc_value = total * child.allocation / 100
+            # Value is calculated during load.
+            #child.curr_value = total * child.curr_alloc / 100
+            child.value_diff = child.alloc_value - child.curr_value
 
             self.__calculate_percentages(child, total)
         return None
