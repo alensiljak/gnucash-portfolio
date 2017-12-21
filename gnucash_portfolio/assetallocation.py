@@ -23,11 +23,13 @@ class AssetBase:
         self.curr_alloc = Decimal(0)
         # Difference between allocation and allocated.
         self.alloc_diff = Decimal(0)
+        # Difference in percentages of allocation
+        self.alloc_diff_perc = Decimal(0)
 
         # Current value in currency.
         self.value = Decimal(0)
         # Allocated value
-        self.alloc_value = Decimal(0)
+        self.curr_value = Decimal(0)
         # Difference between allocation and allocated
         self.value_diff = Decimal(0)
 
@@ -164,7 +166,6 @@ class AllocationLoader:
 
             asset_group.value += child.value
 
-
     def get_value_in_base_currency(self, value: Decimal, currency: Commodity) -> Decimal:
         """ Recalculates the given value into base currency """
         base_cur = self.currency
@@ -175,7 +176,6 @@ class AllocationLoader:
 
         #print("recalculating", currency.mnemonic, value, "into", result, self.currency.mnemonic)
         return result
-
 
     def get_cash_balance(self, root_account_name: str) -> Decimal:
         """ Loads investment cash balance in base currency """
@@ -208,7 +208,6 @@ class AllocationLoader:
 
         return entity
 
-
     def __load_asset_allocation_config(self):
         """
         Loads asset allocation from the file.
@@ -226,13 +225,14 @@ class AllocationLoader:
             return
 
         for child in asset_group.classes:
-            # TODO calculate
+            # calculate
             child.curr_alloc = child.value * 100 / total
             child.alloc_diff = child.allocation - child.curr_alloc
+            child.alloc_diff_perc = child.alloc_diff * 100 / child.allocation
 
             # Values
-            #child.alloc_value
-            child.alloc_diff = child.alloc_value - child.value
+            child.curr_value = child.curr_alloc * 100 / total
+            child.value_diff = child.value - child.curr_value
 
             self.__calculate_percentages(child, total)
         return None
