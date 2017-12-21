@@ -245,7 +245,7 @@ class AllocationLoader:
             child.alloc_value = total * child.allocation / 100
             # Value is calculated during load.
             #child.curr_value = total * child.curr_alloc / 100
-            child.value_diff = child.alloc_value - child.curr_value
+            child.value_diff = child.curr_value - child.alloc_value
 
             # Threshold
             child.over_threshold = abs(child.alloc_diff_perc) > self.asset_allocation.threshold
