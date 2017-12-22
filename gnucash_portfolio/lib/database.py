@@ -4,25 +4,31 @@ GnuCash database operations
 """
 import os
 from os import path
-#import pathlib
 import urllib
 import piecash
-from .settings import Settings
+from gnucash_portfolio.lib.settings import Settings
+
 
 class Database:
-    """
-    Provides access to the GnuCash book.
-    """
-    config = None
-    filename = None   # database file path
+    """ Provides access to the GnuCash book. """
 
-    def __init__(self, book_url: str = None):
-        # Use the settings file.
-        self.config = Settings()
-        if not book_url:
-            self.filename = self.config.database_path
+    def __init__(self, db_path: str = None):
+        # database file path
+        if db_path:
+            self.filename = db_path
         else:
-            self.filename = book_url
+            # Use the settings file if no url passed.
+            self.__settings = None
+            self.filename = self.__config.database_path
+
+
+    @property
+    def __config(self):
+        """ settings instance """
+        if not self.__settings:
+            self.__settings = Settings()
+
+        return self.__settings
 
 
     def display_db_info(self):
@@ -68,10 +74,15 @@ class Database:
         #piecash.create_book(filename)
         return piecash.create_book()
 
+############################################################
+def test():
+    """ test method """
+    database = Database()
+    database.display_db_info()
+
+    with database.open_book() as test_book:
+        print(test_book.default_currency)
+
 # If run directly, just display some diagnostics data.
 if __name__ == "__main__":
-    db = Database()
-    db.display_db_info()
-
-    with db.open_book() as test_book:
-        print(test_book.default_currency)
+    test()

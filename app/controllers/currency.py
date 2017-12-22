@@ -42,6 +42,7 @@ class SearchReferenceModel:
         """ Populate the static model from the database """
         #splits.sort(key=lambda split: split.transaction.post_date)
         svc = BookAggregate()
+        svc.book = book
         self.currencies = (
             svc.get_currencies_query()
             .order_by(Commodity.mnemonic)

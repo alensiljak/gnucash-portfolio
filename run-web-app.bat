@@ -3,10 +3,6 @@
 ::set FLASK_APP=app
 ::flask run
 
-pushd app
-
-start app.py
+python app/
 
 start "" http://localhost:5000
-
-popd

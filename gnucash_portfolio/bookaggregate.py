@@ -7,18 +7,24 @@ import winreg
 from typing import List
 from piecash import Book, Commodity
 from gnucash_portfolio.currencyaggregate import CurrenciesAggregate
-from gnucash_portfolio.lib.database import Database
+from gnucash_portfolio.lib.database import Database, Settings
 
 
 class BookAggregate:
     """ Encapsulates operations with GnuCash book """
 
-    def __init__(self):
-        """ constructor """
+    def __init__(self, settings: Settings = None):
+        """
+        Accepts custom settings object. Useful for testing.
+        """
         self.__book: Book = None
+        #self.book_uri = db_uri
         self.default_currency = None
-
         self.currencies_aggregate = None
+
+        if settings:
+            self.__settings: Settings = settings
+
 
     def __enter__(self):
         #self.book = Database().open_book()
@@ -33,7 +39,9 @@ class BookAggregate:
     def book(self):
         """ GnuCash Book. Opens the book or creates an in-memory database, based on settings. """
         if not self.__book:
-            self.__book = Database().open_book()
+            # Create/open the book.
+            book_uri = self.__settings.database_path
+            self.__book = Database(book_uri).open_book()
 
         return self.__book
 
@@ -41,7 +49,8 @@ class BookAggregate:
     @property
     def session(self):
         """ Access to sql session """
-        return self.get_book().session
+        return self.book.session
+
 
     @property
     def currencies(self):
@@ -49,13 +58,14 @@ class BookAggregate:
         self.currencies_aggregate = CurrenciesAggregate(self.book)
         return self.currencies_aggregate
 
+
     def get_currencies(self):
         """ Returns the currencies used in the book """
         return self.get_currencies_query().all()
 
     def get_currencies_query(self):
         """ returns the query only """
-        return self.get_book().session.query(Commodity).filter_by(namespace="CURRENCY")
+        return self.book.session.query(Commodity).filter_by(namespace="CURRENCY")
 
 
     def get_currency_symbols(self) -> List[str]:
@@ -103,7 +113,7 @@ class BookAggregate:
         key = "currency-other"
         custom_symbol = self.__get_registry_key(key)
         # self.default_currency =
-        def_curr = self.get_book().currencies(mnemonic=custom_symbol)
+        def_curr = self.book.currencies(mnemonic=custom_symbol)
         return def_curr
 
     def __get_registry_key(self, key):

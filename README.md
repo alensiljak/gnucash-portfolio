@@ -33,6 +33,7 @@ All the functionality will be provided as a web application (see below). There a
 ## Testing
 
 See `tests` directory and documentation and tests there.
+Simply run `pytest` to run all unit tests.
 
 ### Lint
 
@@ -49,8 +50,6 @@ This project contains the web application implemented in Flask. It is intended t
 The app is located in the `/app` directory.
 
 It is intended to run on a desktop workstation, with direct access to the GnuCash book file, stored as an SQLite database.
-
-To run, simply run the app folder with Python. I.e. `python app` from the root.
 
 ## Benefits
 
@@ -86,7 +85,9 @@ The bundle will be built automatically during the app runtime. No additional act
 
 ## Running the web app
 
-There are two ways to run the web app:
+To run, simply run the app folder with Python. I.e. `py app` from the root.
+
+OLD: There are two ways to run the web app:
 
 1. Run `app.py` directly
 2. Run "run.py run"
