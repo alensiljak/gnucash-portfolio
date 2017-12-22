@@ -1,6 +1,7 @@
 """
 This is the entry point to the application
 """
+from logging.config import dictConfig
 from flask import Blueprint, Flask
 from flask_assets import Bundle, Environment
 
@@ -9,8 +10,22 @@ from app.controllers import (
     account, currency, vanguard, distributions, assetallocation, index,
     portfolio, price, securities, settings, transaction)
 
+
+# Configure logging before the application is initialized.
+# http://flask.pocoo.org/docs/dev/logging/
+dictConfig({
+    'version': 1,
+    'root': {
+        # Log all levels to the console.
+        'level': 'NOTSET'
+    }
+})
+
+# pylint: disable=invalid-name
+
 # Define the WSGI application object
-app = Flask(__name__, static_url_path='/static')
+app = Flask(__name__, static_url_path='/static') # pylint: disable=invalid-name
+
 # Configurations
 app.config.from_object('config')
 # Register blueprints
