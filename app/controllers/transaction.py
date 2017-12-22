@@ -6,7 +6,7 @@ Transactions & Splits
 """
 from typing import List
 from flask import Blueprint, request, render_template
-from piecash import Book, Transaction, ScheduledTransaction
+from piecash import Book, ScheduledTransaction
 from gnucash_portfolio.bookaggregate import BookAggregate
 from gnucash_portfolio.scheduledtxaggregate import ScheduledTxAggregate
 from gnucash_portfolio.transactionaggregate import TransactionsAggregate
@@ -53,7 +53,8 @@ def __parse_sch_tx_search_params(request) -> ScheduledTxSearchModel:
     return search_model
 
 
-def __load_model_for_scheduled_transactions(search: ScheduledTxSearchModel, book: Book) -> List[ScheduledTransaction]:
+def __load_model_for_scheduled_transactions(
+        search: ScheduledTxSearchModel, book: Book) -> List[ScheduledTransaction]:
     """ loads data for scheduled transactions """
     if not search:
         return None

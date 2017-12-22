@@ -10,6 +10,7 @@ vanguard_controller = Blueprint('vanguard_controller', __name__,
 
 @vanguard_controller.route('/')
 def index():
+    """ Root """
     return render_template("incomplete.html")
 
 

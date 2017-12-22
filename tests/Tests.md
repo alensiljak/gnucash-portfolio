@@ -15,3 +15,7 @@ Specify file::class::method to execute a specific test.
 # Packages
 
 pytest package is required for executing unit tests.
+
+# Links
+
+- [Start here](http://pythontesting.net/start-here/)

@@ -103,7 +103,7 @@ def __create_price_for(commodity, price):
     commodity.prices.append(new_price)
     #print(record.currency)
 
-def __get_stock_currency(stock):
+def __get_stock_currency(stock: Commodity) -> Commodity:
     """
     Reads the currency from the first available price information,
     assuming that all the prices are in the same currency for any symbol.

@@ -1,20 +1,20 @@
 """
 Editor for settings
 """
-from flask import Blueprint, request, render_template
 import json
+from flask import Blueprint, request, render_template
 from gnucash_portfolio.lib import generic
 
 
 settings_controller = Blueprint('settings_controller', __name__, url_prefix='/settings')
-settings_file_path = '../config/settings.json'
+SETTINGS_FILE_PATH = '../config/settings.json'
 
 
 @settings_controller.route('/edit')
 def edit():
     """ Edit the global settings """
     # load json file
-    content = generic.load_json_file_contents(settings_file_path)
+    content = generic.load_json_file_contents(SETTINGS_FILE_PATH)
 
     # display in text editor for now
     model = {
@@ -38,7 +38,7 @@ def save():
         # clean-up and format
         content = json.dumps(json_object)
         # save to file
-        with open(settings_file_path, mode='w') as file:
+        with open(SETTINGS_FILE_PATH, mode='w') as file:
             file.write(content)
             model["message"] = "Saved"
     else:

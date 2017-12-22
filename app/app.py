@@ -7,7 +7,9 @@ from gnucash_portfolio.actions import get_vanguard_au_prices
 from flask import Blueprint
 
 # Controllers/blueprints
-from controllers import account, currency, vanguard, distributions, assetallocation, index, portfolio, price, securities, settings, transaction
+from controllers import (
+    account, currency, vanguard, distributions, assetallocation, index,
+    portfolio, price, securities, settings, transaction)
 
 # Define the WSGI application object
 app = Flask(__name__, static_url_path='/static')
@@ -26,9 +28,11 @@ app.register_blueprint(securities.stock_controller)
 app.register_blueprint(transaction.transaction_controller)
 app.register_blueprint(vanguard.vanguard_controller)
 
-scripts_route = Blueprint('scripts', __name__, static_url_path='/scripts', static_folder='scripts')
+scripts_route = Blueprint('scripts', __name__, static_url_path='/scripts',
+                          static_folder='scripts')
 app.register_blueprint(scripts_route)
-fa_route = Blueprint('fa', __name__, static_url_path='/fonts', static_folder='node_modules/font-awesome/fonts')
+fa_route = Blueprint('fa', __name__, static_url_path='/fonts',
+                     static_folder='node_modules/font-awesome/fonts')
 app.register_blueprint(fa_route)
 
 # Bundles
