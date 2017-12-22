@@ -2,19 +2,36 @@
 <h1>Price Import</h1>
 
 <form method="POST" enctype="multipart/form-data">
-    <label class="custom-file">
+    {#<label class="custom-file">
         <input type="file" id="import_file" name="import_file" class="custom-file-input">
         <span class="custom-file-control"></span>
-    </label>
+    </label>#}
 
-    {#<div class="form-group">
+    <div class="form-group">
         <label for="exampleFormControlFile1">Example file input</label>
-        <input type="file" class="form-control-file" id="import2" name="import2">
-    </div>#}
+        <input type="file" class="form-control-file" id="import_file" name="import_file">
+    </div>
+
+    <div class="form-group">
+        <label for="search.currency">Currency</label>
+        <select name="search.currency" class="form-control select2">
+            {% for currency in search.currencies %}
+            <option {% if currency.mnemonic==search.currency %}selected{% endif %}>{{ currency.mnemonic }}</option>
+            {% endfor %}
+        </select>
+    </div>
 
     <div class="text-center">
         <button class="btn btn-outline-primary">Import</button>
     </div>
 </form>
+
+{% if model.message %}
+<div class="text-danger">
+    <p>
+        {{ model.message }}
+    </p>
+</div>
+{% endif %}
 
 {% endblock %}

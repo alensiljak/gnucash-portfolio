@@ -1,8 +1,9 @@
 """ Price controller """
 from flask import Blueprint, request, render_template
 from gnucash_portfolio.bookaggregate import BookAggregate
-from gnucash_portfolio.currencyaggregate import CurrencyAggregate
-from models.price_models import RateViewModel
+from gnucash_portfolio.currencyaggregate import CurrencyAggregate, CurrenciesAggregate
+from gnucash_portfolio.pricesaggregate import PricesAggregate
+from models.price_models import RateViewModel, PriceImportViewModel, PriceImportFormViewModel
 
 price_controller = Blueprint('price_controller', __name__, url_prefix='/price')
 
@@ -12,26 +13,62 @@ def index():
     return render_template('incomplete.html')
 
 @price_controller.route('/import')
-def import_prices():
+def import_prices(message: str = None):
     """ Stock price import """
-    return render_template('price.import.html')
+    model = {}
+    if message:
+        model["message"] = message
+
+    with BookAggregate() as svc:
+        search = __load_search_reference_model(svc)
+
+        return render_template('price.import.html', model=model, search=search)
 
 @price_controller.route('/import', methods=['POST'])
 def import_post():
-    """ Imports the file """
-    if 'import_file' not in request.files:
-        return "No file selected"
-
+    """ Imports the prices file (.csv) """
     file_binary = request.files['import_file']
+    message = None
+    if not file_binary:
+        message = "No file selected"
     if file_binary.content_type != "application/octet-stream":
-        return "Wrong file type submitted"
+        message = "Wrong file type submitted"
 
-    content = file_binary.read()
+    content = file_binary.read().decode("utf-8")
+    if not content:
+        message = "The file is empty!"
+
+    if message:
+        return import_prices(message)
+
     file_binary.close()
 
-    print(content)
+    with BookAggregate() as svc:
+        # TODO import prices. Redo the module for import.
+        prices_svc = PricesAggregate(svc.book)
+        prices = prices_svc.get_prices_from_csv(content)
+        print(prices)
 
-    return render_template('incomplete.html')
+        # View model
+        search = __load_search_reference_model(svc)
+
+        model = PriceImportViewModel()
+        model.filename = file_binary.name
+
+        return render_template('price.import.result.html', model=model, search=search)
+
+@price_controller.route('/importapproved', methods=['POST'])
+def import_prices_accept():
+    """ The import of prices after user confirms """
+
+def __load_search_reference_model(svc: BookAggregate):
+    """ Populates the reference data for the search form """
+    model = PriceImportFormViewModel()
+
+    #cur_svc = CurrenciesAggregate(svc.book)
+    model.currencies = svc.book.currencies
+
+    return model
 
 @price_controller.route('/rates')
 def import_rates():

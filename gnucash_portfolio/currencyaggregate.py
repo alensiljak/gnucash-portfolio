@@ -2,12 +2,11 @@
 from sqlalchemy import desc
 from piecash import Book, Commodity, Price
 
-class CurrencyAggregate():
+class CurrenciesAggregate():
     """ Service/aggregate for currencies """
     def __init__(self, book: Book):
         """ constructor """
         self.book = book
-        #self.currency = currency
 
     def get_latest_price(self, currency: Commodity) -> Price:
         """ Returns the latest price entity """
@@ -31,3 +30,10 @@ class CurrencyAggregate():
             .filter(Commodity.namespace == "CURRENCY", Commodity.mnemonic == symbol)
         )
         return query.one()
+
+class CurrencyAggregate():
+    """ Service/aggregate for a single currency """
+    def __init__(self, book: Book, currency: Commodity):
+        """ constructor """
+        self.book = book
+        self.currency = currency

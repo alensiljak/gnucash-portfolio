@@ -9,12 +9,13 @@ AEF.AX,128.02,"10/11/2017"
 """
 import sys
 import os
-import csv
 import piecash
-from piecash import Commodity
+from typing import List
+from piecash import Commodity, Price
 from sqlalchemy import func, or_
 #import piecash
 from gnucash_portfolio.lib import database, price as pricelib
+from gnucash_portfolio.pricesaggregate import PricesAggregate
 
 def import_file(filename):
     """
@@ -30,27 +31,21 @@ def import_file(filename):
         for price in prices:
             #print(price.name, price.date, price.currency, price.value)
             __import_price(book, price)
-        
+
         print("Saving book...")
         book.save()
 
-def __read_prices_from_file(file_path):
+def __read_prices_from_file(file_path) -> List[Price]:
     # open file and read prices
     prices = []
+    content = None
 
     with open(file_path, "r") as file_object:
-        reader = csv.reader(file_object)
-        for row in reader:
-            price = pricelib.Price()
-            price.date = price.parse_euro_date(row[2])
-            price.name = row[0]
-            price.value = price.parse_value(row[1])
-            #price.currency = "EUR"
-
-            prices.append(price)
-            #print(', '.join(row))
-    # file_content = file_object.read()
+        content = file_object.read()
     # file_object.close()
+
+    svc = PricesAggregate(None)
+    prices = svc.get_prices_from_csv(content)
 
     # return list of prices
     return prices
