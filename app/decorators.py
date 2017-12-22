@@ -10,14 +10,16 @@ def templated(template=None):
     """
     http://flask.pocoo.org/docs/0.12/patterns/viewdecorators/#templating-decorator
     """
-    def decorator(f):
-        @wraps(f)
+    def decorator(func):
+        """ decorator definition """
+        @wraps(func)
         def decorated_function(*args, **kwargs):
+            """ Decorated function """
             template_name = template
             if template_name is None:
                 template_name = request.endpoint \
                     .replace('.', '/') + '.html'
-            ctx = f(*args, **kwargs)
+            ctx = func(*args, **kwargs)
             if ctx is None:
                 ctx = {}
             elif not isinstance(ctx, dict):

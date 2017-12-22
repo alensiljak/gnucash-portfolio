@@ -3,7 +3,7 @@ from flask import Blueprint, request, render_template
 from gnucash_portfolio.bookaggregate import BookAggregate
 from gnucash_portfolio.currencyaggregate import CurrencyAggregate, CurrenciesAggregate
 from gnucash_portfolio.pricesaggregate import PricesAggregate
-from models.price_models import RateViewModel, PriceImportViewModel, PriceImportFormViewModel
+from app.models.price_models import RateViewModel, PriceImportViewModel, PriceImportFormViewModel
 
 price_controller = Blueprint('price_controller', __name__, url_prefix='/price')
 
@@ -28,18 +28,17 @@ def import_prices(message: str = None):
 def import_post():
     """ Imports the prices file (.csv) """
     file_binary = request.files['import_file']
-    message = None
+
     if not file_binary:
-        message = "No file selected"
+        return import_prices("No file selected")
     if file_binary.content_type != "application/octet-stream":
-        message = "Wrong file type submitted"
+        return import_prices("Wrong file type submitted")
+
+    assert file_binary.filename != ''
 
     content = file_binary.read().decode("utf-8")
     if not content:
-        message = "The file is empty!"
-
-    if message:
-        return import_prices(message)
+        return import_prices("The file is empty!")
 
     file_binary.close()
 
@@ -53,13 +52,16 @@ def import_post():
         search = __load_search_reference_model(svc)
 
         model = PriceImportViewModel()
-        model.filename = file_binary.name
+        model.filename = file_binary.filename
 
         return render_template('price.import.result.html', model=model, search=search)
+
 
 @price_controller.route('/importapproved', methods=['POST'])
 def import_prices_accept():
     """ The import of prices after user confirms """
+    return render_template('incomplete.html')
+
 
 def __load_search_reference_model(svc: BookAggregate):
     """ Populates the reference data for the search form """
@@ -69,6 +71,7 @@ def __load_search_reference_model(svc: BookAggregate):
     model.currencies = svc.book.currencies
 
     return model
+
 
 @price_controller.route('/rates')
 def import_rates():
@@ -88,8 +91,8 @@ def import_rates():
             rate = RateViewModel()
             rate.currency = cur.mnemonic
             # Rate
-            cur_svc = CurrencyAggregate(book_svc.book)
-            price = cur_svc.get_latest_price(cur)
+            cur_svc = CurrencyAggregate(book_svc.book, cur)
+            price = cur_svc.get_latest_price()
             if price:
                 rate.date = price.date
                 rate.value = price.value

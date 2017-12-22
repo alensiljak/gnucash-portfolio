@@ -29,7 +29,7 @@ class PricesAggregate:
     def get_prices_from_csv(self, content: str):
         """ Imports prices from CSV content. See data folder for a sample file/content. """
         prices = []
-        
+
         print("Trying to read prices from", content)
         reader = csv.reader(content)
         for row in reader:

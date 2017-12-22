@@ -1,7 +1,7 @@
 """
 Home controller
 """
-from flask import Blueprint, request, render_template
+from flask import Blueprint, render_template #, request
 
 index_controller = Blueprint('index_controller', __name__)
 

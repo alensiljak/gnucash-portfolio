@@ -5,13 +5,10 @@ Account operations
 - list of transactions / register -> see transaction controller
 """
 import json
-from decimal import Decimal
 from flask import Blueprint, request, render_template
-from piecash import Account, Commodity
+from piecash import Account
 #from sqlalchemy.ext.serializer import dumps
-from gnucash_portfolio import lib
 from gnucash_portfolio.lib.database import Database
-from gnucash_portfolio.lib import generic
 from gnucash_portfolio.bookaggregate import BookAggregate
 from gnucash_portfolio.accountaggregate import AccountAggregate, AccountsAggregate
 
@@ -84,7 +81,7 @@ def cash_balances():
     with BookAggregate() as book_svc:
         accts_svc = AccountsAggregate(book_svc.book)
         acct = accts_svc.get_account_id_by_fullname
-        acct_svc = AccountAggregate(book_svc.book, None)
+        acct_svc = AccountAggregate(book_svc.book, acct)
         model["data"] = acct_svc.load_cash_balances_with_children(account_names)
     # Display the report
     return render_template('account.cash.html', model=model)

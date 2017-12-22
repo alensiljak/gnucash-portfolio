@@ -6,7 +6,7 @@ import sys
 import winreg
 from typing import List
 from piecash import Book, Commodity
-from gnucash_portfolio.currencyaggregate import CurrencyAggregate, CurrenciesAggregate
+from gnucash_portfolio.currencyaggregate import CurrenciesAggregate
 from gnucash_portfolio.lib.database import Database
 
 
@@ -20,13 +20,12 @@ class BookAggregate:
         self.currencies_aggregate = None
 
     def __enter__(self):
-        self.book = Database().open_book()
+        #self.book = Database().open_book()
         return self
 
     def __exit__(self, exc_type, exc_value, traceback):
-        if not self.book:
-            return
-        self.book.close()
+        if self.book:
+            self.book.close()
 
 
     @property

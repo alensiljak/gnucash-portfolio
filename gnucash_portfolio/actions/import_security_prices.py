@@ -9,11 +9,9 @@ AEF.AX,128.02,"10/11/2017"
 """
 import sys
 import os
-import piecash
 from typing import List
-from piecash import Commodity, Price
+from piecash import Commodity, Price, Book
 from sqlalchemy import func, or_
-#import piecash
 from gnucash_portfolio.lib import database, price as pricelib
 from gnucash_portfolio.pricesaggregate import PricesAggregate
 
@@ -35,7 +33,7 @@ def import_file(filename):
         print("Saving book...")
         book.save()
 
-def __read_prices_from_file(file_path) -> List[Price]:
+def __read_prices_from_file(file_path: str) -> List[Price]:
     # open file and read prices
     prices = []
     content = None
@@ -50,7 +48,7 @@ def __read_prices_from_file(file_path) -> List[Price]:
     # return list of prices
     return prices
 
-def __import_price(book, price):
+def __import_price(book: Book, price):
     """
     Import individual price
     """
@@ -59,7 +57,7 @@ def __import_price(book, price):
         return
 
     # check if there is already a price for the date
-    exists = stock.prices.filter(piecash.Price.date == price.date).all()
+    exists = stock.prices.filter(Price.date == price.date).all()
     if not exists:
         # Create new price for the commodity (symbol).
         __create_price_for(stock, price)
@@ -90,18 +88,19 @@ def __get_commodity(book, symbol):
     #print("Security", symbol, security)
     return security
 
-def __create_price_for(commodity, price):
+def __create_price_for(commodity: Commodity, price):
     """
     Creates a new Price entry in the book, for the given commodity.
     """
-    print("Adding a new price for", commodity.mnemonic, price.date.strftime("%Y-%m-%d"), price.value)
+    print("Adding a new price for", commodity.mnemonic, price.date.strftime("%Y-%m-%d"), 
+        price.value)
 
     #currency = __get_stock_currency(commodity)
-    currency = __get_currency(commodity.book)
+    currency = __get_currency(commodity.book, commodity.mnemonic)
 
-    new_price = piecash.Price(commodity, currency, price.date, price.value)
+    new_price = Price(commodity, currency, price.date, price.value)
     commodity.prices.append(new_price)
-    #print(record.currency)
+
 
 def __get_stock_currency(stock: Commodity) -> Commodity:
     """
@@ -114,18 +113,18 @@ def __get_stock_currency(stock: Commodity) -> Commodity:
 
     return first_price.currency
 
-def __get_currency(book):
+def __get_currency(book: Book, symbol: str) -> Commodity:
     """
     Use the same currency for one file.
     """
-    cur = book.currencies.get(mnemonic=currency_symbol)
+    cur = book.currencies.get(mnemonic=symbol)
     #print("Using currency - ", cur.mnemonic)
     return cur
 
 ###############################################################################
-currency_symbol = None
-
-if __name__ == "__main__":
+def test():
+    """ Test method, when run from console """
+    currency_symbol = None
     filename = None
     if not len(sys.argv) > 1:
         #print("You must send the file name as the first argument.")
@@ -137,7 +136,7 @@ if __name__ == "__main__":
             print(filename, "is not a valid file.")
             filename = None
             quit()
-        
+
         currency_symbol = input("Currency for the prices: ")
     else:
         filename = sys.argv[1]
@@ -147,4 +146,6 @@ if __name__ == "__main__":
 
     if filename:
         import_file(filename)
-    
+
+if __name__ == "__main__":
+    test()

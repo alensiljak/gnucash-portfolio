@@ -10,7 +10,7 @@ from piecash import Book, ScheduledTransaction
 from gnucash_portfolio.bookaggregate import BookAggregate
 from gnucash_portfolio.scheduledtxaggregate import ScheduledTxAggregate
 from gnucash_portfolio.transactionaggregate import TransactionsAggregate
-from models.transactions import ScheduledTxSearchModel
+from app.models.transactions import ScheduledTxSearchModel
 
 transaction_controller = Blueprint('transaction_controller', __name__, url_prefix='/transaction')
 
@@ -20,7 +20,7 @@ def tx_details(tx_id: str):
     with BookAggregate() as svc:
         tx_svc = TransactionsAggregate(svc.book)
         tx = tx_svc.get(tx_id)
-        #print(tx.description)
+
         model = {
             "transaction": tx
         }
