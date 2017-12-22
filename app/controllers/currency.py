@@ -8,7 +8,6 @@ Currencies
 from flask import Blueprint, request, render_template
 from piecash import Book, Commodity
 from gnucash_portfolio.lib.database import Database
-#from gnucash_portfolio.currencyaggregate import CurrencyAggregate
 from gnucash_portfolio.bookaggregate import BookAggregate
 
 currency_controller = Blueprint('currency_controller', __name__, url_prefix='/currency')
@@ -22,6 +21,7 @@ def index():
         search_model = SearchModel().initialize(book, None)
         output = render_template('currency.html', search=search_model)
     return output
+
 
 @currency_controller.route('/search', methods=['GET', 'POST'])
 def post():
