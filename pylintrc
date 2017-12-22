@@ -1,0 +1,6 @@
+# PyLint configuration
+
+[MASTER]
+
+# Use multiple processes to speed up Pylint.
+jobs=3

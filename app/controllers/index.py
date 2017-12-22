@@ -4,7 +4,9 @@ Home controller
 #from logging import log, info, debug, DEBUG, INFO, WARN, ERROR, FATAL
 from flask import Blueprint, render_template #, request
 
-index_controller = Blueprint('index_controller', __name__)
+
+index_controller = Blueprint( # pylint: disable=invalid-name
+    'index_controller', __name__)
 
 
 @index_controller.route('/')

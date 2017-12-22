@@ -18,7 +18,6 @@ class BookAggregate:
         Accepts custom settings object. Useful for testing.
         """
         self.__book: Book = None
-        #self.book_uri = db_uri
         self.default_currency = None
         self.currencies_aggregate = None
 

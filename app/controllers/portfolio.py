@@ -3,16 +3,16 @@ Portfolio
 - cash account balances per currency
 - portfolio value report
 """
-from datetime import date, datetime #, timedelta
+from datetime import datetime #, timedelta
 from flask import Blueprint, request, render_template
 from gnucash_portfolio.lib import portfoliovalue
 from gnucash_portfolio.bookaggregate import BookAggregate
-from gnucash_portfolio.securityaggregate import SecurityAggregate, SecuritiesAggregate
+from gnucash_portfolio.securityaggregate import SecuritiesAggregate
 from app.models.portfolio_models import PortfolioValueInputModel, PortfolioValueViewModel
 
 
-portfolio_controller = Blueprint('portfolio_controller', __name__, 
-                                 url_prefix='/portfolio')
+portfolio_controller = Blueprint( # pylint: disable=invalid-name
+    'portfolio_controller', __name__, url_prefix='/portfolio')
 
 
 @portfolio_controller.route('/value', methods=['GET'])

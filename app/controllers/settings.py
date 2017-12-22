@@ -6,7 +6,8 @@ from flask import Blueprint, request, render_template
 from gnucash_portfolio.lib import generic
 
 
-settings_controller = Blueprint('settings_controller', __name__, url_prefix='/settings')
+settings_controller = Blueprint( # pylint: disable=invalid-name
+    'settings_controller', __name__, url_prefix='/settings')
 SETTINGS_FILE_PATH = '../config/settings.json'
 
 

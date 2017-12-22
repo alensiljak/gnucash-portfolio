@@ -46,3 +46,4 @@ class PriceAggregate:
     """ handle individual price """
     def __init__(self, book: Book, price: Price):
         self.price = price
+        self.book = book

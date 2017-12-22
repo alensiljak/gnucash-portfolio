@@ -1,16 +1,19 @@
 """ Price controller """
 from flask import Blueprint, request, render_template
 from gnucash_portfolio.bookaggregate import BookAggregate
-from gnucash_portfolio.currencyaggregate import CurrencyAggregate, CurrenciesAggregate
+from gnucash_portfolio.currencyaggregate import CurrencyAggregate
 from gnucash_portfolio.pricesaggregate import PricesAggregate
 from app.models.price_models import RateViewModel, PriceImportViewModel, PriceImportFormViewModel
 
-price_controller = Blueprint('price_controller', __name__, url_prefix='/price')
+price_controller = Blueprint( # pylint: disable=invalid-name
+    'price_controller', __name__, url_prefix='/price')
+
 
 @price_controller.route('/')
 def index():
     """ Index page for prices """
     return render_template('incomplete.html')
+
 
 @price_controller.route('/import')
 def import_prices(message: str = None):
@@ -23,6 +26,7 @@ def import_prices(message: str = None):
         search = __load_search_reference_model(svc)
 
         return render_template('price.import.html', model=model, search=search)
+
 
 @price_controller.route('/import', methods=['POST'])
 def import_post():

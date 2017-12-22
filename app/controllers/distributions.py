@@ -9,8 +9,9 @@ from flask import Blueprint, request, render_template
 from piecash import Account, Commodity, Split, Book, Transaction
 from gnucash_portfolio.lib import database
 
-distribution_controller = Blueprint('distribution_controller', __name__, 
-                                    url_prefix='/distributions')
+
+distribution_controller = Blueprint( # pylint: disable=invalid-name
+    'distribution_controller', __name__, url_prefix='/distributions')
 
 
 @distribution_controller.route('/')

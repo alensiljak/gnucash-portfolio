@@ -10,10 +10,11 @@ Stocks
 from flask import Blueprint, request, render_template
 from gnucash_portfolio.bookaggregate import BookAggregate
 from gnucash_portfolio.securityaggregate import SecuritiesAggregate
-from app.models.securities import StockAnalysisInputModel
+from app.models.security_models import StockAnalysisInputModel
 
 
-stock_controller = Blueprint('stock_controller', __name__, url_prefix='/security')
+stock_controller = Blueprint( # pylint: disable=invalid-name
+    'stock_controller', __name__, url_prefix='/security')
 
 
 @stock_controller.route('/')
@@ -34,13 +35,15 @@ def security_analysis():
         }
         return render_template('security.analysis.html', model=model, filter=search)
 
+
 @stock_controller.route('/analysis', methods=['POST'])
 def security_analysis_post():
     """ Displays the results """
     with BookAggregate() as svc:
         model = __get_model_for_analysis(svc.book)
-        search = __parse_input_model(request)
+        search = __parse_input_model()
         return render_template('security.analysis.html', model=model, filter=search)
+
 
 def __get_model_for_analysis(svc: BookAggregate):
     """ Loads model for analysis """
@@ -55,7 +58,8 @@ def __get_model_for_analysis(svc: BookAggregate):
     }
     return model
 
-def __parse_input_model(request):
+
+def __parse_input_model():
     """ Parses the filter from request """
     result = StockAnalysisInputModel()
 

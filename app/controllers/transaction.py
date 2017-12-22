@@ -10,19 +10,20 @@ from piecash import Book, ScheduledTransaction
 from gnucash_portfolio.bookaggregate import BookAggregate
 from gnucash_portfolio.scheduledtxaggregate import ScheduledTxAggregate
 from gnucash_portfolio.transactionaggregate import TransactionsAggregate
-from app.models.transactions import ScheduledTxSearchModel
+from app.models.transaction_models import ScheduledTxSearchModel
 
-transaction_controller = Blueprint('transaction_controller', __name__, url_prefix='/transaction')
+transaction_controller = Blueprint( # pylint: disable=invalid-name
+    'transaction_controller', __name__, url_prefix='/transaction')
 
 @transaction_controller.route('/details/<tx_id>')
 def tx_details(tx_id: str):
     """ Display transaction details """
     with BookAggregate() as svc:
         tx_svc = TransactionsAggregate(svc.book)
-        tx = tx_svc.get(tx_id)
+        tran = tx_svc.get(tx_id)
 
         model = {
-            "transaction": tx
+            "transaction": tran
         }
         return render_template('transaction.details.html', model=model)
 
@@ -30,7 +31,7 @@ def tx_details(tx_id: str):
 @transaction_controller.route('/scheduled', methods=['GET', 'POST'])
 def scheduled_transactions():
     """ Lists scheduled transactions """
-    search_model = __parse_sch_tx_search_params(request)
+    search_model = __parse_sch_tx_search_params()
     if not search_model:
         # Initial run
         search_model = ScheduledTxSearchModel()
@@ -44,7 +45,7 @@ def scheduled_transactions():
     return output
 
 
-def __parse_sch_tx_search_params(request) -> ScheduledTxSearchModel:
+def __parse_sch_tx_search_params() -> ScheduledTxSearchModel:
     """ Parses the search parameters from the request """
     if not request.form:
         return None

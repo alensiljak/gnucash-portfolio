@@ -9,8 +9,8 @@ from gnucash_portfolio.assetallocation import AllocationLoader
 from gnucash_portfolio.bookaggregate import BookAggregate
 from gnucash_portfolio.lib import generic
 
-assetallocation_controller = Blueprint('assetallocation_controller', __name__, 
-                                       url_prefix='/assetallocation')
+assetallocation_controller = Blueprint( # pylint: disable=invalid-name
+    'assetallocation_controller', __name__, url_prefix='/assetallocation')
 
 
 @assetallocation_controller.route('/')
@@ -26,6 +26,7 @@ def asset_allocation():
         output = render_template('asset_allocation.html', model=model)
     return output
 
+
 @assetallocation_controller.route('/settings', methods=['GET'])
 def settings():
     """ Settings for Asset Allocation """
@@ -36,6 +37,7 @@ def settings():
         "content": content
     }
     return render_template('content.editor.html', model=model)
+
 
 @assetallocation_controller.route('/settings', methods=['POST'])
 def save_settings():
