@@ -34,6 +34,14 @@ All the functionality will be provided as a web application (see below). There a
 
 See `tests` directory and documentation and tests there.
 
+### Lint
+
+pylint can be used to check for errors.
+running `pylint app/` will run lint on the whole web app.
+Pay attention to the Error and Fatal lines.
+
+Ref: [PyLint Output](https://docs.pylint.org/en/1.6.0/output.html)
+
 # Web Application
 
 This project contains the web application implemented in Flask. It is intended to be used as the full GUI for accepting user input (parameters) and displaying the output.

@@ -12,9 +12,10 @@ from gnucash_portfolio.lib.database import Database
 
 class BookAggregate:
     """ Encapsulates operations with GnuCash book """
+
     def __init__(self):
         """ constructor """
-        self.book: Book = None
+        self.__book: Book = None
         self.default_currency = None
 
         self.currencies_aggregate = None
@@ -26,6 +27,15 @@ class BookAggregate:
     def __exit__(self, exc_type, exc_value, traceback):
         if self.book:
             self.book.close()
+
+
+    @property
+    def book(self):
+        """ GnuCash Book. Opens the book or creates an in-memory database, based on settings. """
+        if not self.__book:
+            self.__book = Database().open_book()
+
+        return self.__book
 
 
     @property
@@ -109,10 +119,3 @@ class BookAggregate:
             locale.setlocale(locale.LC_ALL, '')
         mnemonic = locale.localeconv()['int_curr_symbol'].strip() or "EUR"
         return self.book.currencies(mnemonic=mnemonic)
-
-    def get_book(self):
-        """ Returns an open GnuCash book. Intended for internal use. """
-        if not self.book:
-            self.book = Database().open_book()
-
-        return self.book

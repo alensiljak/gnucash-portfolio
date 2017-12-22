@@ -8,6 +8,8 @@ from flask import Blueprint, request, render_template
 from gnucash_portfolio.lib import portfoliovalue
 from gnucash_portfolio.bookaggregate import BookAggregate
 from gnucash_portfolio.securityaggregate import SecurityAggregate, SecuritiesAggregate
+from app.models.portfolio_models import PortfolioValueInputModel, PortfolioValueViewModel
+
 
 portfolio_controller = Blueprint('portfolio_controller', __name__, 
                                  url_prefix='/portfolio')
@@ -27,7 +29,7 @@ def portfolio_value():
 @portfolio_controller.route('/value', methods=['POST'])
 def portfolio_value_post():
     """ Accepts the filter parameters and displays the portfolio value report """
-    input_model = __parse_input_model(request)
+    input_model = __parse_input_model()
 
     model = __get_model_for_portfolio_value(input_model)
     return render_template('portfolio.value.html', model=model)
@@ -56,7 +58,7 @@ def __get_model_for_portfolio_value(input_model: PortfolioValueInputModel):
     return result
 
 
-def __parse_input_model(request) -> PortfolioValueInputModel:
+def __parse_input_model() -> PortfolioValueInputModel:
     """ Parses the search parameters from the request """
     result = PortfolioValueInputModel()
 

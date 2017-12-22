@@ -4,26 +4,25 @@ Asset Allocation
 - editing of allocations (store in .json)
 - manual adjustments to allocation (offset for imbalance)
 """
-from flask import Blueprint, request, render_template
-from gnucash_portfolio import Database
+from flask import Blueprint, render_template #, request
 from gnucash_portfolio.assetallocation import AllocationLoader
-from gnucash_portfolio.lib.settings import Settings
 from gnucash_portfolio.bookaggregate import BookAggregate
 from gnucash_portfolio.lib import generic
 
-assetallocation_controller = Blueprint('assetallocation_controller', __name__, url_prefix='/assetallocation')
+assetallocation_controller = Blueprint('assetallocation_controller', __name__, 
+                                       url_prefix='/assetallocation')
 
 
 @assetallocation_controller.route('/')
 def asset_allocation():
     """ Asset Allocation without the securities """
-    # TODO look at AssetAllocationService in mmex.
+    # look at AssetAllocationService in mmex.
     with BookAggregate() as svc:
         base_currency = svc.get_default_currency()
 
         loader = AllocationLoader(base_currency, svc.book)
         model = loader.load_asset_allocation_model()
-        # TODO populate actual allocation & difference.
+        # populate actual allocation & difference.
         output = render_template('asset_allocation.html', model=model)
     return output
 

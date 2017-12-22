@@ -10,7 +10,7 @@ Stocks
 from flask import Blueprint, request, render_template
 from gnucash_portfolio.bookaggregate import BookAggregate
 from gnucash_portfolio.securityaggregate import SecuritiesAggregate
-from models.securities import StockAnalysisInputModel
+from app.models.securities import StockAnalysisInputModel
 
 
 stock_controller = Blueprint('stock_controller', __name__, url_prefix='/security')
