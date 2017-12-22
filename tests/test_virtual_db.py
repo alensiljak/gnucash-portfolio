@@ -17,7 +17,7 @@ def test_generation(settings: Settings):
         assert book.uri.database == IN_MEMORY_DB
         assert book.uri.drivername == IN_MEMORY_DRIVER
 
-def test_inmemory_db_with_aggregate(settings):
+def test_inmemory_db_with_aggregate(settings: Settings):
     """ An in-memory database should be also created with the Book Aggregate """
     with BookAggregate(settings) as svc:
         assert svc.book.uri.database == IN_MEMORY_DB

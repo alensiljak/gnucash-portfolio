@@ -39,15 +39,6 @@ class Settings:
         """Returns the list of exchange rates from the settings"""
         return self.data["exchangeRates"]
 
-    def get_currencies(self):
-        """Fetches the list of currencies from the settings."""
-        return self.data["currencies"]
-
-    @property
-    def base_currency(self):
-        """Returns the base currency setting"""
-        return self.data["baseCurrency"]
-
     @property
     def database_uri(self):
         """

@@ -7,7 +7,7 @@ import json
 import pytest
 from gnucash_portfolio.lib.settings import Settings
 
-# TODO Fixture for the Settings, to use in-memory database.
+# Fixture for the Settings, to use in-memory database.
 # Use global scope in order to use the same instance.
 @pytest.fixture(scope="module")
 def settings() -> Settings:
