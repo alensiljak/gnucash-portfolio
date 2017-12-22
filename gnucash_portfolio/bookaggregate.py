@@ -6,7 +6,7 @@ import sys
 import winreg
 from typing import List
 from piecash import Book, Commodity
-from gnucash_portfolio.currencyaggregate import CurrencyAggregate
+from gnucash_portfolio.currencyaggregate import CurrencyAggregate, CurrenciesAggregate
 from gnucash_portfolio.lib.database import Database
 
 
@@ -16,6 +16,8 @@ class BookAggregate:
         """ constructor """
         self.book: Book = None
         self.default_currency = None
+
+        self.currencies_aggregate = None
 
     def __enter__(self):
         self.book = Database().open_book()
@@ -31,6 +33,12 @@ class BookAggregate:
     def session(self):
         """ Access to sql session """
         return self.get_book().session
+
+    @property
+    def currencies(self):
+        """ Returns the Currencies aggregate """
+        self.currencies_aggregate = CurrenciesAggregate(self.book)
+        return self.currencies_aggregate
 
     def get_currencies(self):
         """ Returns the currencies used in the book """
