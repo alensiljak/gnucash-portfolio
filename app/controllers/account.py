@@ -13,7 +13,8 @@ from gnucash_portfolio.bookaggregate import BookAggregate
 from gnucash_portfolio.accountaggregate import AccountAggregate, AccountsAggregate
 
 
-account_controller = Blueprint('account_controller', __name__, url_prefix='/account')
+account_controller = Blueprint( # pylint: disable=invalid-name
+    'account_controller', __name__, url_prefix='/account')
 
 
 @account_controller.route('/')
@@ -49,6 +50,7 @@ def find():
     json_output = json.dumps(model)
     return json_output
 
+
 def __load_search_model(search_term):
     """ Loads the data and returns an array of model objects"""
     model_array = []
@@ -67,6 +69,7 @@ def __load_search_model(search_term):
             model_array.append(account_model)
 
     return model_array
+
 
 @account_controller.route('/cash')
 def cash_balances():

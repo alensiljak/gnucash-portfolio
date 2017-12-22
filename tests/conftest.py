@@ -36,7 +36,7 @@ class TestSettings(object):
     """
     Declares the settings and Book Aggregate as autouse.
     This means that individual tests do not need to mark the fixture explicitly.
-    It is more useful when there is functionality that needs to be executed than for dependency 
+    It is more useful when there is functionality that needs to be executed than for dependency
     injection.
     """
     @pytest.fixture(autouse=True, scope="session")

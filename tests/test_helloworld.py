@@ -1,4 +1,4 @@
-""" 
+"""
 The most basic example of unit tests with Python.
 Ref: http://pythontesting.net/framework/pytest/pytest-introduction/
 """
