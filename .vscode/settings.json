@@ -1,4 +1,7 @@
 {
     "python.unitTest.pyTestArgs": [],
-    "python.unitTest.pyTestEnabled": true
+    "python.unitTest.pyTestEnabled": true,
+    "python.workspaceSymbols.ctagsPath": "d:\\bin\\ctags\\ctags.exe"
+
+
 }

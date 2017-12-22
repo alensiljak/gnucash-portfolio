@@ -13,7 +13,7 @@ My development environment in on Windows and consists of the following:
 
 - Visual Studio Code with
   - Python extension
-  - ctags
+  - ctags (see [new project](https://github.com/universal-ctags/ctags-win32/releases))
 - Python 3.6
 - node + npm
 

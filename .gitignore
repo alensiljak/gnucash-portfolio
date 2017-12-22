@@ -116,3 +116,6 @@ ENV/
 .mypy_cache/
 
 .idea
+
+# VS Code
+.vscode/tags
