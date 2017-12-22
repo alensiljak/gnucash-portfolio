@@ -9,3 +9,5 @@ web app package
 #app = Flask(__name__)
 # Configurations
 #app.config.from_object('config')
+
+from . import controllers

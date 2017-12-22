@@ -30,13 +30,19 @@ All the libraries are listed in `requirements.txt` for Python and `package.json`
 
 All the functionality will be provided as a web application (see below). There are parts of code that are not yet exposed through the web interface, though.
 
+## Testing
+
+See `tests` directory and documentation and tests there.
+
 # Web Application
 
 This project contains the web application implemented in Flask. It is intended to be used as the full GUI for accepting user input (parameters) and displaying the output.
 
-The app is located in the /app directory.
+The app is located in the `/app` directory.
 
 It is intended to run on a desktop workstation, with direct access to the GnuCash book file, stored as an SQLite database.
+
+To run, simply run the app folder with Python. I.e. `python app` from the root.
 
 ## Benefits
 

@@ -1,13 +1,11 @@
 """
 This is the entry point to the application
 """
-from flask import Flask, render_template, request
+from flask import Blueprint, Flask
 from flask_assets import Bundle, Environment
-from gnucash_portfolio.actions import get_vanguard_au_prices
-from flask import Blueprint
 
 # Controllers/blueprints
-from controllers import (
+from app.controllers import (
     account, currency, vanguard, distributions, assetallocation, index,
     portfolio, price, securities, settings, transaction)
 
