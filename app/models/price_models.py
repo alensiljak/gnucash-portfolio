@@ -1,22 +1,25 @@
 """ Models for price actions """
-from types import SimpleNamespace
+
+from dataclasses import dataclass
+from decimal import Decimal
 
 
-# """ View model for exchange rate """
-RateViewModel = SimpleNamespace( # pylint: disable=invalid-name
-    date=None,
-    value=0,
-    currency="",
-    base_currency=""
-)
+@dataclass
+class RateViewModel: # pylint: disable=invalid-name
+    """ View model for exchange rate """
+    date = None
+    value: Decimal = 0
+    currency = ""
+    base_currency = ""
 
-# """ Price import results """
-PriceImportViewModel = SimpleNamespace( # pylint: disable=invalid-name
-    foo="bar",
-    filename=None
-)
 
-#     """ Static model for the import form """
-PriceImportFormViewModel = SimpleNamespace( # pylint: disable=invalid-name
-    currencies=[]
-)
+@dataclass
+class PriceImportViewModel: # pylint: disable=invalid-name
+    """ Price import results """
+    filename: str = None
+
+
+@dataclass
+class PriceImportFormViewModel: # pylint: disable=invalid-name
+    """ Static model for the import form """
+    currencies = []

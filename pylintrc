@@ -4,3 +4,6 @@
 
 # Use multiple processes to speed up Pylint.
 jobs=3
+
+# Disable missing docstring until https://github.com/PyCQA/pylint/issues/1722 is done.
+disable=missing-docstring

@@ -2,13 +2,12 @@
 """
 Import currency exchange rates from .csv file into GnuCash
 """
-import csv
+from logging import debug
 from sqlalchemy import func
 from datetime import datetime, timedelta
-import dateutil.parser
 from piecash import Commodity, Price
 from os import path
-from gnucash_portfolio.lib import currencyratesretriever, database, generic, settings
+from gnucash_portfolio.lib import currencyratesretriever, database, settings
 
 settings_path = "settings.json"
 
@@ -82,13 +81,13 @@ def __save_rates(config, latest_rates):
                 print("Creating entry for", base_currency.mnemonic, currency.mnemonic, rate_date_string, amount)
                 # Save the price in the exchange currency, not the default.
                 # Invert the rate in that case.
-                inverted_rate = 1 / amount;
-                p = Price(commodity=currency,
-                            currency=base_currency,
-                            date=rate_date,
-                            value=str(inverted_rate))
+                inverted_rate = 1 / amount
+                price = Price(commodity=currency,
+                              currency=base_currency,
+                              date=rate_date,
+                              value=str(inverted_rate))
                 have_new_rates = True
-        
+
         # Save the book after the prices have been created.
         if have_new_rates:
             book.flush()
@@ -97,12 +96,12 @@ def __save_rates(config, latest_rates):
             print("No prices imported.")
     return
 
-def get_count(q):
+def get_count(query):
     """
     Returns a number of query results. This is faster than .count() on the query
     """
-    count_q = q.statement.with_only_columns([func.count()]).order_by(None)
-    count = q.session.execute(count_q).scalar()
+    count_q = query.statement.with_only_columns([func.count()]).order_by(None)
+    count = query.session.execute(count_q).scalar()
     return count
 
 def main():

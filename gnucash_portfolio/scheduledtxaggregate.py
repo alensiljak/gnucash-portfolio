@@ -1,5 +1,7 @@
 """ Scheduled Transactions """
+
 from piecash import Book, ScheduledTransaction
+
 
 class ScheduledTxAggregate:
     """ Handles scheduled transactions

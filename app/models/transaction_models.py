@@ -1,19 +1,18 @@
 """ Models for Transactions """
 
-#from collections import namedtuple
-from types import SimpleNamespace
+from dataclasses import dataclass
 
 
-# Input model for scheduled transactions list.
-ScheduledTxSearchModel = SimpleNamespace( # pylint: disable=invalid-name
-    date_from=None,
-    date_to=None
-)
+@dataclass
+class ScheduledTxSearchModel: # pylint: disable=invalid-name
+    """ Input model for scheduled transactions list """
+    date_from = None
+    date_to = None
 
 
-# result row for scheduled transactions.
-SchedTxRowViewModel = SimpleNamespace( # pylint: disable=invalid-name
-    name=None,
-    start_date=None,
-    last_occurred=None
-)
+@dataclass
+class SchedTxRowViewModel: # pylint: disable=invalid-name
+    """ result row for scheduled transactions """
+    name = None
+    start_date = None
+    last_occurred = None

@@ -1,17 +1,20 @@
 """ Models for Portfolio section """
 
 from datetime import datetime
-#from types import SimpleNamespace
-from typing import NamedTuple
+from dataclasses import dataclass
 
 
-class PortfolioValueInputModel(NamedTuple): # pylint: disable=invalid-name
+@dataclass
+class PortfolioValueInputModel(): # pylint: disable=invalid-name
     """ Search model for Portfolio Value """
-    as_of_date = datetime(datetime.today().year, datetime.today().month, datetime.today().day)
-    stock = ""
+    as_of_date: datetime = datetime(datetime.today().year,
+                                    datetime.today().month,
+                                    datetime.today().day)
+    stock: str = ""
 
 
-class PortfolioValueViewModel(NamedTuple): # pylint: disable=invalid-name
+@dataclass
+class PortfolioValueViewModel(): # pylint: disable=invalid-name
     """ View Model for portfolio value report """
     filter = None
     stock_rows = []

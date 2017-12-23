@@ -2,33 +2,17 @@
 Provides functions for Portfolio Value report
 """
 from datetime import date
-from decimal import Decimal
-from sqlalchemy import desc
 from typing import List
 from piecash import Book, Commodity, Price
-import gnucash_portfolio
 from gnucash_portfolio.actions import symbol_dividends
 from gnucash_portfolio.securityaggregate import SecurityAggregate
-from gnucash_portfolio.pricesaggregate import PricesAggregate, PriceAggregate
-
-class StockViewModel:
-    """ View model for stock symbol """
-    def __init__(self):
-        self.symbol = None
-        self.exchange = None
-        self.shares_num = Decimal(0)
-        self.avg_price = None
-        self.price = None
-        self.currency = None
-        self.cost = None
-        self.balance = Decimal(0)
-        self.gain_loss = None
-        self.gain_loss_perc = None
-        self.income = None
+from gnucash_portfolio.pricesaggregate import PricesAggregate
+from gnucash_portfolio.model.stock_model import StockViewModel
 
 
 def get_stock_model_from(book: Book, commodity: Commodity, as_of_date: date):
     """ Parses stock/commodity and returns the model for display """
+
     model = StockViewModel()
 
     model.exchange = commodity.namespace
@@ -37,10 +21,8 @@ def get_stock_model_from(book: Book, commodity: Commodity, as_of_date: date):
     svc = SecurityAggregate(book, commodity)
 
     model.shares_num = svc.get_num_shares_on(as_of_date)
-    # float
 
     model.avg_price = svc.get_avg_price()
-    #avg_price_disp = "{:,.4f}".format(avg_price)
 
     # Last price
     price_svc = PricesAggregate(book)

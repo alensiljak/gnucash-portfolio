@@ -22,7 +22,7 @@ def __get_json_prices():
     content = json.loads(response.content)
     return content
 
-def __fetch_json_prices():
+def __fetch_json_prices(user_funds):
     """
     This example loads the prices JSON. There are no retail funds there, however.
     """
