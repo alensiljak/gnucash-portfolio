@@ -41,17 +41,21 @@ def get_dividend_sum_for_symbol(book: Book, symbol: str):
     return total
 
 
-if __name__ == "__main__":
+def test():
+    """ test method for console """
     book_path: str = input("Enter book path (or leave empty):")
     symbol: str = input("Enter symbol:")
     symbol = symbol.upper()
 
     if book_path:
-        db = database.Database(book_path)
+        data = database.Database(book_path)
     else:
-        db = database.Database()
+        data = database.Database()
 
-    with db.open_book() as book:
+    with data.open_book() as book:
         amount = get_dividend_sum_for_symbol(book, symbol)
 
         print("Income for", symbol, "=", amount)
+
+if __name__ == "__main__":
+    test()

@@ -2,11 +2,10 @@
 """
 Import currency exchange rates from .csv file into GnuCash
 """
-from logging import debug
+#from logging import debug
+from datetime import datetime
 from sqlalchemy import func
-from datetime import datetime, timedelta
-from piecash import Commodity, Price
-from os import path
+from piecash import Price
 from gnucash_portfolio.lib import currencyratesretriever, database, settings
 
 settings_path = "settings.json"

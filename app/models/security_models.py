@@ -1,8 +1,9 @@
 """ Models for Securities """
 
-from dataclasses import dataclass
+#from dataclasses import dataclass
 
 
-class StockAnalysisInputModel: # pylint: disable=invalid-name
+#@dataclass
+class StockAnalysisInputModel: #pylint: disable=invalid-name
     """ Input model for Stock Analysis """
     symbol: str = None

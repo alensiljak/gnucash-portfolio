@@ -1,10 +1,11 @@
 """ Models for currency controller """
+
 from piecash import Book, Commodity
 from gnucash_portfolio.bookaggregate import BookAggregate
 #from types import SimpleNamespace
 
 
-class SearchReferenceModel(object):
+class SearchReferenceModel:
     """ Model with reference data """
     def __init__(self):
         self.currencies = []

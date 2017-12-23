@@ -30,7 +30,8 @@ To get the required development and runtime dependencies, run
 `pip install -r requirements.txt`
 
 in the app directory.
-Besides this, piecash, and gnucash_portfolio packages must be installed.
+Besides this, `piecash`, and `gnucash_portfolio` packages must be installed. These are not enabled in the requirements.txt because I'm using the latest development versions cloned directly from GitHub and/or modified locally.
+Install these with `pip install -e <path to>/piecash`.
 
 ### CSS
 
@@ -45,32 +46,34 @@ The bundle will be built automatically during the app runtime. No additional act
 
 ## Running
 
-### Preparation
+### First-Time Setup
 
-- Config: In order to run the scripts, copy `settings.json.template` into `settings.json` and customize the settings by editing the file or through the web interface.
+- Config:
+  In order to run the scripts, copy `config/settings.json.template` into `config/settings.json` and customize the settings by editing the file or through the web interface.
 - Register the library with ```pip install -e <path to>/gnucash-portfolio``` root directory.
 
 ### Execution
 
-All the functionality will be provided as a web application (see below). There are still parts of code that are not exposed through the web interface, though.
+All the functionality will be provided through a web UI. There are still parts of code that are not exposed through the web interface, though.
 
 To run, simply run the app with Python. I.e. `py app` from the root folder.
 
 There are several ways to run the web app:
 
-1. Run a task from VS Code
-2. Run `py app` directly
+1. Run `py app` directly
+2. Run a task from VS Code
 3. Run "run.py run" (This script was created so that the app could be debugged with Python extension for Visual Studio Code)
 
 ## Testing
 
 See `tests` directory and documentation and tests there.
-Simply run `pytest` to run all unit tests.
+Simply run `pytest` to run all tests.
 
 ### Lint
 
 pylint can be used to check for errors.
 running `pylint app/` will run lint on the whole web app.
+`pylint gnucash_portfolio` will check the library.
 Pay attention to the Error and Fatal lines.
 
 Ref: [PyLint Output](https://docs.pylint.org/en/1.6.0/output.html)

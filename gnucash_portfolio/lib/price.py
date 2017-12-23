@@ -2,8 +2,8 @@
 Represents a price.
 """
 import datetime
-import dateutil
 from decimal import Decimal
+
 
 class Price:
     """ Price model """

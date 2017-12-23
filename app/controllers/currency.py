@@ -5,7 +5,7 @@ Currencies
 - price cleanup / deletion
 - exchange rate chart
 """
-from logging import debug
+#from logging import debug
 from flask import Blueprint, request, render_template
 from piecash import Commodity
 from gnucash_portfolio.lib.database import Database

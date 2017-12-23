@@ -1,10 +1,10 @@
 """ Models for price actions """
 
-from dataclasses import dataclass
+#from dataclasses import dataclass
 from decimal import Decimal
 
 
-@dataclass
+#@dataclass
 class RateViewModel: # pylint: disable=invalid-name
     """ View model for exchange rate """
     date = None
@@ -13,13 +13,13 @@ class RateViewModel: # pylint: disable=invalid-name
     base_currency = ""
 
 
-@dataclass
+#@dataclass
 class PriceImportViewModel: # pylint: disable=invalid-name
     """ Price import results """
     filename: str = None
 
 
-@dataclass
+#@dataclass
 class PriceImportFormViewModel: # pylint: disable=invalid-name
     """ Static model for the import form """
     currencies = []

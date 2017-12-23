@@ -49,7 +49,8 @@ def load_json_file_contents(path: str) -> str:
 
 def print_sql(query):
     """ prints alchemy sql command for debugging """
-    sql = str(query.statement.compile(dialect=sqlite.dialect(), compile_kwargs={"literal_binds": True}))
+    sql = str(query.statement.compile(dialect=sqlite.dialect(), 
+                                      compile_kwargs={"literal_binds": True}))
     print(sql)
 
 

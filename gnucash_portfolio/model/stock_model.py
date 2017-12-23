@@ -1,10 +1,10 @@
 """ Stock model """
 
-from dataclasses import dataclass
+#from dataclasses import dataclass
 from decimal import Decimal
 
 
-@dataclass
+#@dataclass
 class StockViewModel:
     """ View model for stock symbol """
     symbol: str = None
