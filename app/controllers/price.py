@@ -29,7 +29,7 @@ def import_prices(message: str = None):
         return render_template('price.import.html', model=model, search=search)
 
 
-@price_controller.route('/load', methods=['POST'])
+@price_controller.route('/review', methods=['POST'])
 def import_post():
     """ Imports the prices file (.csv) """
     input_model = __read_load_input_model()

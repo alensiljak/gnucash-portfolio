@@ -1,6 +1,16 @@
 {% extends "layout.html" %} {% block title %}Price Import{% endblock %} {% block content %}
 <h1>Price Import</h1>
 
+<p>
+    See /data folder for .csv file example. Rows should look like this:
+    <pre>AEF.AX,128.02,"10/11/2017"</pre>
+    The dates are in Australian format (dd/MM/yyyy). This should be configurable.
+</p>
+
+<hr class="w-75">
+
+<div class="card bg-secondary">
+    <div class="card-body">
 <form method="POST" enctype="multipart/form-data">
     {#<label class="custom-file">
         <input type="file" id="import_file" name="import_file" class="custom-file-input">
@@ -8,7 +18,7 @@
     </label>#}
 
     <div class="form-group">
-        <label for="exampleFormControlFile1">Example file input</label>
+        <label for="import_file">Select the .csv file for import:</label>
         <input type="file" class="form-control-file" id="import_file" name="import_file">
     </div>
 
@@ -21,10 +31,23 @@
         </select>
     </div>
 
+    <p>
+        <strong>Review</strong> will load and display the prices, while 
+        <strong>Import</strong> will import the prices into GnuCash book.
+    </p>
+
     <div class="text-center">
-        <button class="btn btn-outline-primary" formaction="/price/load">Load</button>
+        <button class="btn btn-primary" formaction="/price/review">
+            <i class="fa fa-check-square"></i>
+            Review</button>
+        <button class="btn btn-outline-primary" formaction="/price/import">
+            Import
+            <i class="fa fa-caret-square-o-right"></i>
+        </button>
     </div>
 </form>
+</div>
+</div>
 
 {% if model.message %}
 <div class="text-danger">
