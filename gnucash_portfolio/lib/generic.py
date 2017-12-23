@@ -6,6 +6,7 @@ import time
 import json
 import os
 import webbrowser
+from logging import debug
 from datetime import datetime, timedelta
 from sqlalchemy.dialects import sqlite
 from gnucash_portfolio.lib import settings, generic
@@ -33,7 +34,12 @@ def get_date_iso_string(value: datetime):
 def load_json_file_contents(path: str) -> str:
     """ Loads contents from a json file """
     content = None
-    with open(path) as settings_file:
+
+    file_path = os.path.abspath(path)
+
+    # debug("loading %s", file_path)
+
+    with open(file_path) as settings_file:
         content = settings_file.read()
 
     json_object = json.loads(content)

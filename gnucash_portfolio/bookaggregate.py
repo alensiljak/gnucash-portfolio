@@ -45,6 +45,11 @@ class BookAggregate:
 
         return self.__book
 
+    @book.setter
+    def book(self, value):
+        """ setter for book """
+        self.__book = value
+
 
     @property
     def session(self):
@@ -60,6 +65,7 @@ class BookAggregate:
 
         return self.__settings
 
+
     @property
     def currencies(self):
         """ Returns the Currencies aggregate """
@@ -70,6 +76,7 @@ class BookAggregate:
     def get_currencies(self):
         """ Returns the currencies used in the book """
         return self.get_currencies_query().all()
+
 
     def get_currencies_query(self):
         """ returns the query only """
@@ -82,6 +89,7 @@ class BookAggregate:
         for cur in self.get_currencies():
             result.append(cur.mnemonic)
         return result
+
 
     def get_default_currency(self) -> Commodity:
         """ returns the book default currency """

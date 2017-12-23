@@ -5,6 +5,7 @@ Currencies
 - price cleanup / deletion
 - exchange rate chart
 """
+from logging import debug
 from flask import Blueprint, request, render_template
 from piecash import Commodity
 from gnucash_portfolio.lib.database import Database
@@ -29,7 +30,7 @@ def index():
 @currency_controller.route('/search', methods=['GET', 'POST'])
 def post():
     """ Receives post form """
-    with BookAggregate as svc:
+    with BookAggregate() as svc:
         search_model = CurrencySearchModel().initialize(svc.book, request)
         currency = __search(svc, search_model)
         output = render_template('currency.html', currency=currency, search=search_model)
@@ -40,6 +41,9 @@ def post():
 
 def __search(svc: BookAggregate, model: CurrencySearchModel):
     """ performs the search """
+    if not model.currency:
+        return None
+
     query = svc.get_currencies_query()
 
     if model.currency:

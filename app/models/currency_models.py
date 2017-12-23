@@ -4,7 +4,7 @@ from gnucash_portfolio.bookaggregate import BookAggregate
 #from types import SimpleNamespace
 
 
-class SearchReferenceModel:
+class SearchReferenceModel(object):
     """ Model with reference data """
     def __init__(self):
         self.currencies = []
@@ -24,10 +24,10 @@ class CurrencySearchModel:
     """ Model with static data for the search form. """
     def __init__(self):
         # these are the selected values
-        self.action = "/currency/search"
-        self.currency = None
+        self.action: str = "/currency/search"
+        self.currency: str = None
 
-        self.ref = SearchReferenceModel()
+        self.ref: SearchReferenceModel = SearchReferenceModel()
 
     def initialize(self, book: Book, request):
         """ Initialize full search model """

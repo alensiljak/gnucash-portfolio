@@ -31,7 +31,7 @@ def asset_allocation():
 def settings():
     """ Settings for Asset Allocation """
     # for now, just the primitive json editing
-    content = generic.load_json_file_contents('../config/assetAllocation.json')
+    content = generic.load_json_file_contents('./config/assetAllocation.json')
     model = {
         "title": "Asset Allocation settings",
         "content": content
