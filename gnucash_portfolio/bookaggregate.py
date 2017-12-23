@@ -6,9 +6,10 @@ import sys
 import winreg
 from typing import List
 from piecash import Book, Commodity
+from gnucash_portfolio.lib.database import Database, Settings
 from gnucash_portfolio.currencyaggregate import CurrenciesAggregate
 from gnucash_portfolio.pricesaggregate import PricesAggregate
-from gnucash_portfolio.lib.database import Database, Settings
+from gnucash_portfolio.accountaggregate import AccountsAggregate
 
 
 class BookAggregate:
@@ -24,8 +25,9 @@ class BookAggregate:
         self.__for_writing = for_writing
 
         # Aggregates
-        self.currencies_aggregate: CurrenciesAggregate = None
-        self.prices_aggregate: PricesAggregate = None
+        self.__currencies_aggregate: CurrenciesAggregate = None
+        self.__accounts_aggregate: AccountsAggregate = None
+        self.__prices_aggregate: PricesAggregate = None
 
         self.__settings: Settings = None
 
@@ -75,19 +77,28 @@ class BookAggregate:
 
 
     @property
+    def accounts(self) -> AccountsAggregate:
+        """ Returns the Accounts aggregate """
+        if not self.__accounts_aggregate:
+            self.__accounts_aggregate = AccountsAggregate(self.book)
+        return self.__accounts_aggregate
+
+
+    @property
     def currencies(self) -> CurrenciesAggregate:
         """ Returns the Currencies aggregate """
-        self.currencies_aggregate = CurrenciesAggregate(self.book)
-        return self.currencies_aggregate
+        if not self.__currencies_aggregate:
+            self.__currencies_aggregate = CurrenciesAggregate(self.book)
+        return self.__currencies_aggregate
 
     @property
     def prices(self):
         """ Prices aggregate """
-        if not self.prices_aggregate:
-            self.prices_aggregate = PricesAggregate(self.book)
-        return self.prices_aggregate
+        if not self.__prices_aggregate:
+            self.__prices_aggregate = PricesAggregate(self.book)
+        return self.__prices_aggregate
 
-    def save():
+    def save(self):
         """ Save all changes """
         self.book.save()
 

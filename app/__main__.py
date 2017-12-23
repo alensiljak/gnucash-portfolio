@@ -7,7 +7,7 @@ from flask_assets import Bundle, Environment
 
 # Controllers/blueprints
 from app.controllers import (
-    account, currency, vanguard, distributions, assetallocation, index,
+    account_controller, currency, vanguard, distributions, assetallocation, index,
     portfolio, price_controller, securities, settings, transaction)
 
 
@@ -30,7 +30,7 @@ app = Flask(__name__, static_url_path='/static') # pylint: disable=invalid-name
 app.config.from_object('config')
 # Register blueprints
 app.register_blueprint(index.index_controller)
-app.register_blueprint(account.account_controller)
+app.register_blueprint(account_controller.account_controller)
 app.register_blueprint(assetallocation.assetallocation_controller)
 app.register_blueprint(currency.currency_controller)
 app.register_blueprint(distributions.distribution_controller)

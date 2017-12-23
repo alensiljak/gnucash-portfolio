@@ -20,6 +20,10 @@ Tests are configured in pytest.ini in the root folder.
 
 With the configuration file, it is enough to run `pytest` anywhere in the project tree. It will read the configuration to find the tests directory and then run all the test files by convention (containing test_* or *_test).
 
+## Debugging
+
+Open a test module in vscode and click on Run Test or Debug Test above the test function.
+
 # Packages
 
 pytest package is required for executing unit tests.

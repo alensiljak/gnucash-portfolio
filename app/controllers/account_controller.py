@@ -11,6 +11,7 @@ from piecash import Account
 from gnucash_portfolio.lib.database import Database
 from gnucash_portfolio.bookaggregate import BookAggregate
 from gnucash_portfolio.accountaggregate import AccountAggregate, AccountsAggregate
+from app.models import account_models
 
 
 account_controller = Blueprint( # pylint: disable=invalid-name
@@ -88,3 +89,38 @@ def cash_balances():
         model["data"] = acct_svc.load_cash_balances_with_children(account_names)
     # Display the report
     return render_template('account.cash.html', model=model)
+
+
+@account_controller.route('/transactions')
+def transactions():
+    """ Account transactions """
+
+    with BookAggregate() as svc:
+        reference = __load_ref_model_for_tx(svc)
+        input_model = __get_input_model_for_tx()
+        view_model = __load_view_model_for_tx()
+
+        return render_template(
+            'account.transactions.html',
+            view_model=view_model, input_model=input_model, reference=reference)
+
+def __get_input_model_for_tx() -> account_models.AccountTransactionsInputModel:
+    """ Parse user input or create a blank input model """
+    model = account_models.AccountTransactionsInputModel()
+
+    return model
+
+def __load_ref_model_for_tx(svc: BookAggregate):
+    """ Load reference model """
+    model = account_models.AccountTransactionsRefModel()
+
+    svc.accounts.
+    #model.accounts
+
+    return model
+
+def __load_view_model_for_tx():
+    """ Loads the filtered data """
+    model = account_models.AccountTransactionsViewModel()
+
+    return model

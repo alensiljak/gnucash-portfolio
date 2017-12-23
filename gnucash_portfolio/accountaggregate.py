@@ -34,6 +34,22 @@ class AccountsAggregate:
         return account.guid
 
 
+    def get_all_children(fullname: str) -> List[Account]:
+        """ Returns the whole child account tree for the account with the given full name """
+        # TODO find the account by fullname
+        root = self.get_account_by_fullname(fullname)
+        if not root:
+            raise NameError("Account not found in book!")
+
+        for child in root.children:
+            log(DEBUG, "found child %s", child.fullname)
+        return
+
+    @property
+    def query():
+        """ Main accounts query """
+        return self.book.session.query(Account)
+
 class AccountAggregate:
     """ Operations on single account """
 

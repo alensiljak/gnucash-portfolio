@@ -8,11 +8,13 @@ import pytest
 from gnucash_portfolio.lib.settings import Settings
 from gnucash_portfolio.bookaggregate import BookAggregate
 
+# pylint: disable=redefined-outer-name
 
-# Fixture for the Settings, to use in-memory database.
-# Use global scope in order to use the same instance.
-# Scopes: class, module, session.
-# Class is the default, and does not need to be specified.
+
+''' Fixture for the Settings, to use in-memory database.
+Use global scope in order to use the same instance.
+Scopes: class, module, session.
+Class is the default, and does not need to be specified. '''
 @pytest.fixture(scope="session")
 def settings() -> Settings:
     """ GnuCash Portfolio Settings for tests """
@@ -24,12 +26,23 @@ def settings() -> Settings:
 
     return config
 
+@pytest.fixture(scope="session")
+def settings_db() -> Settings:
+    """ Settings for the real db file """
+    config_json = json.loads('{ "gnucash.database": "../../data/test.gnucash" }')
+    config = Settings(config_json)
+    return config
 
-# pylint: disable=redefined-outer-name
+
 @pytest.fixture(scope="module")
 def svc(settings) -> BookAggregate:
     """ Module-level book aggregate, using test settings """
     return BookAggregate(settings)
+
+@pytest.fixture(scope="module")
+def svc_db(settings_db) -> BookAggregate:
+    """ Book aggregate that uses the real database file (test.gnucash) """
+    return BookAggregate(settings_db)
 
 
 class TestSettings(object):
