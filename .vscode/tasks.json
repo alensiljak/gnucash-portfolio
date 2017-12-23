@@ -9,9 +9,14 @@
             "command": "echo Hello"
         },
         {
-            "label": "lint",
+            "label": "lint web app",
             "type": "shell",
             "command": "pylint app"
+        },
+        {
+            "label": "lint lib",
+            "type": "shell",
+            "command": "pylint gnucash_portfolio"
         },
         {
             "label": "test",
@@ -21,7 +26,7 @@
         {
             "label": "build",
             "type": "shell",
-            "dependsOn": ["lint", "test"],
+            "dependsOn": ["lint web app", "lint lib", "test"],
             "problemMatcher": []
         },
         {
