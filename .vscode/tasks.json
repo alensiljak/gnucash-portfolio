@@ -17,6 +17,24 @@
             "label": "test",
             "type": "shell",
             "command": "pytest"
+        },
+        {
+            "label": "build",
+            "type": "shell",
+            "dependsOn": ["lint", "test"],
+            "problemMatcher": []
+        },
+        {
+            "label": "run",
+            "type": "shell",
+            "command": "py app",
+            "problemMatcher": []
+        },
+        {
+            "label": "open web page",
+            "type": "shell",
+            "command": "start http://localhost:5000",
+            "problemMatcher": []
         }
     ]
 }

@@ -4,6 +4,8 @@ A collection of tools for managing an investment portfolio in GnuCash
 
 User-oriented documentation is at http://portfolio.alensiljak.tk
 
+## Introduction
+
 The purpose of the project is to provide tools that help in managing an investment portfolio in a GnuCash book.
 The code is (mostly) written in Python.
 
@@ -23,12 +25,12 @@ All the libraries are listed in `requirements.txt` for Python and `package.json`
 
 ### Preparation
 
-- Config: In order to run the scripts, copy `settings.json.template` into `settings.json` and customize the settings by editing the file.
-- Register the library with ```pip install -e <path to>/gnucash-portfolio``` as it is called from the reports.
+- Config: In order to run the scripts, copy `settings.json.template` into `settings.json` and customize the settings by editing the file or through the web interface.
+- Register the library with ```pip install -e <path to>/gnucash-portfolio``` root directory.
 
 ### Execution
 
-All the functionality will be provided as a web application (see below). There are parts of code that are not yet exposed through the web interface, though.
+All the functionality will be provided as a web application (see below). There are still parts of code that are not exposed through the web interface, though.
 
 ## Testing
 
@@ -89,8 +91,9 @@ To run, simply run the app folder with Python. I.e. `py app` from the root.
 
 OLD: There are two ways to run the web app:
 
-1. Run `app.py` directly
-2. Run "run.py run"
+1. Run task from VS Code
+2. Run `app.py` directly
+3. Run "run.py run"
 
 The second script was created so that the app could be debugged with Python extension for Visual Studio Code.
 
