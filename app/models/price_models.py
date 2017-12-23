@@ -2,24 +2,32 @@
 
 #from dataclasses import dataclass
 from decimal import Decimal
+from typing import List
+from piecash import Price
 
 
 #@dataclass
 class RateViewModel: # pylint: disable=invalid-name
     """ View model for exchange rate """
-    date = None
-    value: Decimal = 0
-    currency = ""
-    base_currency = ""
+    def __init__(self):
+        self.date = None
+        self.value: Decimal = 0
+        self.currency = ""
+        self.base_currency = ""
 
 
 #@dataclass
 class PriceImportViewModel: # pylint: disable=invalid-name
     """ Price import results """
-    filename: str = None
+    def __init__(self):
+        self.filename: str = None
+        self.prices: List[Price] = []
 
 
 #@dataclass
-class PriceImportFormViewModel: # pylint: disable=invalid-name
+class PriceImportSearchModel:
     """ Static model for the import form """
-    currencies = []
+    def __init__(self):
+        self.currencies = []
+        self.currency = None
+        self.csv_file = None

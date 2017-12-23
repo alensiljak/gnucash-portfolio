@@ -67,7 +67,7 @@ class BookAggregate:
 
 
     @property
-    def currencies(self):
+    def currencies(self) -> CurrenciesAggregate:
         """ Returns the Currencies aggregate """
         self.currencies_aggregate = CurrenciesAggregate(self.book)
         return self.currencies_aggregate

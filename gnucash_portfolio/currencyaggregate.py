@@ -1,4 +1,6 @@
 """ Currencies service """
+
+from typing import List
 from sqlalchemy import desc
 from piecash import Book, Commodity, Price
 
@@ -35,9 +37,21 @@ class CurrenciesAggregate():
         """ constructor """
         self.book = book
 
+
+    def get_book_currencies(self) -> List[Commodity]:
+        """ Returns currencies used in the book """
+        query = (
+            self.book.session.query(Commodity)
+            .filter_by(namespace="CURRENCY")
+            .order_by(Commodity.mnemonic)
+        )
+        return query.all()
+
+
     def get_currency_aggregate(self, cur: Commodity) -> CurrencyAggregate:
         """ Returns a single-currency aggregate """
         return CurrencyAggregate(self.book, cur)
+
 
     def get_currency_by_symbol(self, symbol: str) -> Commodity:
         """ Loads currency by symbol """

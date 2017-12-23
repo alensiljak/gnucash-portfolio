@@ -6,4 +6,4 @@
 jobs=3
 
 # Disable missing docstring until https://github.com/PyCQA/pylint/issues/1722 is done.
-disable=missing-docstring,too-few-public-methods
+disable=missing-docstring, too-few-public-methods, invalid-name

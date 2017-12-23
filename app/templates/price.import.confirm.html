@@ -1,0 +1,37 @@
+{% extends "layout.html" %} {% block title %}Price Import Results{% endblock %} {% block content %}
+<h1>Price Import Results</h1>
+
+<p>
+    Importing {{ model.filename }} <br>
+    Review the prices and click Accept below.
+</p>
+
+<table id="prices" class="table table-striped table-sm">
+    <thead class="thead-dark">
+        <th>Date</th>
+        <th>Name</th>
+        <th>Price</th>
+        <th>Currency</th>
+    </thead>
+    <tbody>
+{% for price in model.prices %}
+        <tr>
+            <td>{{ "{:%Y-%m-%d}".format(price.date) }}</td>
+            <td>{{ price.name }}</td>
+            <td class="text-right">{{ price.value }}</td>
+            <td>{{ price.currency }}</td>
+        </tr>
+{% endfor %}
+</tbody>
+</table>
+
+{% endblock %}
+{% block scripts %}
+<script type="text/javascript">
+$(function() {
+    $("#prices").DataTable({
+        pageLength: 50
+    });
+});
+</script>
+{% endblock %}
