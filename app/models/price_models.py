@@ -7,7 +7,7 @@ from piecash import Price
 
 
 #@dataclass
-class RateViewModel: # pylint: disable=invalid-name
+class RateViewModel:
     """ View model for exchange rate """
     def __init__(self):
         self.date = None
@@ -17,7 +17,7 @@ class RateViewModel: # pylint: disable=invalid-name
 
 
 #@dataclass
-class PriceImportViewModel: # pylint: disable=invalid-name
+class PriceImportViewModel:
     """ Price import results """
     def __init__(self):
         self.filename: str = None
@@ -25,9 +25,14 @@ class PriceImportViewModel: # pylint: disable=invalid-name
 
 
 #@dataclass
-class PriceImportSearchModel:
+class PriceImportInputModel:
     """ Static model for the import form """
     def __init__(self):
-        self.currencies = []
         self.currency = None
         self.csv_file = None
+
+
+class PriceImportSearchViewModel:
+    """ For displaying reference data on the search form """
+    def __init__(self):
+        self.currencies = []

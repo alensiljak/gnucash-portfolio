@@ -11,12 +11,14 @@
         {
             "label": "lint web app",
             "type": "shell",
-            "command": "pylint app"
+            "command": "pylint app --output-format=colorized",
+            "problemMatcher": []
         },
         {
             "label": "lint lib",
             "type": "shell",
-            "command": "pylint gnucash_portfolio"
+            "command": "pylint gnucash_portfolio --output-format=colorized",
+            "problemMatcher": []
         },
         {
             "label": "test",
@@ -26,7 +28,11 @@
         {
             "label": "build",
             "type": "shell",
-            "dependsOn": ["lint web app", "lint lib", "test"],
+            "dependsOn": [
+                "lint web app",
+                "lint lib",
+                "test"
+            ],
             "problemMatcher": []
         },
         {

@@ -4,6 +4,7 @@ GnuCash database operations
 """
 import os
 from os import path
+from logging import log, INFO
 import urllib
 import piecash
 from gnucash_portfolio.lib.settings import Settings
@@ -57,7 +58,7 @@ class Database:
             return self.create_book()
 
         access_type = "read/write" if for_writing else "readonly"
-        print("Using", filename, "in", access_type, "mode.")
+        log(INFO, "Using %s in %s mode.", filename, access_type)
         #file_path = path.relpath(self.filename)
         file_path = path.abspath(filename)
 

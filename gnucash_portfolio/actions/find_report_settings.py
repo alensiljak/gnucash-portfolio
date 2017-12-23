@@ -1,7 +1,7 @@
 """
-Opens windows explorer in the .gnucash settings directory, with the report customization 
+Opens windows explorer in the .gnucash settings directory, with the report customization
 settings selected.
-Useful for comparison of the report customization options with a backup file. If you want 
+Useful for comparison of the report customization options with a backup file. If you want
 to use the same settings on multiple computers, the file needs to be synchronized manually.
 """
 import subprocess

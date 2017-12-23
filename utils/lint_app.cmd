@@ -1,6 +1,8 @@
 :: Lint the whole App
 @echo off
 
-pylint ..\app\
+pylint ..\app\ --output-format=colorized
+
+pylint ..\gnucash_portfolio\ --output-format=colorized
 
 pause

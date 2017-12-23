@@ -46,14 +46,15 @@ def __load_fund_data():
     """
     #from .lib.generic import get_today
 
-    #todaysdate = 
+    #todaysdate =
     # TODO do we have a cached version?
     #tempdir = tempfile.gettempdir()
     #cache_file = os.path.join(tempdir, get_today())
-    #cache = 
+    #cache =
 
     #url = "https://www.vanguardinvestments.com.au/retail/ret/investments/product.html"
     #url = "https://www.vanguardinvestments.com.au/retail/mvc/getNavPrice?portId=" + fund_id
+    # pylint: disable=C0301
     url = "https://intlgra-globm-209.gra.international.vgdynamic.info/rs/gre/gra/datasets/auw-retail-listview-data.jsonp"
     response = requests.get(url)
     if response.status_code != 200:

@@ -1,15 +1,17 @@
 {% extends "layout.html" %} {% block title %}Price Import{% endblock %} {% block content %}
 <h1>Price Import</h1>
 
+<h4>Instructions</h4>
+
 <p>
-    See /data folder for .csv file example. Rows should look like this:
-    <pre>AEF.AX,128.02,"10/11/2017"</pre>
-    The dates are in Australian format (dd/MM/yyyy). This should be configurable.
-</p>
+        See /data folder for .csv file example. Rows should look like this:
+        <span class="badge badge-secondary">AEF.AX,128.02,"10/11/2017"</span>
+        The dates are currently expected in Australian format (dd/MM/yyyy). This should be made configurable.
+    </p>
 
 <hr class="w-75">
 
-<div class="card bg-secondary">
+<div class="card bg-dark text-light">
     <div class="card-body">
 <form method="POST" enctype="multipart/form-data">
     {#<label class="custom-file">
@@ -25,7 +27,7 @@
     <div class="form-group">
         <label for="search.currency">Currency</label>
         <select name="search.currency" class="form-control select2">
-            {% for currency in search.currencies %}
+            {% for currency in ref.currencies %}
             <option {% if currency.mnemonic==search.currency %}selected{% endif %}>{{ currency.mnemonic }}</option>
             {% endfor %}
         </select>
@@ -37,10 +39,11 @@
     </p>
 
     <div class="text-center">
+        <button class="btn btn-outline-secondary" type="reset">Reset</button>
         <button class="btn btn-primary" formaction="/price/review">
             <i class="fa fa-check-square"></i>
             Review</button>
-        <button class="btn btn-outline-primary" formaction="/price/import">
+        <button class="btn btn-outline-primary" formaction="/price/load">
             Import
             <i class="fa fa-caret-square-o-right"></i>
         </button>
