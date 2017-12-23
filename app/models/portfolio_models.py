@@ -5,7 +5,7 @@ from dataclasses import dataclass
 
 
 @dataclass
-class PortfolioValueInputModel(): # pylint: disable=invalid-name
+class PortfolioValueInputModel(): # pylint: disable=invalid-name,too-few-public-methods
     """ Search model for Portfolio Value """
     as_of_date: datetime = datetime(datetime.today().year,
                                     datetime.today().month,
@@ -14,7 +14,7 @@ class PortfolioValueInputModel(): # pylint: disable=invalid-name
 
 
 @dataclass
-class PortfolioValueViewModel(): # pylint: disable=invalid-name
+class PortfolioValueViewModel(): # pylint: disable=invalid-name,too-few-public-methods
     """ View Model for portfolio value report """
     filter = None
     stock_rows = []
