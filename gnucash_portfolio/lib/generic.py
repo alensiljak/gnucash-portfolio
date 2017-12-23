@@ -49,7 +49,7 @@ def load_json_file_contents(path: str) -> str:
 
 def print_sql(query):
     """ prints alchemy sql command for debugging """
-    sql = str(query.statement.compile(dialect=sqlite.dialect(), 
+    sql = str(query.statement.compile(dialect=sqlite.dialect(),
                                       compile_kwargs={"literal_binds": True}))
     print(sql)
 
@@ -63,9 +63,9 @@ def save_to_temp(content, file_name=None):
     #tempfile.NamedTemporaryFile(mode='w+t') as f:
     out_file = os.path.join(temp_dir, file_name)
     #if os.path.exists(output) and os.path.isfile(output):
-    f = open(out_file, 'w')
-    f.write(content)
-    f.close()
+    file = open(out_file, 'w')
+    file.write(content)
+    file.close()
     #print("results saved in results.html file.")
     #return output
     #output = str(pathlib.Path(f.name))

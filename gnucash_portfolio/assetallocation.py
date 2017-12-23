@@ -5,7 +5,7 @@ from decimal import Decimal
 import json
 import os
 from os import path
-from logging import log, DEBUG
+#from logging import log, DEBUG
 from piecash import Book, Commodity, Price
 from gnucash_portfolio.accountaggregate import AccountAggregate, AccountsAggregate
 from gnucash_portfolio.securityaggregate import SecurityAggregate, SecuritiesAggregate
@@ -224,7 +224,8 @@ class AllocationLoader:
         Loads asset allocation from the file.
         Returns the list of asset classes.
         """
-        allocation_file = path.abspath(path.join(os.path.dirname(os.path.realpath(__file__)), "../config/assetAllocation.json"))
+        allocation_file = path.abspath(path.join(
+            os.path.dirname(os.path.realpath(__file__)), "../config/assetAllocation.json"))
         with open(allocation_file, 'r') as json_file:
             allocation_json = json.load(json_file)
 
@@ -252,4 +253,4 @@ class AllocationLoader:
             child.over_threshold = abs(child.alloc_diff_perc) > self.asset_allocation.threshold
 
             self.__calculate_percentages(child, total)
-        return None
+        return
