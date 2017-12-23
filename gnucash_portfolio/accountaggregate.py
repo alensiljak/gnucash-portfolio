@@ -4,8 +4,9 @@ Accounts business layer
 from datetime import date, datetime, timedelta
 from typing import List
 from decimal import Decimal
+from logging import log, DEBUG
 from piecash import Book, Account, Commodity, Split, Transaction
-from gnucash_portfolio.currencyaggregate import CurrencyAggregate
+from gnucash_portfolio.currencyaggregate import CurrencyAggregate, CurrenciesAggregate
 
 
 class AccountsAggregate:
@@ -55,10 +56,14 @@ class AccountAggregate:
 
         return result
 
+
     def get_cash_balance_with_children(self, root_account: Account, currency: Commodity) -> Decimal:
-        """ Loads cash balances in given currency """
+        """ 
+        Loads cash balances in given currency 
+        currency: the currency for the total
+        """
         total = Decimal(0)
-        cur_svc = CurrencyAggregate(self.book)
+        svc = CurrenciesAggregate(self.book)
 
         # get all child accounts in a list
         cash_balances = self.load_cash_balances_with_children(root_account.fullname)
@@ -68,11 +73,15 @@ class AccountAggregate:
             value = cash_balances[cur_symbol]["total"]
 
             if cur_symbol != currency.mnemonic:
-                # TODO convert to common currency
-                other_cur = cur_svc.get_currency_by_symbol(cur_symbol)
-                rate = cur_svc.get_latest_rate(other_cur, currency)
+                # Convert the amount to the given currency.
+                other_cur = svc.get_currency_by_symbol(cur_symbol)
+
+                #log(DEBUG, "loading %s/%s rate", currency.mnemonic, other_cur.mnemonic)
+
+                cur_svc = svc.get_currency_aggregate(other_cur)
+
+                rate = cur_svc.get_latest_rate(currency)
                 value = value * rate.value
-                #print("Found", cur_symbol, value, rate.value)
 
             total += value
 
@@ -123,6 +132,7 @@ class AccountAggregate:
 
         return model
 
+
     def get_balance_on(self, on_date: datetime) -> Decimal:
         """ Returns the balance on (and including) a certain date """
         total = Decimal(0)
@@ -132,6 +142,7 @@ class AccountAggregate:
         for split in splits:
             total += split.quantity * self.account.sign
         return total
+
 
     def get_splits_up_to(self, date_to: datetime) -> List[Split]:
         """ returns splits only up to the given date """

@@ -14,7 +14,8 @@ class CurrencyAggregate():
         """ Fetches the latest available rate for the currency pair """
         query = (
             self.currency.prices
-            .filter(Price.commodity == self.currency, Price.currency == other)
+            .filter(Price.commodity == self.currency,
+                    Price.currency == other)
             )
         return query.first()
 

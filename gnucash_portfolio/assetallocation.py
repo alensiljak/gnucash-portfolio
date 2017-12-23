@@ -5,8 +5,8 @@ from decimal import Decimal
 import json
 import os
 from os import path
+from logging import log, DEBUG
 from piecash import Book, Commodity, Price
-from gnucash_portfolio.lib import generic, templates
 from gnucash_portfolio.accountaggregate import AccountAggregate, AccountsAggregate
 from gnucash_portfolio.securityaggregate import SecurityAggregate, SecuritiesAggregate
 from gnucash_portfolio.currencyaggregate import CurrencyAggregate
@@ -174,12 +174,12 @@ class AllocationLoader:
     def get_value_in_base_currency(self, value: Decimal, currency: Commodity) -> Decimal:
         """ Recalculates the given value into base currency """
         base_cur = self.currency
-        svc = CurrencyAggregate(self.book)
-        last_price = svc.get_latest_price(currency)
+
+        svc = CurrencyAggregate(self.book, currency)
+        last_price = svc.get_latest_rate(base_cur)
 
         result = value * last_price.value
 
-        #print("recalculating", currency.mnemonic, value, "into", result, self.currency.mnemonic)
         return result
 
     def get_cash_balance(self, root_account_name: str) -> Decimal:

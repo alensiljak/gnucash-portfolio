@@ -18,11 +18,12 @@ class BookAggregate:
         Accepts custom settings object. Useful for testing.
         """
         self.__book: Book = None
-        self.default_currency = None
-        self.currencies_aggregate = None
+        self.default_currency: Commodity = None
+        self.currencies_aggregate: CurrenciesAggregate = None
+        self.__settings: Settings = None
 
         if settings:
-            self.__settings: Settings = settings
+            self.__settings = settings
 
 
     def __enter__(self):
@@ -30,8 +31,8 @@ class BookAggregate:
         return self
 
     def __exit__(self, exc_type, exc_value, traceback):
-        if self.book:
-            self.book.close()
+        if self.__book:
+            self.__book.close()
 
 
     @property
@@ -39,7 +40,7 @@ class BookAggregate:
         """ GnuCash Book. Opens the book or creates an in-memory database, based on settings. """
         if not self.__book:
             # Create/open the book.
-            book_uri = self.__settings.database_path
+            book_uri = self.settings.database_path
             self.__book = Database(book_uri).open_book()
 
         return self.__book
@@ -50,6 +51,14 @@ class BookAggregate:
         """ Access to sql session """
         return self.book.session
 
+
+    @property
+    def settings(self):
+        """ Settings """
+        if not self.__settings:
+            self.__settings: Settings = Settings()
+
+        return self.__settings
 
     @property
     def currencies(self):
@@ -76,13 +85,16 @@ class BookAggregate:
 
     def get_default_currency(self) -> Commodity:
         """ returns the book default currency """
+        result = None
+
         if self.default_currency:
-            return self.default_currency
+            result = self.default_currency
         else:
             def_currency = self.__get_default_currency()
             self.default_currency = def_currency
-            return def_currency
+            result = def_currency
 
+        return result
 
     def __get_default_currency(self):
         """Read the default currency from GnuCash preferences"""

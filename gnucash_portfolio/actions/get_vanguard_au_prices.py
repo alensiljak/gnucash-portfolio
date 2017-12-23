@@ -7,10 +7,8 @@ Vanguard International Shares Index Fund (Hedged)     VAN0107AU   8146
 Vanguard Australian Property Securities Index Fund    VAN0012AU   8147
 Vanguard Australian Shares High Yield Fund            VAN0017AU   8148
 """
-import os
 import json
 import requests
-import tempfile
 
 def __get_json_prices():
     """
@@ -39,7 +37,7 @@ def __fetch_json_prices():
         first_price = price_array[0]
         price_date = first_price["asOfDate"]
         price = first_price["price"]
-        
+
         print(port_id, price_date, price)
 
 def __load_fund_data():
@@ -83,12 +81,12 @@ def __get_fund_price(fund_data, fund_id):
     fund_info = fund_data[fund_id]
 
     price = messenger.Messenger(
-                name=fund_info["name"],
-                identifier=fund_info["identifier"],
-                date=fund_info["asOfDate"],
-                value=fund_info["navPrice"],
-                mstar_id=fund_info["mStarID"]
-            )
+        name=fund_info["name"],
+        identifier=fund_info["identifier"],
+        date=fund_info["asOfDate"],
+        value=fund_info["navPrice"],
+        mstar_id=fund_info["mStarID"]
+    )
     # name
     # print(fund_info["identifier"],
     #       fund_info["navPrice"],
@@ -108,15 +106,16 @@ def download_fund_prices(user_funds):
         price = __get_fund_price(fund_data, fund_id)
         #print(price.identifier, price.date)
         prices.append(price)
-    
+
     return prices
 
 def test(user_funds):
+    """ test method for console """
     prices = download_fund_prices(user_funds)
     for price in prices:
         print(price.identifier, price.date, price.value, price.name)
 
 ###########################################################
 if __name__ == "__main__":
-    user_funds = ["8123", "8146", "8148", "8147"]
-    test(user_funds)
+    USER_FUNDS = ["8123", "8146", "8148", "8147"]
+    test(USER_FUNDS)

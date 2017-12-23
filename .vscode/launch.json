@@ -94,7 +94,7 @@
             "program": "${workspaceRoot}/app/run.py",
             "cwd": "${workspaceRoot}",
             "env": {
-                "FLASK_APP": "${workspaceRoot}/app/app.py"
+                "FLASK_APP": "${workspaceRoot}/app/__main__.py"
             },
             "args": [
                 "run",
@@ -105,7 +105,8 @@
             "debugOptions": [
                 "WaitOnAbnormalExit",
                 "WaitOnNormalExit",
-                "RedirectOutput"
+                "RedirectOutput",
+                "DjangoDebugging"
             ]
         },
         {

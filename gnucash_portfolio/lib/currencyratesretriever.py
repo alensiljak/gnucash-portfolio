@@ -5,11 +5,12 @@ Currently uses Fixer API.
 """
 import glob
 import json
-from fixerio import Fixerio
-from lib import generic
-from lib import settings
-from datetime import datetime, timedelta
 import os
+from logging import log, ERROR
+from fixerio import Fixerio
+from gnucash_portfolio.lib import generic
+from gnucash_portfolio.lib.settings import Settings
+
 
 class CurrencyRatesRetriever:
     """Retrieves prices from data files or online provider(s)"""
@@ -18,7 +19,7 @@ class CurrencyRatesRetriever:
     cache_path = "data/"
 
     def __init__(self, settings):
-        self.settings = settings #.Settings(settings_path)
+        self.settings: Settings = settings #.Settings(settings_path)
         return
 
     def get_latest_rates(self):
@@ -44,7 +45,7 @@ class CurrencyRatesRetriever:
         if not base_currency:
             # use the base currency from the settings.
             base_currency = self.settings.base_currency
-            print("Base currency not sent to currency rates retrieval. Using settings:", base_currency)
+            log(ERROR, "Base currency not sent to currency rates retrieval. Using settings:", base_currency)
 
         print("Downloading rates...")
 
