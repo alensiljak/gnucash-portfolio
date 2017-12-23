@@ -6,32 +6,37 @@ import csv
 from gnucash_portfolio.model.price_model import PriceModel
 
 
-def parse_prices_from_file_stream(file_stream) -> List[PriceModel]:
-    """
-    Reads a file stream (i.e. from web form) containing a csv prices
-    into a list of Price models.
-    """
-    content = file_stream.read().decode("utf-8")
-    file_stream.close()
+class CsvPriceParser:
+    """ Parses .csv into list of prices """
+    def __init__(self, currency: str):
+        self.currency = currency
 
-    if not content:
-        raise ValueError("The file is empty!")
+    def parse_prices_from_file_stream(self, file_stream) -> List[PriceModel]:
+        """
+        Reads a file stream (i.e. from web form) containing a csv prices
+        into a list of Price models.
+        """
+        content = file_stream.read().decode("utf-8")
+        file_stream.close()
 
-    result = get_prices_from_csv(content)
+        if not content:
+            raise ValueError("The file is empty!")
 
-    return result
+        result = self.get_prices_from_csv(content)
+
+        return result
 
 
-def get_prices_from_csv(content: str) -> List[PriceModel]:
-    """ Imports prices from CSV content. See data folder for a sample file/content. """
-    lines = content.splitlines()
-    prices = []
+    def get_prices_from_csv(self, content: str) -> List[PriceModel]:
+        """ Imports prices from CSV content. See data folder for a sample file/content. """
+        lines = content.splitlines()
+        prices = []
 
-    reader = csv.reader(lines)
-    for row in reader:
-        price = PriceModel().parse(row)
-        log(DEBUG, "parsed price. date is %s", price.date)
-        #price.currency = "EUR"
+        reader = csv.reader(lines)
+        for row in reader:
+            price = PriceModel().parse(row)
+            #log(DEBUG, "parsed price. date is %s", price.date)
+            price.currency = self.currency
 
-        prices.append(price)
-    return prices
+            prices.append(price)
+        return prices

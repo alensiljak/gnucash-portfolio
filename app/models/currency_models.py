@@ -1,6 +1,6 @@
 """ Models for currency controller """
 
-from piecash import Book, Commodity
+from piecash import Book
 from gnucash_portfolio.bookaggregate import BookAggregate
 #from types import SimpleNamespace
 
@@ -15,10 +15,7 @@ class SearchReferenceModel:
         #splits.sort(key=lambda split: split.transaction.post_date)
         svc = BookAggregate()
         svc.book = book
-        self.currencies = (
-            svc.get_currencies_query()
-            .order_by(Commodity.mnemonic)
-        )
+        self.currencies = svc.currencies.get_book_currencies()
 
 
 class CurrencySearchModel:

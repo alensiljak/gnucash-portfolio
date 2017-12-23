@@ -7,19 +7,26 @@ import winreg
 from typing import List
 from piecash import Book, Commodity
 from gnucash_portfolio.currencyaggregate import CurrenciesAggregate
+from gnucash_portfolio.pricesaggregate import PricesAggregate
 from gnucash_portfolio.lib.database import Database, Settings
 
 
 class BookAggregate:
     """ Encapsulates operations with GnuCash book """
 
-    def __init__(self, settings: Settings = None):
+    def __init__(self, settings: Settings = None,
+                 for_writing=False):
         """
         Accepts custom settings object. Useful for testing.
         """
         self.__book: Book = None
         self.default_currency: Commodity = None
+        self.__for_writing = for_writing
+
+        # Aggregates
         self.currencies_aggregate: CurrenciesAggregate = None
+        self.prices_aggregate: PricesAggregate = None
+
         self.__settings: Settings = None
 
         if settings:
@@ -41,7 +48,8 @@ class BookAggregate:
         if not self.__book:
             # Create/open the book.
             book_uri = self.settings.database_path
-            self.__book = Database(book_uri).open_book()
+            self.__book = Database(book_uri).open_book(
+                for_writing=self.__for_writing)
 
         return self.__book
 
@@ -72,21 +80,23 @@ class BookAggregate:
         self.currencies_aggregate = CurrenciesAggregate(self.book)
         return self.currencies_aggregate
 
+    @property
+    def prices(self):
+        """ Prices aggregate """
+        if not self.prices_aggregate:
+            self.prices_aggregate = PricesAggregate(self.book)
+        return self.prices_aggregate
 
-    def get_currencies(self):
-        """ Returns the currencies used in the book """
-        return self.get_currencies_query().all()
-
-
-    def get_currencies_query(self):
-        """ returns the query only """
-        return self.book.session.query(Commodity).filter_by(namespace="CURRENCY")
+    def save():
+        """ Save all changes """
+        self.book.save()
 
 
     def get_currency_symbols(self) -> List[str]:
         """ Returns the used currencies' symbols as an array """
         result = []
-        for cur in self.get_currencies():
+        currencies = self.currencies.get_book_currencies()
+        for cur in currencies:
             result.append(cur.mnemonic)
         return result
 

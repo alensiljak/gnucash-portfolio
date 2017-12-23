@@ -45,7 +45,8 @@ class CurrencyRatesRetriever:
         if not base_currency:
             # use the base currency from the settings.
             base_currency = self.settings.base_currency
-            log(ERROR, "Base currency not sent to currency rates retrieval. Using settings:", base_currency)
+            log(ERROR, "Base currency not sent to currency rates retrieval. Using settings:",
+                base_currency)
 
         print("Downloading rates...")
 
@@ -56,7 +57,7 @@ class CurrencyRatesRetriever:
 
         # todo: since these are daily rates, cache them into a file
         self.__save_rates(latest_rates)
-        
+
         return latest_rates
 
     def get_yesterdays_file_path(self):
@@ -78,7 +79,7 @@ class CurrencyRatesRetriever:
 
         if exists:
             print("Cached file found for", file_path)
-            
+
         return exists
 
     def __get_rate_file_path(self, filename):
@@ -118,7 +119,7 @@ class CurrencyRatesRetriever:
             # Download from the net.
             print("No currency rate files available in data directory.")
             self.__download_and_save_rates()
-        
+
         # todo open the file and display rates
 
         print("latest downloaded rates are from ")

@@ -38,11 +38,25 @@ class CurrenciesAggregate():
         self.book = book
 
 
+    @property
+    def currencies_query(self):
+        """ returns the query only """
+        return (
+            self.book.session.query(Commodity)
+            .filter_by(namespace="CURRENCY")
+        )
+
+
+    @property
+    def currencies_query_sorted(self):
+        """ currencies, sorted alphabetically """
+        return self.currencies_query.order_by(Commodity.mnemonic)
+
+
     def get_book_currencies(self) -> List[Commodity]:
         """ Returns currencies used in the book """
         query = (
-            self.book.session.query(Commodity)
-            .filter_by(namespace="CURRENCY")
+            self.currencies_query
             .order_by(Commodity.mnemonic)
         )
         return query.all()
@@ -56,7 +70,7 @@ class CurrenciesAggregate():
     def get_currency_by_symbol(self, symbol: str) -> Commodity:
         """ Loads currency by symbol """
         query = (
-            self.book.session.query(Commodity)
-            .filter(Commodity.namespace == "CURRENCY", Commodity.mnemonic == symbol)
+            self.currencies_query
+            .filter(Commodity.mnemonic == symbol)
         )
         return query.one()

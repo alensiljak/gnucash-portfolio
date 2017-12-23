@@ -4,7 +4,7 @@ from flask import Blueprint, request, render_template
 from gnucash_portfolio.bookaggregate import BookAggregate
 from gnucash_portfolio.currencyaggregate import CurrencyAggregate
 #from gnucash_portfolio.pricesaggregate import PricesAggregate
-from gnucash_portfolio.lib import csv_parser
+from gnucash_portfolio.lib.csv_parser import CsvPriceParser
 from app.models.price_models import (
     RateViewModel, PriceImportViewModel, PriceImportInputModel, PriceImportSearchViewModel)
 from app.models.generic_models import ValidationResult
@@ -37,27 +37,20 @@ def import_prices(message: str = None):
 @price_controller.route('/review', methods=['POST'])
 def import_post():
     """ Review the prices from the uploaded file (.csv) """
-    input_model: PriceImportInputModel = __read_review_input_model()
+    input_model = __read_review_input_model()
 
     validation = __validate_review_input_model(input_model)
     if not validation.valid:
         return import_prices(validation.message)
 
-    # Read file into lines for CSV processing.
-    # noinspection PyBroadException
     try:
-        prices = csv_parser.parse_prices_from_file_stream(input_model.csv_file)
+        parser = CsvPriceParser(input_model.currency)
+        prices = parser.parse_prices_from_file_stream(input_model.csv_file)
     except ValueError as value_error:
         return import_prices(value_error)
 
     # Display the prices for review.
     with BookAggregate() as svc:
-        #prices_svc = PricesAggregate(svc.book)
-
-        # add the currency
-        for price in prices:
-            price.currency = input_model.currency
-
         # View model
         ref = __load_search_reference_model(svc)
 
@@ -71,15 +64,32 @@ def import_post():
 
 @price_controller.route('/load', methods=['POST'])
 def load_prices():
-    """ Imports .csv prices. """
+    """ Imports .csv prices into database. """
+    # Read user input.
     input_model: PriceImportInputModel = __read_review_input_model()
 
     validation = __validate_review_input_model(input_model)
     if not validation.valid:
         return import_prices(validation.message)
 
-    # TODO Import prices. Redo the module for import.
-    return render_template('incomplete.html')
+    # Get prices from file.
+    try:
+        parser = CsvPriceParser(input_model.currency)
+        prices = parser.parse_prices_from_file_stream(input_model.csv_file)
+    except ValueError as value_error:
+        return import_prices(value_error)
+
+    # Import prices.
+    with BookAggregate(for_writing=True) as svc:
+        result = svc.prices.import_prices(prices)
+        # TODO svc.save()
+
+    with BookAggregate() as svc:
+        model = PriceImportViewModel()
+        model.filename = input_model.csv_file.filename
+        model.prices = prices
+
+        return render_template('price.import.result.html', model=model, result=result)
 
 
 def __read_review_input_model() -> PriceImportInputModel:
@@ -131,7 +141,7 @@ def import_rates():
     with BookAggregate() as book_svc:
         base_currency = book_svc.get_default_currency()
         #print(base_currency)
-        currencies = book_svc.get_currencies()
+        currencies = book_svc.currencies.get_book_currencies()
         for cur in currencies:
             # skip the base currency
             if cur == base_currency:

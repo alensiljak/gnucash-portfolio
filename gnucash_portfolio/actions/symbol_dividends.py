@@ -5,10 +5,8 @@ This method does not require explicit linking of distribution payments to the
 stock (commodity).
 """
 from decimal import Decimal
-from typing import List
+from piecash import Account, Book, Split
 from gnucash_portfolio.lib import database
-from piecash import Account, Commodity, Book, Split
-#from gnucash_portfolio.accountaggregate import AccountAggregate, AccountsAggregate
 from gnucash_portfolio.securityaggregate import SecurityAggregate, SecuritiesAggregate
 
 

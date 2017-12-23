@@ -6,8 +6,6 @@ import time
 import json
 import os
 import webbrowser
-from typing import List
-from logging import debug
 from datetime import datetime, timedelta
 from sqlalchemy.dialects import sqlite
 from gnucash_portfolio.lib import settings, generic

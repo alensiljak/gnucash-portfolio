@@ -3,14 +3,17 @@ from datetime import datetime
 from decimal import Decimal
 from typing import List
 from sqlalchemy import desc
-from piecash import Account, Book, Commodity, Price, Split, Transaction
-from gnucash_portfolio.accountaggregate import AccountAggregate, AccountsAggregate
+from piecash import Account, Book, Commodity, Price
+from gnucash_portfolio.lib.aggregatebase import AggregateBase
+from gnucash_portfolio.accountaggregate import AccountAggregate
 
 
-class SecuritiesAggregate:
+class SecuritiesAggregate(AggregateBase):
     """ Operates on security collections """
-    def __init__(self, book: Book):
-        self.book: Book = book
+    # def __init__(self, book: Book):
+    #     super(SecuritiesAggregate, self).__init__(book)
+    #     pass
+
 
     def get_all(self):
         """ Loads all non-currency commodities, assuming they are stocks. """
@@ -21,7 +24,7 @@ class SecuritiesAggregate:
         return query.all()
 
     def get_by_symbol(self, symbol: str) -> Commodity:
-        """ 
+        """
         Returns the commodity with the given symbol.
         If more are found, an exception will be thrown.
         """
@@ -66,10 +69,11 @@ class SecuritiesAggregate:
         return query
 
 
-class SecurityAggregate:
+class SecurityAggregate(AggregateBase):
     """ Stocks aggregate """
     def __init__(self, book: Book, security: Commodity):
-        self.book = book
+        super(SecurityAggregate, self).__init__(book)
+        # self.book = book
         self.security = security
 
     def get_num_shares(self) -> Decimal:
@@ -157,3 +161,15 @@ class SecurityAggregate:
                 income_accounts.append(related_account)
 
         return income_accounts
+
+    def get_currency(self) -> Commodity:
+        """
+        Reads the currency from the latest available price information,
+        assuming that all the prices are in the same currency for any symbol.
+        """
+        stock: Commodity = self.security
+        first_price = stock.prices.first()
+        if not first_price:
+            raise AssertionError("Price not found for", stock.mnemonic)
+
+        return first_price.currency
