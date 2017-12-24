@@ -6,6 +6,7 @@ from typing import List
 from decimal import Decimal
 from logging import log, DEBUG
 from piecash import Book, Account, Commodity, Split, Transaction
+from gnucash_portfolio.lib import datetimeutils
 from gnucash_portfolio.lib.aggregatebase import AggregateBase
 from gnucash_portfolio.currencyaggregate import CurrencyAggregate, CurrenciesAggregate
 
@@ -120,21 +121,17 @@ class AccountAggregate(AggregateBase):
     def get_start_balance(self, before: date) -> Decimal:
         """ Calculates account balance """
         # create a new date without hours
-        date_corrected = datetime(before.year, before.month, before.day)
+        date_corrected = datetimeutils.start_of_day(before)
         # now subtract 1 second.
         date_corrected -= timedelta(seconds=1)
-
-        log(DEBUG, "getting balance on %s", date_corrected)
-
+        #log(DEBUG, "getting balance on %s", date_corrected)
         return self.get_balance_on(date_corrected)
 
     def get_end_balance(self, after: date) -> Decimal:
         """ Calculates account balance """
         # create a new date without hours
-        date_corrected = datetime(after.year, after.month, after.day, 23, 59, 59)
-
-        log(DEBUG, "getting balance on %s", date_corrected)
-
+        date_corrected = datetimeutils.end_of_day(after)
+        #log(DEBUG, "getting balance on %s", date_corrected)
         return self.get_balance_on(date_corrected)
 
 
