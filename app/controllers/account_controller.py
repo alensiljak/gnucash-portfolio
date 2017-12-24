@@ -6,13 +6,12 @@ Account operations
 """
 import json
 from datetime import date, datetime
-import delorean
-from delorean import Delorean
 from logging import log, DEBUG
 from flask import Blueprint, request, render_template
 from piecash import Account, Split, Transaction
 #from sqlalchemy.ext.serializer import dumps
 from gnucash_portfolio.lib.database import Database
+from gnucash_portfolio.lib import datetimeutils
 from gnucash_portfolio.bookaggregate import BookAggregate
 from gnucash_portfolio.accountaggregate import AccountAggregate, AccountsAggregate
 from app.models import account_models
@@ -145,13 +144,14 @@ def __load_view_model_for_tx(
     # Load data
 
     # parse periods
-    period = input_model.period.split(" - ")
-    date_from = delorean.parse(period[0]).start_of_day
-    date_to = delorean.parse(period[1]).end_of_day
+    period = datetimeutils.parse_period(input_model.period)
+    date_from = period[0]
+    date_to = period[1]
+    log(DEBUG, "got range: %s. Parsed to %s - %s", input_model.period, date_from, date_to)
 
     account = svc.accounts.get_by_id(input_model.account_id)
-    model.start_balance = svc.accounts.get_account_aggregate(account).get_balance_before(date_from)
-    model.end_balance = svc.accounts.get_account_aggregate(account).get_balance_after(date_to)
+    model.start_balance = svc.accounts.get_account_aggregate(account).get_start_balance(date_from)
+    model.end_balance = svc.accounts.get_account_aggregate(account).get_end_balance(date_to)
 
     query = (
         svc.book.session.query(Split)

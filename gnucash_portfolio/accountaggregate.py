@@ -2,7 +2,6 @@
 Accounts business layer
 """
 from datetime import date, datetime, timedelta
-from delorean import Delorean
 from typing import List
 from decimal import Decimal
 from logging import log, DEBUG
@@ -118,11 +117,10 @@ class AccountAggregate(AggregateBase):
         return model
 
 
-    def get_balance_before(self, before: date) -> Decimal:
+    def get_start_balance(self, before: date) -> Decimal:
         """ Calculates account balance """
         # create a new date without hours
-        #date_corrected = datetime(before.year, before.month, before.day)
-        date_corrected = Delorean(before).start_of_day
+        date_corrected = datetime(before.year, before.month, before.day)
         # now subtract 1 second.
         date_corrected -= timedelta(seconds=1)
 
@@ -130,13 +128,10 @@ class AccountAggregate(AggregateBase):
 
         return self.get_balance_on(date_corrected)
 
-    def get_balance_after(self, after: date) -> Decimal:
+    def get_end_balance(self, after: date) -> Decimal:
         """ Calculates account balance """
         # create a new date without hours
-        #date_corrected = datetime(before.year, before.month, before.day, 23, 59, 59)
-        date_corrected = Delorean(after).end_of_day
-        # now add 1 day
-        #date_corrected = date_corrected + timedelta(days=1)
+        date_corrected = datetime(after.year, after.month, after.day, 23, 59, 59)
 
         log(DEBUG, "getting balance on %s", date_corrected)
 
