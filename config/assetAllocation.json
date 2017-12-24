@@ -318,7 +318,7 @@
                 {
                     "name": "Cash",
                     "allocation": 3,
-                    "rootAccount": "Assets:Investment"
+                    "rootAccount": "Assets:Investments"
                 }
             ]
         }

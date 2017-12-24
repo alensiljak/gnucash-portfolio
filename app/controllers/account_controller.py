@@ -5,8 +5,10 @@ Account operations
 - list of transactions / register -> see transaction controller
 """
 import json
+from datetime import date, datetime
+from logging import log, DEBUG
 from flask import Blueprint, request, render_template
-from piecash import Account
+from piecash import Account, Split, Transaction
 #from sqlalchemy.ext.serializer import dumps
 from gnucash_portfolio.lib.database import Database
 from gnucash_portfolio.bookaggregate import BookAggregate
@@ -76,7 +78,7 @@ def __load_search_model(search_term):
 def cash_balances():
     """ Investment cash balances """
     account_names = request.form.get("accounts")
-    account_names = account_names if account_names else "Assets:Investment"
+    account_names = account_names if account_names else "Assets:Investments"
     model = {
         "accounts": account_names,
         "data": []
@@ -91,14 +93,14 @@ def cash_balances():
     return render_template('account.cash.html', model=model)
 
 
-@account_controller.route('/transactions')
+@account_controller.route('/transactions', methods=['GET', 'POST'])
 def transactions():
     """ Account transactions """
 
     with BookAggregate() as svc:
         reference = __load_ref_model_for_tx(svc)
         input_model = __get_input_model_for_tx()
-        view_model = __load_view_model_for_tx()
+        view_model = __load_view_model_for_tx(svc, input_model)
 
         return render_template(
             'account.transactions.html',
@@ -108,19 +110,53 @@ def __get_input_model_for_tx() -> account_models.AccountTransactionsInputModel:
     """ Parse user input or create a blank input model """
     model = account_models.AccountTransactionsInputModel()
 
+    if not request.form:
+        return model
+
+    # read from request
+    model.account_id = request.form.get('account_id')
+    model.period = request.form.get('period')
+
     return model
 
 def __load_ref_model_for_tx(svc: BookAggregate):
     """ Load reference model """
     model = account_models.AccountTransactionsRefModel()
 
-    svc.accounts.
-    #model.accounts
+    root_acct = svc.accounts.get_account_by_fullname("Assets")
+    model.accounts = (
+        svc.accounts.get_account_aggregate(root_acct)
+        .get_all_child_accounts_as_array()
+    )
 
     return model
 
-def __load_view_model_for_tx():
+def __load_view_model_for_tx(
+        svc: BookAggregate,
+        input_model: account_models.AccountTransactionsInputModel
+    ) -> account_models.AccountTransactionsViewModel():
     """ Loads the filtered data """
     model = account_models.AccountTransactionsViewModel()
+    if not input_model.account_id:
+        return model
+
+    # Load data
+
+    # parse period
+    period = input_model.period.split(" - ")
+    date_from = datetime.strptime(period[0], "%Y-%m-%d")
+    date_to = datetime.strptime(period[1], "%Y-%m-%d")
+
+    #account = svc.accounts.get_by_id(input_model.account_id)
+
+    query = (
+        svc.book.session.query(Split)
+        .join(Transaction)
+        .filter(Split.account_guid == input_model.account_id)
+        .filter(Transaction.post_date >= date_from)
+        .filter(Transaction.post_date <= date_to)
+        .order_by(Transaction.post_date)
+    )
+    model.splits = query.all()
 
     return model

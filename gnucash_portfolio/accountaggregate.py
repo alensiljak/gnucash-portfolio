@@ -6,60 +6,28 @@ from typing import List
 from decimal import Decimal
 from logging import log, DEBUG
 from piecash import Book, Account, Commodity, Split, Transaction
+from gnucash_portfolio.lib.aggregatebase import AggregateBase
 from gnucash_portfolio.currencyaggregate import CurrencyAggregate, CurrenciesAggregate
 
 
-class AccountsAggregate:
-    """ Handles account collections """
-    def __init__(self, book: Book):
-        self.book = book
 
-    def get_account_by_fullname(self, fullname: str) -> Account:
-        """ Loads account by full name """
-        # get all accounts and iterate, comparing the fullname. :S
-        query = (
-            self.book.session.query(Account)
-        )
-        #sql = str(query.statement.compile(dialect=sqlite.dialect(), compile_kwargs={"literal_binds": True}))
-        #print(sql)
-        all_accounts = query.all()
-        for account in all_accounts:
-            if account.fullname == fullname:
-                return account
-
-
-    def get_account_id_by_fullname(self, fullname: str) -> str:
-        """ Locates the account by fullname """
-        account = self.get_account_by_fullname(fullname)
-        return account.guid
-
-
-    def get_all_children(fullname: str) -> List[Account]:
-        """ Returns the whole child account tree for the account with the given full name """
-        # TODO find the account by fullname
-        root = self.get_account_by_fullname(fullname)
-        if not root:
-            raise NameError("Account not found in book!")
-
-        for child in root.children:
-            log(DEBUG, "found child %s", child.fullname)
-        return
-
-    @property
-    def query():
-        """ Main accounts query """
-        return self.book.session.query(Account)
-
-class AccountAggregate:
+class AccountAggregate(AggregateBase):
     """ Operations on single account """
 
     def __init__(self, book: Book, account: Account):
+        super(AccountAggregate, self).__init__(book)
+
         self.account = account
-        self.book = book
+        #self.book = book
 
 
-    def get_all_child_accounts_as_array(self, account: Account) -> List[Account]:
-        """ Returns all child accounts in a list """
+    def get_all_child_accounts_as_array(self) -> List[Account]:
+        """ Returns the whole tree of child accounts in a list """
+        return self.__get_all_child_accounts_as_array(self.account)
+
+
+    def __get_all_child_accounts_as_array(self, account: Account) -> List[Account]:
+        """ Returns the whole tree of child accounts in a list """
         result = []
         # ignore placeholders
         if not account.placeholder:
@@ -67,7 +35,7 @@ class AccountAggregate:
             result.append(account)
 
         for child in account.children:
-            sub_accounts = self.get_all_child_accounts_as_array(child)
+            sub_accounts = self.__get_all_child_accounts_as_array(child)
             result += sub_accounts
 
         return result
@@ -169,3 +137,57 @@ class AccountAggregate:
                     Transaction.post_date <= date_to)
         )
         return query.all()
+
+
+class AccountsAggregate(AggregateBase):
+    """ Handles account collections """
+    def __init__(self, book: Book):
+        super(AccountsAggregate, self).__init__(book)
+        #self.book = book
+        pass
+
+    def get_account_by_fullname(self, fullname: str) -> Account:
+        """ Loads account by full name """
+        # get all accounts and iterate, comparing the fullname. :S
+        query = (
+            self.book.session.query(Account)
+        )
+        #sql = str(query.statement.compile(dialect=sqlite.dialect(), compile_kwargs={"literal_binds": True}))
+        #print(sql)
+        all_accounts = query.all()
+        for account in all_accounts:
+            if account.fullname == fullname:
+                return account
+
+
+    def get_account_id_by_fullname(self, fullname: str) -> str:
+        """ Locates the account by fullname """
+        account = self.get_account_by_fullname(fullname)
+        return account.guid
+
+
+    def get_all_children(self, fullname: str) -> List[Account]:
+        """ Returns the whole child account tree for the account with the given full name """
+        # find the account by fullname
+        root_acct = self.get_account_by_fullname(fullname)
+        if not root_acct:
+            raise NameError("Account not found in book!")
+
+        acct_agg = self.get_account_aggregate(root_acct)
+        acct_agg.get_all_child_accounts_as_array()
+        for child in root_acct.children:
+            log(DEBUG, "found child %s", child.fullname)
+        return
+
+    def get_account_aggregate(self, account: Account) -> AccountAggregate:
+        """ Returns account aggregate """
+        return AccountAggregate(self.book, account)
+
+    def get_by_id(self, acct_id) -> Account:
+        """ Loads an account entity """
+        return self.book.get(Account, guid=acct_id)
+
+    @property
+    def query(self):
+        """ Main accounts query """
+        return self.book.session.query(Account)

@@ -3,10 +3,13 @@
 
 <form method="POST">
     <div class="form-group">
-        <label for="account">Account</label>
-        <select name="account" class="form-control select2">
+        <label for="account_id">Account</label>
+        <select name="account_id" class="form-control select2">
             {% for account in reference.accounts %}
-            <option {% if account.guid==search.account_id %}selected{% endif %}>{{ account.fullname }}</option>
+            <option {% if account.guid == input_model.account_id %}selected{% endif %}
+                value="{{ account.guid }}">
+                {{ account.fullname }}
+            </option>
             {% endfor %}
         </select>
     </div>
@@ -16,20 +19,42 @@
         <input type="text" name="period" class="form-control daterange" 
         {% if input_model.period %}value="{{ input_model.period }}"{% endif %}>
     </div>
-    <div class="form-group">
-        <label for="date_range">Date Range</label>
-        <input type="text" name="date_range" class="form-control" value="{% if input_model.date_range %}{{ '{:%Y-%m-%d}'.format(input_model.date_range) }}{% endif %}">
-    </div>
 
     <div class="text-center">
         <button class="btn btn-outline-primary">Apply</button>
     </div>
 </form>
 
-{% if view_model.data %}
-<table>
+{% if view_model.splits %}
+<table class="table table-sm table-bordered mt-3">
+    {#
+    <thead class="thead-dark">
+        <th>Date</th>
+        <th>Account</th>
+        <th>Action</th>
+        <th>Value</th>
+        <th>Quantity</th>
+        <th>Memo</th>
+    </thead>
+    #}
     <tbody>
-
+        {% for split in view_model.splits %}
+        <tr class="table-secondary">
+            <td>{{ "{:%Y-%m-%d}".format(split.transaction.post_date) }}</td>
+            <td>{{ split.transaction.description }}</td>
+            <td>{{ split.transaction.notes }}</td>
+        </tr>
+            {% for sp in split.transaction.splits %}
+        <tr>
+            <td>&nbsp;</td>
+            <td>{{ sp.account.fullname }}</td>
+            {# <td>{{ sp.action }}</td> #}
+            <td>{{ sp.memo }}</td>
+            {# <td class="text-right">{{ sp.value }}</td> #}
+            <td class="text-right">{{ sp.quantity }}</td>
+        </tr>
+            {% endfor %}
+        {% endfor %}
     </tbody>
 </table>
 {% endif %} {% endblock %} {% block scripts %}

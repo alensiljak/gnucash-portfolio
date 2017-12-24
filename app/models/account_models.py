@@ -2,7 +2,9 @@
 
 class AccountTransactionsViewModel:
     """ View model for account transactions """
-    pass
+    def __init__(self):
+        self.splits = []
+
 
 class AccountTransactionsInputModel:
     """ User input """
@@ -11,6 +13,7 @@ class AccountTransactionsInputModel:
         self.account_id: str = None
         # Date range
         self.period: str = None
+
 
 class AccountTransactionsRefModel:
     """ Reference model for search """
