@@ -6,6 +6,8 @@ Account operations
 """
 import json
 from datetime import date, datetime
+import delorean
+from delorean import Delorean
 from logging import log, DEBUG
 from flask import Blueprint, request, render_template
 from piecash import Account, Split, Transaction
@@ -100,11 +102,11 @@ def transactions():
     with BookAggregate() as svc:
         reference = __load_ref_model_for_tx(svc)
         input_model = __get_input_model_for_tx()
-        view_model = __load_view_model_for_tx(svc, input_model)
+        model = __load_view_model_for_tx(svc, input_model)
 
         return render_template(
             'account.transactions.html',
-            view_model=view_model, input_model=input_model, reference=reference)
+            model=model, input_model=input_model, reference=reference)
 
 def __get_input_model_for_tx() -> account_models.AccountTransactionsInputModel:
     """ Parse user input or create a blank input model """
@@ -142,12 +144,14 @@ def __load_view_model_for_tx(
 
     # Load data
 
-    # parse period
+    # parse periods
     period = input_model.period.split(" - ")
-    date_from = datetime.strptime(period[0], "%Y-%m-%d")
-    date_to = datetime.strptime(period[1], "%Y-%m-%d")
+    date_from = delorean.parse(period[0]).start_of_day
+    date_to = delorean.parse(period[1]).end_of_day
 
-    #account = svc.accounts.get_by_id(input_model.account_id)
+    account = svc.accounts.get_by_id(input_model.account_id)
+    model.start_balance = svc.accounts.get_account_aggregate(account).get_balance_before(date_from)
+    model.end_balance = svc.accounts.get_account_aggregate(account).get_balance_after(date_to)
 
     query = (
         svc.book.session.query(Split)

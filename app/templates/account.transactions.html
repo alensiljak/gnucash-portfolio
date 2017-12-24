@@ -25,7 +25,12 @@
     </div>
 </form>
 
-{% if view_model.splits %}
+<p>
+    Starting balance: {{ "{:,.2f}".format(model.start_balance) }}, 
+    Ending balance: {{ "{:,.2f}".format(model.end_balance) }}
+</p>
+    
+{% if model.splits %}
 <table class="table table-sm table-bordered mt-3">
     {#
     <thead class="thead-dark">
@@ -38,11 +43,11 @@
     </thead>
     #}
     <tbody>
-        {% for split in view_model.splits %}
+        {% for split in model.splits %}
         <tr class="table-secondary">
             <td>{{ "{:%Y-%m-%d}".format(split.transaction.post_date) }}</td>
             <td>{{ split.transaction.description }}</td>
-            <td>{{ split.transaction.notes }}</td>
+            <td colspan="2">{{ split.transaction.notes }}</td>
         </tr>
             {% for sp in split.transaction.splits %}
         <tr>
@@ -51,7 +56,7 @@
             {# <td>{{ sp.action }}</td> #}
             <td>{{ sp.memo }}</td>
             {# <td class="text-right">{{ sp.value }}</td> #}
-            <td class="text-right">{{ sp.quantity }}</td>
+            <td class="text-right">{{ "{:,.2f}".format(sp.quantity) }}</td>
         </tr>
             {% endfor %}
         {% endfor %}

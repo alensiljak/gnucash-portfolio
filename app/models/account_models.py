@@ -1,9 +1,14 @@
 """ Models for account views """
 
+from decimal import Decimal
+
+
 class AccountTransactionsViewModel:
     """ View model for account transactions """
     def __init__(self):
+        self.start_balance = Decimal(0)
         self.splits = []
+        self.end_balance = Decimal(0)
 
 
 class AccountTransactionsInputModel:
