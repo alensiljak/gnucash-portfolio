@@ -82,7 +82,7 @@ def load_prices():
     # Import prices.
     with BookAggregate(for_writing=True) as svc:
         result = svc.prices.import_prices(prices)
-        # TODO svc.save()
+        svc.save()
 
     with BookAggregate() as svc:
         model = PriceImportViewModel()
