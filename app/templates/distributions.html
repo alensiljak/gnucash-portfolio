@@ -35,8 +35,9 @@
                     {# Currency #}
                     <div class="form-row">
                         <div class="form-group">
-                            <label for="currency">Currency</label>
-                            <input name="currency" type="text" class="form-control" {% if model.currency %}value="{{ in_model.currency }}" {% endif %}>
+                            <label for="currency">Currency (case sensitive!)</label>
+                            <input name="currency" type="text" class="form-control" 
+                            value="{{ in_model.currency }}">
                         </div>
                     </div>
                     <div class="text-center">
