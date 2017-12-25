@@ -54,7 +54,7 @@ class Settings:
         """
         filename = self.database_filename
         db_path = ":memory:" if filename == ":memory:" else (
-            path.abspath(path.join(__file__, "..", "..", "data", filename)))
+            path.abspath(path.join(__file__, "../..", "..", "data", filename)))
         return db_path
 
     @property
