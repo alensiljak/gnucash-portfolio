@@ -69,6 +69,7 @@ bundles = {
         '../node_modules/datatables.net-bs4/js/dataTables.bootstrap4.js',
         '../node_modules/select2/dist/js/select2.min.js',
         '../node_modules/chosen-js/chosen.jquery.min.js',
+        '../node_modules/typeahead.js/dist/typeahead.bundle.min.js',
         output='vendor.js'),
     # 'site_css': Bundle(
     #     'site.scss',

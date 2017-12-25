@@ -1,7 +1,7 @@
 {
   "name": "gnucash-portfolio-app",
   "description": "GnuCash Portfolio web application",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "homepage": "http://portfolio.alensiljak.tk/",
   "license": "GPL-3.0",
   "repository": {
@@ -23,6 +23,6 @@
     "node-sass": "^4.7.2",
     "popper.js": "^1.12.9",
     "select2": "^4.0.6-rc.1",
-    "typeahead": "^0.2.2"
+    "typeahead.js": "twitter/typeahead.js"
   }
 }

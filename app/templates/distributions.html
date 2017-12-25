@@ -18,7 +18,8 @@
                     <div class="form-row">
                         <div class="col form-group">
                             <label for="accounts">Income account(s)</label>
-                            <input type="text" name="accounts" class="form-control" value="{% if model.accounts %}{{ model.accounts }}{% else %}Income:Investment{% endif %}"
+                            <input type="text" id="accounts" name="accounts" class="form-control typeahead" 
+                            value="{% if model.accounts %}{{ model.accounts }}{% else %}Income:Investment{% endif %}"
                             />
                         </div>
                     </div>

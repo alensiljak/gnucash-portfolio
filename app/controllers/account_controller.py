@@ -8,8 +8,6 @@ import json
 from logging import log, DEBUG
 from flask import Blueprint, request, render_template
 from piecash import Account, Split, Transaction
-#from sqlalchemy.ext.serializer import dumps
-from gnucash_portfolio.lib.database import Database
 from gnucash_portfolio.lib import datetimeutils
 from gnucash_portfolio.bookaggregate import BookAggregate
 from gnucash_portfolio.accountaggregate import AccountAggregate, AccountsAggregate
@@ -58,9 +56,9 @@ def __load_search_model(search_term):
     """ Loads the data and returns an array of model objects"""
     model_array = []
 
-    with Database().open_book() as book:
+    with BookAggregate() as svc:
         records = (
-            book.session.query(Account)
+            svc.book.session.query(Account)
             .filter(Account.name.like(search_term))
             .all())
 
