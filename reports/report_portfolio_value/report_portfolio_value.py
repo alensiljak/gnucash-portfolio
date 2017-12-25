@@ -5,13 +5,12 @@ Displays the quantity of the selected commodity and the average price paid,
 as well as income generated.
 """
 import sys
-import os
-#import pathlib
+#import os
 import piecash
-from piecash import Commodity, Price, Book
+#from piecash import Commodity, Price, Book
 from piecash_utilities.report import report, execute_report
-#CommodityOption, CommodityListOption
 from gnucash_portfolio.lib import generic, templates, portfoliovalue
+
 
 ####################################################################
 @report(

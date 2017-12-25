@@ -9,38 +9,43 @@
         <div class="card-body">
             <div class="form-group">
                 <label>Full Name</label>
-                <input class="form-control" type="text" readonly
-                    value="{{ model.fullname }}">
+                <input class="form-control" type="text" readonly value="{{ model.fullname }}">
             </div>
             <div class="form-group">
-                    <label>Allocation</label>
-                    <input class="form-control" type="text" readonly
-                        value="{{ model.asset_class.allocation }}">
-                </div>
+                <label>Allocation</label>
+                <input class="form-control" type="text" readonly value="{{ model.asset_class.allocation }}">
             </div>
+        </div>
     </div>
 </form>
 
-<h4>
-    Child classes
-</h4>
-<ul>
-    {% for child_class in model.asset_class.classes %}
-    <li>
-        <a href="/assetallocation/details/{{ child_class.fullname }}">
-            {{ child_class.name }}
-        </a>
-    </li>
-    {% endfor %}
-</ul>
-
-<h4>
-    Stocks
-</h4>
-<ul>
-    {% for stock in model.asset_class.stocks %}
-    <li>{{ stock.symbol }}</li>
-    {% endfor %}
-</ul>
-
+<div class="mt-3">
+    {% if model.asset_class.classes %}
+    <h4>
+        Child classes
+    </h4>
+    <ul>
+        {% for child_class in model.asset_class.classes %}
+        <li>
+            <a href="/assetallocation/details/{{ child_class.fullname }}">
+                {{ child_class.name }}
+            </a>
+        </li>
+        {% endfor %}
+    </ul>
+    {% endif %} {% if model.asset_class.stocks %}
+    <h4>
+        Stocks
+    </h4>
+    <ul>
+        {% for stock in model.asset_class.stocks %}
+        <li>
+            <a href="/security/analysis/{{ stock.symbol }}">
+                {{ stock.symbol }}
+            </a>
+        </li>
+        {% endfor %}
+    </ul>
+    {% endif %}
+</div>
 {% endblock %}

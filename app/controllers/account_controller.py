@@ -32,7 +32,10 @@ def search():
 
 @account_controller.route("/find")
 def find():
-    """ Search for an account with the given text in the name. Returns JSON result. """
+    """
+    Search for an account with the given text in the name. 
+    Returns JSON result. Used for datatables.
+    """
     term = request.args.get("search[value]")
     model_array = []
 

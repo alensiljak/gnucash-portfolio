@@ -16,11 +16,8 @@
 {% endblock %} {% block scripts %}
 <script type="text/javascript">
     $(function () {
-        //console.log("chosen");
-
         $("#search.symbol").chosen().change(function (event) {
             // auto-submit the form once a security is selected.
-            console.log("que?");
             $("form button").click();
         });
 

@@ -4,7 +4,7 @@ Asset Allocation
 - editing of allocations (store in .json)
 - manual adjustments to allocation (offset for imbalance)
 """
-from logging import log, DEBUG
+#from logging import log, DEBUG
 from flask import Blueprint, render_template #, request
 from gnucash_portfolio.bookaggregate import BookAggregate
 from gnucash_portfolio.lib import generic

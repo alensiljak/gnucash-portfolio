@@ -7,7 +7,7 @@ from datetime import datetime #, timedelta
 from flask import Blueprint, request, render_template
 from gnucash_portfolio.lib import portfoliovalue
 from gnucash_portfolio.bookaggregate import BookAggregate
-from gnucash_portfolio.securityaggregate import SecuritiesAggregate
+from gnucash_portfolio.securitiesaggregate import SecuritiesAggregate
 from app.models.portfolio_models import PortfolioValueInputModel, PortfolioValueViewModel
 
 

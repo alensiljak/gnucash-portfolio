@@ -1,0 +1,15 @@
+{% extends "layout.html" %} {% block title %}Security Details{% endblock %} {% block content %}
+<h1>Security Details</h1>
+
+{{ model.security.namespace}}:{{ model.security.mnemonic }}
+
+<p>Accounts:</p>
+<ul>
+{% for account in model.security.accounts %}
+    <li>
+        {{ account.fullname }}
+    </li>
+{% endfor %}
+</ul>
+
+{% endblock %}

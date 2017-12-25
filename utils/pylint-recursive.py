@@ -18,13 +18,14 @@ def check(module):
 
   if module[-3:] == ".py":
 
-    print "CHECKING ", module
+    print("CHECKING ", module)
+
     pout = os.popen('pylint %s'% module, 'r')
     for line in pout:
       if  re.match("E....:.", line):
-        print line
+        print(line)
       if "Your code has been rated at" in line:
-        print line
+        print(line)
         score = re.findall("\d.\d\d", line)[0]
         total += float(score)
         count += 1

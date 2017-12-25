@@ -7,10 +7,11 @@ Stocks
 - list of all distributions
 - calculation of ROI
 """
+from logging import log, DEBUG
 from flask import Blueprint, request, render_template
 from gnucash_portfolio.bookaggregate import BookAggregate
-from gnucash_portfolio.securityaggregate import SecuritiesAggregate
-from app.models.security_models import StockAnalysisInputModel
+from gnucash_portfolio.securitiesaggregate import SecuritiesAggregate
+from app.models import security_models
 
 
 stock_controller = Blueprint( # pylint: disable=invalid-name
@@ -34,6 +35,22 @@ def security_analysis():
             "action": "/security/analysis"
         }
         return render_template('security.analysis.html', model=model, filter=search)
+
+
+@stock_controller.route('/analysis/<symbol>')
+def security_analysis_symbol(symbol: str):
+    """ displays the details in a separate page. Restful url. """
+    with BookAggregate() as svc:
+        sec = svc.securities.get_by_symbol(symbol)
+        log(DEBUG, "stock returned: %s", sec)
+
+        model = security_models.SecurityDetailsViewModel()
+        model.security = sec
+
+        # TODO load all accounts
+        #model.accounts
+
+        return render_template('security.details.html', model=model)
 
 
 @stock_controller.route('/analysis', methods=['POST'])
@@ -61,7 +78,7 @@ def __get_model_for_analysis(svc: BookAggregate):
 
 def __parse_input_model():
     """ Parses the filter from request """
-    result = StockAnalysisInputModel()
+    result = security_models.StockAnalysisInputModel()
 
     result.symbol = request.form.get("search.symbol")
     print(result.symbol)

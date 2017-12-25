@@ -11,6 +11,7 @@ from gnucash_portfolio.currencyaggregate import CurrenciesAggregate
 from gnucash_portfolio.pricesaggregate import PricesAggregate
 from gnucash_portfolio.accountaggregate import AccountsAggregate
 from gnucash_portfolio.assetallocation import AssetAllocationAggregate
+from gnucash_portfolio.securitiesaggregate import SecuritiesAggregate
 
 
 class BookAggregate:
@@ -29,6 +30,7 @@ class BookAggregate:
         self.__currencies_aggregate: CurrenciesAggregate = None
         self.__accounts_aggregate: AccountsAggregate = None
         self.__prices_aggregate: PricesAggregate = None
+        self.__securities_aggregate: SecuritiesAggregate = None
 
         self.__settings: Settings = None
 
@@ -98,6 +100,15 @@ class BookAggregate:
         if not self.__prices_aggregate:
             self.__prices_aggregate = PricesAggregate(self.book)
         return self.__prices_aggregate
+
+
+    @property
+    def securities(self):
+        """ Returns securities aggregate """
+        if not self.__securities_aggregate:
+            self.__securities_aggregate = SecuritiesAggregate(self.book)
+        return self.__securities_aggregate
+
 
     def save(self):
         """ Save all changes """

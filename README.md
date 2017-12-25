@@ -71,10 +71,13 @@ Simply run `pytest` to run all tests.
 
 ### Lint
 
-pylint can be used to check for errors. Simply run lint tasks from vscode.
+pylint can be used to check for errors. You can check the code by doing the following:
 
-running `pylint app/` will run lint on the whole web app.
-`pylint gnucash_portfolio` will check the library.
+- run `utils\lint_app.cmd` from project root directory
+- run lint tasks from vscode
+- run `pylint app/` to run lint on the web app
+- run `pylint gnucash_portfolio` to check the library
+
 Pay attention to the Error and Fatal lines. See utils/lint_app.cmd script for coloring output.
 
 Ref: [PyLint Output](https://docs.pylint.org/en/1.6.0/output.html)
