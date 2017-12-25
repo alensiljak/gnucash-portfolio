@@ -1,5 +1,5 @@
 """ Stocks aggregate object """
-from datetime import datetime
+import datetime
 from decimal import Decimal
 from typing import List
 from sqlalchemy import desc
@@ -20,7 +20,9 @@ class SecurityAggregate(AggregateBase):
         Returns the number of shares for the given security.
         It gets the number from all the accounts in the book.
         """
-        today = datetime.today()
+        # Use today's date but reset hour and lower.
+        today_date = datetime.date.today()
+        today = datetime.datetime.combine(today_date, datetime.time.min)
         return self.get_num_shares_on(today)
 
     def get_num_shares_on(self, on_date: datetime) -> Decimal:
