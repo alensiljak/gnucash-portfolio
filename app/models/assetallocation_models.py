@@ -7,4 +7,4 @@ class AssetGroupDetailsViewModel:
     """ view model for asset group details """
     def __init__(self):
         self.fullname = None
-        self.asseallocation: AssetGroup = None
+        self.asset_class: AssetGroup = None

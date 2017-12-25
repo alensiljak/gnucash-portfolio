@@ -47,7 +47,7 @@ def save_settings():
     return render_template('incomplete.html')
 
 
-@assetallocation_controller.route('/details/<fullname>')
+@assetallocation_controller.route('/details/<path:fullname>')
 def details(fullname=None):
     """ Asset Class details, including the list of stocks """
     model = __get_details_model(fullname)
@@ -61,10 +61,10 @@ def __get_details_model(fullname: str) -> AssetGroupDetailsViewModel:
 
     with BookAggregate() as svc:
         aaloc = svc.get_asset_allocation()
+        # Load only the asset class tree without the data from database.
+        aaloc.root = aaloc.load_config_only(None)
+        asset_class = aaloc.find_class_by_fullname(fullname)
 
-        # load child classes
-        # load stocks
-        assetallocation = aaloc.load_config_only(None)
-        log(DEBUG, assetallocation)
+        model.asset_class = asset_class
 
     return model

@@ -1,6 +1,4 @@
-{% extends "layout.html" %}
-{% block title %}Security Analysis{% endblock %}
-{% block content %}
+{% extends "layout.html" %} {% block title %}Security Analysis{% endblock %} {% block content %}
 <h1>Security Analysis</h1>
 <p>
     TODO: input symbol; display prices, balance, link to transactions
@@ -11,24 +9,20 @@
     Details to be displayed here.
 </p>
 <form>
-<div class="form-group">
-    <input type="text" class="form-control" 
-        value="{{ filter.symbol }} - {{ model.securities[filter.symbol] }}">
-</div>
+    <div class="form-group">
+        <input type="text" class="form-control" readonly value="{{ filter.symbol }} - {{ model.securities[filter.symbol] }}">
+    </div>
 </form>
-{% endblock %}
-
-{% block scripts %}
+{% endblock %} {% block scripts %}
 <script type="text/javascript">
-$(function() {
-    //console.log("chosen");
+    $(function () {
+        //console.log("chosen");
 
-    $("#search.symbol").chosen().change(function(event) {
-        // auto-submit the form once a security is selected.
-        console.log("que?");
-        $("form button").click();
+        $("#search.symbol").chosen().change(function (event) {
+            // auto-submit the form once a security is selected.
+            console.log("que?");
+            $("form button").click();
+        });
+
     });
-
-});
-</script>
-{% endblock %}
+</script> {% endblock %}

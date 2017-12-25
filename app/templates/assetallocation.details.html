@@ -1,26 +1,46 @@
 {% extends "layout.html" %} {% block title %}Asset Allocation Details{% endblock %} {% block content %}
 <h1>Asset Allocation Details</h1>
 
-<p>
-    Asset Class <span class="font-weight-bold">{{ model.fullname }}</span>
-</p>
+<form>
+    <div class="card bg-secondary text-light">
+        <div class="card-header">
+            Details
+        </div>
+        <div class="card-body">
+            <div class="form-group">
+                <label>Full Name</label>
+                <input class="form-control" type="text" readonly
+                    value="{{ model.fullname }}">
+            </div>
+            <div class="form-group">
+                    <label>Allocation</label>
+                    <input class="form-control" type="text" readonly
+                        value="{{ model.asset_class.allocation }}">
+                </div>
+            </div>
+    </div>
+</form>
 
 <h4>
     Child classes
 </h4>
 <ul>
-        {% for stock in model.stocks %}
-            <li>{{ stock }}</li>
-        {% endfor %}
-        </ul>
-        
+    {% for child_class in model.asset_class.classes %}
+    <li>
+        <a href="/assetallocation/details/{{ child_class.fullname }}">
+            {{ child_class.name }}
+        </a>
+    </li>
+    {% endfor %}
+</ul>
+
 <h4>
     Stocks
 </h4>
 <ul>
-{% for stock in model.stocks %}
-    <li>{{ stock }}</li>
-{% endfor %}
+    {% for stock in model.asset_class.stocks %}
+    <li>{{ stock.symbol }}</li>
+    {% endfor %}
 </ul>
 
 {% endblock %}

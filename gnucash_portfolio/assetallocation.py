@@ -5,7 +5,7 @@ from decimal import Decimal
 import json
 import os
 from os import path
-#from logging import log, DEBUG
+from logging import log, DEBUG
 from piecash import Book, Commodity, Price
 from gnucash_portfolio.accountaggregate import AccountAggregate, AccountsAggregate
 from gnucash_portfolio.securityaggregate import SecurityAggregate, SecuritiesAggregate
@@ -110,7 +110,7 @@ class Stock:
         self.price = Decimal(0)
 
     @property
-    def value(self):
+    def value(self) -> Decimal:
         """Value of the shares. Value = Quantity * Price"""
         return self.quantity * self.price
 
@@ -188,8 +188,6 @@ class _AllocationLoader:
                 child.curr_value = self.get_cash_balance(child.root_account)
 
             asset_group.curr_value += child.curr_value
-            # Set parent
-            child.parent = asset_group
 
     def get_value_in_base_currency(self, value: Decimal, currency: Commodity) -> Decimal:
         """ Recalculates the given value into base currency """
@@ -219,7 +217,8 @@ class _AllocationLoader:
             # Process child nodes
             for child_node in node["classes"]:
                 child = self.__parse_node(child_node)
-                #allocation_sum +=
+
+                child.parent = entity
                 entity.classes.append(child)
 
         if "stocks" in node:
@@ -292,3 +291,23 @@ class AssetAllocationAggregate():
         """ Loads only the asset allocation tree from configuration """
         loader = _AllocationLoader(currency, self.book)
         return loader.load_asset_allocation_config()
+
+    def find_class_by_fullname(self, fullname: str):
+        """ Locates the asset class by fullname. i.e. Equity:International """
+        found = self.__get_by_fullname(self.root, fullname)
+        return found
+
+    def __get_by_fullname(self, asset_class, fullname: str):
+        """ Recursive function """
+        if asset_class.fullname == fullname:
+            return asset_class
+
+        if not hasattr(asset_class, "classes"):
+            return None
+
+        for child in asset_class.classes:
+            found = self.__get_by_fullname(child, fullname)
+            if found:
+                return found
+
+        return None
