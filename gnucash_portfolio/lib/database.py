@@ -4,7 +4,7 @@ GnuCash database operations
 """
 import os
 from os import path
-from logging import log, INFO
+from logging import log, INFO, WARN
 import urllib
 import piecash
 from gnucash_portfolio.lib.settings import Settings
@@ -54,7 +54,7 @@ class Database:
             filename = self.filename
 
         if not os.path.isfile(filename):
-            print("Creating an in-memory book.")
+            log(WARN, "Database %s requested but not found. Creating an in-memory book.", filename)
             return self.create_book()
 
         access_type = "read/write" if for_writing else "readonly"

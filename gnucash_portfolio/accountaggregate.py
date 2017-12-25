@@ -77,7 +77,9 @@ class AccountAggregate(AggregateBase):
         """ loads data for cash balances """
         svc = AccountsAggregate(self.book)
         root_account = svc.get_account_by_fullname(root_account_fullname)
-        accounts = self.get_all_child_accounts_as_array(root_account)
+        if not root_account:
+            raise ValueError("Account not found", root_account_fullname)
+        accounts = self.__get_all_child_accounts_as_array(root_account)
 
         # read cash balances
         model = {}
