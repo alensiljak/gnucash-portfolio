@@ -63,7 +63,7 @@
         <tr>
             <td>{{ "{:%Y-%m-%d}".format(split.transaction.post_date) }}</td>
             <td>{{ split.account.fullname }}</td>
-            <td><a href="/transaction/details/{{ split.transaction.guid }}">link</a></td>
+            <td><a href="/transaction/details/{{ split.transaction.guid }}">details</a></td>
             <td class="text-right">{{ "{:.2f}".format(split.value * (-1)) }}</td>
         </tr>
         {% endfor %}
