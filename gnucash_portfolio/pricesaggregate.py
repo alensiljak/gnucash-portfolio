@@ -43,10 +43,11 @@ class PricesAggregate:
         """ Import individual price """
         stock = self.__get_commodity(price.name)
         if stock is None:
+            log(WARN, "security %s not found in book.", price.name)
             return False
 
         # check if there is already a price for the date
-        old_prices = stock.prices.filter(Price.date == price.date).all()
+        existing_prices = stock.prices.filter(Price.date == price.date).all()
         if not old_prices:
             # Create new price for the commodity (symbol).
             self.__create_price_for(stock, price)
@@ -54,7 +55,7 @@ class PricesAggregate:
             log(WARN, "price already exists for %s on %s",
                 stock.mnemonic, price.date.strftime("%Y-%m-%d"))
 
-            existing_price = old_prices[0]
+            existing_price = existing_prices[0]
             # update price
             existing_price.value = price.value
 
@@ -97,6 +98,11 @@ class PricesAggregate:
         #currency = commodity.book.currencies.get(mnemonic=commodity.mnemonic)
         sec_svc = SecurityAggregate(self.book, commodity)
         currency = sec_svc.get_currency()
+
+        if currency.mnemonic != price.currency:
+            raise ValueError(
+                "Requested currency does not match the currency previously used",
+                currency.mnemonic, price.currency)
 
         new_price = Price(commodity, currency, price.date, price.value)
         commodity.prices.append(new_price)
