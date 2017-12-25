@@ -4,7 +4,7 @@
     <form method="POST" id="searchForm" name="searchForm">
         <div class="form-group">
             <label for="search.symbol">Security symbol</label>
-            <select name="search.symbol" class="form-control select2">
+            <select id="search.symbol" name="search.symbol" class="form-control chosen">
                 {% for symbol in model.securities %} {% set name = model.securities[symbol] %}
                 <option {% if symbol == filter.symbol %}selected{% endif %}
                     value="{{ symbol }}">

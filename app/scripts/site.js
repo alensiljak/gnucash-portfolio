@@ -34,4 +34,6 @@ $(function () {
     
     // Activate select2 components.
     $('select.select2').select2();
+    // Use chosen.
+    $('select.chosen').chosen();
 });
