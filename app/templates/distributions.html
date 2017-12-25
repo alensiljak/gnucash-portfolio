@@ -14,6 +14,7 @@
             <div class="card-body">
                 <form method="POST">
 
+                    {# Account(s) #}
                     <div class="form-row">
                         <div class="col form-group">
                             <label for="accounts">Income account(s)</label>
@@ -22,34 +23,19 @@
                         </div>
                     </div>
 
-                    {#
-                    <div class="form-row">
-                        <div class="col form-group">
-                            <label for="datefrom">From</label>
-                            <input type="date" class="form-control">
-                        </div>
-                        <div class="col form-group">
-                            <label for="dateto">To</label>
-                            <input type="date" class="form-control">
-                        </div>
-                    </div>
-                    #}
-                    <input type="hidden" name="datefrom" id="datefrom" {% if model.datefrom %}value="{{ model.datefrom }}" {% endif %}>
-                    <input type="hidden" name="dateto" id="dateto" {% if model.dateto %}value="{{ model.dateto }}" {% endif
-                        %}>
-
+                    {# Period #}
                     <div class="form-row">
                         <div class="col form-group">
                             <label for="period">Period</label>
-                            <input type="text" name="period" id="period" class="form-control daterange" {% if model.period %}value="{{ model.period }}"
-                                {% endif %}>
+                            <input type="text" name="period" id="period" class="form-control daterange" value="{{ in_model.period }}">
                         </div>
                     </div>
 
+                    {# Currency #}
                     <div class="form-row">
                         <div class="form-group">
                             <label for="currency">Currency</label>
-                            <input name="currency" type="text" class="form-control" {% if model.currency %}value="{{ model.currency }}" {% endif %}>
+                            <input name="currency" type="text" class="form-control" {% if model.currency %}value="{{ in_model.currency }}" {% endif %}>
                         </div>
                     </div>
                     <div class="text-center">

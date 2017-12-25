@@ -3,6 +3,16 @@
 from datetime import datetime
 
 
+def get_from(period: str) -> datetime:
+    """ Parse period string and return the from date """
+    period_obj = parse_period(period)
+    return period_obj[0]
+
+def get_to(period: str) -> datetime:
+    """ Parse period string and return the 'to' date """
+    obj = parse_period(period)
+    return obj[1]
+
 def parse_period(period: str):
     """ parses period from date range picker """
     period = period.split(" - ")

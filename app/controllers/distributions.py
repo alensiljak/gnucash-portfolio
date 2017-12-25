@@ -3,11 +3,11 @@ Income reports
 """
 from typing import List
 from datetime import date, timedelta
-import dateutil
 from flask import Blueprint, request, render_template
 #from sqlalchemy.dialects import sqlite
 from piecash import Account, Commodity, Split, Book, Transaction
-from gnucash_portfolio.lib import database
+from gnucash_portfolio.bookaggregate import BookAggregate
+from app.models.distribution_models import DistributionsInputModel, DistributionsViewModel
 
 
 distribution_controller = Blueprint( # pylint: disable=invalid-name
@@ -22,23 +22,18 @@ def income_in_period():
     # TODO add collapsible indicator icon to the filter header
     # https://stackoverflow.com/questions/18325779/bootstrap-3-collapse-show-state-with-chevron-icon
 
-    return render_template('distributions.html', model=None)
+    return render_template('distributions.html', model=None, in_model=None)
 
 
 @distribution_controller.route('/', methods=['POST'])
 def income_in_period_data():
     """ Displays the results """
-    input_model = __get_input_model()
+    in_model = __get_input_model()
 
     # load data
-    with database.Database().open_book() as book:
-        #            splits = __load_income_in_period(
-        #                book, income_accounts, date_from, date_to)
-        # Sort by date
-        #            splits.sort(key=lambda split: split.transaction.post_date)
-
-        model = __get_model_inperiod(input_model, book)
-        return render_template('distributions.html', model=model)
+    with BookAggregate() as svc:
+        model = __get_model_inperiod(in_model, svc.book)
+        return render_template('distributions.html', model=model, in_model=in_model)
 
 
 @distribution_controller.route('/<symbol>')
@@ -53,55 +48,38 @@ def for_security(symbol):
     return render_template('incomplete.html', model=None)
 
 
-def __get_model_inperiod(input_model, book: Book):
+def __get_model_inperiod(in_model, book: Book) -> DistributionsViewModel:
     """ Creates the data model for the prices in period """
-    model = {
-        "accounts": input_model["accounts"],
-        "datefrom": input_model["date_from_str"],
-        "dateto": input_model["date_to_str"]
-    }
-
-    if "currency" in input_model:
-        model["currency"] = input_model["currency"]
+    model = DistributionsViewModel()
 
     # income accounts
-    account_names = input_model["accounts"].split(",")
+    account_names = in_model.accounts.split(",")
 
     account_ids = __get_income_account_ids(book, account_names)
     splits = __load_income_in_period_query(
-        book, account_ids, input_model)
+        book, account_ids, in_model)
 
-    model["splits"] = splits
+    model.splits = splits
 
     return model
 
 
-def __get_input_model():
+def __get_input_model() -> DistributionsInputModel:
     """ Parses user input into a data-transfer object (DTO) """
-    model = {}
+    model = DistributionsInputModel()
     # request.args.get
 
     accounts = request.form.get("accounts")
     if accounts:
-        model["accounts"] = accounts
-
-    from_str = request.form.get("datefrom")
-    if from_str:
-        model["date_from"] = dateutil.parser.parse(from_str)
-        model["date_from_str"] = from_str
-
-    to_str = request.form.get("dateto")
-    if to_str:
-        model["date_to"] = dateutil.parser.parse(to_str)
-        model["date_to_str"] = to_str
+        model.accounts = accounts
 
     period = request.form.get("period")
     if period:
-        model["period"] = period
+        model.period = period
 
     currency = request.form.get("currency")
     if currency:
-        model["currency"] = currency
+        model.currency = currency
 
     return model
 
@@ -181,11 +159,11 @@ def __load_all_income_for_account(account: Account, date_from: date, date_to: da
 
 
 def __load_income_in_period_query(
-        book: Book, account_ids: List[hex], input_model) -> List[Split]:
+        book: Book, account_ids: List[hex], in_model) -> List[Split]:
     """ Load all data by using the query directly """
 
-    date_from = input_model["date_from"]
-    date_to = input_model["date_to"]
+    date_from = in_model.date_from
+    date_to = in_model.date_to
     # increase the destination date
     date_to += timedelta(days=1)
 
@@ -197,11 +175,10 @@ def __load_income_in_period_query(
              .order_by(Transaction.post_date)
             )
 
-    if "currency" in input_model:
-        currency = input_model["currency"]
+    if in_model.currency:
         query = (query
                  .join(Commodity)
-                 .filter(Commodity.mnemonic == currency)
+                 .filter(Commodity.mnemonic == in_model.currency)
                 )
 
     return query.all()
