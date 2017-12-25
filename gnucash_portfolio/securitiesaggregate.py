@@ -1,11 +1,12 @@
 """ Stocks aggregate object """
 import datetime
 from decimal import Decimal
+#from logging import log, DEBUG
 from typing import List
 from sqlalchemy import desc
 from piecash import Account, Book, Commodity, Price
 from gnucash_portfolio.lib.aggregatebase import AggregateBase
-from gnucash_portfolio.accountaggregate import AccountAggregate, AccountsAggregate
+from gnucash_portfolio.accountaggregate import AccountAggregate # AccountsAggregate
 
 
 class SecurityAggregate(AggregateBase):
@@ -146,7 +147,7 @@ class SecuritiesAggregate(AggregateBase):
         """
         # handle namespace
         parts = symbol.split(':')
-        if parts:
+        if len(parts) > 1:
             namespace = parts[0]
             mnemonic = parts[1]
         else:
@@ -156,7 +157,7 @@ class SecuritiesAggregate(AggregateBase):
             self.__get_base_query()
             .filter(Commodity.mnemonic == mnemonic)
         )
-        if parts:
+        if len(parts) > 1:
             query = query.filter(Commodity.namespace == namespace)
 
         #return query.all()

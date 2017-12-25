@@ -1,8 +1,25 @@
 {% extends "layout.html" %} {% block title %}Account Details{% endblock %} {% block content %}
 <h1>Account Details</h1>
 
-<p>
-    {{ model.account.fullname }}
-</p>
+<div class="card bg-dark text-light">
+        <div class="card-header">
+            Info
+        </div>
+        <div class="card-body">
+            <form class="form">
+                <div class="form-group">
+                    <label>Full Name</label>
+                    <input type="text" class="form-control" readonly 
+                        value="{{ model.account.fullname }}">
+                </div>
 
+                <div class="form-group">
+                        <label>Description</label>
+                        <input type="text" class="form-control" readonly 
+                            value="{{ model.account.description }}">
+                    </div>
+                </form>
+        </div>
+    </div>
+    
 {% endblock %}
