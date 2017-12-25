@@ -7,8 +7,8 @@ from flask_assets import Bundle, Environment
 
 # Controllers/blueprints
 from app.controllers import (
-    account_controller, currency, vanguard, distributions, assetallocation, index,
-    portfolio, price_controller, securities, settings_controller, transaction)
+    account_controller, currency, vanguard, distributions_controller, assetallocation_controller,
+    index, portfolio, price_controller, securities, settings_controller, transaction)
 
 
 # Configure logging before the application is initialized.
@@ -31,9 +31,9 @@ app.config.from_object('config')
 # Register blueprints
 app.register_blueprint(index.index_controller)
 app.register_blueprint(account_controller.account_controller)
-app.register_blueprint(assetallocation.assetallocation_controller)
+app.register_blueprint(assetallocation_controller.assetallocation_controller)
 app.register_blueprint(currency.currency_controller)
-app.register_blueprint(distributions.distribution_controller)
+app.register_blueprint(distributions_controller.distribution_controller)
 app.register_blueprint(portfolio.portfolio_controller)
 app.register_blueprint(price_controller.price_controller)
 app.register_blueprint(settings_controller.settings_controller)

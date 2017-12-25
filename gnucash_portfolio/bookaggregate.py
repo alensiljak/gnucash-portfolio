@@ -10,6 +10,7 @@ from gnucash_portfolio.lib.database import Database, Settings
 from gnucash_portfolio.currencyaggregate import CurrenciesAggregate
 from gnucash_portfolio.pricesaggregate import PricesAggregate
 from gnucash_portfolio.accountaggregate import AccountsAggregate
+from gnucash_portfolio.assetallocation import AssetAllocationAggregate
 
 
 class BookAggregate:
@@ -124,6 +125,14 @@ class BookAggregate:
             result = def_currency
 
         return result
+
+    def get_asset_allocation(self) -> AssetAllocationAggregate:
+        """ Creates an Asset Allocation aggregate """
+        return AssetAllocationAggregate(self.book)
+
+
+    ##############
+    # Private
 
     def __get_default_currency(self):
         """Read the default currency from GnuCash preferences"""

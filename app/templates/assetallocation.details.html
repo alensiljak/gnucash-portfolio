@@ -1,0 +1,26 @@
+{% extends "layout.html" %} {% block title %}Asset Allocation Details{% endblock %} {% block content %}
+<h1>Asset Allocation Details</h1>
+
+<p>
+    Asset Class <span class="font-weight-bold">{{ model.fullname }}</span>
+</p>
+
+<h4>
+    Child classes
+</h4>
+<ul>
+        {% for stock in model.stocks %}
+            <li>{{ stock }}</li>
+        {% endfor %}
+        </ul>
+        
+<h4>
+    Stocks
+</h4>
+<ul>
+{% for stock in model.stocks %}
+    <li>{{ stock }}</li>
+{% endfor %}
+</ul>
+
+{% endblock %}

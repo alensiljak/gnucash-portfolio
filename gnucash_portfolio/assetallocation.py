@@ -16,6 +16,8 @@ class AssetBase:
     """Base class for asset group & class"""
     def __init__(self, json_node):
         self.data = json_node
+        # reference to parent object
+        self.parent: AssetClass = None
 
         # Set allocation %.
         self.allocation = Decimal(0)
@@ -53,6 +55,19 @@ class AssetBase:
         else:
             return ""
 
+    @property
+    def fullname(self):
+        """ includes the full path with parent names """
+        prefix = ""
+        if self.parent:
+            if self.parent.fullname:
+                prefix = self.parent.fullname + ":"
+        else:
+            # Only the root does not have a parent. In that case we also don't need a name.
+            return ""
+
+        return prefix + self.name
+
 
 class AssetGroup(AssetBase):
     """Group contains other groups or asset classes"""
@@ -67,6 +82,7 @@ class AssetClass(AssetBase):
 
     def __init__(self, json_node):
         super().__init__(json_node)
+
         # For cash asset class
         self.root_account = None
 
@@ -99,9 +115,7 @@ class Stock:
         return self.quantity * self.price
 
 
-###################################
-
-class AllocationLoader:
+class _AllocationLoader:
     """ Parses the allocation settings and loads the current allocation from database """
     def __init__(self, currency: Commodity, book: Book):
         self.currency = currency
@@ -110,10 +124,7 @@ class AllocationLoader:
 
     def load_asset_allocation_model(self):
         """ Loads Asset Allocation model for display """
-        # read asset allocation file
-        root_node = self.__load_asset_allocation_config()
-        self.asset_allocation = self.__parse_node(root_node)
-
+        self.asset_allocation = self.load_asset_allocation_config()
         # Populate values from database.
         self.__load_values_into(self.asset_allocation)
 
@@ -128,6 +139,13 @@ class AllocationLoader:
         }
 
         return model
+
+    def load_asset_allocation_config(self) -> AssetGroup:
+        """ Loads only the configuration from json """
+                # read asset allocation file
+        root_node = self.__load_asset_allocation_config_json()
+        result = self.__parse_node(root_node)
+        return result
 
     def __load_values_into(self, asset_group: AssetGroup):
         """
@@ -170,6 +188,8 @@ class AllocationLoader:
                 child.curr_value = self.get_cash_balance(child.root_account)
 
             asset_group.curr_value += child.curr_value
+            # Set parent
+            child.parent = asset_group
 
     def get_value_in_base_currency(self, value: Decimal, currency: Commodity) -> Decimal:
         """ Recalculates the given value into base currency """
@@ -219,7 +239,7 @@ class AllocationLoader:
 
         return entity
 
-    def __load_asset_allocation_config(self):
+    def __load_asset_allocation_config_json(self):
         """
         Loads asset allocation from the file.
         Returns the list of asset classes.
@@ -254,3 +274,21 @@ class AllocationLoader:
 
             self.__calculate_percentages(child, total)
         return
+
+
+class AssetAllocationAggregate():
+    """ The main service class """
+    def __init__(self, book: Book):
+        self.book = book
+        self.root: AssetGroup = None
+
+
+    def load_full_model(self, currency: Commodity):
+        """ Populates complete Asset Allocation tree """
+        loader = _AllocationLoader(currency, self.book)
+        return loader.load_asset_allocation_model()
+
+    def load_config_only(self, currency: Commodity):
+        """ Loads only the asset allocation tree from configuration """
+        loader = _AllocationLoader(currency, self.book)
+        return loader.load_asset_allocation_config()

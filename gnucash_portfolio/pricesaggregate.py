@@ -48,7 +48,7 @@ class PricesAggregate:
 
         # check if there is already a price for the date
         existing_prices = stock.prices.filter(Price.date == price.date).all()
-        if not old_prices:
+        if not existing_prices:
             # Create new price for the commodity (symbol).
             self.__create_price_for(stock, price)
         else:

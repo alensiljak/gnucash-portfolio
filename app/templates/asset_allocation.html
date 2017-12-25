@@ -18,7 +18,9 @@
     <tr class="{% if loop.depth0 == 0 %}bg-teal text-light{% endif %}">
         <td>
             <span class="ml-{{ loop.depth0 * 2 }}">
-                {{ asset_class.name }}
+                <a href="/assetallocation/details/{{ asset_class.fullname }}">
+                    {{ asset_class.name }}
+                </a>
             </span>
         </td>
         <td class="text-right">
