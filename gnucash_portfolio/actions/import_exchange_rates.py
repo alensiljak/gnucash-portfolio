@@ -2,7 +2,7 @@
 """
 Import currency exchange rates from .csv file into GnuCash
 """
-#from logging import debug
+from logging import log, INFO
 from datetime import datetime
 from sqlalchemy import func
 from piecash import Price
@@ -77,7 +77,8 @@ def __save_rates(config, latest_rates):
             # todo: if the price differs, update it!
             exists = currency.prices.filter(Price.date == rate_date).all()
             if not exists:
-                print("Creating entry for", base_currency.mnemonic, currency.mnemonic, rate_date_string, amount)
+                log(INFO, "Creating entry for", base_currency.mnemonic, currency.mnemonic,
+                    rate_date_string, amount)
                 # Save the price in the exchange currency, not the default.
                 # Invert the rate in that case.
                 inverted_rate = 1 / amount

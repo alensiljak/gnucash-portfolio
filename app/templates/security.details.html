@@ -5,11 +5,13 @@
 
 <p>Accounts:</p>
 <ul>
-{% for account in model.security.accounts %}
+    {% for account in model.accounts %}
     <li>
-        {{ account.fullname }}
+        <a href="/account/details/{{ account.guid }}">
+            {{ account.fullname }}
+        </a>
     </li>
-{% endfor %}
+    {% endfor %}
 </ul>
 
 {% endblock %}

@@ -47,8 +47,9 @@ def security_analysis_symbol(symbol: str):
         model = security_models.SecurityDetailsViewModel()
         model.security = sec
 
-        # TODO load all accounts
-        #model.accounts
+        # load all accounts
+        sec_agg = svc.securities.get_aggregate(sec)
+        model.accounts = sec_agg.accounts
 
         return render_template('security.details.html', model=model)
 

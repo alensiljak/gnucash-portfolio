@@ -5,68 +5,7 @@ from typing import List
 from sqlalchemy import desc
 from piecash import Account, Book, Commodity, Price
 from gnucash_portfolio.lib.aggregatebase import AggregateBase
-from gnucash_portfolio.accountaggregate import AccountAggregate
-
-
-class SecuritiesAggregate(AggregateBase):
-    """ Operates on security collections """
-    # def __init__(self, book: Book):
-    #     super(SecuritiesAggregate, self).__init__(book)
-    #     pass
-
-
-    def get_all(self):
-        """ Loads all non-currency commodities, assuming they are stocks. """
-        query = (
-            self.__get_base_query()
-            .order_by(Commodity.mnemonic)
-        )
-        return query.all()
-
-    def get_by_symbol(self, symbol: str) -> Commodity:
-        """
-        Returns the commodity with the given symbol.
-        If more are found, an exception will be thrown.
-        """
-        query = (
-            self.__get_base_query()
-            .filter(Commodity.mnemonic == symbol)
-        )
-        #return query.all()
-        return query.first()
-
-    def get_stock(self, symbol: str) -> Commodity:
-        """Returns the stock/commodity object for the given symbol"""
-
-        # Check if we have the exchange name (namespace).
-        if ":" in symbol:
-            # We have a namespace
-            symbol_parts = symbol.split(":")
-            exchange = symbol_parts[0]
-            symbol = symbol_parts[1]
-            security = self.book.get(Commodity, namespace=exchange, mnemonic=symbol)
-        else:
-            #with database.Database().open_book() as book:
-            security = self.book.get(Commodity, mnemonic=symbol)
-
-        return security
-
-    def get_stocks(self, symbols: List[str]) -> List[Commodity]:
-        """ loads stocks by symbol """
-        query = (
-            self.__get_base_query()
-            .filter(Commodity.mnemonic.in_(symbols))
-        )
-        return query.all()
-
-    def __get_base_query(self):
-        """ Returns the base query which filters out data for all queries. """
-        query = (
-            self.book.session.query(Commodity)
-            .filter(Commodity.namespace != "CURRENCY",
-                    Commodity.namespace != "template")
-        )
-        return query
+from gnucash_portfolio.accountaggregate import AccountAggregate, AccountsAggregate
 
 
 class SecurityAggregate(AggregateBase):
@@ -173,3 +112,87 @@ class SecurityAggregate(AggregateBase):
             raise AssertionError("Price not found for", stock.mnemonic)
 
         return first_price.currency
+
+    @property
+    def accounts(self):
+        """ Returns the asset accounts in which the security is held """
+        # use only Assets sub-accounts
+        result = (
+            [acct for acct in self.security.accounts if acct.fullname.startswith('Assets')]
+        )
+        return result
+
+
+class SecuritiesAggregate(AggregateBase):
+    """ Operates on security collections """
+    # def __init__(self, book: Book):
+    #     super(SecuritiesAggregate, self).__init__(book)
+    #     pass
+
+    def get_all(self):
+        """ Loads all non-currency commodities, assuming they are stocks. """
+        query = (
+            self.__get_base_query()
+            .order_by(Commodity.mnemonic)
+        )
+        return query.all()
+
+    def get_by_symbol(self, symbol: str) -> Commodity:
+        """
+        Returns the commodity with the given symbol.
+        If more are found, an exception will be thrown.
+        """
+        # handle namespace
+        parts = symbol.split(':')
+        if parts:
+            namespace = parts[0]
+            mnemonic = parts[1]
+        else:
+            mnemonic = symbol
+
+        query = (
+            self.__get_base_query()
+            .filter(Commodity.mnemonic == mnemonic)
+        )
+        if parts:
+            query = query.filter(Commodity.namespace == namespace)
+
+        #return query.all()
+        return query.first()
+
+    def get_stock(self, symbol: str) -> Commodity:
+        """Returns the stock/commodity object for the given symbol"""
+
+        # Check if we have the exchange name (namespace).
+        if ":" in symbol:
+            # We have a namespace
+            symbol_parts = symbol.split(":")
+            exchange = symbol_parts[0]
+            symbol = symbol_parts[1]
+            security = self.book.get(Commodity, namespace=exchange, mnemonic=symbol)
+        else:
+            #with database.Database().open_book() as book:
+            security = self.book.get(Commodity, mnemonic=symbol)
+
+        return security
+
+    def get_stocks(self, symbols: List[str]) -> List[Commodity]:
+        """ loads stocks by symbol """
+        query = (
+            self.__get_base_query()
+            .filter(Commodity.mnemonic.in_(symbols))
+        )
+        return query.all()
+
+    def get_aggregate(self, security: Commodity) -> SecurityAggregate:
+        """ Returns the aggregate for the entity """
+        return SecurityAggregate(self.book, security)
+
+    def __get_base_query(self):
+        """ Returns the base query which filters out data for all queries. """
+        query = (
+            self.book.session.query(Commodity)
+            .filter(Commodity.namespace != "CURRENCY",
+                    Commodity.namespace != "template")
+        )
+        return query

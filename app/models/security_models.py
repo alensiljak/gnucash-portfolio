@@ -13,4 +13,4 @@ class StockAnalysisInputModel: #pylint: disable=invalid-name
 class SecurityDetailsViewModel:
     def __init__(self):
         self.security: Commodity = None
-        #self.accounts: List[Account] = None
+        self.accounts: List[Account] = None

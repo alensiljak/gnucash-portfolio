@@ -25,3 +25,8 @@ class AccountTransactionsRefModel:
     def __init__(self):
         # Dictionary of account id/fullnames.
         self.accounts = {}
+
+class AccountDetailsViewModel:
+    """ View model for account details """
+    def __init__(self):
+        self.account = None

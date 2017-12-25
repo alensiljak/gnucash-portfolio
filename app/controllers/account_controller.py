@@ -33,7 +33,7 @@ def search():
 @account_controller.route("/find")
 def find():
     """
-    Search for an account with the given text in the name. 
+    Search for an account with the given text in the name.
     Returns JSON result. Used for datatables.
     """
     term = request.args.get("search[value]")
@@ -106,6 +106,21 @@ def transactions():
         return render_template(
             'account.transactions.html',
             model=model, input_model=input_model, reference=reference)
+
+
+@account_controller.route('/details/<account_id>')
+def details(account_id):
+    """ Displays account details """
+    with BookAggregate() as svc:
+        account = svc.accounts.get_by_id(account_id)
+
+        model = account_models.AccountDetailsViewModel()
+        model.account = account
+
+        return render_template('account.details.html', model=model)
+
+######################
+# Private
 
 def __get_input_model_for_tx() -> account_models.AccountTransactionsInputModel:
     """ Parse user input or create a blank input model """

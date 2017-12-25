@@ -199,6 +199,7 @@ class AccountsAggregate(AggregateBase):
             log(DEBUG, "found child %s", child.fullname)
         return
 
+
     def get_account_aggregate(self, account: Account) -> AccountAggregate:
         """ Returns account aggregate """
         return AccountAggregate(self.book, account)
@@ -206,6 +207,26 @@ class AccountsAggregate(AggregateBase):
     def get_by_id(self, acct_id) -> Account:
         """ Loads an account entity """
         return self.book.get(Account, guid=acct_id)
+
+    def get_by_name(self, name:str) -> List[Account]:
+        """ Searches accounts by name """
+        #return self.query.filter(Account.name == name).all()
+        return self.get_by_name_from(self.book.root, name)
+
+
+    def get_by_name_from(self, root: Account, name:str) -> List[Account]:
+        """ Searches child accounts by name, starting from the given account """
+        result = []
+
+        if root.name == name:
+            result.append(child)
+
+        for child in root.children:
+            child_results = self.get_by_name_from(child, name)
+            result += child_results
+
+        return result
+
 
     @property
     def query(self):
