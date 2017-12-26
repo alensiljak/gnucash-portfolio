@@ -1,6 +1,9 @@
 """ Models for account views """
 
 from decimal import Decimal
+from datetime import timedelta
+from logging import log, DEBUG
+from gnucash_portfolio.lib import datetimeutils
 
 
 class AccountTransactionsViewModel:
@@ -16,8 +19,12 @@ class AccountTransactionsInputModel:
     def __init__(self):
         # Account id
         self.account_id: str = None
-        # Date range
-        self.period: str = None
+
+        # Date range. The default is the last week.
+        date_to = datetimeutils.today_date()
+        date_from = date_to - timedelta(days=7)
+        period = datetimeutils.get_period(date_from, date_to)
+        self.period: str = period
 
 
 class AccountTransactionsRefModel:

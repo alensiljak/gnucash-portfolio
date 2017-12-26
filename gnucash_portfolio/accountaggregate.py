@@ -76,7 +76,7 @@ class AccountAggregate(AggregateBase):
     def load_cash_balances_with_children(self, root_account_fullname: str):
         """ loads data for cash balances """
         svc = AccountsAggregate(self.book)
-        root_account = svc.get_account_by_fullname(root_account_fullname)
+        root_account = svc.get_by_fullname(root_account_fullname)
         if not root_account:
             raise ValueError("Account not found", root_account_fullname)
         accounts = self.__get_all_child_accounts_as_array(root_account)
@@ -166,7 +166,7 @@ class AccountsAggregate(AggregateBase):
         #self.book = book
         pass
 
-    def get_account_by_fullname(self, fullname: str) -> Account:
+    def get_by_fullname(self, fullname: str) -> Account:
         """ Loads account by full name """
         # get all accounts and iterate, comparing the fullname. :S
         query = (
@@ -182,14 +182,14 @@ class AccountsAggregate(AggregateBase):
 
     def get_account_id_by_fullname(self, fullname: str) -> str:
         """ Locates the account by fullname """
-        account = self.get_account_by_fullname(fullname)
+        account = self.get_by_fullname(fullname)
         return account.guid
 
 
     def get_all_children(self, fullname: str) -> List[Account]:
         """ Returns the whole child account tree for the account with the given full name """
         # find the account by fullname
-        root_acct = self.get_account_by_fullname(fullname)
+        root_acct = self.get_by_fullname(fullname)
         if not root_acct:
             raise NameError("Account not found in book!")
 

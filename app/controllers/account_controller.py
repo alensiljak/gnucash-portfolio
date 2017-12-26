@@ -87,15 +87,36 @@ def cash_balances():
     # Selection of accounts. Display the default values the first time.
     with BookAggregate() as book_svc:
         accts_svc = AccountsAggregate(book_svc.book)
-        acct = accts_svc.get_account_id_by_fullname
-        acct_svc = AccountAggregate(book_svc.book, acct)
+        acct = accts_svc.get_by_fullname(account_names)
+        acct_svc = accts_svc.get_account_aggregate(acct)
         model["data"] = acct_svc.load_cash_balances_with_children(account_names)
     # Display the report
     return render_template('account.cash.html', model=model)
 
 
-@account_controller.route('/transactions', methods=['GET', 'POST'])
+@account_controller.route('/transactions', methods=['GET'])
 def transactions():
+    """ Account transactions """
+    in_model = __get_input_model_for_tx()
+
+    # Check if any parameters were passed already
+    account_fullname = request.args.get('acct_name')
+
+    with BookAggregate() as svc:
+        reference = __load_ref_model_for_tx(svc)
+
+        if account_fullname:
+            acct = svc.accounts.get_by_fullname(account_fullname)
+            in_model.account_id = acct.guid
+
+        model = __load_view_model_for_tx(svc, in_model)
+
+        return render_template(
+            'account.transactions.html',
+            model=model, input_model=in_model, reference=reference)
+
+@account_controller.route('/transactions', methods=['POST'])
+def transactions_post():
     """ Account transactions """
     with BookAggregate() as svc:
         reference = __load_ref_model_for_tx(svc)
@@ -111,11 +132,11 @@ def transactions():
 #     return render_template('incomplete.html')
 
 
-@account_controller.route('/details/<account_id>')
-def details(account_id):
+@account_controller.route('/details/<path:fullname>')
+def details(fullname):
     """ Displays account details """
     with BookAggregate() as svc:
-        account = svc.accounts.get_by_id(account_id)
+        account = svc.accounts.get_by_fullname(fullname)
 
         model = account_models.AccountDetailsViewModel()
         model.account = account
@@ -142,7 +163,7 @@ def __load_ref_model_for_tx(svc: BookAggregate):
     """ Load reference model """
     model = account_models.AccountTransactionsRefModel()
 
-    root_acct = svc.accounts.get_account_by_fullname("Assets")
+    root_acct = svc.accounts.get_by_fullname("Assets")
     model.accounts = (
         svc.accounts.get_account_aggregate(root_acct)
         .get_all_child_accounts_as_array()

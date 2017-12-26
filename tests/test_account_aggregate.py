@@ -8,7 +8,7 @@ def test_get_by_fullname(svc_db: BookAggregate):
     log(DEBUG, "using book %s", svc_db.book)
     name = "Assets:Investments"
 
-    acct = svc_db.accounts.get_account_by_fullname(name)
+    acct = svc_db.accounts.get_by_fullname(name)
 
     assert acct.fullname == name
 

@@ -203,7 +203,7 @@ class _AllocationLoader:
     def get_cash_balance(self, root_account_name: str) -> Decimal:
         """ Loads investment cash balance in base currency """
         svc = AccountsAggregate(self.book)
-        root_account = svc.get_account_by_fullname(root_account_name)
+        root_account = svc.get_by_fullname(root_account_name)
         acct_svc = AccountAggregate(self.book, root_account)
         result = acct_svc.get_cash_balance_with_children(root_account, self.currency)
         return result

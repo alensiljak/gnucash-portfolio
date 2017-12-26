@@ -26,7 +26,7 @@
     <ul>
         {% for account in model.accounts %}
         <li>
-            <a href="/account/details/{{ account.guid }}">
+            <a href="/account/details/{{ account.fullname }}">
                 {{ account.fullname }}
             </a>
         </li>
