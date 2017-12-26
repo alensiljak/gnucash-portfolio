@@ -1,22 +1,21 @@
 {% extends "layout.html" %} {% block title %}Cash Balances{% endblock %} {% block content %}
 <h1>Cash Balances</h1>
 <p>
-    Displays cash balances in the selected accounts.
+    Displays cash balances in the selected accounts. You can enter multiple accounts, comma-separated.
 </p>
 
-<form>
+<form class="form-inline">
     <div class="form-group">
-        <label>Enter the root investment account(s)</label>
-        <input name="accounts" type="text" placeholder="Type to search" value="{{ model.accounts }}">
+        <label class="mr-2">Enter the root investment account(s)</label>
+        <input name="accounts" class="form-control" type="text" placeholder="Type to search" 
+            value="{{ model.accounts }}">
     </div>
-    <div class="text-center">
+    <div class="text-center ml-2">
         <button class="btn btn-primary">OK</button>
     </div>
 </form>
 
-<hr>
-
-<table id="accounts" class="table table-bordered table-sm table-striped">
+<table id="accounts" class="table table-bordered table-sm table-striped mt-3">
     <thead class="thead-dark">
         <tr>
             <th>Name</th>

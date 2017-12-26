@@ -87,3 +87,16 @@ a {
     }
 }
 }
+
+/* Customize chosen */
+.chosen-container {
+    font-size: 16px;
+}
+.chosen-container-single {
+    height: 2em;
+
+    .chosen-single {
+        height: 2em;
+        line-height: 1.8em;
+    }
+}

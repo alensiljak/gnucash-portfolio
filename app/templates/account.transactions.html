@@ -7,20 +7,21 @@
         <form method="POST">
             <div class="form-group">
                 <label for="account_id">Account</label>
-                <select name="account_id" class="form-control select2">
-                    {% for account in reference.accounts %}
-                    <option {% if account.guid==input_model.account_id %}selected{% endif %} 
-                        value="{{ account.guid }}">
-                        {{ account.fullname }}
-                    </option>
-                    {% endfor %}
-                </select>
+                <div class="text-dark">
+                    <select name="account_id" class="form-control chosen">
+                        {% for account in reference.accounts %}
+                        <option {% if account.guid==input_model.account_id %}selected{% endif %} value="{{ account.guid }}">
+                            {{ account.fullname }}
+                        </option>
+                        {% endfor %}
+                    </select>
+                </div>
             </div>
 
             <div class="form-group">
                 <label for="period">Period</label>
-                <input type="text" name="period" class="form-control daterange" 
-                    {% if input_model.period %}value="{{ input_model.period }}"{% endif %}>
+                <input type="text" name="period" class="form-control daterange" {% if input_model.period %}value="{{ input_model.period }}"
+                    {% endif %}>
             </div>
 
             <div class="text-center">
