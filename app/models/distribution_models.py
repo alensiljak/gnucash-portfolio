@@ -1,14 +1,16 @@
 """ Models for distributions report """
 
+from typing import List
 from gnucash_portfolio.lib import datetimeutils
 
 
 class DistributionsInputModel:
     """ User input / parameters """
     def __init__(self):
-        self.period: str = None
-        self.accounts = []
-        self.currency = None
+        self.period: str = datetimeutils.get_period_last_3_months()
+        # value of the input field
+        self.accounts: str = None
+        self.currency = ""
 
     @property
     def date_from(self):
@@ -19,6 +21,11 @@ class DistributionsInputModel:
     def date_to(self):
         """ extract from date """
         return datetimeutils.get_to(self.period)
+
+    @property
+    def accounts_list(self) -> List[str]:
+        """ Parses user input and returns the list of entered accounts """
+        return self.accounts.split(',')
 
 
 class DistributionsViewModel:

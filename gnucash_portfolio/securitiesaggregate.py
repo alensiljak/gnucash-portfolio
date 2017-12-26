@@ -4,7 +4,9 @@ from decimal import Decimal
 #from logging import log, DEBUG
 from typing import List
 from sqlalchemy import desc
+from sqlalchemy.orm import aliased
 from piecash import Account, Book, Commodity, Price
+from gnucash_portfolio.lib import datetimeutils
 from gnucash_portfolio.lib.aggregatebase import AggregateBase
 from gnucash_portfolio.accountaggregate import AccountAggregate # AccountsAggregate
 
@@ -16,14 +18,13 @@ class SecurityAggregate(AggregateBase):
         # self.book = book
         self.security = security
 
-    def get_num_shares(self) -> Decimal:
+    def get_quantity(self) -> Decimal:
         """
         Returns the number of shares for the given security.
         It gets the number from all the accounts in the book.
         """
         # Use today's date but reset hour and lower.
-        today_date = datetime.date.today()
-        today = datetime.datetime.combine(today_date, datetime.time.min)
+        today = datetimeutils.today_datetime()
         return self.get_num_shares_on(today)
 
     def get_num_shares_on(self, on_date: datetime) -> Decimal:
@@ -43,9 +44,23 @@ class SecurityAggregate(AggregateBase):
 
         return total_quantity
 
+    def get_value(self) -> Decimal:
+        """ Returns the current value of stocks """
+        quantity = self.get_quantity()
+        price = self.get_last_available_price()
+        if not price:
+            raise ValueError("no price found for", self.full_symbol)
+
+        value = quantity * price.value
+        return value
+
     def get_last_available_price(self) -> Price:
         """ Finds the last available price for security """
-        last_price = self.security.prices.order_by(desc(Price.date)).first()
+        query = (
+            self.security.prices
+            .order_by(desc(Price.date))
+        )
+        last_price = query.first()
         #return last_price.value
         return last_price
 
@@ -110,11 +125,37 @@ class SecurityAggregate(AggregateBase):
         assuming that all the prices are in the same currency for any symbol.
         """
         stock: Commodity = self.security
-        first_price = stock.prices.first()
-        if not first_price:
+        #first_price = stock.prices.first()
+        last_price = self.get_last_available_price()
+        if not last_price:
             raise AssertionError("Price not found for", stock.mnemonic)
 
-        return first_price.currency
+        return last_price.currency
+
+    def get_distributions(self):
+        pass
+
+    def get_income_accounts(self) -> List[Account]:
+        """
+        Returns all income accounts for this security.
+        Income accounts are accounts not under Trading, expressed in currency, and
+        having the same name as the mnemonic.
+        They should be under Assets but this requires a recursive SQL query.
+        """
+        trading = self.book.trading_account(self.security)
+        # log(DEBUG, "trading account = %s, %s", trading.fullname, trading.guid)
+        parent_alias = aliased(Account)
+        query = (
+            self.book.session.query(Account)
+            .join(Commodity)
+            .join(parent_alias, Account.parent)
+            .filter(Account.name == self.security.mnemonic,
+                    Commodity.namespace == "CURRENCY",
+                    parent_alias.parent_guid != trading.guid)
+        )
+        #generic.print_sql(query)
+        return query.all()
+
 
     @property
     def accounts(self):
@@ -124,6 +165,11 @@ class SecurityAggregate(AggregateBase):
             [acct for acct in self.security.accounts if acct.fullname.startswith('Assets')]
         )
         return result
+
+    @property
+    def full_symbol(self):
+        """ Returns the full symbol (namespace + symbol) """
+        return self.security.namespace + ":" + self.security.mnemonic
 
 
 class SecuritiesAggregate(AggregateBase):
@@ -190,6 +236,11 @@ class SecuritiesAggregate(AggregateBase):
     def get_aggregate(self, security: Commodity) -> SecurityAggregate:
         """ Returns the aggregate for the entity """
         return SecurityAggregate(self.book, security)
+
+    def get_aggregate_for_symbol(self, symbol: str) -> SecurityAggregate:
+        """ Returns the aggregate for the security found by full symbol """
+        security = self.get_by_symbol(symbol)
+        return self.get_aggregate(security)
 
     def __get_base_query(self):
         """ Returns the base query which filters out data for all queries. """

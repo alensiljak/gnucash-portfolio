@@ -22,7 +22,7 @@ def main(symbol: str):
         sec_svc = SecurityAggregate(svc.book, security)
 
         # Display number of shares
-        shares_no = sec_svc.get_num_shares()
+        shares_no = sec_svc.get_quantity()
         print("Quantity:", shares_no)
 
         # Calculate average price.

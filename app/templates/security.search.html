@@ -3,9 +3,9 @@
 
 <div class="card bg-matte text-light">
     <div class="card-body">
-        <form id="searchForm" name="searchForm">
+        <form id="searchForm" name="searchForm" class="form-inline">
             <div class="form-group">
-                <label for="search.symbol">Select security</label>
+                <label for="search.symbol" class="mr-2">Select security</label>
                 <div class="text-dark">
                     <select id="search_symbol" name="search.symbol" class="form-control chosen">
                         {% for security in model.securities %} {% set name = model.securities[symbol] %}

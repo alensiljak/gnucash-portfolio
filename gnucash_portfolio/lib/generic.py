@@ -48,10 +48,14 @@ def load_json_file_contents(path: str) -> str:
 
 def print_sql(query):
     """ prints alchemy sql command for debugging """
-    sql = str(query.statement.compile(dialect=sqlite.dialect(),
-                                      compile_kwargs={"literal_binds": True}))
+    sql = get_sql(query)
     print(sql)
 
+def get_sql(query):
+    """ Returns the sql query """
+    sql = str(query.statement.compile(dialect=sqlite.dialect(),
+                                      compile_kwargs={"literal_binds": True}))
+    return sql
 
 def save_to_temp(content, file_name=None):
     """Save the contents into a temp file."""

@@ -36,7 +36,7 @@
     <thead>
         <th>Account</th>
         {# <th>Value</th> #}
-        <th>Quantity</th>
+        <th colspan="2">Amount</th>
         <th>Memo</th>
         {# <th>Action</th> #}
         <th>Reconciled</th>
@@ -48,7 +48,13 @@
         <tr>
             <td>{{ split.account.fullname }}</td>
             {# <td class="text-right">{{ split.value }}</td> #}
+            {% if split.quantity < 0 %}
             <td class="text-right">{{ split.quantity }}</td>
+            <td>&nbsp;</td>
+            {% else %}
+            <td>&nbsp;</td>
+            <td class="text-right">{{ split.quantity }}</td>
+            {% endif %}
             <td>{{ split.memo }}</td>
             {# <td>{{ split.action }}</td> #}
             <td>{{ "{:%Y-%m-%d %H:%M}".format(split.reconcile_date) }}</td>

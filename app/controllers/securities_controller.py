@@ -38,7 +38,7 @@ def index():
         return render_template('security.search.html', model=model, filter=search)
 
 
-@stock_controller.route('/details/<symbol>')
+@stock_controller.route('/<symbol>/details')
 def details(symbol: str):
     """ Displays the details in a separate page. Restful url. """
     with BookAggregate() as svc:
@@ -56,13 +56,15 @@ def details_partial(symbol: str):
 def __get_model_for_details(
         svc: BookAggregate, symbol: str) -> security_models.SecurityDetailsViewModel:
     """ Loads the model for security details """
-    sec = svc.securities.get_by_symbol(symbol)
-    sec_agg = svc.securities.get_aggregate(sec)
+    sec = svc.securities.get_aggregate_for_symbol(symbol)
 
     model = security_models.SecurityDetailsViewModel()
-    model.security = sec
+    model.security = sec.security
     # Quantity
-    model.quantity = sec_agg.get_num_shares()
+    model.quantity = sec.get_quantity()
+    model.value = sec.get_value()
+    model.currency = sec.get_currency().mnemonic
+    model.price = sec.get_last_available_price()
 
     # load all accounts
     sec_agg = svc.securities.get_aggregate(sec)
@@ -90,4 +92,4 @@ def transactions():
 @stock_controller.route('/distributions/<symbol>')
 def distributions():
     """ Distributions for the security """
-    pass
+    return render_template('distributions.html', model=None)

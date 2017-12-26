@@ -2,7 +2,7 @@
 
 from decimal import Decimal
 from typing import List
-from piecash import Account, Commodity
+from piecash import Account, Commodity, Price
 
 
 #@dataclass
@@ -22,4 +22,7 @@ class SecurityDetailsViewModel:
     def __init__(self):
         self.security: Commodity = None
         self.quantity: Decimal = Decimal(0)
+        self.price: Price = None
+        self.value: Decimal = None
+        self.currency: str = None
         self.accounts: List[Account] = None

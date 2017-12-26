@@ -40,7 +40,7 @@
     <ul>
         {% for stock in model.asset_class.stocks %}
         <li>
-            <a href="/security/details/{{ stock.symbol }}">
+            <a href="/security/{{ stock.symbol }}/details">
                 {{ stock.symbol }}
             </a>
         </li>

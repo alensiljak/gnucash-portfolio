@@ -1,11 +1,18 @@
 """ Date/time utilities """
 
-from datetime import datetime, date
+#import datetime
+from datetime import datetime, date, time, timedelta
 
 
 def today_date() -> date:
     """ Returns today as a date """
     return datetime.today().date()
+
+def today_datetime() -> datetime:
+    """ Returns today (date only) as datetime """
+    date_today = today_date()
+    today = datetime.combine(date_today, time.min)
+    return today
 
 def get_from(period: str) -> datetime:
     """ Parse period string and return the from date """
@@ -42,3 +49,17 @@ def get_period(date_from: date, date_to: date) -> str:
     str_to: str = date_to.isoformat()
 
     return str_from + " - " + str_to
+
+def get_period_last_week() -> str:
+    """ Returns the last week as a period string """
+    today = today_date()
+    start_date = today - timedelta(days=7)
+    period = get_period(start_date, today)
+    return period
+
+def get_period_last_3_months() -> str:
+    """ Returns the last week as a period string """
+    today = today_date()
+    start_date = today - timedelta(weeks=13)
+    period = get_period(start_date, today)
+    return period

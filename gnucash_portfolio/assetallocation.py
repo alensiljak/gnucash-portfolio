@@ -167,15 +167,15 @@ class _AllocationLoader:
                     stock_svc = SecurityAggregate(self.book, cdty)
 
                     # Quantity
-                    num_shares = stock_svc.get_num_shares()
-                    stock.quantity = num_shares
+                    quantity = stock_svc.get_quantity()
+                    stock.quantity = quantity
 
                     # last price
                     last_price: Price = stock_svc.get_last_available_price()
                     stock.price = last_price.value
 
                     # Value
-                    stock_value = last_price.value * num_shares
+                    stock_value = last_price.value * quantity
                     if last_price.currency != self.currency:
                         # Recalculate into the base currency.
                         stock_value = self.get_value_in_base_currency(

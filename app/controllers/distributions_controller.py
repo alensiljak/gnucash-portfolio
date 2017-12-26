@@ -2,9 +2,9 @@
 Income reports
 """
 from typing import List
+from logging import log, DEBUG
 from datetime import date, timedelta
 from flask import Blueprint, request, render_template
-#from sqlalchemy.dialects import sqlite
 from piecash import Account, Commodity, Split, Book, Transaction
 from gnucash_portfolio.bookaggregate import BookAggregate
 from app.models.distribution_models import DistributionsInputModel, DistributionsViewModel
@@ -32,32 +32,37 @@ def income_in_period_data():
 
     # load data
     with BookAggregate() as svc:
-        model = __get_model_inperiod(in_model, svc.book)
+        model = __get_model_inperiod(in_model, svc)
         return render_template('distributions.html', model=model, in_model=in_model)
 
 
-@distribution_controller.route('/<symbol>')
+@distribution_controller.route('/<symbol>', methods=['GET'])
 def for_security(symbol):
-    """ Income for specific security """
-    if not symbol:
-        return render_template('incomplete.html', model=None)
+    """ Income for specific security. Symbol must be the full symbol,
+    including the exchange (namespace). """
+    #log(DEBUG, "symbol = %s", symbol)
+    with BookAggregate() as svc:
+        in_model = DistributionsInputModel()
+        sec_agg = svc.securities.get_aggregate_for_symbol(symbol)
+        accounts = [account.fullname for account in sec_agg.get_income_accounts()]
+        in_model.accounts = ','.join(accounts)
+        log(DEBUG, "accounts = %s", in_model.accounts)
 
-    # TODO see how many securities we find with this sybol. We need to have only one.
-    # TODO If more than one found, show a selector.
+        model = __get_model_inperiod(in_model, svc)
 
-    return render_template('incomplete.html', model=None)
+        return render_template('distributions.html', model=model, in_model=in_model)
 
 
-def __get_model_inperiod(in_model, book: Book) -> DistributionsViewModel:
+def __get_model_inperiod(in_model, svc: BookAggregate) -> DistributionsViewModel:
     """ Creates the data model for the prices in period """
     model = DistributionsViewModel()
 
     # income accounts
     account_names = in_model.accounts.split(",")
 
-    account_ids = __get_income_account_ids(book, account_names)
+    account_ids = __get_income_account_ids(svc.book, account_names)
     splits = __load_income_in_period_query(
-        book, account_ids, in_model)
+        svc.book, account_ids, in_model)
 
     model.splits = splits
 
