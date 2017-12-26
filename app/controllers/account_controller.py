@@ -97,7 +97,6 @@ def cash_balances():
 @account_controller.route('/transactions', methods=['GET', 'POST'])
 def transactions():
     """ Account transactions """
-
     with BookAggregate() as svc:
         reference = __load_ref_model_for_tx(svc)
         input_model = __get_input_model_for_tx()
@@ -106,6 +105,10 @@ def transactions():
         return render_template(
             'account.transactions.html',
             model=model, input_model=input_model, reference=reference)
+
+# @account_controller.route('/transactions/<acct_id>')
+# def account_transactions(acct_id: str):
+#     return render_template('incomplete.html')
 
 
 @account_controller.route('/details/<account_id>')

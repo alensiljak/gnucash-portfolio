@@ -3,21 +3,25 @@
 <p>
     TODO: input symbol; display prices, balance, link to transactions
 </p>
-{% include "_security.search.html" %}
+{# include "_security.search.html" #}
 
-<p>
-    Details to be displayed here.
-</p>
 <form>
     <div class="form-group">
-        <input type="text" class="form-control" readonly value="{{ filter.symbol }} - {{ model.securities[filter.symbol] }}">
+        <input type="text" class="form-control" readonly 
+            value="{{ filter.symbol }} - {{ model.securities[filter.symbol] }}">
     </div>
 </form>
-{% endblock %} {% block scripts %}
+
+<a href="/security/details/{{ filter.symbol }}">Details</a>
+
+{% endblock %}
+{% block scripts %}
 <script type="text/javascript">
     $(function () {
         $("#search.symbol").chosen().change(function (event) {
             // auto-submit the form once a security is selected.
+            console.log("Are we live?")
+
             $("form button").click();
         });
 

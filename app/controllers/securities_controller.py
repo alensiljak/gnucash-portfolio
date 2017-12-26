@@ -8,6 +8,7 @@ Stocks
 - calculation of ROI
 """
 from logging import log, DEBUG
+import flask
 from flask import Blueprint, request, render_template
 from gnucash_portfolio.bookaggregate import BookAggregate
 from gnucash_portfolio.securitiesaggregate import SecuritiesAggregate
@@ -19,26 +20,26 @@ stock_controller = Blueprint( # pylint: disable=invalid-name
 
 
 @stock_controller.route('/')
-def stocks():
-    """ Root """
-    return render_template('incomplete.html')
+def index():
+    """ Root. Search form. """
+    # Check if we have a symbol
+    symbol = request.args.get('search.symbol')
+    log(DEBUG, "symbol = %s, args: %s", symbol, request.args)
+    if symbol:
+        return flask.redirect(flask.url_for('stock_controller.details', symbol=symbol), code=307)
+        # code 307, 302
 
-
-@stock_controller.route('/analysis', methods=['GET'])
-def security_analysis():
-    """ Form for user input, entering the symbol """
-    # load all non-currency symbols
+    # else show the search form.
     with BookAggregate() as svc:
         model = __get_model_for_analysis(svc)
         search = {
-            "symbol": None,
-            "action": "/security/analysis"
+            "symbol": None
         }
-        return render_template('security.analysis.html', model=model, filter=search)
+        return render_template('security.search.html', model=model, filter=search)
 
 
-@stock_controller.route('/analysis/<symbol>')
-def security_analysis_symbol(symbol: str):
+@stock_controller.route('/details/<symbol>')
+def details(symbol: str):
     """ displays the details in a separate page. Restful url. """
     with BookAggregate() as svc:
         sec = svc.securities.get_by_symbol(symbol)
@@ -54,26 +55,23 @@ def security_analysis_symbol(symbol: str):
         return render_template('security.details.html', model=model)
 
 
-@stock_controller.route('/analysis', methods=['POST'])
-def security_analysis_post():
-    """ Displays the results """
-    with BookAggregate() as svc:
-        model = __get_model_for_analysis(svc.book)
-        search = __parse_input_model()
-        return render_template('security.analysis.html', model=model, filter=search)
+# @stock_controller.route('/analysis', methods=['POST'])
+# def security_analysis_post():
+#     """ Displays the results """
+#     with BookAggregate() as svc:
+#         model = __get_model_for_analysis(svc.book)
+#         search = __parse_input_model()
+#         return render_template('security.analysis.html', model=model, filter=search)
 
 
 def __get_model_for_analysis(svc: BookAggregate):
     """ Loads model for analysis """
     service = SecuritiesAggregate(svc.book)
     all_securities = service.get_all()
-    # retrieve the view model
-    security_list = {}
-    for stock in all_securities:
-        security_list[stock.mnemonic] = stock.fullname
-    model = {
-        "securities": security_list
-    }
+
+    model = security_models.SecurityAnalysisRefModel()
+    model.securities = all_securities
+
     return model
 
 

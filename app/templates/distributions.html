@@ -3,11 +3,12 @@
 
 {# Parameters #}
 <div id="accordion" role="tablist">
-    <div class="card">
-        <div id="filterHeader" class="card-header" role="tab" data-toggle="collapse" data-target="#filter" aria-expanded="{% if model %}false{% else %}true{% endif%}"
-            aria-controls="filter">
+    <div class="card bg-dark text-light">
+        <div id="filterHeader" class="card-header" role="tab" 
+            data-toggle="collapse" data-target="#filter" 
+            aria-expanded="{% if model %}false{% else %}true{% endif%}" aria-controls="filter">
             <h5 class="mb-0">
-                <a href="#">Filters</a>
+                <a href="#" class="text-light">Filters</a>
             </h5>
         </div>
         <div id="filter" role="tabpanel" class="collapse {% if not model %}show{% endif %}" aria-labelledby="filterHeader" data-parent="#accordion">

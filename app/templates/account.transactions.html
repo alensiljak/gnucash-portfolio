@@ -1,35 +1,39 @@
 {% extends "layout.html" %} {% block title %}Account Transactions{% endblock %} {% block content %}
 <h1>Account Transactions</h1>
 
-<form method="POST">
-    <div class="form-group">
-        <label for="account_id">Account</label>
-        <select name="account_id" class="form-control select2">
-            {% for account in reference.accounts %}
-            <option {% if account.guid == input_model.account_id %}selected{% endif %}
-                value="{{ account.guid }}">
-                {{ account.fullname }}
-            </option>
-            {% endfor %}
-        </select>
-    </div>
+<div class="card bg-matte text-light">
+    <div class="card-body">
 
-    <div class="form-group">
-        <label for="period">Period</label>
-        <input type="text" name="period" class="form-control daterange" 
-        {% if input_model.period %}value="{{ input_model.period }}"{% endif %}>
-    </div>
+        <form method="POST">
+            <div class="form-group">
+                <label for="account_id">Account</label>
+                <select name="account_id" class="form-control select2">
+                    {% for account in reference.accounts %}
+                    <option {% if account.guid==input_model.account_id %}selected{% endif %} 
+                        value="{{ account.guid }}">
+                        {{ account.fullname }}
+                    </option>
+                    {% endfor %}
+                </select>
+            </div>
 
-    <div class="text-center">
-        <button class="btn btn-outline-primary">Apply</button>
+            <div class="form-group">
+                <label for="period">Period</label>
+                <input type="text" name="period" class="form-control daterange" 
+                    {% if input_model.period %}value="{{ input_model.period }}"{% endif %}>
+            </div>
+
+            <div class="text-center">
+                <button class="btn btn-primary">Apply</button>
+            </div>
+        </form>
     </div>
-</form>
+</div>
 
 <p>
-    Starting balance: {{ "{:,.2f}".format(model.start_balance) }}, 
-    Ending balance: {{ "{:,.2f}".format(model.end_balance) }}
+    Starting balance: {{ "{:,.2f}".format(model.start_balance) }}, Ending balance: {{ "{:,.2f}".format(model.end_balance) }}
 </p>
-    
+
 {% if model.splits %}
 <table class="table table-sm table-bordered mt-3">
     {#
@@ -49,17 +53,18 @@
             <td>{{ split.transaction.description }}</td>
             <td colspan="2">{{ split.transaction.notes }}</td>
         </tr>
-            {% for sp in split.transaction.splits %}
+        {% for sp in split.transaction.splits %}
         <tr>
             <td>&nbsp;</td>
             <td>{{ sp.account.fullname }}</td>
-            {# <td>{{ sp.action }}</td> #}
+            {#
+            <td>{{ sp.action }}</td> #}
             <td>{{ sp.memo }}</td>
-            {# <td class="text-right">{{ sp.value }}</td> #}
+            {#
+            <td class="text-right">{{ sp.value }}</td> #}
             <td class="text-right">{{ "{:,.2f}".format(sp.quantity) }}</td>
         </tr>
-            {% endfor %}
-        {% endfor %}
+        {% endfor %} {% endfor %}
     </tbody>
 </table>
 {% endif %} {% endblock %} {% block scripts %}
@@ -68,5 +73,4 @@
         // TODO init date range picker
         // todo: init select
     });
-</script>
-{% endblock %}
+</script> {% endblock %}

@@ -1,0 +1,36 @@
+{% extends "layout.html" %} {% block title %}Securities{% endblock %} {% block content %}
+<h1>Securities</h1>
+
+<div class="card bg-fresh p-2">
+    <form id="searchForm" name="searchForm">
+        <div class="form-group">
+            <label for="search.symbol">Select security</label>
+            <select id="search_symbol" name="search.symbol" class="form-control chosen">
+                {% for security in model.securities %} {% set name = model.securities[symbol] %}
+                <option {% if security.mnemonic == filter.symbol %}selected{% endif %}
+                    value="{{ security.namespace }}:{{ security.mnemonic }}">
+                    {{ security.mnemonic }} - {{ security.fullname }}
+                </option>
+                {% endfor %}
+            </select>
+        </div>
+
+        <div class="text-center">
+            <button type="button" id="select" class="btn btn-primary">Select</button>
+        </div>
+
+    </form>
+</div>
+
+{% endblock %}
+{% block scripts %}
+<script type="text/javascript">
+    $(function () {
+        $("#select").click(function() {
+            var symbol = $("#search_symbol").chosen().val();
+            //alert(symbol);
+            window.location = '/security/details/' + symbol;
+        });
+
+    });
+</script> {% endblock %}
