@@ -40,13 +40,15 @@ def index():
 
 @stock_controller.route('/details/<symbol>')
 def details(symbol: str):
-    """ displays the details in a separate page. Restful url. """
+    """ Displays the details in a separate page. Restful url. """
     with BookAggregate() as svc:
         sec = svc.securities.get_by_symbol(symbol)
-        log(DEBUG, "stock returned: %s", sec)
+        sec_agg = svc.securities.get_aggregate(sec)
 
         model = security_models.SecurityDetailsViewModel()
         model.security = sec
+        # Quantity
+        model.quantity = sec_agg.get_num_shares()
 
         # load all accounts
         sec_agg = svc.securities.get_aggregate(sec)

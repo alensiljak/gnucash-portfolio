@@ -1,7 +1,7 @@
 {% extends "layout.html" %} {% block title %}Security Details{% endblock %} {% block content %}
 <h1>Security Details</h1>
 
-<div class="card bg-dark text-light">
+<div class="card bg-fresh text-matte">
     <!-- <div class="card-header">
         Info
     </div> -->
@@ -15,6 +15,11 @@
             <div class="form-group">
                 <label>Description</label>
                 <input type="text" class="form-control" readonly value="{{ model.security.fullname }}">
+            </div>
+
+            <div class="form-group">
+                <label>Balance (Quantity)</label>
+                <input type="text" class="form-control text-right" readonly value="{{ '{:,.2f}'.format(model.quantity) }}">
             </div>
 
         </form>
@@ -35,13 +40,12 @@
 </div>
 
 <div>
-To-do:
-<ul>
-    <li>Prices</li>
-    <li>Balance (quantity)</li>
-    <li>Distributions</li>
-    <li>Transactions (buy/sell)</li>
-</ul>
+    To-do:
+    <ul>
+        <li>Prices</li>
+        <li>Distributions</li>
+        <li>Transactions (buy/sell)</li>
+    </ul>
 </div>
 
 {% endblock %}
