@@ -61,7 +61,7 @@ a {
     color: color("matte");
 }
 .text-fresh {
-    color: color("fresh");
+    color: color("fresh") !important;
 }
 .text-teal {
     color: color("teal");

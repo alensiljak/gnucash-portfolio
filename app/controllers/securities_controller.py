@@ -42,28 +42,33 @@ def index():
 def details(symbol: str):
     """ Displays the details in a separate page. Restful url. """
     with BookAggregate() as svc:
-        sec = svc.securities.get_by_symbol(symbol)
-        sec_agg = svc.securities.get_aggregate(sec)
-
-        model = security_models.SecurityDetailsViewModel()
-        model.security = sec
-        # Quantity
-        model.quantity = sec_agg.get_num_shares()
-
-        # load all accounts
-        sec_agg = svc.securities.get_aggregate(sec)
-        model.accounts = sec_agg.accounts
-
+        model = __get_model_for_details(svc, symbol)
         return render_template('security.details.html', model=model)
 
+@stock_controller.route('/details/partial/<symbol>')
+def details_partial(symbol: str):
+    """ Displays the details in a separate page. Restful url. """
+    with BookAggregate() as svc:
+        model = __get_model_for_details(svc, symbol)
+        return render_template('_security.details.html', model=model)
 
-# @stock_controller.route('/analysis', methods=['POST'])
-# def security_analysis_post():
-#     """ Displays the results """
-#     with BookAggregate() as svc:
-#         model = __get_model_for_analysis(svc.book)
-#         search = __parse_input_model()
-#         return render_template('security.analysis.html', model=model, filter=search)
+
+def __get_model_for_details(
+        svc: BookAggregate, symbol: str) -> security_models.SecurityDetailsViewModel:
+    """ Loads the model for security details """
+    sec = svc.securities.get_by_symbol(symbol)
+    sec_agg = svc.securities.get_aggregate(sec)
+
+    model = security_models.SecurityDetailsViewModel()
+    model.security = sec
+    # Quantity
+    model.quantity = sec_agg.get_num_shares()
+
+    # load all accounts
+    sec_agg = svc.securities.get_aggregate(sec)
+    model.accounts = sec_agg.accounts
+
+    return model
 
 
 def __get_model_for_analysis(svc: BookAggregate):
@@ -77,17 +82,12 @@ def __get_model_for_analysis(svc: BookAggregate):
     return model
 
 
-def __parse_input_model():
-    """ Parses the filter from request """
-    result = security_models.StockAnalysisInputModel()
-
-    result.symbol = request.form.get("search.symbol")
-    print(result.symbol)
-
-    return result
-
-
 @stock_controller.route('/transactions/<symbol>')
 def transactions():
     """ Lists all transactions for security. Symbol must include namespace. """
     return render_template('incomplete.html')
+
+@stock_controller.route('/distributions/<symbol>')
+def distributions():
+    """ Distributions for the security """
+    pass

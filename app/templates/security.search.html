@@ -26,13 +26,40 @@
     </div>
 </div>
 
+{# Results #}
+<div id="results" class="mt-3"></div>
+
 {% endblock %} {% block scripts %}
 <script type="text/javascript">
     $(function () {
+        var getDetailsUrl = function(symbol) {
+            return '/security/details/partial/' + symbol;
+        };
+
+        var navigate = function(symbol) {
+            window.location = getDetailsUrl(symbol);
+        };
+
+        var loadPage = function(symbol) {
+            var url = getDetailsUrl(symbol);
+            $.ajax({
+                url: url,
+                success: function(data, textStatus, jqXHR) {
+                    $("#results").html(data);
+                }
+            });
+        };
+
+        $("#search_symbol").chosen().change(function(event) {
+            symbol = $(this).chosen().val();
+            //navigate(symbol);
+            loadPage(symbol);
+        });
+
         $("#select").click(function () {
             var symbol = $("#search_symbol").chosen().val();
-            //alert(symbol);
-            window.location = '/security/details/' + symbol;
+            //navigate(symbol);
+            loadPage(symbol);
         });
 
     });

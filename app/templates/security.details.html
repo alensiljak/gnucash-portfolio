@@ -1,51 +1,6 @@
 {% extends "layout.html" %} {% block title %}Security Details{% endblock %} {% block content %}
 <h1>Security Details</h1>
 
-<div class="card bg-fresh text-matte">
-    <!-- <div class="card-header">
-        Info
-    </div> -->
-    <div class="card-body">
-        <form class="form">
-            <div class="form-group">
-                <label>Symbol</label>
-                <input type="text" class="form-control" readonly value="{{ model.security.namespace}}:{{ model.security.mnemonic }}">
-            </div>
-
-            <div class="form-group">
-                <label>Description</label>
-                <input type="text" class="form-control" readonly value="{{ model.security.fullname }}">
-            </div>
-
-            <div class="form-group">
-                <label>Balance (Quantity)</label>
-                <input type="text" class="form-control text-right" readonly value="{{ '{:,.2f}'.format(model.quantity) }}">
-            </div>
-
-        </form>
-    </div>
-</div>
-
-<div class="mt-3">
-    <p>Accounts:</p>
-    <ul>
-        {% for account in model.accounts %}
-        <li>
-            <a href="/account/details/{{ account.fullname }}">
-                {{ account.fullname }}
-            </a>
-        </li>
-        {% endfor %}
-    </ul>
-</div>
-
-<div>
-    To-do:
-    <ul>
-        <li>Prices</li>
-        <li>Distributions</li>
-        <li>Transactions (buy/sell)</li>
-    </ul>
-</div>
+{% include '_security.details.html' %}
 
 {% endblock %}
