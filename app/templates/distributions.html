@@ -10,11 +10,10 @@
 {# Parameters #}
 <div id="accordion" role="tablist">
     <div class="card bg-matte text-light">
-        <div id="filterHeader" class="card-header" role="tab" 
-            data-toggle="collapse" data-target="#filter" 
-            aria-expanded="{% if model %}false{% else %}true{% endif%}" aria-controls="filter">
+        <div id="filterHeader" class="card-header" role="tab" data-toggle="collapse" data-target="#filter" aria-expanded="{% if model %}false{% else %}true{% endif%}"
+            aria-controls="filter">
             <h5 class="mb-0">
-                <a href="#" class="text-light">Filters</a>
+                <a href="#" class="text-light">Search Parameters</a>
             </h5>
         </div>
         <div id="filter" role="tabpanel" class="collapse {% if not model %}show{% endif %}" aria-labelledby="filterHeader" data-parent="#accordion">
@@ -26,9 +25,8 @@
                         <div class="col form-group">
                             <label for="accounts">Income account(s)</label>
                             <div class="w-100">
-                            <input type="text" id="accounts" name="accounts" class="form-control typeahead" 
-                            value="{% if in_model.accounts %}{{ in_model.accounts }}{% else %}Income:Investment{% endif %}">
-                        </div>
+                                <input type="text" id="accounts" name="accounts" class="form-control typeahead" value="{% if in_model.accounts %}{{ in_model.accounts }}{% else %}Income:Investment{% endif %}">
+                            </div>
                         </div>
                     </div>
 
@@ -38,14 +36,11 @@
                             <label for="period">Period</label>
                             <input type="text" name="period" id="period" class="form-control daterange" value="{{ in_model.period }}">
                         </div>
-                    </div>
 
-                    {# Currency #}
-                    <div class="form-row">
-                        <div class="form-group">
+                        {# Currency #}
+                        <div class="form-group col">
                             <label for="currency">Currency (case sensitive!)</label>
-                            <input name="currency" type="text" class="form-control" 
-                            value="{{ in_model.currency }}">
+                            <input name="currency" type="text" class="form-control" value="{{ in_model.currency }}">
                         </div>
                     </div>
                     <div class="text-center">
@@ -71,13 +66,13 @@
         <tr>
             <td>{{ "{:%Y-%m-%d}".format(split.transaction.post_date) }}</td>
             <td>{{ split.account.fullname }}</td>
-            <td><a href="/transaction/details/{{ split.transaction.guid }}">details</a></td>
-            <td class="text-right">{{ "{:.2f}".format(split.value * (-1)) }}</td>
+            <td>
+                <a href="/transaction/details/{{ split.transaction.guid }}">details</a>
+            </td>
+            <td class="text-right">{{ "{:,.2f}".format(split.value * (-1)) }}</td>
         </tr>
         {% endfor %}
     </tbody>
 </table>
-{% endif %} {% endblock %} 
-{% block scripts %}
-<script type="text/javascript" src="/scripts/income_in_period.js"></script> 
-{% endblock %}
+{% endif %} {% endblock %} {% block scripts %}
+<script type="text/javascript" src="/scripts/income_in_period.js"></script> {% endblock %}

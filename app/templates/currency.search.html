@@ -5,7 +5,7 @@
     <form method="POST" id="searchForm" name="searchForm">
         <div class="form-group">
             <label for="symbol">Currency symbol</label>
-            <select name="search.currency" class="form-control select2">
+            <select name="search.currency" class="form-control chosen">
                 {% for currency in search.ref.currencies %}
                 <option {% if currency.mnemonic==search.currency %}selected{% endif %}>{{ currency.mnemonic }}</option>
                 {% endfor %}

@@ -44,7 +44,7 @@ def __search(svc: BookAggregate, model: CurrencySearchModel):
     if not model.currency:
         return None
 
-    query = svc.get_currencies_query()
+    query = svc.currencies.currencies_query_sorted
 
     if model.currency:
         query = query.filter(Commodity.mnemonic == model.currency)
