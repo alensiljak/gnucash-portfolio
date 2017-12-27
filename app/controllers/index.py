@@ -22,3 +22,7 @@ def scheduled_partial():
     """ Partial for scheduled transactions. Displays ten upcoming transactions
     for the dashboard. """
     return render_template('incomplete.html')
+
+@index_controller.route('/components')
+def components():
+    return render_template('components.html')
