@@ -9,8 +9,8 @@
 
 {# Parameters #}
 <div id="accordion" role="tablist">
-    <div class="card bg-matte text-light">
-        <div id="filterHeader" class="card-header" role="tab" data-toggle="collapse" data-target="#filter" aria-expanded="{% if model %}false{% else %}true{% endif%}"
+    <div class="card bg-secondary text-dark">
+        <div id="filterHeader" class="card-header bg-dark" role="tab" data-toggle="collapse" data-target="#filter" aria-expanded="{% if model %}false{% else %}true{% endif%}"
             aria-controls="filter">
             <h5 class="mb-0">
                 <a href="#" class="text-light">Search Parameters</a>
@@ -44,7 +44,7 @@
                         </div>
                     </div>
                     <div class="text-center">
-                        <button type="reset" class="btn">Reset</button>
+                        <button type="reset" class="btn btn-outline">Reset</button>
                         <button type="submit" formaction="/distributions/" class="btn btn-primary">OK</button>
                     </div>
                 </form>

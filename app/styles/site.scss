@@ -21,6 +21,7 @@ $colors: (
     Customize Bootstrap
 */
 $body-bg: color("fresh");
+$card-bg: color("fresh");
 $theme-colors: (
     "dark": color("matte"),
     "light": color("fresh"),
@@ -49,12 +50,12 @@ a {
 /*
     Custom styles
 */
-.bg-matte {
-    background-color: color("matte");
-}
-.bg-fresh {
-    background-color: color("fresh");
-}
+// .bg-matte {
+//     background-color: color("matte");
+// }
+// .bg-fresh {
+//     background-color: color("fresh");
+// }
 .bg-watermelon {
     background-color: color("watermelon");
 }
@@ -62,12 +63,12 @@ a {
     background-color: color("teal");
 }
 
-.text-matte {
-    color: color("matte");
-}
-.text-fresh {
-    color: color("fresh") !important;
-}
+// .text-matte {
+//     color: color("matte");
+// }
+// .text-fresh {
+//     color: color("fresh") !important;
+// }
 .text-teal {
     color: color("teal");
 }
@@ -108,9 +109,10 @@ a {
 
 /* styles for autocomplete */
 // https://www.devbridge.com/sourcery/components/jquery-autocomplete/#jquery-autocomplete-styling
-.autocomplete-suggestions { border: 1px solid #999; background: #FFF; overflow: auto; }
+.autocomplete-suggestions { border: 1px solid #999; background: color("linen"); overflow: auto; }
 .autocomplete-suggestion { padding: 2px 5px; white-space: nowrap; overflow: hidden; }
-.autocomplete-selected { background: #F0F0F0; }
-.autocomplete-suggestions strong { font-weight: normal; color: #3399FF; }
+.autocomplete-selected { background: color("desert_sand"); }
+//.autocomplete-suggestions strong { font-weight: normal; color: #3399FF; }
+.autocomplete-suggestions strong { font-weight: normal; color: color("watermelon"); }
 .autocomplete-group { padding: 2px 5px; }
 .autocomplete-group strong { display: block; border-bottom: 1px solid #000; }

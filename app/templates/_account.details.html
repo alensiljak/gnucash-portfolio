@@ -1,6 +1,6 @@
 {# partial for account details #}
 
-<div class="card bg-secondary text-dark">
+<div class="card">
     <div class="card-header">
         Account Details
     </div>
@@ -17,4 +17,11 @@
             </div>
         </form>
     </div>
+</div>
+
+{# Links #}
+<div class="mt-3">
+    <a href="/account/transactions?acct_name={{ model.account.fullname }}">Transaction search</a>
+    ●
+    <a href="/account/{{ model.account.guid }}/transactions">Transactions</a>
 </div>

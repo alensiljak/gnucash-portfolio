@@ -1,5 +1,9 @@
 {% extends "layout.html" %} {% block title %}Portfolio Value{% endblock %} {% block content %}
 <h1>Portfolio Value</h1>
+
+<div class="card bg-dark text-light">
+    <div class="card-header"></div>
+    <div class="card-body">
 <form method="POST">
     <div class="form-row">
         <div class="form-group">
@@ -12,9 +16,11 @@
         <input type="text" name="filter.stock" class="form-control" value="{{ model.filter.stock }}">
     </div>
     <div class="text-center">
-        <button class="btn btn-outline-primary mx-auto">Apply</button>
+        <button class="btn btn-outline-light mx-auto">Apply</button>
     </div>
 </form>
+</div>
+</div>
 
 <hr>
 
