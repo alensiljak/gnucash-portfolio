@@ -8,6 +8,7 @@ import json
 from logging import log, DEBUG
 from flask import Blueprint, request, render_template
 from piecash import Account, Split, Transaction
+#from django.forms.models import model_to_dict
 from gnucash_portfolio.lib import datetimeutils
 from gnucash_portfolio.bookaggregate import BookAggregate
 from gnucash_portfolio.accountaggregate import AccountAggregate, AccountsAggregate
@@ -21,14 +22,12 @@ account_controller = Blueprint( # pylint: disable=invalid-name
 @account_controller.route('/')
 def index():
     """ root page """
-    return render_template('incomplete.html')
-
+    return render_template('account.html')
 
 @account_controller.route('/search')
 def search():
     """ Search for an account by typing in a part of the name """
     return render_template('account.search.html')
-
 
 @account_controller.route("/find")
 def find():
@@ -54,27 +53,6 @@ def find():
     json_output = json.dumps(model)
     return json_output
 
-
-def __load_search_model(search_term):
-    """ Loads the data and returns an array of model objects"""
-    model_array = []
-
-    with BookAggregate() as svc:
-        records = (
-            svc.book.session.query(Account)
-            .filter(Account.name.like(search_term))
-            .all())
-
-        for account in records:
-            account_model = {
-                "name": account.name,
-                "fullname": account.fullname
-            }
-            model_array.append(account_model)
-
-    return model_array
-
-
 @account_controller.route('/cash')
 def cash_balances():
     """ Investment cash balances """
@@ -92,7 +70,6 @@ def cash_balances():
         model["data"] = acct_svc.load_cash_balances_with_children(account_names)
     # Display the report
     return render_template('account.cash.html', model=model)
-
 
 @account_controller.route('/transactions', methods=['GET'])
 def transactions():
@@ -131,7 +108,6 @@ def transactions_post():
 # def account_transactions(acct_id: str):
 #     return render_template('incomplete.html')
 
-
 @account_controller.route('/details/<path:fullname>')
 def details(fullname):
     """ Displays account details """
@@ -142,6 +118,16 @@ def details(fullname):
         model.account = account
 
         return render_template('account.details.html', model=model)
+
+@account_controller.route('/api/search/<path:term>')
+def search_api(term):
+    """ searches for account by name and returns the json list of results """
+    with BookAggregate() as svc:
+        accounts = svc.accounts.find_by_name(term)
+        #result = json.dumps(accounts)
+        model_list = [account.fullname for account in accounts]
+        result = json.dumps(model_list)
+    return result
 
 ######################
 # Private
@@ -203,3 +189,22 @@ def __load_view_model_for_tx(
     model.splits = query.all()
 
     return model
+
+def __load_search_model(search_term):
+    """ Loads the data and returns an array of model objects"""
+    model_array = []
+
+    with BookAggregate() as svc:
+        records = (
+            svc.book.session.query(Account)
+            .filter(Account.name.like(search_term))
+            .all())
+
+        for account in records:
+            account_model = {
+                "name": account.name,
+                "fullname": account.fullname
+            }
+            model_array.append(account_model)
+
+    return model_array

@@ -1,0 +1,48 @@
+{% extends "layout.html" %} {% block title %}Account{% endblock %} {% block content %}
+<h1>Account</h1>
+
+<p>
+    To do:
+</p>
+<ul>
+    <li>
+        Account search by name (typeahead).
+    </li>
+    <li>
+        display account details
+    </li>
+    <li>
+        link to transactions register
+    </li>
+</ul>
+
+<form>
+    <div>
+        <input class="typeahead">
+    </div>
+</form>
+
+{% endblock %} {% block scripts %}
+
+<script>
+    $(function () {
+        var accounts = new Bloodhound({
+            datumTokenizer: Bloodhound.tokenizers.obj.whitespace('value'),
+            // datumTokenizer: function (datum) {
+            //     return Bloodhound.tokenizers.whitespace(datum.value);
+            // },
+            queryTokenizer: Bloodhound.tokenizers.whitespace,
+            //prefetch: '../data/films/post_1960.json',
+            remote: {
+                url: '/account/api/search/%QUERY',
+                wildcard: '%QUERY'
+            }
+        });
+
+        $('.typeahead').typeahead(null, {
+            //name: 'best-pictures',
+            display: 'value',
+            source: accounts
+        });
+    });
+</script> {% endblock %}

@@ -1,6 +1,4 @@
-"""
-Aggregate for GnuCash book.
-"""
+""" Aggregate for GnuCash book. """
 import locale
 import sys
 import winreg
@@ -37,7 +35,6 @@ class BookAggregate:
         if settings:
             self.__settings = settings
 
-
     def __enter__(self):
         #self.book = Database().open_book()
         return self
@@ -45,7 +42,6 @@ class BookAggregate:
     def __exit__(self, exc_type, exc_value, traceback):
         if self.__book:
             self.__book.close()
-
 
     @property
     def book(self):
@@ -63,12 +59,10 @@ class BookAggregate:
         """ setter for book """
         self.__book = value
 
-
     @property
     def session(self):
         """ Access to sql session """
         return self.book.session
-
 
     @property
     def settings(self):
@@ -78,14 +72,12 @@ class BookAggregate:
 
         return self.__settings
 
-
     @property
     def accounts(self) -> AccountsAggregate:
         """ Returns the Accounts aggregate """
         if not self.__accounts_aggregate:
             self.__accounts_aggregate = AccountsAggregate(self.book)
         return self.__accounts_aggregate
-
 
     @property
     def currencies(self) -> CurrenciesAggregate:
@@ -101,7 +93,6 @@ class BookAggregate:
             self.__prices_aggregate = PricesAggregate(self.book)
         return self.__prices_aggregate
 
-
     @property
     def securities(self):
         """ Returns securities aggregate """
@@ -109,11 +100,9 @@ class BookAggregate:
             self.__securities_aggregate = SecuritiesAggregate(self.book)
         return self.__securities_aggregate
 
-
     def save(self):
         """ Save all changes """
         self.book.save()
-
 
     def get_currency_symbols(self) -> List[str]:
         """ Returns the used currencies' symbols as an array """
@@ -122,7 +111,6 @@ class BookAggregate:
         for cur in currencies:
             result.append(cur.mnemonic)
         return result
-
 
     def get_default_currency(self) -> Commodity:
         """ returns the book default currency """
@@ -140,7 +128,6 @@ class BookAggregate:
     def get_asset_allocation(self) -> AssetAllocationAggregate:
         """ Creates an Asset Allocation aggregate """
         return AssetAllocationAggregate(self.book)
-
 
     ##############
     # Private

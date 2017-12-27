@@ -166,6 +166,14 @@ class AccountsAggregate(AggregateBase):
         #self.book = book
         pass
 
+    def find_by_name(self, term: str) -> List[Account]:
+        """ Search for account by part of the name """
+        query = (
+            self.query
+            .filter(Account.name.like('%' + term + '%'))
+        )
+        return query.all()
+
     def get_by_fullname(self, fullname: str) -> Account:
         """ Loads account by full name """
         # get all accounts and iterate, comparing the fullname. :S
@@ -179,12 +187,10 @@ class AccountsAggregate(AggregateBase):
             if account.fullname == fullname:
                 return account
 
-
     def get_account_id_by_fullname(self, fullname: str) -> str:
         """ Locates the account by fullname """
         account = self.get_by_fullname(fullname)
         return account.guid
-
 
     def get_all_children(self, fullname: str) -> List[Account]:
         """ Returns the whole child account tree for the account with the given full name """
@@ -199,7 +205,6 @@ class AccountsAggregate(AggregateBase):
             log(DEBUG, "found child %s", child.fullname)
         return
 
-
     def get_account_aggregate(self, account: Account) -> AccountAggregate:
         """ Returns account aggregate """
         return AccountAggregate(self.book, account)
@@ -213,7 +218,6 @@ class AccountsAggregate(AggregateBase):
         #return self.query.filter(Account.name == name).all()
         return self.get_by_name_from(self.book.root, name)
 
-
     def get_by_name_from(self, root: Account, name:str) -> List[Account]:
         """ Searches child accounts by name, starting from the given account """
         result = []
@@ -226,7 +230,6 @@ class AccountsAggregate(AggregateBase):
             result += child_results
 
         return result
-
 
     @property
     def query(self):

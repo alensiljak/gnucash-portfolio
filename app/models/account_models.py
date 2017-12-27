@@ -33,6 +33,7 @@ class AccountTransactionsRefModel:
         # Dictionary of account id/fullnames.
         self.accounts = {}
 
+
 class AccountDetailsViewModel:
     """ View model for account details """
     def __init__(self):

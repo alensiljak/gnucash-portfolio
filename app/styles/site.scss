@@ -1,6 +1,6 @@
 /*
     Styles
-    Custom palette.
+    Custom color palette.
  */
 $colors: (
     "matte": #414141,
@@ -21,6 +21,8 @@ $theme-colors: (
     "danger": color("watermelon")
   );
 @import '../node_modules/bootstrap/scss/bootstrap';
+// https://github.com/bassjobsen/typeahead.js-bootstrap4-css
+@import 'styles/typeaheadjs.scss';
 
 /*
     Redefined defaults
