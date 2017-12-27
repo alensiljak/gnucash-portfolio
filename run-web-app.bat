@@ -3,6 +3,7 @@
 ::set FLASK_APP=app
 ::flask run
 
-python app/
+:: python app/
+py app
 
 start "" http://localhost:5000
