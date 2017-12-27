@@ -17,32 +17,36 @@
 </ul>
 
 <form>
-    <div>
-        <input class="typeahead">
+    <div class="form-group">
+        <label for="account" class="mr-2">Type in part of account name:</label>
+        <input id="account" name="account" type="text" class="form-control">
+        {# <button class="btn btn-outline-primary">Search</button> #}
     </div>
 </form>
+
+<hr class="w-75">
+
+<div id="accountDetails"></div>
 
 {% endblock %} {% block scripts %}
 
 <script>
     $(function () {
-        var accounts = new Bloodhound({
-            datumTokenizer: Bloodhound.tokenizers.obj.whitespace('value'),
-            // datumTokenizer: function (datum) {
-            //     return Bloodhound.tokenizers.whitespace(datum.value);
-            // },
-            queryTokenizer: Bloodhound.tokenizers.whitespace,
-            //prefetch: '../data/films/post_1960.json',
-            remote: {
-                url: '/account/api/search/%QUERY',
-                wildcard: '%QUERY'
-            }
-        });
+        $("#account").focus();
 
-        $('.typeahead').typeahead(null, {
-            //name: 'best-pictures',
-            display: 'value',
-            source: accounts
+        $('#account').autocomplete({
+            serviceUrl: '/account/api/search',
+            minChars: 2,
+            onSelect: function (suggestion) {
+                //alert('You selected: ' + suggestion.value + ', ' + suggestion.data);
+                // show details
+                $.ajax({
+                    url: '/account/partial/accountdetail/' + suggestion.data,
+                    success: function(data, textStatus, jqxhr) {
+                        $("#accountDetails").html(data);
+                    }
+                })
+            }
         });
     });
 </script> {% endblock %}

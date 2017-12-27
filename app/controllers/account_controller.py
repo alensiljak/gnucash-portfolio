@@ -119,14 +119,30 @@ def details(fullname):
 
         return render_template('account.details.html', model=model)
 
-@account_controller.route('/api/search/<path:term>')
-def search_api(term):
+#############
+# Partials
+@account_controller.route('/partial/accountdetail/<account_id>')
+def account_details_partial(account_id):
+    with BookAggregate() as svc:
+        account = svc.accounts.get_by_id(account_id)
+        model = {"account": account}
+        return render_template('_account.details.html', model=model)
+
+#################
+# API section
+
+@account_controller.route('/api/search')
+def search_api():
     """ searches for account by name and returns the json list of results """
+    term = request.args.get('query')
     with BookAggregate() as svc:
         accounts = svc.accounts.find_by_name(term)
         #result = json.dumps(accounts)
-        model_list = [account.fullname for account in accounts]
-        result = json.dumps(model_list)
+        model_list = [{"value": account.fullname, "data": account.guid} for account in accounts]
+        model_list.sort(key=lambda x: x["value"])
+
+        result_dict = {"suggestions": model_list}
+        result = json.dumps(result_dict)
     return result
 
 ######################

@@ -2,6 +2,7 @@
 Accounts business layer
 """
 from datetime import date, datetime, timedelta
+from enum import Enum, auto
 from typing import List
 from decimal import Decimal
 from logging import log, DEBUG
@@ -10,6 +11,18 @@ from gnucash_portfolio.lib import datetimeutils
 from gnucash_portfolio.lib.aggregatebase import AggregateBase
 from gnucash_portfolio.currencyaggregate import CurrencyAggregate, CurrenciesAggregate
 
+
+class AccountType(Enum):
+    """ Account Types """
+    ROOT = auto()
+    ASSET = auto()
+    LIABILITY = auto()
+    EXPENSE = auto()
+    INCOME = auto()
+    TRADING = auto()
+    MUTUAL = auto()
+    STOCK = auto()
+    BANK = auto()
 
 
 class AccountAggregate(AggregateBase):
@@ -171,6 +184,7 @@ class AccountsAggregate(AggregateBase):
         query = (
             self.query
             .filter(Account.name.like('%' + term + '%'))
+            .order_by(Account.name)
         )
         return query.all()
 
@@ -231,7 +245,15 @@ class AccountsAggregate(AggregateBase):
 
         return result
 
+    # def get_account_types():
+    #     """ Account types """
+    #     return ["ROOT", "ASSET", "LIABILITY", "EXPENSE", "INCOME", "TRADING", "MUTUAL", "STOCK", "BANK"]
+
     @property
     def query(self):
         """ Main accounts query """
-        return self.book.session.query(Account)
+        query = (
+            self.book.session.query(Account)
+            .filter(Account.type != AccountType.ROOT.name)
+        )
+        return query
