@@ -4,15 +4,11 @@
 
 <head>
   <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=yes"> 
-  {% block head %}
+  <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=yes"> {% block head %}
 
-  <link rel="shortcut icon" href="{{ url_for('static', filename='briefcase.png') }}">
-  {# <link rel="shortcut icon" href="/favicon.ico"> #}
-
-  {% assets "vendor_css" %}
-  <link rel="stylesheet" href="{{ ASSET_URL }}" />
-  {% endassets %}
+  <link rel="shortcut icon" href="{{ url_for('static', filename='briefcase.png') }}"> {#
+  <link rel="shortcut icon" href="/favicon.ico"> #} {% assets "vendor_css" %}
+  <link rel="stylesheet" href="{{ ASSET_URL }}" /> {% endassets %}
   <link rel="stylesheet" href="{{ url_for('static', filename='site.css') }}">
 
   <title>{% block title %}{% endblock %} - GnuCash Portfolio</title>
@@ -21,8 +17,11 @@
 
 <body>
   <nav class="navbar navbar-dark bg-dark navbar-expand-lg">
-    <a class="navbar-brand" href="/">GnuCash Portfolio</a>
-    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+    <a class="navbar-brand" href="/">
+      <img src="/static/briefcase.png" style="margin-top: -0.5em;" width="30" height="30" alt=""> GnuCash Portfolio
+    </a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
+      aria-expanded="false" aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"></span>
     </button>
 
@@ -50,21 +49,18 @@
   </div>
   <footer id="footer" class="mt-2 ml-2">
     {% block footer %} &copy; Copyright 2017 by
-    <a href="http://alensiljak.tk/">Alen Šiljak</a>. 
+    <a href="http://alensiljak.tk/">Alen Šiljak</a>. ●
+    <small>Icon made by
+      <a href="https://www.flaticon.com/authors/dimitry-miroliubov">Dimitry Miroljubov</a> from
+      <a href="www.flaticon.com">FlatIcon</a>.</small>
     ●
-    <small>Icon made by <a href="https://www.flaticon.com/authors/dimitry-miroliubov">Dimitry Miroljubov</a> from <a href="www.flaticon.com">FlatIcon</a>.</small>
-    ●
-    <a href="/components">Components</a> used.
-    ●
-    {% endblock %}
+    <a href="/components">Components</a> used. ● {% endblock %}
   </footer>
 
   {% assets "vendor_js" %}
-  <script type="text/javascript" src="{{ ASSET_URL }}"></script>
-  {% endassets %}
-  
-  <script type="text/javascript" src="/scripts/site.js"></script> 
-  {% block scripts %} {% endblock %}
+  <script type="text/javascript" src="{{ ASSET_URL }}"></script> {% endassets %}
+
+  <script type="text/javascript" src="/scripts/site.js"></script> {% block scripts %} {% endblock %}
 </body>
 
 </html>
