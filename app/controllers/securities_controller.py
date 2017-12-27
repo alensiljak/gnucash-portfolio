@@ -18,7 +18,6 @@ from app.models import security_models
 stock_controller = Blueprint( # pylint: disable=invalid-name
     'stock_controller', __name__, url_prefix='/security')
 
-
 @stock_controller.route('/')
 def index():
     """ Root. Search form. """
@@ -37,7 +36,6 @@ def index():
         }
         return render_template('security.search.html', model=model, filter=search)
 
-
 @stock_controller.route('/<symbol>/details')
 def details(symbol: str):
     """ Displays the details in a separate page. Restful url. """
@@ -51,7 +49,6 @@ def details_partial(symbol: str):
     with BookAggregate() as svc:
         model = __get_model_for_details(svc, symbol)
         return render_template('_security.details.html', model=model)
-
 
 def __get_model_for_details(
         svc: BookAggregate, symbol: str) -> security_models.SecurityDetailsViewModel:
@@ -72,7 +69,6 @@ def __get_model_for_details(
 
     return model
 
-
 def __get_model_for_analysis(svc: BookAggregate):
     """ Loads model for analysis """
     service = SecuritiesAggregate(svc.book)
@@ -82,7 +78,6 @@ def __get_model_for_analysis(svc: BookAggregate):
     model.securities = all_securities
 
     return model
-
 
 @stock_controller.route('/transactions/<symbol>')
 def transactions():

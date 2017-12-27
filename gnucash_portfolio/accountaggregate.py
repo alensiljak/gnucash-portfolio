@@ -149,7 +149,6 @@ class AccountAggregate(AggregateBase):
         #log(DEBUG, "getting balance on %s", date_corrected)
         return self.get_balance_on(date_corrected)
 
-
     def get_balance_on(self, on_date: datetime) -> Decimal:
         """ Returns the balance on (and including) a certain date """
         total = Decimal(0)
@@ -159,7 +158,6 @@ class AccountAggregate(AggregateBase):
         for split in splits:
             total += split.quantity * self.account.sign
         return total
-
 
     def get_splits_up_to(self, date_to: datetime) -> List[Split]:
         """ returns splits only up to the given date """

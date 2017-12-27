@@ -25,6 +25,7 @@ class SecurityAggregate(AggregateBase):
         """
         # Use today's date but reset hour and lower.
         today = datetimeutils.today_datetime()
+        today = datetimeutils.end_of_day(today)
         return self.get_num_shares_on(today)
 
     def get_num_shares_on(self, on_date: datetime) -> Decimal:
@@ -155,7 +156,6 @@ class SecurityAggregate(AggregateBase):
         )
         #generic.print_sql(query)
         return query.all()
-
 
     @property
     def accounts(self):
