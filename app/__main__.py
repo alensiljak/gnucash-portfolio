@@ -1,14 +1,13 @@
-"""
-This is the entry point to the application
-"""
+""" This is the entry point to the application """
+import os
 from logging.config import dictConfig
-from flask import Blueprint, Flask
+from flask import Blueprint, Flask, send_from_directory
 from flask_assets import Bundle, Environment
 
 # Controllers/blueprints
 from app.controllers import (
-    account_controller, currency_controller, vanguard, distributions_controller, 
-    assetallocation_controller, index, portfolio_controller, price_controller, 
+    account_controller, currency_controller, vanguard, distributions_controller,
+    assetallocation_controller, index, portfolio_controller, price_controller,
     securities_controller, settings_controller, transaction)
 
 
@@ -42,12 +41,15 @@ app.register_blueprint(securities_controller.stock_controller)
 app.register_blueprint(transaction.transaction_controller)
 app.register_blueprint(vanguard.vanguard_controller)
 
+# Static routes.
 scripts_route = Blueprint('scripts', __name__, static_url_path='/scripts',
                           static_folder='scripts')
 app.register_blueprint(scripts_route)
 fa_route = Blueprint('fa', __name__, static_url_path='/fonts',
                      static_folder='node_modules/font-awesome/fonts')
 app.register_blueprint(fa_route)
+#images_route = Blueprint('img', __name__, static_url_path='/img', static_folder='img')
+# app.register_blueprint(images_route)
 
 # Bundles
 bundles = {
@@ -84,6 +86,11 @@ bundles = {
 assets = Environment(app)
 assets.register(bundles)
 
+# @app.route('/favicon.ico')
+# def favicon():
+#     return send_from_directory(
+#         os.path.join(app.root_path, 'static'), 'briefcase.png',
+#         mimetype='image/png')
 
 ##################################################################################
 if __name__ == '__main__':
