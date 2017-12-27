@@ -1,21 +1,6 @@
 {% extends "layout.html" %} {% block title %}Account{% endblock %} {% block content %}
 <h1>Account</h1>
 
-<p>
-    To do:
-</p>
-<ul>
-    <li>
-        Account search by name (typeahead).
-    </li>
-    <li>
-        display account details
-    </li>
-    <li>
-        link to transactions register
-    </li>
-</ul>
-
 <form>
     <div class="form-group">
         <label for="account" class="mr-2">Type in part of account name:</label>
@@ -24,9 +9,20 @@
     </div>
 </form>
 
-<hr class="w-75">
+<div id="accountDetails" class="mt-3"></div>
 
-<div id="accountDetails"></div>
+<div class="mt-3">
+
+</div>
+<p>
+        To do:
+    </p>
+    <ul>
+        <li>
+            link to transactions register
+        </li>
+    </ul>
+   
 
 {% endblock %} {% block scripts %}
 
