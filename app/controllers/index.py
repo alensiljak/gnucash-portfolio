@@ -15,3 +15,9 @@ def index():
     #log(DEBUG, "yo!")
     #debug("index page")
     return render_template('index.html')
+
+@index_controller.route('/partial/scheduled')
+def scheduled_partial():
+    """ Partial for scheduled transactions. Displays ten upcoming transactions
+    for the dashboard. """
+    return render_template('incomplete.html')

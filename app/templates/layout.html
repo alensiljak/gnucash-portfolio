@@ -7,6 +7,9 @@
   <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=yes"> 
   {% block head %}
 
+  <link rel="shortcut icon" href="{{ url_for('static', filename='briefcase.png') }}">
+  {# <link rel="shortcut icon" href="/favicon.ico"> #}
+
   {% assets "vendor_css" %}
   <link rel="stylesheet" href="{{ ASSET_URL }}" />
   {% endassets %}
@@ -19,6 +22,9 @@
 <body>
   <nav class="navbar navbar-dark bg-matte">
     <a class="navbar-brand" href="/">GnuCash Portfolio</a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
   </nav>
 
   <div id="content" class="container-fluid">
@@ -31,9 +37,10 @@
       </div>
     </div>
   </div>
-  <footer id="footer">
+  <footer id="footer" class="mt-2 ml-2">
     {% block footer %} &copy; Copyright 2017 by
     <a href="http://alensiljak.tk/">Alen Šiljak</a>. 
+    <small>Icon made by <a href="https://www.flaticon.com/authors/dimitry-miroliubov">Dimitry Miroljubov</a> from <a href="www.flaticon.com">FlatIcon</a>.</small>
     {% endblock %}
   </footer>
 
