@@ -1,25 +1,29 @@
 {% extends "layout.html" %} {% block title %}Portfolio Value{% endblock %} {% block content %}
 <h1>Portfolio Value</h1>
 
-<div class="card bg-dark text-light">
+<div class="card bg-secondary">
     <div class="card-header"></div>
     <div class="card-body">
-<form method="POST">
-    <div class="form-row">
-        <div class="form-group">
-            <label for="filter.as_of_date">As of date:</label>
-            <input type="date" id="as_of_date" name="filter.as_of_date" class="form-control" value="{{ '{:%Y-%m-%d}'.format(model.filter.as_of_date) }}">
-        </div>
+        <form method="POST">
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="filter.as_of_date">As of date:</label>
+                    <input type="date" id="as_of_date" name="filter.as_of_date" class="form-control" value="{{ '{:%Y-%m-%d}'.format(model.filter.as_of_date) }}">
+                </div>
+            </div>
+            {# Security #}
+            <div class="form-group">
+                    <label for="security">Stock:</label>
+                    <input id="security" name="security" type="text" class="form-control" placeholder="type partial name to search (min. 2 characters)"
+                value="{{ model.filter.stock }}">
+            </div>
+
+            <div class="text-center">
+                <button class="btn btn-primary mx-auto">Apply</button>
+            </div>
+
+        </form>
     </div>
-    <div class="form-group">
-        <label for="filter.stock">Stock:</label>
-        <input type="text" name="filter.stock" class="form-control" value="{{ model.filter.stock }}">
-    </div>
-    <div class="text-center">
-        <button class="btn btn-outline-light mx-auto">Apply</button>
-    </div>
-</form>
-</div>
 </div>
 
 <hr>
@@ -75,6 +79,21 @@
         // initialize datatables.
         $("#results").DataTable({
             lengthMenu: [10, 20, 30, 50, 100, -1]
+        });
+
+        $("#security").autocomplete({
+            serviceUrl: '/security/api/search',
+            //minChars: 2,
+            onSelect: function (suggestion) {
+                //alert('You selected: ' + suggestion.value + ', ' + suggestion.data);
+                // show details
+                $.ajax({
+                    url: '/account/partial/accountdetail/' + suggestion.data,
+                    success: function (data, textStatus, jqxhr) {
+                        $("#accountDetails").html(data);
+                    }
+                })
+            }
         });
     });
 </script> {% endblock %}

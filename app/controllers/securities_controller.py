@@ -9,6 +9,7 @@ Stocks
 """
 from logging import log, DEBUG
 import flask
+import json
 from flask import Blueprint, request, render_template
 from gnucash_portfolio.bookaggregate import BookAggregate
 from gnucash_portfolio.securitiesaggregate import SecuritiesAggregate
@@ -88,3 +89,17 @@ def transactions():
 def distributions():
     """ Distributions for the security """
     return render_template('distributions.html', model=None)
+
+###################
+# API
+
+@stock_controller.route('/api/search')
+def search_api():
+    """ Search for security """
+    query = request.args.get('query')
+    with BookAggregate() as svc:
+        securities = svc.securities.find(query)
+        sec_list = [{"value": sec.mnemonic, "data": sec.guid} for sec in securities]
+        model = {"suggestions": sec_list}
+        result = json.dumps(model)
+        return result

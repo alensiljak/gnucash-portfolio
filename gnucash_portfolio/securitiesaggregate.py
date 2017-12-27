@@ -181,10 +181,18 @@ class SecuritiesAggregate(AggregateBase):
     #     super(SecuritiesAggregate, self).__init__(book)
     #     pass
 
+    def find(self, search_term: str) -> List[Commodity]:
+        """ Searches for security by part of the name """
+        query = (
+            self.query
+            .filter(Commodity.mnemonic.like('%' + search_term + '%'))
+        )
+        return query.all()
+
     def get_all(self):
         """ Loads all non-currency commodities, assuming they are stocks. """
         query = (
-            self.__get_base_query()
+            self.query
             .order_by(Commodity.mnemonic)
         )
         return query.all()
@@ -203,7 +211,7 @@ class SecuritiesAggregate(AggregateBase):
             mnemonic = symbol
 
         query = (
-            self.__get_base_query()
+            self.query
             .filter(Commodity.mnemonic == mnemonic)
         )
         if len(parts) > 1:
@@ -231,7 +239,7 @@ class SecuritiesAggregate(AggregateBase):
     def get_stocks(self, symbols: List[str]) -> List[Commodity]:
         """ loads stocks by symbol """
         query = (
-            self.__get_base_query()
+            self.query
             .filter(Commodity.mnemonic.in_(symbols))
         )
         return query.all()
@@ -245,7 +253,8 @@ class SecuritiesAggregate(AggregateBase):
         security = self.get_by_symbol(symbol)
         return self.get_aggregate(security)
 
-    def __get_base_query(self):
+    @property
+    def query(self):
         """ Returns the base query which filters out data for all queries. """
         query = (
             self.book.session.query(Commodity)

@@ -66,6 +66,6 @@ def __parse_input_model() -> PortfolioValueInputModel:
     date_input = datetime.strptime(date_input_str, "%Y-%m-%d")
     result.as_of_date = datetime(date_input.year, date_input.month, date_input.day, 23, 59, 59)
 
-    result.stock = request.form.get("filter.stock")
+    result.stock = request.form.get("security")
 
     return result
