@@ -3,10 +3,15 @@
     Custom color palette.
  */
 $colors: (
-    "matte": #414141,
-    "fresh": #ccdfcb,
-    "watermelon": #ff6a5c,
-    "teal": #056571
+    "matte": #414141,   // arsenic
+    "fresh": #ccdfcb,   // pastel grey
+    "watermelon": #ff6a5c,  // pastel red
+    "teal": #056571,     // skobeloff
+
+    "linen": #f8f4e3, // eae0cc pearl, fcde9c tuscan, EDC9AF desert sand
+    "desert_sand": #EDC9AF,
+    //"dark_vanilla": #e0bea6
+    "dark_vanilla": #e2c0a7
 );
 @function color($key: "teal") {
     @return map-get($colors, $key);
@@ -17,19 +22,17 @@ $colors: (
 */
 $body-bg: color("fresh");
 $theme-colors: (
+    "dark": color("matte"),
+    "light": color("fresh"),
     "primary": color("teal"),
-    "danger": color("watermelon")
+    "danger": color("watermelon"),
+    "secondary": color("dark_vanilla")
   );
 @import '../node_modules/bootstrap/scss/bootstrap';
-// https://github.com/bassjobsen/typeahead.js-bootstrap4-css
-//@import 'styles/typeaheadjs.scss';
 
 /*
     Redefined defaults
 */
-// body {
-//     background-color: color("fresh");
-// }
 
 h1, h2 {
     color: color("teal");
