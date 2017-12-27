@@ -1,0 +1,17 @@
+{% extends "layout.html" %} {% block title %}Accounts{% endblock %} {% block content %}
+<h1>Accounts</h1>
+
+<p>
+    This list shows ... accounts.
+</p>
+
+<ul>
+{% for account in model.accounts %}
+    <li>
+        <a href="/account/{{ account.guid }}/details">
+        {{ account.fullname }}
+        </a>
+    </li>
+{% endfor %}
+</ul>
+{% endblock %}

@@ -1,5 +1,6 @@
 """
-Accounts business layer
+Accounts business layer.
+Accounts should only be Asset, Bank, Mutual, and Stock in the context of Portfolio?
 """
 from datetime import date, datetime, timedelta
 from enum import Enum, auto
@@ -34,26 +35,9 @@ class AccountAggregate(AggregateBase):
         self.account = account
         #self.book = book
 
-
     def get_all_child_accounts_as_array(self) -> List[Account]:
         """ Returns the whole tree of child accounts in a list """
         return self.__get_all_child_accounts_as_array(self.account)
-
-
-    def __get_all_child_accounts_as_array(self, account: Account) -> List[Account]:
-        """ Returns the whole tree of child accounts in a list """
-        result = []
-        # ignore placeholders
-        if not account.placeholder:
-            #continue
-            result.append(account)
-
-        for child in account.children:
-            sub_accounts = self.__get_all_child_accounts_as_array(child)
-            result += sub_accounts
-
-        return result
-
 
     def get_cash_balance_with_children(self, root_account: Account, currency: Commodity) -> Decimal:
         """ 
@@ -84,7 +68,6 @@ class AccountAggregate(AggregateBase):
             total += value
 
         return total
-
 
     def load_cash_balances_with_children(self, root_account_fullname: str):
         """ loads data for cash balances """
@@ -132,7 +115,6 @@ class AccountAggregate(AggregateBase):
 
         return model
 
-
     def get_start_balance(self, before: date) -> Decimal:
         """ Calculates account balance """
         # create a new date without hours
@@ -168,6 +150,23 @@ class AccountAggregate(AggregateBase):
                     Transaction.post_date <= date_to)
         )
         return query.all()
+
+    ####################
+    # Private
+
+    def __get_all_child_accounts_as_array(self, account: Account) -> List[Account]:
+        """ Returns the whole tree of child accounts in a list """
+        result = []
+        # ignore placeholders
+        if not account.placeholder:
+            #continue
+            result.append(account)
+
+        for child in account.children:
+            sub_accounts = self.__get_all_child_accounts_as_array(child)
+            result += sub_accounts
+
+        return result
 
 
 class AccountsAggregate(AggregateBase):
@@ -216,6 +215,10 @@ class AccountsAggregate(AggregateBase):
         for child in root_acct.children:
             log(DEBUG, "found child %s", child.fullname)
         return
+
+    def get_all(self) -> List[Account]:
+        """ Returns all book accounts as a list, excluding templates. """
+        return [account for account in self.book.accounts if account.parent.name != "Template Root"]
 
     def get_account_aggregate(self, account: Account) -> AccountAggregate:
         """ Returns account aggregate """

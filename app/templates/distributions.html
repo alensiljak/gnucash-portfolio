@@ -23,7 +23,7 @@
                     {# Account(s) #}
                     <div class="form-row">
                         <div class="col form-group">
-                            <label for="accounts">Income account(s)</label>
+                            <label for="accounts">Income account(s) (includes all sub-accounts):</label>
                             <div class="w-100">
                                 <input type="text" id="accounts" name="accounts" class="form-control typeahead" value="{% if in_model.accounts %}{{ in_model.accounts }}{% else %}Income:Investment{% endif %}">
                             </div>

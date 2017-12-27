@@ -5,12 +5,15 @@
     <div class="card-body">
 
         <form method="POST">
+            {# Account #}
+            <input type="hidden" name="account_id" value="{{ input_model.account_id }}">
             <div class="form-group">
-                <label for="account_id">Account</label>
+                <label for="account">Account</label>
                 <div class="text-dark">
-                    <select name="account_id" class="form-control chosen">
+                    <select name="account" class="form-control chosen">
                         {% for account in reference.accounts %}
-                        <option {% if account.guid==input_model.account_id %}selected{% endif %} value="{{ account.guid }}">
+                        <option {% if account.guid==input_model.account_id %}selected{% endif %} 
+                            value="{{ account.guid }}">
                             {{ account.fullname }}
                         </option>
                         {% endfor %}
@@ -18,14 +21,16 @@
                 </div>
             </div>
 
+            {# Date Period #}
             <div class="form-group">
                 <label for="period">Period</label>
-                <input type="text" name="period" class="form-control daterange" {% if input_model.period %}value="{{ input_model.period }}"
+                <input id="period" type="text" name="period" class="form-control daterange"
+                    {% if input_model.period %}value="{{ input_model.period }}"
                     {% endif %}>
             </div>
 
             <div class="text-center">
-                <button class="btn btn-primary">Apply</button>
+                <button id="submit" class="btn btn-outline-primary">Apply</button>
             </div>
         </form>
     </div>
@@ -71,7 +76,14 @@
 {% endif %} {% endblock %} {% block scripts %}
 <script type="text/javascript">
     $(function () {
-        // TODO init date range picker
-        // todo: init select
+        // $("#submit").click(function(event) {
+        //     // var conceptName = $('#aioConceptName :selected').text();
+        //     var accountId = $("#account_id").val();
+        //     var accountName = $("#account :selected").text();
+        //     var selectedVal = $("#account :selected").val();
+        //     var period = $("#period").val();
+
+        //     alert(accountId + period + accountName + selectedVal);
+        // });
     });
 </script> {% endblock %}

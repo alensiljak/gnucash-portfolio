@@ -3,11 +3,11 @@ import locale
 import sys
 import winreg
 from typing import List
-from piecash import Book, Commodity
+from piecash import Account, Book, Commodity
 from gnucash_portfolio.lib.database import Database, Settings
 from gnucash_portfolio.currencyaggregate import CurrenciesAggregate
 from gnucash_portfolio.pricesaggregate import PricesAggregate
-from gnucash_portfolio.accountaggregate import AccountsAggregate
+from gnucash_portfolio.accountaggregate import AccountsAggregate, AccountType
 from gnucash_portfolio.assetallocation import AssetAllocationAggregate
 from gnucash_portfolio.securitiesaggregate import SecuritiesAggregate
 

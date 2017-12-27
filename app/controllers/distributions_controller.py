@@ -1,6 +1,4 @@
-"""
-Income reports
-"""
+""" Income reports """
 from typing import List
 from logging import log, DEBUG
 from datetime import date, timedelta
@@ -9,10 +7,8 @@ from piecash import Account, Commodity, Split, Book, Transaction
 from gnucash_portfolio.bookaggregate import BookAggregate
 from app.models.distribution_models import DistributionsInputModel, DistributionsViewModel
 
-
 distribution_controller = Blueprint( # pylint: disable=invalid-name
     'distribution_controller', __name__, url_prefix='/distributions')
-
 
 @distribution_controller.route('/')
 def income_in_period():
@@ -24,7 +20,6 @@ def income_in_period():
 
     return render_template('distributions.html', model=None, in_model=None)
 
-
 @distribution_controller.route('/', methods=['POST'])
 def income_in_period_data():
     """ Displays the results """
@@ -34,7 +29,6 @@ def income_in_period_data():
     with BookAggregate() as svc:
         model = __get_model_inperiod(in_model, svc)
         return render_template('distributions.html', model=model, in_model=in_model)
-
 
 @distribution_controller.route('/<symbol>', methods=['GET'])
 def for_security(symbol):
@@ -52,6 +46,8 @@ def for_security(symbol):
 
         return render_template('distributions.html', model=model, in_model=in_model)
 
+###################
+# Private
 
 def __get_model_inperiod(in_model, svc: BookAggregate) -> DistributionsViewModel:
     """ Creates the data model for the prices in period """
@@ -67,7 +63,6 @@ def __get_model_inperiod(in_model, svc: BookAggregate) -> DistributionsViewModel
     model.splits = splits
 
     return model
-
 
 def __get_input_model() -> DistributionsInputModel:
     """ Parses user input into a data-transfer object (DTO) """
@@ -88,7 +83,6 @@ def __get_input_model() -> DistributionsInputModel:
 
     return model
 
-
 def __load_income_in_period(
         book: Book, account_fullnames: List[str], date_from: date, date_to: date):
     """ load income transactions in the given period """
@@ -105,7 +99,6 @@ def __load_income_in_period(
 
     return income_transactions
 
-
 def __get_accounts_by_name(book: Book, account_fullnames: List[str]) -> List[Account]:
     """ retrieves the account objects for the given full names """
     result = []
@@ -116,11 +109,9 @@ def __get_accounts_by_name(book: Book, account_fullnames: List[str]) -> List[Acc
 
     return result
 
-
 def __get_ids(accounts: List[Account]):
     """ extracts only the ids from the account list """
     return [o.guid for o in accounts]
-
 
 def __get_income_account_ids(book: Book, account_names: List[str]) -> List[str]:
     """ Loads all income account ids """
@@ -133,7 +124,6 @@ def __get_income_account_ids(book: Book, account_names: List[str]) -> List[str]:
 
     return ids
 
-
 def __get_children_ids(account: Account) -> List[str]:
     """ recursive function that loads ids from all child accounts in the tree """
     ids = []
@@ -145,7 +135,6 @@ def __get_children_ids(account: Account) -> List[str]:
         child_ids = __get_children_ids(child)
         ids += child_ids
     return ids
-
 
 def __load_all_income_for_account(account: Account, date_from: date, date_to: date):
     """ Loads all income in the account """
@@ -161,7 +150,6 @@ def __load_all_income_for_account(account: Account, date_from: date, date_to: da
         result += child_splits
 
     return result
-
 
 def __load_income_in_period_query(
         book: Book, account_ids: List[hex], in_model) -> List[Split]:

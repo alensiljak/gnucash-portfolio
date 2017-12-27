@@ -24,6 +24,17 @@ def index():
     """ root page """
     return render_template('account.html')
 
+@account_controller.route('/list')
+def all_accounts():
+    """ Displays all book accounts """
+    with BookAggregate() as svc:
+        accounts = svc.accounts.get_all()
+        # Sort by full name.
+        accounts.sort(key=lambda x: x.fullname)
+
+        model = {"accounts": accounts}
+        return render_template('account.list.html', model=model)
+
 @account_controller.route('/search')
 def search():
     """ Search for an account by typing in a part of the name """
@@ -74,14 +85,13 @@ def cash_balances():
 @account_controller.route('/transactions', methods=['GET'])
 def transactions():
     """ Account transactions """
-    in_model = __get_input_model_for_tx()
-
-    # Check if any parameters were passed already
-    account_fullname = request.args.get('acct_name')
-
     with BookAggregate() as svc:
+        in_model = model = account_models.AccountTransactionsInputModel()
+
         reference = __load_ref_model_for_tx(svc)
 
+        # Check if any parameters were passed already
+        account_fullname = request.args.get('acct_name')
         if account_fullname:
             acct = svc.accounts.get_by_fullname(account_fullname)
             in_model.account_id = acct.guid
@@ -104,9 +114,18 @@ def transactions_post():
             'account.transactions.html',
             model=model, input_model=input_model, reference=reference)
 
-# @account_controller.route('/transactions/<acct_id>')
-# def account_transactions(acct_id: str):
-#     return render_template('incomplete.html')
+@account_controller.route('/<acct_id>/details')
+def account_details(acct_id):
+    """ Displays account details """
+    with BookAggregate() as svc:
+        account = svc.accounts.get_by_id(acct_id)
+        model = {"account": account}
+        return render_template('account.details.html', model=model)
+
+@account_controller.route('/<acct_id>/transactions')
+def account_transactions(acct_id: str):
+    # TODO get other parameters
+    return render_template('incomplete.html')
 
 @account_controller.route('/details/<path:fullname>')
 def details(fullname):
@@ -156,7 +175,7 @@ def __get_input_model_for_tx() -> account_models.AccountTransactionsInputModel:
         return model
 
     # read from request
-    model.account_id = request.form.get('account_id')
+    model.account_id = request.form.get('account')
     model.period = request.form.get('period')
 
     return model
