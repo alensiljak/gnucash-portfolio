@@ -3,7 +3,8 @@ Generic utilities
 """
 import tempfile
 import time
-import json
+try: import simplejson as json 
+except ImportError: import json
 import os
 import webbrowser
 from datetime import datetime, timedelta

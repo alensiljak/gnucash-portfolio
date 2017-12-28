@@ -2,7 +2,8 @@
 """
 Provides access to the settings file.
 """
-import json
+try: import simplejson as json 
+except ImportError: import json
 import pathlib
 from os import path
 from pprint import pprint

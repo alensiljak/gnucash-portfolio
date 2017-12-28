@@ -1,7 +1,8 @@
 """
 Editor for settings
 """
-import json
+try: import simplejson as json 
+except ImportError: import json
 from flask import Blueprint, request, render_template
 from gnucash_portfolio.lib import generic
 

@@ -3,7 +3,8 @@ Test configuration
 See more about fixtures at
 https://docs.pytest.org/en/latest/fixture.html
 """
-import json
+try: import simplejson as json 
+except ImportError: import json
 import pytest
 from gnucash_portfolio.lib.settings import Settings
 from gnucash_portfolio.bookaggregate import BookAggregate

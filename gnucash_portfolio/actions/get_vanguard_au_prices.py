@@ -7,7 +7,8 @@ Vanguard International Shares Index Fund (Hedged)     VAN0107AU   8146
 Vanguard Australian Property Securities Index Fund    VAN0012AU   8147
 Vanguard Australian Shares High Yield Fund            VAN0017AU   8148
 """
-import json
+try: import simplejson as json 
+except ImportError: import json
 import requests
 
 def __get_json_prices():

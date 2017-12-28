@@ -9,7 +9,8 @@ Stocks
 """
 from logging import log, DEBUG
 import flask
-import json
+try: import simplejson as json 
+except ImportError: import json
 from flask import Blueprint, request, render_template
 from gnucash_portfolio.bookaggregate import BookAggregate
 from gnucash_portfolio.securitiesaggregate import SecuritiesAggregate

@@ -2,7 +2,8 @@
 Asset Allocation module
 """
 from decimal import Decimal
-import json
+try: import simplejson as json 
+except ImportError: import json
 import os
 from os import path
 #from logging import log, DEBUG
