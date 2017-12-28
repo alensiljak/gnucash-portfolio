@@ -56,8 +56,7 @@ def test_get_upcoming(svc_db: BookAggregate):
     actual = svc_db.scheduled.get_upcoming(10)
 
     for tx in actual:
-        log(DEBUG, tx["next_date"])
+        # All returned records must be enabled
+        assert tx.enabled == True
 
-    assert len(actual) == 10
-    # All returned records must be enabled
-    assert actual[0].enabled is True
+    assert len(actual) == 2

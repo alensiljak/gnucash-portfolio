@@ -12,10 +12,6 @@ index_controller = Blueprint( # pylint: disable=invalid-name
 @index_controller.route('/')
 def index():
     """ The default route. Homepage. """
-    # TODO load recurring transactions partial model
-    with BookAggregate() as svc:
-        log(DEBUG, "here we load recurring transactions!")
-        # svc.scheduled.
     return render_template('index.html')
 
 @index_controller.route('/components')

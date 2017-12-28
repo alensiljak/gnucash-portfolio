@@ -1,9 +1,10 @@
 """ Scheduled Transactions """
 
-#from logging import log, DEBUG
+from typing import List
+from logging import log, DEBUG, INFO
 from datetime import date
 from piecash import Book, ScheduledTransaction #, Recurrence
-#from gnucash_portfolio.lib import datetimeutils
+from gnucash_portfolio.lib import datetimeutils
 
 
 def get_next_occurrence(tx: ScheduledTransaction) -> date:
@@ -16,27 +17,39 @@ def get_next_occurrence(tx: ScheduledTransaction) -> date:
     if not last_date:
         last_date = tx.recurrence.recurrence_period_start
 
-    ref_date = last_date
-
-    if tx.recurrence.recurrence_period_start <= ref_date:
-        #log(DEBUG, "The period start is the reference date.")
-        return ref_date
-
-    base_date = tx.recurrence.recurrence_period_start
+    if last_date < tx.recurrence.recurrence_period_start:
+        log(DEBUG, "The period start is the next date. %s, %s", tx.name, last_date)
+        return last_date
 
     # print(tx.name, base_date, tx.recurrence.recurrence_period_start,
     #       tx.recurrence.recurrence_mult, tx.recurrence.recurrence_period_type)
+    ref_date = last_date
+    next_date = ref_date
+    period_type = tx.recurrence.recurrence_period_type
 
-    if tx.recurrence.recurrence_period_type == "monthly":
-        print("monthly")
-    elif tx.recurrence.recurrence_period_type == "daily":
+    if period_type == "month":
+        next_date = datetimeutils.add_months(next_date, tx.recurrence.recurrence_mult)
+    elif period_type == "daily":
         print("daily")
+    elif period_type == "end of month":
+        # if the date is already at end of month, then increase
+        if datetimeutils.is_end_of_month(next_date):
+            next_date = datetimeutils.add_months(next_date, tx.recurrence.recurrence_mult)
+            # Set at end of month again
+            next_date = datetimeutils.get_end_of_month(next_date)
+        else:
+            next_date = datetimeutils.get_end_of_month(next_date)
+    elif period_type == "once":
+        print("once")
+    else:
+        log(INFO, "recurrence not handled: %s", tx.recurrence.recurrence_period_type)
 
     # check the datetime libraries for scheduler, to calculate the occurrence?
 
     #tx["next_date"] = base_date
+    #log(DEBUG, "%s: last occurred = %s, next = %s", tx.name, last_date, next_date)
 
-    return base_date
+    return next_date
 
 
 class ScheduledTxAggregate:
@@ -56,7 +69,7 @@ class ScheduledTxsAggregate:
     def __init__(self, book: Book):
         self.book = book
 
-    def get_upcoming(self, count: int):
+    def get_upcoming(self, count: int) -> List[ScheduledTransaction]:
         """ Returns <count> upcoming scheduled transactions """
         # load all enabled scheduled transactions
         all_tx = self.query.filter(ScheduledTransaction.enabled == 1).all()

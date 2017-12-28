@@ -1,7 +1,23 @@
 """ Date/time utilities """
 
 from datetime import datetime, date, time, timedelta
+#import dateutil
+from dateutil.relativedelta import relativedelta
 #import calendar
+
+def add_months(date_value: date, value: int) -> date:
+    """ Add a number of months to the given date """
+    return date_value + relativedelta(months=value)
+
+def get_end_of_month(date_val: date) -> date:
+    """ Provides end of the month for the given date """
+    # Increase month by 1,
+    result = date_val + relativedelta(months=1)
+    # take the 1st day of the (next) month,
+    result = result.replace(day=1)
+    # subtract one day
+    result = result - relativedelta(days=1)
+    return result
 
 def get_from_gnucash26_date(date_str: str) -> date:
     """ Creates a datetime from GnuCash 2.6 date string """
@@ -75,3 +91,8 @@ def get_period_last_3_months() -> str:
     start_date = today - timedelta(weeks=13)
     period = get_period(start_date, today)
     return period
+
+def is_end_of_month(value: date) -> bool:
+    """ Checks if the date is at the end of the month """
+    end_of_month = get_end_of_month(value)
+    return value == end_of_month
