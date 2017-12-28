@@ -3,10 +3,10 @@
 from datetime import datetime, date, time, timedelta
 #import calendar
 
-def get_from_gnucash26_date(date_str: str) -> datetime:
+def get_from_gnucash26_date(date_str: str) -> date:
     """ Creates a datetime from GnuCash 2.6 date string """
     date_format = "%Y%m%d"
-    result = datetime.strptime(date_str, date_format)
+    result = datetime.strptime(date_str, date_format).date()
     return result
 
 def today_date() -> date:

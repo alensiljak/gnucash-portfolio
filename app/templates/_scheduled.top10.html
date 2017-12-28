@@ -3,7 +3,7 @@
 <span>Upcoming 10 scheduled transactions</span>
 
 <ul>
-    {% for item in model.list %}
-    <li>{{ item.name }}</li>
+    {% for tx in model.list %}
+    <li>{{ tx.next_date.value }}, {{ tx.name }}</li>
     {% endfor %}
 </ul>

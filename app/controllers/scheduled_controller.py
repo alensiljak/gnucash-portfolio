@@ -38,7 +38,7 @@ def topten_partial():
     with BookAggregate() as svc:
         upcoming = svc.scheduled.get_upcoming(10)
         model = {
-            "list": [{"key": tx.guid, "value": tx.name} for tx in upcoming]
+            "list": [tx for tx in upcoming]
         }
         return render_template('_scheduled.top10.html', model=model)
 
