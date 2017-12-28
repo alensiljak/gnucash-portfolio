@@ -1,7 +1,7 @@
 """ Scheduled Transactions """
 
 from typing import List
-from logging import log, DEBUG, INFO
+from logging import log, DEBUG, INFO, WARN
 from datetime import date
 from piecash import Book, ScheduledTransaction #, Recurrence
 from gnucash_portfolio.lib import datetimeutils
@@ -30,7 +30,7 @@ def get_next_occurrence(tx: ScheduledTransaction) -> date:
     if period_type == "month":
         next_date = datetimeutils.add_months(next_date, tx.recurrence.recurrence_mult)
     elif period_type == "daily":
-        print("daily")
+        log(WARN, "daily not handled")
     elif period_type == "end of month":
         # if the date is already at end of month, then increase
         if datetimeutils.is_end_of_month(next_date):
@@ -40,7 +40,7 @@ def get_next_occurrence(tx: ScheduledTransaction) -> date:
         else:
             next_date = datetimeutils.get_end_of_month(next_date)
     elif period_type == "once":
-        print("once")
+        next_date = tx.recurrence.recurrence_period_start
     else:
         log(INFO, "recurrence not handled: %s", tx.recurrence.recurrence_period_type)
 
