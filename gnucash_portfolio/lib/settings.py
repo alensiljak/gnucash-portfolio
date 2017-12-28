@@ -2,7 +2,7 @@
 """
 Provides access to the settings file.
 """
-try: import simplejson as json 
+try: import simplejson as json
 except ImportError: import json
 import pathlib
 from os import path

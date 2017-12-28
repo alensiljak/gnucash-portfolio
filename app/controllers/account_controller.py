@@ -4,7 +4,7 @@ Account operations
 - editing of metadata (?)
 - list of transactions / register -> see transaction controller
 """
-try: import simplejson as json 
+try: import simplejson as json
 except ImportError: import json
 from logging import log, DEBUG
 from flask import Blueprint, request, render_template

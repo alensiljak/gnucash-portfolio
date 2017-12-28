@@ -3,7 +3,7 @@ Generic utilities
 """
 import tempfile
 import time
-try: import simplejson as json 
+try: import simplejson as json
 except ImportError: import json
 import os
 import webbrowser

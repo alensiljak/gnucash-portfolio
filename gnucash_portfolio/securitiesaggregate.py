@@ -1,4 +1,4 @@
-""" Stocks aggregate object 
+""" Stocks aggregate object
 This should include all non-currency commodities.
 Accounts should be only accounts that hold these commodities.
 """

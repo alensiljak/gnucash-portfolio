@@ -4,7 +4,7 @@ Fetches the current exchange rates.
 Currently uses Fixer API.
 """
 import glob
-try: import simplejson as json 
+try: import simplejson as json
 except ImportError: import json
 import os
 from logging import log, ERROR

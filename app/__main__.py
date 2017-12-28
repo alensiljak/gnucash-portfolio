@@ -1,7 +1,7 @@
 """ This is the entry point to the application """
-import os
+#import os
 from logging.config import dictConfig
-from flask import Blueprint, Flask, send_from_directory
+from flask import Blueprint, Flask #, send_from_directory
 from flask_assets import Bundle, Environment
 
 # Controllers/blueprints
