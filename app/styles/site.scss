@@ -30,6 +30,7 @@ $theme-colors: (
     "secondary": color("dark_vanilla")
   );
 @import '../node_modules/bootstrap/scss/bootstrap';
+// now we have custom colors for bg-<color> and text-<color> classes!
 
 /*
     Redefined defaults
@@ -40,40 +41,11 @@ h1, h2 {
 }
 
 a {
-    color: color("teal");
+    //color: color("teal");
     
     &.active {
         color: color("watermelon");
     }
-}
-
-/*
-    Custom styles
-*/
-// .bg-matte {
-//     background-color: color("matte");
-// }
-// .bg-fresh {
-//     background-color: color("fresh");
-// }
-.bg-watermelon {
-    background-color: color("watermelon");
-}
-.bg-teal {
-    background-color: color("teal");
-}
-
-// .text-matte {
-//     color: color("matte");
-// }
-// .text-fresh {
-//     color: color("fresh") !important;
-// }
-.text-teal {
-    color: color("teal");
-}
-.text-watermelon {
-    color: color("watermelon");
 }
 
 #leftnav {

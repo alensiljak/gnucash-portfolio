@@ -15,7 +15,7 @@
         <th>Value Diff</th>
     </thead>
     {%- for asset_class in model["allocation"].classes recursive %}
-    <tr class="{% if loop.depth0 == 0 %}bg-teal text-light{% endif %}">
+    <tr class="{% if loop.depth0 == 0 %}bg-primary text-light{% endif %}">
         <td>
             <span class="ml-{{ loop.depth0 * 2 }}">
                 <a href="/assetallocation/details/{{ asset_class.fullname }}"
@@ -33,7 +33,7 @@
         <td class="text-right">
             {{ "{:,.2f}".format(asset_class.alloc_diff) }}</td>
         <td class="text-right">
-            <span class="{% if asset_class.over_threshold %}fg-watermelon{% endif %}">
+            <span class="{% if asset_class.over_threshold %}text-danger{% endif %}">
                 {{ "{:,.2f}".format(asset_class.alloc_diff_perc) }}%,
             </span>
         </td>
