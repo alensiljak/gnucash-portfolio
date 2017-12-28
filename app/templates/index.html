@@ -1,24 +1,27 @@
-{% extends "layout.html" %}
-{% block title %}Home{% endblock %}
-{% block head %} 
-  {{ super() }}
-{% endblock %} 
-{% block content %}
+{% extends "layout.html" %} {% block title %}Home{% endblock %} {% block head %} {{ super() }} {% endblock %} {% block content
+%}
 <h1>GnuCash Portfolio</h1>
 
 {# Github Badge #}
-<a href="https://github.com/MisterY/github-portfolio"><img style="position: absolute; top: 0; right: 0; border: 0;" src="https://camo.githubusercontent.com/e7bbb0521b397edbd5fe43e7f760759336b5e05f/68747470733a2f2f73332e616d617a6f6e6177732e636f6d2f6769746875622f726962626f6e732f666f726b6d655f72696768745f677265656e5f3030373230302e706e67" alt="Fork me on GitHub" data-canonical-src="https://s3.amazonaws.com/github/ribbons/forkme_right_green_007200.png"></a>
+<a href="https://github.com/MisterY/github-portfolio">
+  <img style="position: absolute; top: 0; right: 0; border: 0;" src="https://camo.githubusercontent.com/e7bbb0521b397edbd5fe43e7f760759336b5e05f/68747470733a2f2f73332e616d617a6f6e6177732e636f6d2f6769746875622f726962626f6e732f666f726b6d655f72696768745f677265656e5f3030373230302e706e67"
+    alt="Fork me on GitHub" data-canonical-src="https://s3.amazonaws.com/github/ribbons/forkme_right_green_007200.png">
+</a>
 
 <p>
-  GnuCash Portfolio web app provides portfolio management and analysis tools for GnuCash book stored in SQLite format.
-  Please keep in mind that modifying the data requires the GnuCash application being closed to ensure the changes are not overwritten.
+  GnuCash Portfolio web app provides portfolio management and analysis tools for GnuCash book stored in SQLite format. Please
+  keep in mind that modifying the data requires the GnuCash application being closed to ensure the changes are not overwritten.
 </p>
 
 <div class="row">
   <div class="col-md-4"></div>
   <div class="col-md-4"></div>
   <div class="col-md-4">
-    {% include '_index.recurring.html' %}
+    <div class="card bg-dark text-light">
+      <div class="card-body" id="recurringContainer">
+        {# include '_index.recurring.html' #}
+      </div>
+    </div>
   </div>
 </div>
 
@@ -33,11 +36,11 @@
       <li>
         Security Analysis
         <ul>
-            <li>
-                Distributions per security
-            </li>
-            <li>Transactions (buy/sell)</li>
-            <li>ROI</li>
+          <li>
+            Distributions per security
+          </li>
+          <li>Transactions (buy/sell)</li>
+          <li>ROI</li>
         </ul>
       </li>
       <li>Scheduled Transactions</li>
@@ -53,4 +56,16 @@
   </li>
 </ul>
 
-{% endblock %}
+{% endblock %} {% block scripts %}
+<script>
+  $(function () {
+    // TODO load partials via Ajax.
+    $.ajax({
+      url: '/scheduled/partial/top10',
+      success: function (data) {
+        $("#recurringContainer").html(data);
+      }
+    })
+
+  });
+</script> {% endblock %}

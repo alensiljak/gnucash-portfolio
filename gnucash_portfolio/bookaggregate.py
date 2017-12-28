@@ -9,6 +9,7 @@ from gnucash_portfolio.currencyaggregate import CurrenciesAggregate
 from gnucash_portfolio.pricesaggregate import PricesAggregate
 from gnucash_portfolio.accountaggregate import AccountsAggregate, AccountType
 from gnucash_portfolio.assetallocation import AssetAllocationAggregate
+from gnucash_portfolio.scheduledtxaggregate import ScheduledTxsAggregate
 from gnucash_portfolio.securitiesaggregate import SecuritiesAggregate
 
 
@@ -28,6 +29,7 @@ class BookAggregate:
         self.__currencies_aggregate: CurrenciesAggregate = None
         self.__accounts_aggregate: AccountsAggregate = None
         self.__prices_aggregate: PricesAggregate = None
+        self.__scheduled_tx_aggregate: ScheduledTxsAggregate = None
         self.__securities_aggregate: SecuritiesAggregate = None
 
         self.__settings: Settings = None
@@ -92,6 +94,13 @@ class BookAggregate:
         if not self.__prices_aggregate:
             self.__prices_aggregate = PricesAggregate(self.book)
         return self.__prices_aggregate
+
+    @property
+    def scheduled(self) -> ScheduledTxsAggregate:
+        """ Scheduled Transactions """
+        if not self.__scheduled_tx_aggregate:
+            self.__scheduled_tx_aggregate = ScheduledTxsAggregate(self.book)
+        return self.__scheduled_tx_aggregate
 
     @property
     def securities(self):

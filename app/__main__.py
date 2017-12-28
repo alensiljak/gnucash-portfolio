@@ -8,7 +8,7 @@ from flask_assets import Bundle, Environment
 from app.controllers import (
     account_controller, currency_controller, vanguard, distributions_controller,
     assetallocation_controller, index, portfolio_controller, price_controller,
-    securities_controller, settings_controller, transaction)
+    securities_controller, settings_controller, scheduled_controller, transaction_controller)
 
 
 # Configure logging before the application is initialized.
@@ -36,9 +36,10 @@ app.register_blueprint(currency_controller.currency_controller)
 app.register_blueprint(distributions_controller.distribution_controller)
 app.register_blueprint(portfolio_controller.portfolio_controller)
 app.register_blueprint(price_controller.price_controller)
+app.register_blueprint(scheduled_controller.scheduled_controller)
 app.register_blueprint(settings_controller.settings_controller)
 app.register_blueprint(securities_controller.stock_controller)
-app.register_blueprint(transaction.transaction_controller)
+app.register_blueprint(transaction_controller.transaction_controller)
 app.register_blueprint(vanguard.vanguard_controller)
 
 # Static routes.

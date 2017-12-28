@@ -1,7 +1,6 @@
 #!/usr/bin/python3
-"""
-GnuCash database operations
-"""
+""" GnuCash database operations """
+
 import os
 from os import path
 from logging import log, INFO, WARN

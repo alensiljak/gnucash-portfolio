@@ -15,12 +15,12 @@ class DistributionsInputModel:
     @property
     def date_from(self):
         """ extract from date """
-        return datetimeutils.get_from(self.period)
+        return datetimeutils.get_period_start(self.period)
 
     @property
     def date_to(self):
         """ extract from date """
-        return datetimeutils.get_to(self.period)
+        return datetimeutils.get_period_end(self.period)
 
     @property
     def accounts_list(self) -> List[str]:

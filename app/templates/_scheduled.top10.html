@@ -1,0 +1,9 @@
+{# Partial for 10 next upcoming scheduled transactions #}
+
+<span>Upcoming 10 scheduled transactions</span>
+
+<ul>
+    {% for item in model.list %}
+    <li>{{ item.name }}</li>
+    {% endfor %}
+</ul>

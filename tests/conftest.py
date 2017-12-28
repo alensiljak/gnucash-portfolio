@@ -30,7 +30,7 @@ def settings() -> Settings:
 @pytest.fixture(scope="session")
 def settings_db() -> Settings:
     """ Settings for the real db file """
-    config_json = json.loads('{ "gnucash.database": "../../data/test.gnucash" }')
+    config_json = json.loads('{ "gnucash.database": "../data/test.gnucash" }')
     config = Settings(config_json)
     return config
 

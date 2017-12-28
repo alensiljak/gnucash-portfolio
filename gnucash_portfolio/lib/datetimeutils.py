@@ -3,6 +3,11 @@
 from datetime import datetime, date, time, timedelta
 #import calendar
 
+def get_from_gnucash26_date(date_str: str) -> datetime:
+    """ Creates a datetime from GnuCash 2.6 date string """
+    date_format = "%Y%m%d"
+    result = datetime.strptime(date_str, date_format)
+    return result
 
 def today_date() -> date:
     """ Returns today as a date """
@@ -14,12 +19,12 @@ def today_datetime() -> datetime:
     today = datetime.combine(date_today, time.min)
     return today
 
-def get_from(period: str) -> datetime:
+def get_period_start(period: str) -> datetime:
     """ Parse period string and return the from date """
     period_obj = parse_period(period)
     return period_obj[0]
 
-def get_to(period: str) -> datetime:
+def get_period_end(period: str) -> datetime:
     """ Parse period string and return the 'to' date """
     obj = parse_period(period)
     return obj[1]
