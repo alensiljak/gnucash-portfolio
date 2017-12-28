@@ -62,6 +62,13 @@ def get_period_last_week() -> str:
     period = get_period(start_date, today)
     return period
 
+def get_period_last_30_days() -> str:
+    """ Returns the last week as a period string """
+    today = today_date()
+    start_date = today - timedelta(days=30)
+    period = get_period(start_date, today)
+    return period
+
 def get_period_last_3_months() -> str:
     """ Returns the last week as a period string """
     today = today_date()

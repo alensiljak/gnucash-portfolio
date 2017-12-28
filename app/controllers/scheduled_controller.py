@@ -1,29 +1,31 @@
 """ Scheduled Transactions """
 
+#from logging import log, DEBUG
 from typing import List
 from flask import Blueprint, render_template, request
 from piecash import ScheduledTransaction
 from gnucash_portfolio.bookaggregate import BookAggregate
 #from gnucash_portfolio.scheduledtxaggregate import ScheduledTxAggregate
-from app.models.transaction_models import ScheduledTxSearchModel
+from app.models.transaction_models import ScheduledTxInputModel
+
 
 scheduled_controller = Blueprint( # pylint: disable=invalid-name
     'scheduled_controller', __name__, url_prefix='/scheduled')
 
-@scheduled_controller.route('/scheduled', methods=['GET', 'POST'])
+@scheduled_controller.route('/', methods=['GET', 'POST'])
 def scheduled_transactions():
     """ Lists scheduled transactions """
-    search_model = __parse_sch_tx_search_params()
-    if not search_model:
+    input_model = __parse_sch_tx_search_params()
+
+    if not input_model:
         # Initial run
-        search_model = ScheduledTxSearchModel()
+        input_model = ScheduledTxInputModel()
 
     with BookAggregate() as svc:
         model = {
-            "search": None,
-            "data": __load_model_for_scheduled_transactions(search_model, svc.book)
+            "data": __load_model_for_scheduled_transactions(input_model, svc)
         }
-        output = render_template('transaction.scheduled.html', model=model)
+        output = render_template('scheduled.html', model=model, input_model=input_model)
     return output
 
 ##################
@@ -43,16 +45,18 @@ def topten_partial():
 #################
 # Private
 
-def __parse_sch_tx_search_params() -> ScheduledTxSearchModel:
+def __parse_sch_tx_search_params() -> ScheduledTxInputModel:
     """ Parses the search parameters from the request """
     if not request.form:
         return None
 
-    search_model = ScheduledTxSearchModel()
-    return search_model
+    model = ScheduledTxInputModel()
+    model.period_str = request.form.get("period")
+
+    return model
 
 def __load_model_for_scheduled_transactions(
-        search: ScheduledTxSearchModel, svc: BookAggregate) -> List[ScheduledTransaction]:
+        search: ScheduledTxInputModel, svc: BookAggregate) -> List[ScheduledTransaction]:
     """ loads data for scheduled transactions """
     if not search:
         return None
