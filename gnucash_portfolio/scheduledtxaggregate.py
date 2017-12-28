@@ -13,13 +13,15 @@ def get_next_occurrence(tx: ScheduledTransaction) -> date:
     # Gnucash/gnucash/libgnucash/engine/Recurrence.c#L172;
     # params: Recurrence, ref = prev_occur, next = return value!
 
+    start_date = tx.recurrence.recurrence_period_start
     last_date = tx.last_occur
     if not last_date:
-        last_date = tx.recurrence.recurrence_period_start
+        last_date = start_date
 
-    if last_date < tx.recurrence.recurrence_period_start:
-        log(DEBUG, "The period start is the next date. %s, %s", tx.name, last_date)
-        return last_date
+    if last_date < start_date:
+        log(DEBUG, "The period start is the next date. %s, last: %s, start: %s",
+            tx.name, last_date, start_date)
+        return start_date
 
     # print(tx.name, base_date, tx.recurrence.recurrence_period_start,
     #       tx.recurrence.recurrence_mult, tx.recurrence.recurrence_period_type)
@@ -42,7 +44,7 @@ def get_next_occurrence(tx: ScheduledTransaction) -> date:
     elif period_type == "once":
         next_date = tx.recurrence.recurrence_period_start
     else:
-        log(INFO, "recurrence not handled: %s", tx.recurrence.recurrence_period_type)
+        log(INFO, "recurrence not handled: %s", period_type)
 
     # check the datetime libraries for scheduler, to calculate the occurrence?
 
