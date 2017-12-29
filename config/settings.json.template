@@ -5,5 +5,6 @@
         "AUD",
         "USD"
     ],
-    "exchangeRates": "exchangeRates.csv"
+    "exchangeRates": "exchangeRates.csv",
+    "favourite_accounts": []
 }

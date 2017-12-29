@@ -5,11 +5,12 @@ import tempfile
 import time
 try: import simplejson as json
 except ImportError: import json
+from logging import log, ERROR
 import os
 import webbrowser
 from datetime import datetime, timedelta
 from sqlalchemy.dialects import sqlite
-from gnucash_portfolio.lib import settings, generic
+from gnucash_portfolio.lib import settings, fileutils
 
 
 def get_today():
@@ -18,34 +19,36 @@ def get_today():
     """
     return get_date_iso_string(time)
 
-
 def get_yesterday():
     """
     Returns yesterday's datetime
     """
     return datetime.today() - timedelta(days=1)
 
-
 def get_date_iso_string(value: datetime):
     """ Gets the iso string representation of the given date """
     return value.strftime("%Y-%m-%d")
-
 
 def load_json_file_contents(path: str) -> str:
     """ Loads contents from a json file """
     content = None
 
     file_path = os.path.abspath(path)
-
-    # debug("loading %s", file_path)
-
-    with open(file_path) as settings_file:
-        content = settings_file.read()
-
+    content = fileutils.read_text_from_file(fileutils)
     json_object = json.loads(content)
     content = json.dumps(json_object, sort_keys=True, indent=4)
+
     return content
 
+def validate_json(data: str):
+    """ Validate JSON by parsing string data. Returns the json dict. """
+    result = None
+    try:
+        result = json.loads(data)
+    except ValueError as error:
+        log(ERROR, "invalid json: %s", error)
+
+    return result
 
 def print_sql(query):
     """ prints alchemy sql command for debugging """
@@ -75,7 +78,6 @@ def save_to_temp(content, file_name=None):
     #output = str(pathlib.Path(f.name))
     return out_file
 
-
 def read_book_uri_from_console():
     """ Prompts the user to enter book url in console """
     db_path: str = input("Enter book_url or leave blank for the default settings value: ")
@@ -92,7 +94,6 @@ def read_book_uri_from_console():
 
     return db_path_uri
 
-
 def run_report_from_console(output_file_name, callback):
     """
     Runs the report from the command line. Receives the book url from the console.
@@ -104,5 +105,5 @@ def run_report_from_console(output_file_name, callback):
     result = callback()
 
     #output_file_name = kwargs["output_file_name"]
-    output = generic.save_to_temp(result, output_file_name)
+    output = save_to_temp(result, output_file_name)
     webbrowser.open(output)

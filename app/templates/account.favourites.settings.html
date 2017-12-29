@@ -1,17 +1,15 @@
 {% extends "layout.html" %} {% block title %}Favourite Accounts Settings{% endblock %} {% block content %}
 <h1>Favourite Accounts Settings</h1>
 
-<p>
-    Settings for favourite accounts.
-</p>
+<form method="POST">
+    <div class="form-group">
+        <label for="settings">Settings for favourite accounts. Array if id strings.</label>
+        <textarea id="settings" name="settings" type="text" class="form-control" rows="20">
+            {{ model.settings }}
+        </textarea>
+    </div>
 
-<form>
-        <div class="form-group">
-            <label for="settings">Settings</label>
-                <textarea id="settings" name="settings" type="text" class="form-control"
-                    value="{{ model.settings }}">
-            </div>
-    
+    <button class="btn btn-primary">Save</button>
 </form>
 
 {% endblock %} {% block scripts %}

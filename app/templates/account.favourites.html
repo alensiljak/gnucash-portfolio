@@ -4,13 +4,15 @@
 <p>
     This page lists favourite accounts.
     <small>
-        <a href="/account/favourites/settings">Settings</a>
+        <a href="/settings/edit">Settings</a>
     </small>
 </p>
 
 <table class="table table-sm">
     <thead class="thead-dark">
         <th>Account Name</th>
+        <th>Currency</th>
+        <th>Balance</th>
     </thead>
     <tbody>
         {% for account in model.accounts %}
@@ -19,6 +21,12 @@
                 <a href="/account/{{ account.guid }}/details">
                     {{ account.fullname }}
                 </a>
+            </td>
+            <td>
+                {{ account.commodity.mnemonic }}
+            </td>
+            <td class="text-right">
+                {{ "{:,.2f}".format(account.get_balance()) }}
             </td>
         </tr>
         {% endfor %}

@@ -13,7 +13,7 @@
         <tr>
             <td>{{ "{:%Y-%m-%d}".format(price.date) }}</td>
             <td>{{ price.name }}</td>
-            <td class="text-right">{{ price.value }}</td>
+            <td class="text-right">{{ "{:,.2f}".format(price.value) }}</td>
             <td>{{ price.currency }}</td>
             {% if result %}<td>{{ result[price.name] }}</td>{% endif %}
         </tr>

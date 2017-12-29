@@ -246,9 +246,13 @@ class AccountsAggregate(AggregateBase):
 
         return result
 
-    # def get_account_types():
-    #     """ Account types """
-    #     return ["ROOT", "ASSET", "LIABILITY", "EXPENSE", "INCOME", "TRADING", "MUTUAL", "STOCK", "BANK"]
+    def get_list(self, ids: List[str]) -> List[Account]:
+        """ Loads accounts by the ids passed as an argument """
+        query = (
+            self.query
+            .filter(Account.guid.in_(ids))
+        )
+        return query.all()
 
     @property
     def query(self):

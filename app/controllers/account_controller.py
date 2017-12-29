@@ -4,13 +4,15 @@ Account operations
 - editing of metadata (?)
 - list of transactions / register -> see transaction controller
 """
+import os
 try: import simplejson as json
 except ImportError: import json
 from logging import log, DEBUG
 from flask import Blueprint, request, render_template
 from piecash import Account, Split, Transaction
 #from django.forms.models import model_to_dict
-from gnucash_portfolio.lib import datetimeutils
+from gnucash_portfolio.lib import datetimeutils, generic
+from gnucash_portfolio.lib.settings import Settings
 from gnucash_portfolio.bookaggregate import BookAggregate
 from gnucash_portfolio.accountaggregate import AccountAggregate, AccountsAggregate
 from app.models import account_models
@@ -29,27 +31,46 @@ def index():
 def favourites():
     """ Favourite accounts """
     # TODO load list of favourite accouns
-    favourite_accts = []
+    settings = Settings()
+    favourite_accts = settings.favourite_accounts
 
     with BookAggregate() as svc:
-        # TODO fetch balances
-        for acct in favourite_accts:
-            print(acct)
+        accounts = svc.accounts.get_list(favourite_accts)
 
         model = {
-            "accounts": []
+            "accounts": accounts
         }
         return render_template('account.favourites.html', model=model)
 
-@account_controller.route('/favourites/settings')
-def favourites_settings():
-    """ Settings for favourite accounts """
-    # TODO read settings file
-    settings = ""
-    model = {
-        "settings": settings
-    }
-    return render_template('account.favourites.settings.html', model=model)
+# @account_controller.route('/favourites/settings')
+# def favourites_settings():
+#     """ Settings for favourite accounts """
+#     # read settings file
+#     settings = Settings()
+#     account_ids = settings.favourite_accounts
+#     # file_path = os.path.abspath('config/favourite_accounts.json')
+#     # content = fileutils.read_text_from_file(file_path)
+#     #favourites = json.loads(content)
+#     model = {
+#         "settings": account_ids
+#     }
+#     return render_template('account.favourites.settings.html', model=model)
+
+# @account_controller.route('/favourites/settings', methods=['POST'])
+# def favourites_settings_save():
+#     """ Settings for favourite accounts """
+#     accts = request.form.get('settings')
+#     # validate json
+#     json_settings = generic.validate_json(accts)
+#     if not json_settings:
+#         raise ValueError("invalid content")
+
+#     # save
+#     settings = Settings()
+#     settings.data["favourite_accounts"] = accts
+#     settings.save()
+
+#     return render_template('settings.confirmation.html')
 
 @account_controller.route('/list')
 def all_accounts():
