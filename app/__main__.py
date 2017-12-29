@@ -75,6 +75,9 @@ bundles = {
         '../node_modules/chosen-js/chosen.jquery.min.js',
         #'../node_modules/typeahead.js/dist/typeahead.bundle.min.js',
         '../node_modules/devbridge-autocomplete/dist/jquery.autocomplete.min.js',
+        '../node_modules/react/umd/react.production.min.js',
+        '../node_modules/react-dom/umd/react-dom.production.min.js',
+        '../node_modules/babel-standalone/babel.min.js',
         output='vendor.js'),
     # 'site_css': Bundle(
     #     'site.scss',

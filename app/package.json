@@ -13,6 +13,7 @@
     "css:watch": "npm run scss && node-sass styles -wo static"
   },
   "devDependencies": {
+    "babel-standalone": "^6.26.0",
     "bootstrap": "^4.0.0-beta.2",
     "chosen-js": "^1.8.2",
     "datatables.net": "^1.10.16",
@@ -23,6 +24,8 @@
     "jquery": "^3.2.1",
     "node-sass": "^4.7.2",
     "popper.js": "^1.12.9",
+    "react": "^16.2.0",
+    "react-dom": "^16.2.0",
     "select2": "^4.0.6-rc.1",
     "typeahead.js": "twitter/typeahead.js"
   },

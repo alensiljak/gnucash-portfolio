@@ -1,6 +1,4 @@
-{% extends "layout.html" %}
-{% block title %}Currency{% endblock %}
-{% block content %}
+{% extends "layout.html" %} {% block title %}Download Rates{% endblock %} {% block content %}
 <h1>Download Rates</h1>
 
 <p>
@@ -13,4 +11,13 @@
     <li>Confirm import by clicking Import button</li>
 </ul>
 
-{% endblock %}
+<div id="root"></div>
+
+{% endblock %} {% block scripts %}
+<script type="text/jsx">
+    ReactDOM.render(
+        <h1>Hello, world!</h1>,
+        document.getElementById('root')
+    );
+
+</script> {% endblock %}
