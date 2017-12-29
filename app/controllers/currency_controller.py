@@ -10,7 +10,8 @@ from flask import Blueprint, request, render_template
 from piecash import Commodity
 from gnucash_portfolio.lib.database import Database
 from gnucash_portfolio.bookaggregate import BookAggregate
-from app.models.currency_models import CurrencySearchModel
+from gnucash_portfolio.currencyaggregate import CurrencyAggregate
+from app.models.currency_models import CurrencySearchModel, RateViewModel
 
 
 currency_controller = Blueprint( # pylint: disable=invalid-name
@@ -26,7 +27,6 @@ def index():
         output = render_template('currency.html', search=search_model)
     return output
 
-
 @currency_controller.route('/search', methods=['GET', 'POST'])
 def post():
     """ Receives post form """
@@ -35,6 +35,42 @@ def post():
         currency = __search(svc, search_model)
         output = render_template('currency.html', currency=currency, search=search_model)
     return output
+
+@currency_controller.route('/rates')
+def import_rates():
+    """ currency exchange rates """
+    rates = []
+    # get all used currencies and their (latest?) rates
+    with BookAggregate() as book_svc:
+        base_currency = book_svc.get_default_currency()
+        #print(base_currency)
+        currencies = book_svc.currencies.get_book_currencies()
+        for cur in currencies:
+            # skip the base currency
+            if cur == base_currency:
+                continue
+
+            # Name
+            rate = RateViewModel()
+            rate.currency = cur.mnemonic
+            # Rate
+            cur_svc = CurrencyAggregate(book_svc.book, cur)
+            price = cur_svc.get_latest_price()
+            if price:
+                rate.date = price.date
+                rate.value = price.value
+                #print(price.commodity.mnemonic)
+                rate.base_currency = price.currency.mnemonic
+
+            rates.append(rate)
+
+        output = render_template('price.rates.html', rates=rates)
+    return output
+
+@currency_controller.route('/download')
+def download():
+    """ Download exchange rates """
+    return render_template('incomplete.html')
 
 
 ###############################################################################

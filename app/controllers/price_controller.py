@@ -2,11 +2,10 @@
 #from logging import log, DEBUG
 from flask import Blueprint, request, render_template
 from gnucash_portfolio.bookaggregate import BookAggregate
-from gnucash_portfolio.currencyaggregate import CurrencyAggregate
 #from gnucash_portfolio.pricesaggregate import PricesAggregate
 from gnucash_portfolio.lib.csv_parser import CsvPriceParser
 from app.models.price_models import (
-    RateViewModel, PriceImportViewModel, PriceImportInputModel, PriceImportSearchViewModel)
+    PriceImportViewModel, PriceImportInputModel, PriceImportSearchViewModel)
 from app.models.generic_models import ValidationResult
 
 
@@ -61,7 +60,6 @@ def import_post():
         return render_template('price.import.confirm.html',
                                model=model, search=input_model, ref=ref)
 
-
 @price_controller.route('/load', methods=['POST'])
 def load_prices():
     """ Imports .csv prices into database. """
@@ -91,7 +89,6 @@ def load_prices():
 
         return render_template('price.import.result.html', model=model, result=result)
 
-
 def __read_review_input_model() -> PriceImportInputModel:
     """ Read input model on price load """
     result = PriceImportInputModel()
@@ -100,7 +97,6 @@ def __read_review_input_model() -> PriceImportInputModel:
     result.csv_file = request.files['import_file']
 
     return result
-
 
 def __validate_review_input_model(model: PriceImportInputModel):
     """ Validates user input """
@@ -122,7 +118,6 @@ def __validate_review_input_model(model: PriceImportInputModel):
     result.valid = True
     return result
 
-
 def __load_search_reference_model(svc: BookAggregate) -> PriceImportSearchViewModel:
     """ Populates the reference data for the search form """
     model = PriceImportSearchViewModel()
@@ -131,35 +126,3 @@ def __load_search_reference_model(svc: BookAggregate) -> PriceImportSearchViewMo
     model.currencies = svc.currencies.get_book_currencies()
 
     return model
-
-
-@price_controller.route('/rates')
-def import_rates():
-    """ currency exchange rates """
-    rates = []
-    # get all used currencies and their (latest?) rates
-    with BookAggregate() as book_svc:
-        base_currency = book_svc.get_default_currency()
-        #print(base_currency)
-        currencies = book_svc.currencies.get_book_currencies()
-        for cur in currencies:
-            # skip the base currency
-            if cur == base_currency:
-                continue
-
-            # Name
-            rate = RateViewModel()
-            rate.currency = cur.mnemonic
-            # Rate
-            cur_svc = CurrencyAggregate(book_svc.book, cur)
-            price = cur_svc.get_latest_price()
-            if price:
-                rate.date = price.date
-                rate.value = price.value
-                #print(price.commodity.mnemonic)
-                rate.base_currency = price.currency.mnemonic
-
-            rates.append(rate)
-
-        output = render_template('price.rates.html', rates=rates)
-    return output

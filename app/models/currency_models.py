@@ -42,3 +42,12 @@ class CurrencySearchModel:
         #print(request.path)
         #print(request.url_rule)
         self.currency = request.form.get("search.currency")
+
+#@dataclass
+class RateViewModel:
+    """ View model for exchange rate """
+    def __init__(self):
+        self.date = None
+        self.value: Decimal = 0
+        self.currency = ""
+        self.base_currency = ""
