@@ -14,9 +14,12 @@
 <div id="root"></div>
 
 {% endblock %} {% block scripts %}
+<script type="text/jsx" src="{{ url_for('scripts.static', filename='currency.download.jsx') }}"></script>
 <script type="text/jsx">
+    //var currencies = JSON.parse('{{ model.currencies | tojson | safe }}');
+    var currencies = {{ model.currencies | tojson | safe }};
     ReactDOM.render(
-        <h1>Hello, world!</h1>,
+        <Main currencies={currencies} />,
         document.getElementById('root')
     );
 

@@ -7,6 +7,8 @@ Currencies
 """
 #from logging import debug
 from flask import Blueprint, request, render_template
+try: import simplejson as json
+except ImportError: import json
 from piecash import Commodity
 from gnucash_portfolio.lib.database import Database
 from gnucash_portfolio.bookaggregate import BookAggregate
@@ -69,8 +71,15 @@ def rates():
 
 @currency_controller.route('/download')
 def download():
-    """ Download exchange rates """
-    return render_template('currency.download.html')
+    """ Download of exchange rates. React client-side app. """
+    # get book currencies
+    with BookAggregate() as svc:
+        currencies = [cur.mnemonic for cur in svc.currencies.get_book_currencies()]
+        #cur_json = json.dumps(currencies)
+        model = {
+            "currencies": currencies
+        }
+        return render_template('currency.download.html', model=model)
 
 
 ###############################################################################
