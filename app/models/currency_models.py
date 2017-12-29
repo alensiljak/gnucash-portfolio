@@ -1,8 +1,8 @@
 """ Models for currency controller """
 
+from decimal import Decimal
 from piecash import Book
 from gnucash_portfolio.bookaggregate import BookAggregate
-#from types import SimpleNamespace
 
 
 class SearchReferenceModel:

@@ -9,47 +9,64 @@ from gnucash_portfolio.lib import datetimeutils
 
 def get_next_occurrence(tx: ScheduledTransaction) -> date:
     """ Calculates the next occurrence date for scheduled transaction """
-    # Reference: recurrenceNextInstance(),
-    # Gnucash/gnucash/libgnucash/engine/Recurrence.c#L172;
-    # params: Recurrence, ref = prev_occur, next = return value!
+    # Reference documentation:
+    # https://github.com/MisterY/gnucash-portfolio/issues/3
 
+    ref_date = datetimeutils.today_date()
     start_date = tx.recurrence.recurrence_period_start
     last_date = tx.last_occur
+
+    if start_date > ref_date:
+        # If the occurrence hasn't even started, the next date is the start date.
+        # this should also handle the "once" type in most cases.
+        return start_date
+
     if not last_date:
         last_date = start_date
 
-    if last_date < start_date:
-        log(DEBUG, "The period start is the next date. %s, last: %s, start: %s",
-            tx.name, last_date, start_date)
-        return start_date
-
     # print(tx.name, base_date, tx.recurrence.recurrence_period_start,
     #       tx.recurrence.recurrence_mult, tx.recurrence.recurrence_period_type)
-    ref_date = last_date
-    next_date = ref_date
-    period_type = tx.recurrence.recurrence_period_type
+    next_date = last_date
+    period = tx.recurrence.recurrence_period_type
+    mult = tx.recurrence.recurrence_mult
+    #wadj = tx.recurrence.recurrence_weekend_adjust
 
-    if period_type == "month":
-        next_date = datetimeutils.add_months(next_date, tx.recurrence.recurrence_mult)
-    elif period_type == "daily":
+    if period == "day":
         log(WARN, "daily not handled")
-    elif period_type == "end of month":
+
+    elif period in ["year", "month", "end of month"]:
+        if period == "year":
+            mult *= 12
+
+        # handle weekend adjustment
+
         # if the date is already at end of month, then increase
         if datetimeutils.is_end_of_month(next_date):
-            next_date = datetimeutils.add_months(next_date, tx.recurrence.recurrence_mult)
+            next_date = datetimeutils.add_months(next_date, mult)
             # Set at end of month again
             next_date = datetimeutils.get_end_of_month(next_date)
         else:
-            next_date = datetimeutils.get_end_of_month(next_date)
-    elif period_type == "once":
-        next_date = tx.recurrence.recurrence_period_start
+            next_date = datetimeutils.add_months(next_date, mult - 1)
+
+    # elif period == "once":
+    #     next_date = tx.recurrence.recurrence_period_start
     else:
-        log(INFO, "recurrence not handled: %s", period_type)
+        log(INFO, "recurrence not handled: %s", period)
 
-    # check the datetime libraries for scheduler, to calculate the occurrence?
+    #######################
+    # Step 2
 
-    #tx["next_date"] = base_date
-    #log(DEBUG, "%s: last occurred = %s, next = %s", tx.name, last_date, next_date)
+    if period in ["year", "month", "end of month"]:
+        n_months = (
+            12 * (next_date.year - start_date.year) +
+            (next_date.month - start_date.month)
+        )
+        next_date = datetimeutils.subtract_months(next_date, n_months % mult)
+        # Handle adjustment for 3 ways.
+        # Here we take only the simple, last one.
+        next_date = next_date.replace(day=start_date.day)
+
+        # handle weekend
 
     return next_date
 
