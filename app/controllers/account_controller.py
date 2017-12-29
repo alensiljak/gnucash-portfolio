@@ -25,6 +25,32 @@ def index():
     """ root page """
     return render_template('account.html')
 
+@account_controller.route('/favourites')
+def favourites():
+    """ Favourite accounts """
+    # TODO load list of favourite accouns
+    favourite_accts = []
+
+    with BookAggregate() as svc:
+        # TODO fetch balances
+        for acct in favourite_accts:
+            print(acct)
+
+        model = {
+            "accounts": []
+        }
+        return render_template('account.favourites.html', model=model)
+
+@account_controller.route('/favourites/settings')
+def favourites_settings():
+    """ Settings for favourite accounts """
+    # TODO read settings file
+    settings = ""
+    model = {
+        "settings": settings
+    }
+    return render_template('account.favourites.settings.html', model=model)
+
 @account_controller.route('/list')
 def all_accounts():
     """ Displays all book accounts """

@@ -1,0 +1,25 @@
+{% extends "layout.html" %} {% block title %}Favourite Accounts Settings{% endblock %} {% block content %}
+<h1>Favourite Accounts Settings</h1>
+
+<p>
+    Settings for favourite accounts.
+</p>
+
+<form>
+        <div class="form-group">
+            <label for="settings">Settings</label>
+                <textarea id="settings" name="settings" type="text" class="form-control"
+                    value="{{ model.settings }}">
+            </div>
+    
+</form>
+
+{% endblock %} {% block scripts %}
+<script>
+    $(function () {
+        $("table").DataTable({
+            lengthMenu: [10, 20, 30, 50, 100, -1],
+            pageLength: 20
+        });
+    });
+</script> {% endblock %}

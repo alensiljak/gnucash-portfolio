@@ -1,0 +1,37 @@
+{% extends "layout.html" %} {% block title %}Favourite Accounts{% endblock %} {% block content %}
+<h1>Favourite Accounts</h1>
+
+<p>
+    This page lists favourite accounts.
+    <small>
+        <a href="/account/favourites/settings">Settings</a>
+    </small>
+</p>
+
+<table class="table table-sm">
+    <thead class="thead-dark">
+        <th>Account Name</th>
+    </thead>
+    <tbody>
+        {% for account in model.accounts %}
+        <tr>
+            <td>
+                <a href="/account/{{ account.guid }}/details">
+                    {{ account.fullname }}
+                </a>
+            </td>
+        </tr>
+        {% endfor %}
+
+    </tbody>
+</table>
+
+{% endblock %} {% block scripts %}
+<script>
+    $(function () {
+        $("table").DataTable({
+            lengthMenu: [10, 20, 30, 50, 100, -1],
+            pageLength: 20
+        });
+    });
+</script> {% endblock %}
