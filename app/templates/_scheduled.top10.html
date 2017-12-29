@@ -1,9 +1,12 @@
 {# Partial for 10 next upcoming scheduled transactions #}
 
-<span>Upcoming 10 scheduled transactions</span>
+<span>Next 10 scheduled transactions</span>
 
-<ul>
-    {% for tx in model.list %}
-    <li>{{ tx.next_date.value }}, {{ tx.name }}</li>
-    {% endfor %}
-</ul>
+{% for tx in model.list %}
+<div>
+&bull; 
+    <small>
+    {{ tx.next_date.value }}, {{ tx.name }}
+    </small>
+</div>
+{% endfor %}
