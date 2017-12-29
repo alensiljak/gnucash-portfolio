@@ -59,6 +59,7 @@
         <th>Date</th>
         <th>Account</th>
         <th>Transaction</th>
+        <th>Currency</th>
         <th>Value</th>
     </thead>
     <tbody>
@@ -69,7 +70,12 @@
             <td>
                 <a href="/transaction/details/{{ split.transaction.guid }}">details</a>
             </td>
-            <td class="text-right">{{ "{:,.2f}".format(split.value * (-1)) }}</td>
+            <td>
+                {{ split.account.commodity.mnemonic }}
+            </td>
+            <td class="text-right">
+                {{ "{:,.2f}".format(split.value * (-1)) }}
+            </td>
         </tr>
         {% endfor %}
     </tbody>
