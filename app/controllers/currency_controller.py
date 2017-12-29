@@ -37,7 +37,7 @@ def post():
     return output
 
 @currency_controller.route('/rates')
-def import_rates():
+def rates():
     """ currency exchange rates """
     rates = []
     # get all used currencies and their (latest?) rates
@@ -70,7 +70,7 @@ def import_rates():
 @currency_controller.route('/download')
 def download():
     """ Download exchange rates """
-    return render_template('incomplete.html')
+    return render_template('currency.download.html')
 
 
 ###############################################################################
