@@ -56,7 +56,7 @@ class AccountAggregate(AggregateBase):
 
             if cur_symbol != currency.mnemonic:
                 # Convert the amount to the given currency.
-                other_cur = svc.get_currency_by_symbol(cur_symbol)
+                other_cur = svc.get_by_symbol(cur_symbol)
 
                 #log(DEBUG, "loading %s/%s rate", currency.mnemonic, other_cur.mnemonic)
 

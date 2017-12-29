@@ -7,6 +7,7 @@ from datetime import datetime
 from sqlalchemy import func
 from piecash import Price
 from gnucash_portfolio.lib import currencyratesretriever, database, settings
+from gnucash_portfolio.bookaggregate import BookAggregate
 
 settings_path = "settings.json"
 
@@ -41,36 +42,30 @@ def __get_latest_rates(config):
 
     return latest
 
-def __display_gnucash_rates(config):
-    with database.Database().open_book() as book:
-        #base_currency = book.get(Commodity, mnemonic=config.base_currency)
-
+def __display_gnucash_rates():
+    with BookAggregate() as svc:
         # display prices for all currencies as the rates are expressed in the base currency.
-        for currency in book.currencies:
+        for currency in svc.book.currencies:
             prices = currency.prices.all()
             if prices:
                 print(currency.mnemonic)
                 for price in prices:
                     print(price)
 
-def __save_rates(config, latest_rates):
+def __save_rates(latest_rates):
     '''
     Saves the rates to GnuCash
     '''
-    base_symbol = config.base_currency
-
-    with database.Database().open_book(for_writing=True) as book:
-        base_currency = book.currencies.get(mnemonic=base_symbol)
+    with BookAggregate(for_writing=True) as svc:
+        base_currency = svc.currencies.get_default_currency()
 
         rate_date_string = latest_rates["date"]
         rate_date = datetime.strptime(rate_date_string, "%Y-%m-%d")
-        # quotes = quandl_fx(self.mnemonic, default_currency.mnemonic, start_date)
         rates = latest_rates["rates"]
         have_new_rates = False
 
         for rate in rates:
-            #print(rate, rates[rate])
-            currency = book.currencies.get(mnemonic=rate)
+            currency = svc.currencies.get_by_symbol(rate)
             amount = rates[rate]
 
             # Do not import duplicate prices.
@@ -90,8 +85,7 @@ def __save_rates(config, latest_rates):
 
         # Save the book after the prices have been created.
         if have_new_rates:
-            book.flush()
-            book.save()
+            svc.save()
         else:
             print("No prices imported.")
     return
@@ -115,11 +109,11 @@ def main():
 
     print("####################################")
     print("importing rates into gnucash...")
-    __save_rates(config, latest_rates)
+    __save_rates(latest_rates)
 
     print("####################################")
     print("displaying rates from gnucash...")
-    __display_gnucash_rates(config)
+    __display_gnucash_rates()
 
 ###############################################################################
 if __name__ == "__main__":

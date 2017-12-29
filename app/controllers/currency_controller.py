@@ -5,7 +5,7 @@ Currencies
 - price cleanup / deletion
 - exchange rate chart
 """
-#from logging import debug
+from logging import log, DEBUG
 from flask import Blueprint, request, render_template
 try: import simplejson as json
 except ImportError: import json
@@ -14,7 +14,6 @@ from gnucash_portfolio.lib.database import Database
 from gnucash_portfolio.bookaggregate import BookAggregate
 from gnucash_portfolio.currencyaggregate import CurrencyAggregate
 from app.models.currency_models import CurrencySearchModel, RateViewModel
-
 
 currency_controller = Blueprint( # pylint: disable=invalid-name
     'currency_controller', __name__, url_prefix='/currency')
@@ -43,10 +42,10 @@ def rates():
     """ currency exchange rates """
     rates = []
     # get all used currencies and their (latest?) rates
-    with BookAggregate() as book_svc:
-        base_currency = book_svc.get_default_currency()
+    with BookAggregate() as svc:
+        base_currency = svc.currencies.get_default_currency()
         #print(base_currency)
-        currencies = book_svc.currencies.get_book_currencies()
+        currencies = svc.currencies.get_book_currencies()
         for cur in currencies:
             # skip the base currency
             if cur == base_currency:
@@ -56,7 +55,7 @@ def rates():
             rate = RateViewModel()
             rate.currency = cur.mnemonic
             # Rate
-            cur_svc = CurrencyAggregate(book_svc.book, cur)
+            cur_svc = CurrencyAggregate(svc.book, cur)
             price = cur_svc.get_latest_price()
             if price:
                 rate.date = price.date
@@ -75,12 +74,33 @@ def download():
     # get book currencies
     with BookAggregate() as svc:
         currencies = [cur.mnemonic for cur in svc.currencies.get_book_currencies()]
-        #cur_json = json.dumps(currencies)
         model = {
             "currencies": currencies
         }
         return render_template('currency.download.html', model=model)
 
+###############
+# API
+
+@currency_controller.route('/api/saverates', methods=['POST'])
+def api_save_rates():
+    """ Saves exchange rates """
+    # parse data
+    cur_json = request.form.get('currencies')
+    base_cur_symbol = request.form.get('base')
+    fx_rates = json.loads(cur_json)
+    # filter out the ones without rates
+    filtered_rates = [item for item in fx_rates if "rate" in item]
+
+    with BookAggregate() as svc:
+        book_base_cur = svc.currencies.get_default_currency().mnemonic
+        if book_base_cur != base_cur_symbol:
+            raise ValueError("The base currencies are not same!", base_cur_symbol, "vs", 
+                             book_base_cur)
+        # Import rates
+        
+
+    return "I'll think about it"
 
 ###############################################################################
 
@@ -95,7 +115,7 @@ def __search(svc: BookAggregate, model: CurrencySearchModel):
         query = query.filter(Commodity.mnemonic == model.currency)
 
         # TODO if not the main currency, load exchange rates and display chart
-        if model.ref.currencies != svc.get_default_currency():
+        if model.ref.currencies != svc.currencies.get_default_currency():
             print("not the default currency. load data.")
 
     return query.one()

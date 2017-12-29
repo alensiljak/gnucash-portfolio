@@ -20,7 +20,7 @@ def asset_allocation():
     """ Asset Allocation without the securities """
     # look at AssetAllocationService in mmex.
     with BookAggregate() as svc:
-        base_currency = svc.get_default_currency()
+        base_currency = svc.currencies.get_default_currency()
 
         aaloc = svc.get_asset_allocation()
         model = aaloc.load_full_model(base_currency)
