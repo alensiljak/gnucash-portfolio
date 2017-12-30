@@ -2,7 +2,7 @@
 
 from typing import List
 from logging import log, DEBUG, INFO, WARN
-from datetime import date
+from datetime import date, datetime
 from piecash import Book, ScheduledTransaction #, Recurrence
 from gnucash_portfolio.lib import datetimeutils
 
@@ -12,23 +12,23 @@ def get_next_occurrence(tx: ScheduledTransaction) -> date:
     # Reference documentation:
     # https://github.com/MisterY/gnucash-portfolio/issues/3
 
-    ref_date = datetimeutils.today_date()
-    start_date = tx.recurrence.recurrence_period_start
-    last_date = tx.last_occur
+    ref_date: datetime = datetimeutils.today_date()
+    start_date: datetime = tx.recurrence.recurrence_period_start
 
     if start_date > ref_date:
         # If the occurrence hasn't even started, the next date is the start date.
         # this should also handle the "once" type in most cases.
         return start_date
 
+    last_date: datetime = tx.last_occur
     if not last_date:
         last_date = start_date
 
     # print(tx.name, base_date, tx.recurrence.recurrence_period_start,
     #       tx.recurrence.recurrence_mult, tx.recurrence.recurrence_period_type)
-    next_date = last_date
-    period = tx.recurrence.recurrence_period_type
-    mult = tx.recurrence.recurrence_mult
+    next_date: datetime = last_date
+    period: str = tx.recurrence.recurrence_period_type
+    mult: int = tx.recurrence.recurrence_mult
     #wadj = tx.recurrence.recurrence_weekend_adjust
 
     if period == "day":
@@ -38,13 +38,15 @@ def get_next_occurrence(tx: ScheduledTransaction) -> date:
         if period == "year":
             mult *= 12
 
-        # handle weekend adjustment
+        # handle weekend adjustment here.
 
         # if the date is already at end of month, then increase
-        if datetimeutils.is_end_of_month(next_date):
+        if (datetimeutils.is_end_of_month(next_date) or
+                ((period == "month" or period == "year") and (next_date.day >= start_date.day))
+           ):
             next_date = datetimeutils.add_months(next_date, mult)
-            # Set at end of month again
-            next_date = datetimeutils.get_end_of_month(next_date)
+            # Set at end of month again (?!)
+            #next_date = datetimeutils.get_end_of_month(next_date)
         else:
             next_date = datetimeutils.add_months(next_date, mult - 1)
 
