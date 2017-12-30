@@ -157,10 +157,10 @@ class AccountAggregate(AggregateBase):
     def __get_all_child_accounts_as_array(self, account: Account) -> List[Account]:
         """ Returns the whole tree of child accounts in a list """
         result = []
-        # ignore placeholders
-        if not account.placeholder:
+        # ignore placeholders ? - what if a brokerage account has cash/stocks division?
+        #if not account.placeholder:
             #continue
-            result.append(account)
+        result.append(account)
 
         for child in account.children:
             sub_accounts = self.__get_all_child_accounts_as_array(child)
@@ -212,10 +212,10 @@ class AccountsAggregate(AggregateBase):
             raise NameError("Account not found in book!")
 
         acct_agg = self.get_account_aggregate(root_acct)
-        acct_agg.get_all_child_accounts_as_array()
-        for child in root_acct.children:
-            log(DEBUG, "found child %s", child.fullname)
-        return
+        result = acct_agg.get_all_child_accounts_as_array()
+        # for child in root_acct.children:
+        #     log(DEBUG, "found child %s", child.fullname)
+        return result
 
     def get_all(self) -> List[Account]:
         """ Returns all book accounts as a list, excluding templates. """

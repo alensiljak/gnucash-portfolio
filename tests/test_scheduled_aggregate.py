@@ -9,7 +9,7 @@ def test_get_all(svc_db: BookAggregate):
     """ Get all scheduled transaction records """
     txs = svc_db.scheduled.get_all()
 
-    assert len(txs) == 1
+    assert len(txs) == 2
 
 def test_start_date(svc_db: BookAggregate):
     """ Check the next date for the transaction """
@@ -31,15 +31,16 @@ def test_next_date_field(svc_db: BookAggregate):
     assert actual == expected
     assert tx.transaction.enabled == 1
 
-def test_weekly_calculation(svc_db: BookAggregate):
-    """ Test calculation of weekly schedule """
-    tx_id = '959661fa0e0487ec2933a53960584963'
-    expected = datetimeutils.get_from_gnucash26_date("20171205")
+# This is now quarterly schedule.
+# def test_weekly_calculation(svc_db: BookAggregate):
+#     """ Test calculation of weekly schedule """
+#     tx_id = '959661fa0e0487ec2933a53960584963'
+#     expected = datetimeutils.get_from_gnucash26_date("20171205")
 
-    tx = svc_db.scheduled.get_aggregate_by_id(tx_id)
-    actual = tx.get_next_occurrence()
+#     tx = svc_db.scheduled.get_aggregate_by_id(tx_id)
+#     actual = tx.get_next_occurrence()
 
-    assert actual == expected
+#     assert actual == expected
 
 def test_monthly_calculation(svc_db: BookAggregate):
     """ Test calculation of monthly recurrence """

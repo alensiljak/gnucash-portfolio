@@ -14,7 +14,8 @@ def test_parsing_gc26_date():
     assert actual.year == 2017
     assert actual.month == 12
     assert actual.day == 30
-    assert actual.hour == 0
+    # No hours in date.
+    # assert actual.hour == 0
 
 def test_parsing_iso_date():
     """ Parse ISO date """

@@ -18,4 +18,5 @@ def test_get_all_children(svc_db: BookAggregate):
 
     children = svc_db.accounts.get_all_children(name)
 
+    log(DEBUG, "account is %s", name)
     assert children

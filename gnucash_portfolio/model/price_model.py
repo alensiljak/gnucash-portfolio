@@ -10,10 +10,12 @@ class PriceModel:
     """ Price model """
     def __init__(self, symbol=None, base_cur=None, value: Decimal = None,
                  rate_date: datetime = None):
-        assert isinstance(rate_date, datetime)
+        if rate_date:
+            assert isinstance(rate_date, datetime)
         self.date: datetime = rate_date      # datetime.today().date
 
-        assert isinstance(value, Decimal)
+        if value:
+            assert isinstance(value, Decimal)
         self.value: Decimal = value      # Decimal(0)
         self.symbol: str = symbol        #"AUD"
         self.base_cur: str = base_cur    #"EUR"
