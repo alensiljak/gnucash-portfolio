@@ -38,9 +38,9 @@ def income_in_period_data():
 def for_security(symbol):
     """ Income for specific security. Symbol must be the full symbol,
     including the exchange (namespace). """
-    #log(DEBUG, "symbol = %s", symbol)
+    in_model = DistributionsInputModel()
+
     with BookAggregate() as svc:
-        in_model = DistributionsInputModel()
         sec_agg = svc.securities.get_aggregate_for_symbol(symbol)
         accounts = [account.fullname for account in sec_agg.get_income_accounts()]
         in_model.accounts = ','.join(accounts)
@@ -161,8 +161,7 @@ def __load_income_in_period_query(
 
     date_from = in_model.date_from
     date_to = in_model.date_to
-    # increase the destination date
-    date_to += timedelta(days=1)
+    log(DEBUG, "fetching data for period %s - %s", date_from, date_to)
 
     query = (book.query(Split)
              .join(Transaction)

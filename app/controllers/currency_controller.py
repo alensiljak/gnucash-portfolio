@@ -68,7 +68,7 @@ def rates():
 
             fx_rates.append(rate)
 
-        output = render_template('price.rates.html', rates=fx_rates)
+        output = render_template('currency.rates.html', rates=fx_rates)
     return output
 
 @currency_controller.route('/download')
