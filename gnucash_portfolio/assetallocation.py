@@ -212,12 +212,19 @@ class _AllocationLoader:
 
         if "classes" in node:
             entity = AssetGroup(node)
+            child_allocation_sum = Decimal(0)
             # Process child nodes
             for child_node in node["classes"]:
                 child = self.__parse_node(child_node)
 
                 child.parent = entity
                 entity.classes.append(child)
+                child_allocation_sum += child.allocation
+
+            # compare allocation to the sum of child allocations
+            if entity.allocation != child_allocation_sum:
+                raise ValueError("allocation does not match (self/child)",
+                                 entity.allocation, child_allocation_sum)
 
         if "stocks" in node:
             # This is an Asset Class

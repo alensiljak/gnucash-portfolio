@@ -1,6 +1,7 @@
 {
     "name": "Asset Allocation",
     "threshold": "20",
+    "allocation": 100,
     "classes": [
         {
             "name": "Equities",
@@ -59,7 +60,7 @@
                         {
                             "name": "Emerging Markets",
                             "allocation": 6,
-                            "stocks":[
+                            "stocks": [
                                 "DVYE",
                                 "EDIV",
                                 "ERUS",
@@ -88,7 +89,7 @@
                         {
                             "name": "Global",
                             "allocation": 6.5,
-                            "stocks":[
+                            "stocks": [
                                 "Vanguard:HINT",
                                 "XETRA:ISPA",
                                 "ASX:VEU",
@@ -98,7 +99,7 @@
                         {
                             "name": "North America",
                             "allocation": 4,
-                            "stocks":[
+                            "stocks": [
                                 "AMLP",
                                 "MLPX",
                                 "PFXF",
@@ -114,7 +115,7 @@
                         {
                             "name": "NAm Small",
                             "allocation": 1.5,
-                            "stocks":[
+                            "stocks": [
                                 "VBR",
                                 "VTWV"
                             ]
@@ -139,7 +140,7 @@
                 {
                     "name": "int prop",
                     "allocation": 2,
-                    "stocks":[
+                    "stocks": [
                         "XETRA:EXI5",
                         "AMS:IPRP",
                         "VNQI"
@@ -148,7 +149,7 @@
                 {
                     "name": "NAm Prop",
                     "allocation": 1,
-                    "stocks":[
+                    "stocks": [
                         "GOV",
                         "KBWY",
                         "VNQ"
@@ -157,7 +158,7 @@
                 {
                     "name": "commodities",
                     "allocation": 1.2,
-                    "stocks":[
+                    "stocks": [
                         "XETRA:EXV6",
                         "ASX:MVR",
                         "VAW",
@@ -167,7 +168,7 @@
                 {
                     "name": "gold",
                     "allocation": 0.55,
-                    "stocks":[
+                    "stocks": [
                         "GDX",
                         "RING"
                     ]
@@ -175,7 +176,7 @@
                 {
                     "name": "TIPS",
                     "allocation": 0.25,
-                    "stocks":[
+                    "stocks": [
                         "VTIP"
                     ]
                 }
@@ -183,7 +184,7 @@
         },
         {
             "name": "Fixed",
-            "allocation": 33,
+            "allocation": 30,
             "classes": [
                 {
                     "name": "Fixed Aus",
@@ -200,7 +201,7 @@
                         {
                             "name": "Aus Corp",
                             "allocation": 10,
-                            "stocks":[
+                            "stocks": [
                                 "ASX:AGLHA",
                                 "ASX:ANZPC",
                                 "ASX:ANZPD",
@@ -220,11 +221,11 @@
                 {
                     "name": "Fixed EM",
                     "allocation": 3,
-                    "classes":[
+                    "classes": [
                         {
                             "name": "EM Gov",
                             "allocation": 2.5,
-                            "stocks":[
+                            "stocks": [
                                 "LSE:EMBE",
                                 "EMLC",
                                 "PCY",
@@ -234,7 +235,7 @@
                         {
                             "name": "EM Corp",
                             "allocation": 0.5,
-                            "stocks":[
+                            "stocks": [
                                 "HYEM"
                             ]
                         }
@@ -243,11 +244,11 @@
                 {
                     "name": "Fixed Euro",
                     "allocation": 6.5,
-                    "classes":[
+                    "classes": [
                         {
                             "name": "EU Gov",
                             "allocation": 2.5,
-                            "stocks":[
+                            "stocks": [
                                 "XETRA:EL4K",
                                 "XETRA:EL4L",
                                 "XETRA:EL4M",
@@ -258,7 +259,7 @@
                         {
                             "name": "EU Corp",
                             "allocation": 3,
-                            "stocks":[
+                            "stocks": [
                                 "XETRA:EL49",
                                 "XETRA:EXHE",
                                 "XETRA:IBCS",
@@ -269,7 +270,7 @@
                         {
                             "name": "EU high yield",
                             "allocation": 1,
-                            "stocks":[
+                            "stocks": [
                                 "XETRA:SYBJ"
                             ]
                         }
@@ -278,11 +279,11 @@
                 {
                     "name": "Fixed US",
                     "allocation": 5.5,
-                    "classes":[
+                    "classes": [
                         {
                             "name": "US Gov",
                             "allocation": 3.5,
-                            "stocks":[
+                            "stocks": [
                                 "BBN",
                                 "BLV",
                                 "BND",
@@ -292,7 +293,7 @@
                         {
                             "name": "US Corp",
                             "allocation": 1.5,
-                            "stocks":[
+                            "stocks": [
                                 "VCIT",
                                 "VCLT",
                                 "VCSH"
@@ -301,7 +302,7 @@
                         {
                             "name": "US high yield",
                             "allocation": 0.5,
-                            "stocks":[
+                            "stocks": [
                                 "ANGL",
                                 "SHYG"
                             ]
@@ -311,16 +312,16 @@
                 {
                     "name": "Fixed Global",
                     "allocation": 1,
-                    "stocks":[
+                    "stocks": [
                         "Vanguard:BOND"
                     ]
-                },
-                {
-                    "name": "Cash",
-                    "allocation": 3,
-                    "rootAccount": "Assets:Investments"
                 }
             ]
+        },
+        {
+            "name": "Cash",
+            "allocation": 3,
+            "rootAccount": "Assets:Investments"
         }
     ]
 }

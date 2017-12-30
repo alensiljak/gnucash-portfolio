@@ -31,10 +31,11 @@ def get_date_iso_string(value: datetime):
 
 def load_json_file_contents(path: str) -> str:
     """ Loads contents from a json file """
+    assert isinstance(path, str)
     content = None
 
     file_path = os.path.abspath(path)
-    content = fileutils.read_text_from_file(fileutils)
+    content = fileutils.read_text_from_file(file_path)
     json_object = json.loads(content)
     content = json.dumps(json_object, sort_keys=True, indent=4)
 
