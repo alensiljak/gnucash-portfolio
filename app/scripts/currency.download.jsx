@@ -23,6 +23,11 @@ class CurrencyTableRow extends React.Component {
         };
     }
     render() {
+        let indicator = false;
+        if (this.state.currency.saved) {
+            indicator = <span>True</span>;
+        }
+
         return (
 
             <tr key={this.state.currency.symbol}>
@@ -33,7 +38,9 @@ class CurrencyTableRow extends React.Component {
                 <td>
                     {this.state.currency.rateDate}
                 </td>
-                <td>{this.state.currency.saved}</td>
+                <td>
+                    {indicator}
+                </td>
             </tr>
 
         );
@@ -140,24 +147,45 @@ class Main extends React.Component {
             cur.rate = rate;
             cur.rateDate = rates_result.date;
         }
-        this.setState({ 
+        this.setState({
             currencies: currencies,
             response: rates_result
         });
     }
 
+    setSaved = function (value) {
+        var currencies = this.state.currencies;
+
+        for (var i = 0; i < currencies.length; i++) {
+            currencies[i].saved = value;
+        }
+
+        this.setState({ currencies: currencies });
+    }
+
     importAll = function () {
-        // console.log("Here goes import");
+        // Send the rates to GnuCash Portfolio.
+
+        // clear the output first.
+        this.setSaved(false);
+
+        var that = this;
         $.ajax({
             url: '/currency/api/saverates',
             method: 'POST',
-            data: { 
+            data: {
                 currencies: JSON.stringify(this.state.currencies),
                 base: this.state.response.base,
                 date: this.state.response.date
             },
             success: function (data) {
-                console.log("server response:", data);
+                var saved = false;
+                if (data == "true") {
+                    saved = true;
+                }
+
+                // Display result
+                that.setSaved(saved);
             }
         });
     }
@@ -165,7 +193,7 @@ class Main extends React.Component {
     render() {
         return (
             <div>
-                <h2>Book currencies</h2>
+                <h3>Book currencies</h3>
                 <CurrencyTable currencies={this.state.currencies} />
                 <div className="text-center">
                     <button className="btn btn-primary" onClick={event => this.downloadAll(event)}>

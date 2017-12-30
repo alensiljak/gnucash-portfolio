@@ -7,6 +7,7 @@ Currencies
 - exchange rate chart
 """
 #from logging import log, DEBUG
+from decimal import Decimal
 from flask import Blueprint, request, render_template
 try: import simplejson as json
 except ImportError: import json
@@ -95,19 +96,18 @@ def api_save_rates():
     # filter out the ones without rates
     filtered_rates = [item for item in fx_rates if "rate" in item]
 
-    with BookAggregate() as svc:
+    with BookAggregate(for_writing=True) as svc:
         book_base_cur = svc.currencies.get_default_currency().mnemonic
         if book_base_cur != base_cur_symbol:
             raise ValueError("The base currencies are not same!", base_cur_symbol, "vs",
                              book_base_cur)
         # Import rates
         prices_model = ([PriceModel(symbol=in_rate["symbol"], base_cur=base_cur_symbol,
-                                    value=in_rate["rate"], rate_date=rate_date)
+                                    value=Decimal(in_rate["rate"]), rate_date=rate_date)
                          for in_rate in filtered_rates])
-        #svc.currencies.import_fx_rates(prices_model)
+        svc.currencies.import_fx_rates(prices_model)
 
-    # TODO: test import and return info back, display success to the user.
-    return "I'll think about it"
+    return "true"
 
 ###############################################################################
 

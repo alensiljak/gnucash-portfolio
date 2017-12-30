@@ -111,7 +111,7 @@ class CurrenciesAggregate():
             #exists_query = exists(rates_query)
             has_rate = currency.prices.filter(Price.date == rate.date).first()
             if not has_rate:
-                log(INFO, "Creating entry for", base_currency.mnemonic, currency.mnemonic,
+                log(INFO, "Creating entry for %s, %s, %s, %s", base_currency.mnemonic, currency.mnemonic,
                     rate.date, amount)
                 # Save the price in the exchange currency, not the default.
                 # Invert the rate in that case.
@@ -126,6 +126,7 @@ class CurrenciesAggregate():
 
         # Save the book after the prices have been created.
         if have_new_rates:
+            log(INFO, "Saving new prices...")
             self.book.flush()
             self.book.save()
         else:
