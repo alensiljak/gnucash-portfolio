@@ -1,14 +1,26 @@
 """ Scheduled Transactions """
 
 from typing import List
+from enum import Enum
 from logging import log, DEBUG, INFO, WARN
 from datetime import date, datetime
 from piecash import Book, ScheduledTransaction #, Recurrence
 from gnucash_portfolio.lib import datetimeutils
 
 
+class RecurrencePeriod(Enum):
+    """ Recurrence Types """
+    #ROOT = auto()
+    YEAR = "year"
+    MONTH = "month"
+    END_OF_MONTH = "end of month"
+    DAY = "day"
+
+
 def get_next_occurrence(tx: ScheduledTransaction) -> date:
-    """ Calculates the next occurrence date for scheduled transaction """
+    """ Calculates the next occurrence date for scheduled transaction.
+    Mimics the recurrenceNextInstance() function from GnuCash.
+    Still not complete but handles the main cases I use. """
     # Reference documentation:
     # https://github.com/MisterY/gnucash-portfolio/issues/3
 
@@ -31,18 +43,20 @@ def get_next_occurrence(tx: ScheduledTransaction) -> date:
     mult: int = tx.recurrence.recurrence_mult
     #wadj = tx.recurrence.recurrence_weekend_adjust
 
-    if period == "day":
+    if period == RecurrencePeriod.DAY.value:
         log(WARN, "daily not handled")
 
-    elif period in ["year", "month", "end of month"]:
-        if period == "year":
+    elif period in ([RecurrencePeriod.YEAR.value, RecurrencePeriod.MONTH.value,
+                     RecurrencePeriod.END_OF_MONTH.value]):
+        if period == RecurrencePeriod.YEAR.value:
             mult *= 12
 
         # handle weekend adjustment here.
 
         # if the date is already at end of month, then increase
         if (datetimeutils.is_end_of_month(next_date) or
-                ((period == "month" or period == "year") and (next_date.day >= start_date.day))
+                (period in [RecurrencePeriod.MONTH.value, RecurrencePeriod.YEAR.value]
+                 and (next_date.day >= start_date.day))
            ):
             next_date = datetimeutils.add_months(next_date, mult)
             # Set at end of month again (?!)
@@ -58,15 +72,24 @@ def get_next_occurrence(tx: ScheduledTransaction) -> date:
     #######################
     # Step 2
 
-    if period in ["year", "month", "end of month"]:
+    if period in ([RecurrencePeriod.YEAR.value, RecurrencePeriod.MONTH.value,
+                   RecurrencePeriod.END_OF_MONTH.value]):
         n_months = (
             12 * (next_date.year - start_date.year) +
             (next_date.month - start_date.month)
         )
         next_date = datetimeutils.subtract_months(next_date, n_months % mult)
+
+        days_in_month = datetimeutils.get_days_in_month(next_date.year, next_date.month)
+
         # Handle adjustment for 3 ways.
-        # Here we take only the simple, last one.
-        next_date = next_date.replace(day=start_date.day)
+        if (period == RecurrencePeriod.END_OF_MONTH.value or
+                next_date.day >= days_in_month):
+            # Set to last day of the month.
+            next_date = next_date.replace(day=days_in_month)
+        else:
+            # Same day as the start.
+            next_date = next_date.replace(day=start_date.day)
 
         # handle weekend
 

@@ -3,11 +3,17 @@
 from datetime import datetime, date, time, timedelta
 #import dateutil
 from dateutil.relativedelta import relativedelta
-#import calendar
+import calendar
 
 def add_months(date_value: date, value: int) -> date:
     """ Add a number of months to the given date """
     return date_value + relativedelta(months=value)
+
+def get_days_in_month(year: int, month: int) -> int:
+    """ Returns number of days in the given month.
+    1-based numbers as arguments. i.e. November = 11 """
+    month_range = calendar.monthrange(year, month)
+    return month_range[1]
 
 def get_end_of_month(date_val: date) -> date:
     """ Provides end of the month for the given date """
