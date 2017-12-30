@@ -1,7 +1,7 @@
 {
   "name": "gnucash-portfolio-app",
   "description": "GnuCash Portfolio web application",
-  "version": "0.0.3",
+  "version": "0.1.0",
   "homepage": "http://portfolio.alensiljak.tk/",
   "license": "GPL-3.0",
   "repository": {
