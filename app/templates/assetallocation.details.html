@@ -47,6 +47,7 @@
     <table class="table table-sm table-striped">
         <thead class="thead-dark">
             <th>Symbol</th>
+            <th>Name</th>
             <th>Value</th>
             <th>Value in base cur.</th>
         </thead>
@@ -56,6 +57,9 @@
                 <a href="/security/{{ stock.name }}/details">
                     {{ stock.name }}
                 </a>
+            </td>
+            <td>
+                {{ stock.description }}
             </td>
             <td class="text-right">
                 {{ stock.currency }} {{ "{:,.2f}".format(stock.value) }}

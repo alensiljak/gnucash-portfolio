@@ -19,6 +19,7 @@ class AssetGroupChildDetailViewModel:
     def __init__(self):
         self.fullname = None
         self.name = None
+        self.description = None
         self.value = None
         # Currency name
         self.currency = None
