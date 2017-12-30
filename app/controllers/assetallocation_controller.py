@@ -60,6 +60,8 @@ def __get_details_model(fullname: str) -> AssetGroupDetailsViewModel:
     model.fullname = fullname
 
     with BookAggregate() as svc:
+        model.base_currency = svc.currencies.get_default_currency().mnemonic
+
         aaloc = svc.get_asset_allocation()
         # Load only the asset class tree without the data from database.
         aaloc.root = aaloc.load_config_only(None)
@@ -67,7 +69,7 @@ def __get_details_model(fullname: str) -> AssetGroupDetailsViewModel:
 
         model.asset_class = asset_class
 
-        # TODO Load value of each security.
+        # Load value of each security.
         if hasattr(asset_class, "classes"):
             for ac in asset_class.classes:
                 child = AssetGroupChildDetailViewModel()
@@ -78,9 +80,14 @@ def __get_details_model(fullname: str) -> AssetGroupDetailsViewModel:
 
         if hasattr(asset_class, "stocks"):
             for stock in asset_class.stocks:
+                sec = svc.securities.get_aggregate_for_symbol(stock.symbol)
+
                 child = AssetGroupChildDetailViewModel()
+                child.fullname = stock.symbol
                 child.name = stock.symbol
-                child.value = Decimal(0)
+                child.value = sec.get_value()
+                child.currency = sec.get_currency().mnemonic
+                child.value_base_cur = sec.get_value_in_base_currency()
                 model.stocks.append(child)
 
     return model

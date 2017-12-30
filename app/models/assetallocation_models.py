@@ -8,6 +8,8 @@ class AssetGroupDetailsViewModel:
     """ view model for asset group details """
     def __init__(self):
         self.fullname = None
+        # base currency display name
+        self.base_currency = None
         self.asset_class: AssetGroup = None
         self.classes: List[AssetGroupChildDetailViewModel] = []
         self.stocks: List[AssetGroupChildDetailViewModel] = []
@@ -18,3 +20,7 @@ class AssetGroupChildDetailViewModel:
         self.fullname = None
         self.name = None
         self.value = None
+        # Currency name
+        self.currency = None
+        # Value in base currency.
+        self.value_base_cur = None

@@ -48,6 +48,7 @@
         <thead class="thead-dark">
             <th>Symbol</th>
             <th>Value</th>
+            <th>Value in base cur.</th>
         </thead>
         {% for stock in model.stocks %}
         <tr>
@@ -55,6 +56,12 @@
                 <a href="/security/{{ stock.name }}/details">
                     {{ stock.name }}
                 </a>
+            </td>
+            <td class="text-right">
+                {{ stock.currency }} {{ "{:,.2f}".format(stock.value) }}
+            </td>
+            <td class="text-right">
+                {{ model.base_currency }} {{ "{:,.2f}".format(stock.value_base_cur) }}
             </td>
         </tr>
         {% endfor %}

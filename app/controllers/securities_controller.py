@@ -52,6 +52,19 @@ def details_partial(symbol: str):
         model = __get_model_for_details(svc, symbol)
         return render_template('_security.details.html', model=model)
 
+@stock_controller.route('/transactions/<symbol>')
+def transactions():
+    """ Lists all transactions for security. Symbol must include namespace. """
+    return render_template('incomplete.html')
+
+@stock_controller.route('/distributions/<symbol>')
+def distributions():
+    """ Distributions for the security """
+    return render_template('distributions.html', model=None)
+
+####################
+# Private
+
 def __get_model_for_details(
         svc: BookAggregate, symbol: str) -> security_models.SecurityDetailsViewModel:
     """ Loads the model for security details """
@@ -80,16 +93,6 @@ def __get_model_for_analysis(svc: BookAggregate):
     model.securities = all_securities
 
     return model
-
-@stock_controller.route('/transactions/<symbol>')
-def transactions():
-    """ Lists all transactions for security. Symbol must include namespace. """
-    return render_template('incomplete.html')
-
-@stock_controller.route('/distributions/<symbol>')
-def distributions():
-    """ Distributions for the security """
-    return render_template('distributions.html', model=None)
 
 ###################
 # API

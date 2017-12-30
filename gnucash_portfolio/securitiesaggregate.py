@@ -12,6 +12,7 @@ from piecash import Account, Book, Commodity, Price
 from gnucash_portfolio.lib import datetimeutils
 from gnucash_portfolio.lib.aggregatebase import AggregateBase
 from gnucash_portfolio.accountaggregate import AccountAggregate # AccountsAggregate
+from gnucash_portfolio.currencyaggregate import CurrenciesAggregate
 
 
 class SecurityAggregate(AggregateBase):
@@ -57,6 +58,26 @@ class SecurityAggregate(AggregateBase):
 
         value = quantity * price.value
         return value
+
+    def get_value_in_base_currency(self) -> Decimal:
+        """ Calculates the value of security holdings in base currency """
+        # check if the currency is the base currency.
+        amt_orig = self.get_value()
+        # Security currency
+        sec_cur = self.get_currency()
+        #base_cur = self.book.default_currency
+        cur_svc = CurrenciesAggregate(self.book)
+        base_cur = cur_svc.get_default_currency()
+
+        if sec_cur == base_cur:
+            return amt_orig
+
+        # otherwise recalculate
+        single_svc = cur_svc.get_currency_aggregate(sec_cur)
+        rate = single_svc.get_latest_rate(base_cur)
+
+        result = amt_orig * rate.value
+        return result
 
     def get_last_available_price(self) -> Price:
         """ Finds the last available price for security """
