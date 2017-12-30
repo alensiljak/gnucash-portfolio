@@ -1,7 +1,8 @@
+#!/usr/bin/python3
 """
 Represents a price.
 """
-from datetime import datetime, date
+from datetime import datetime
 from decimal import Decimal
 
 

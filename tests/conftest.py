@@ -1,9 +1,10 @@
+#!/usr/bin/python3
 """
 Test configuration
 See more about fixtures at
 https://docs.pytest.org/en/latest/fixture.html
 """
-try: import simplejson as json 
+try: import simplejson as json
 except ImportError: import json
 import pytest
 import data_factory

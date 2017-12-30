@@ -1,3 +1,4 @@
+#!/usr/bin/python3
 """
 Currencies
 - list of book currencies
@@ -5,7 +6,7 @@ Currencies
 - price cleanup / deletion
 - exchange rate chart
 """
-from logging import log, DEBUG
+#from logging import log, DEBUG
 from flask import Blueprint, request, render_template
 try: import simplejson as json
 except ImportError: import json
@@ -103,8 +104,9 @@ def api_save_rates():
         prices_model = ([PriceModel(symbol=in_rate["symbol"], base_cur=base_cur_symbol,
                                     value=in_rate["rate"], rate_date=rate_date)
                          for in_rate in filtered_rates])
-        svc.currencies.import_fx_rates(prices_model)
+        #svc.currencies.import_fx_rates(prices_model)
 
+    # TODO: test import and return info back, display success to the user.
     return "I'll think about it"
 
 ###############################################################################

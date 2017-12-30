@@ -2,14 +2,10 @@
 """
 Import currency exchange rates from .csv file into GnuCash
 """
-from typing import List
-from logging import log, INFO, DEBUG
-#from datetime import datetime
+from logging import log, DEBUG
 from sqlalchemy import func
-from piecash import Price
 from gnucash_portfolio.lib import currencyrates, settings
 from gnucash_portfolio.bookaggregate import BookAggregate
-from gnucash_portfolio.model.price_model import PriceModel
 
 
 class ExchangeRatesImporter:
@@ -70,13 +66,15 @@ def main():
     print("####################################")
     latest_rates_json = importer.get_latest_rates()
 
-    # TODO translate into an array of PriceModels
+    # translate into an array of PriceModels
     mapper = currencyrates.FixerioModelMapper()
     rates = mapper.map_to_model(latest_rates_json)
 
     print("####################################")
     print("importing rates into gnucash...")
-    importer.save_rates(rates)
+    # For writing, use True below.
+    with BookAggregate(for_writing=False) as svc:
+        svc.currencies.import_fx_rates(rates)
 
     print("####################################")
     print("displaying rates from gnucash...")

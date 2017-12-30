@@ -1,3 +1,4 @@
+#!/usr/bin/python3
 """ Generation of test data for in-memory database """
 
 from piecash import Commodity

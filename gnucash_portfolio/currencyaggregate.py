@@ -1,3 +1,4 @@
+#!/usr/bin/python3
 """ Currencies service """
 
 from logging import log, INFO
