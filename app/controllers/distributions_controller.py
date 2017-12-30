@@ -5,6 +5,7 @@ from datetime import date, timedelta
 from flask import Blueprint, request, render_template
 from piecash import Account, Commodity, Split, Book, Transaction
 from gnucash_portfolio.bookaggregate import BookAggregate
+from gnucash_portfolio.lib import datetimeutils
 from app.models.distribution_models import DistributionsInputModel, DistributionsViewModel
 
 distribution_controller = Blueprint( # pylint: disable=invalid-name
@@ -18,7 +19,10 @@ def income_in_period():
     # TODO add collapsible indicator icon to the filter header
     # https://stackoverflow.com/questions/18325779/bootstrap-3-collapse-show-state-with-chevron-icon
 
-    return render_template('distributions.html', model=None, in_model=None)
+    in_model = DistributionsInputModel()
+    in_model.period = datetimeutils.get_period_last_week()
+
+    return render_template('distributions.html', model=None, in_model=in_model)
 
 @distribution_controller.route('/', methods=['POST'])
 def income_in_period_data():
