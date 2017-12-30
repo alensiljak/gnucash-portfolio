@@ -72,7 +72,6 @@ class AssetBase:
 
 class AssetGroup(AssetBase):
     """Group contains other groups or asset classes"""
-
     def __init__(self, json_node):
         super().__init__(json_node)
         self.classes = []
@@ -80,7 +79,6 @@ class AssetGroup(AssetBase):
 
 class AssetClass(AssetBase):
     """Asset Class contains stocks"""
-
     def __init__(self, json_node):
         super().__init__(json_node)
 
@@ -99,7 +97,6 @@ class AssetClass(AssetBase):
 
 class Stock:
     """Stock link"""
-
     def __init__(self, symbol: str):
         """Parse json node"""
         self.symbol = symbol
@@ -281,7 +278,6 @@ class AssetAllocationAggregate():
     def __init__(self, book: Book):
         self.book = book
         self.root: AssetGroup = None
-
 
     def load_full_model(self, currency: Commodity):
         """ Populates complete Asset Allocation tree """

@@ -25,10 +25,19 @@
         <th>Value Diff</th>
     </thead>
     {%- for asset_class in model["allocation"].classes recursive %}
-    <tr class="{% if loop.depth0 == 0 %}bg-primary text-light{% endif %}">
+    {# Styling for main asset classes and groups #}
+    {% if asset_class.classes %}
+        {% set text_col = 'text-muted' %}
+    {% endif %}
+    {% if loop.depth0 == 0 %}
+        {% set row_bg = 'bg-primary text-light' %}
+        {% set text_col = 'text-light' %}
+    {% endif %}
+    <tr class="{{ row_bg }}{{ text_col }}">
         <td>
             <span class="ml-{{ loop.depth0 * 2 }}">
-                <a href="/assetallocation/details/{{ asset_class.fullname }}" {% if loop.depth0==0 %}class="text-light" {% endif %}>
+                <a href="/assetallocation/details/{{ asset_class.fullname }}" 
+                    class="{{ text_col }}">
                     {{ asset_class.name }}
                 </a>
             </span>
