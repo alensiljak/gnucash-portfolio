@@ -22,14 +22,14 @@
     </div>
 </div>
 
-
 <div class="mt-3">
-    {% if model.asset_class.classes %}
+    {# Child asset classes #}
+    {% if model.classes %}
     <h4>
         Child classes
     </h4>
     <ul>
-        {% for child_class in model.asset_class.classes %}
+        {% for child_class in model.classes %}
         <li>
             <a href="/assetallocation/details/{{ child_class.fullname }}">
                 {{ child_class.name }}
@@ -37,7 +37,10 @@
         </li>
         {% endfor %}
     </ul>
-    {% endif %} {% if model.asset_class.stocks %}
+    {% endif %}
+    
+    {# Child stocks #}
+    {% if model.stocks %}
     <h4>
         Stocks
     </h4>
@@ -46,11 +49,11 @@
             <th>Symbol</th>
             <th>Value</th>
         </thead>
-        {% for stock in model.asset_class.stocks %}
+        {% for stock in model.stocks %}
         <tr>
             <td>
-                <a href="/security/{{ stock.symbol }}/details">
-                    {{ stock.symbol }}
+                <a href="/security/{{ stock.name }}/details">
+                    {{ stock.name }}
                 </a>
             </td>
         </tr>

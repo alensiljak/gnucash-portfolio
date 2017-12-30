@@ -17,12 +17,12 @@
     <thead>
         <th>Name</th>
         <th>Allocation</th>
-        <th>Allocated</th>
-        <th>Alloc.Diff</th>
+        <th>Current</th>
+        <th>Diff</th>
         <th>Diff %</th>
-        <th>Value</th>
         <th>Alloc.Value</th>
-        <th>Value Diff</th>
+        <th>Current</th>
+        <th>Diff</th>
     </thead>
     {%- for asset_class in model["allocation"].classes recursive %}
     {# Styling for main asset classes and groups #}
@@ -30,10 +30,10 @@
         {% set text_col = 'text-muted' %}
     {% endif %}
     {% if loop.depth0 == 0 %}
-        {% set row_bg = 'bg-primary text-light' %}
+        {% set row_bg = 'bg-primary' %}
         {% set text_col = 'text-light' %}
     {% endif %}
-    <tr class="{{ row_bg }}{{ text_col }}">
+    <tr class="{{ row_bg }} {{ text_col }}">
         <td>
             <span class="ml-{{ loop.depth0 * 2 }}">
                 <a href="/assetallocation/details/{{ asset_class.fullname }}" 

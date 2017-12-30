@@ -4,16 +4,16 @@ Asset Allocation
 - editing of allocations (store in .json)
 - manual adjustments to allocation (offset for imbalance)
 """
+from decimal import Decimal
 #from logging import log, DEBUG
 from flask import Blueprint, render_template #, request
 from gnucash_portfolio.bookaggregate import BookAggregate
 from gnucash_portfolio.lib import generic
-from app.models.assetallocation_models import AssetGroupDetailsViewModel
-
+from app.models.assetallocation_models import (AssetGroupDetailsViewModel,
+                                               AssetGroupChildDetailViewModel)
 
 assetallocation_controller = Blueprint( # pylint: disable=invalid-name
     'assetallocation_controller', __name__, url_prefix='/assetallocation')
-
 
 @assetallocation_controller.route('/')
 def asset_allocation():
@@ -28,7 +28,6 @@ def asset_allocation():
         output = render_template('asset_allocation.html', model=model)
     return output
 
-
 @assetallocation_controller.route('/settings', methods=['GET'])
 def settings():
     """ Settings for Asset Allocation """
@@ -40,12 +39,10 @@ def settings():
     }
     return render_template('content.editor.html', model=model)
 
-
 @assetallocation_controller.route('/settings', methods=['POST'])
 def save_settings():
     """ Saves the settings content """
     return render_template('incomplete.html')
-
 
 @assetallocation_controller.route('/details/<path:fullname>')
 def details(fullname=None):
@@ -53,6 +50,9 @@ def details(fullname=None):
     model = __get_details_model(fullname)
 
     return render_template('assetallocation.details.html', model=model)
+
+#########################
+# Private
 
 def __get_details_model(fullname: str) -> AssetGroupDetailsViewModel:
     """ Creates the model for asset allocation details """
@@ -66,5 +66,21 @@ def __get_details_model(fullname: str) -> AssetGroupDetailsViewModel:
         asset_class = aaloc.find_class_by_fullname(fullname)
 
         model.asset_class = asset_class
+
+        # TODO Load value of each security.
+        if hasattr(asset_class, "classes"):
+            for ac in asset_class.classes:
+                child = AssetGroupChildDetailViewModel()
+                child.name = ac.name
+                child.fullname = ac.fullname
+                child.value = Decimal(0)
+                model.classes.append(child)
+
+        if hasattr(asset_class, "stocks"):
+            for stock in asset_class.stocks:
+                child = AssetGroupChildDetailViewModel()
+                child.name = stock.symbol
+                child.value = Decimal(0)
+                model.stocks.append(child)
 
     return model
