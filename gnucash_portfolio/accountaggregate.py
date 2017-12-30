@@ -80,7 +80,7 @@ class AccountAggregate(AggregateBase):
         # read cash balances
         model = {}
         for account in accounts:
-            if account.commodity.namespace != "CURRENCY":
+            if account.commodity.namespace != "CURRENCY" or account.placeholder:
                 continue
 
             # separate per currency
