@@ -118,7 +118,7 @@ def git_ls_files(*cmd_args):
     :rtype: :class:`set`
     """
     cmd = ['git', 'ls-files']
-    cmd.extend(cmd_args)
+    cmd += cmd_args
     return set(subprocess.check_output(cmd).splitlines())
 
 

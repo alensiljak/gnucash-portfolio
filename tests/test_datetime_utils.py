@@ -15,3 +15,14 @@ def test_parsing_gc26_date():
     assert actual.month == 12
     assert actual.day == 30
     assert actual.hour == 0
+
+def test_parsing_iso_date():
+    """ Parse ISO date """
+    value = "2017-12-31"
+
+    actual = datetimeutils.parse_iso_date(value)
+
+    assert actual
+    assert actual.year == 2017
+    assert actual.month == 12
+    assert actual.day == 31

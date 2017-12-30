@@ -2,118 +2,85 @@
 """
 Import currency exchange rates from .csv file into GnuCash
 """
-from logging import log, INFO
-from datetime import datetime
+from typing import List
+from logging import log, INFO, DEBUG
+#from datetime import datetime
 from sqlalchemy import func
 from piecash import Price
-from gnucash_portfolio.lib import currencyratesretriever, database, settings
+from gnucash_portfolio.lib import currencyrates, settings
 from gnucash_portfolio.bookaggregate import BookAggregate
+from gnucash_portfolio.model.price_model import PriceModel
 
-settings_path = "settings.json"
 
-__config = None
+class ExchangeRatesImporter:
+    def __init__(self):
+        self.settings = settings.Settings()
 
-def get_settings():
-    """
-    Returns the shared settings instance.
-    """
-    global __config
-    if __config is None:
-        __config = settings.Settings(settings_path)
-    return __config
+    def get_latest_rates(self):
+        with BookAggregate() as svc:
+            book_currencies = svc.currencies.get_book_currencies()
+            base_currency = svc.currencies.get_default_currency()
 
-def __get_latest_rates(config):
-    # Currencies to be downloaded/imported.
-    currencies = config.get_currencies()
-    print("requested currencies: ", currencies)
+        # Currencies to be downloaded/imported.
+        currencies = [currency.mnemonic for currency in book_currencies]
+        log(DEBUG, "requested currencies: ", currencies)
 
-    # Base currency. Required for downloading the currency pairs.
-    print("Base currency:", config.base_currency)
+        # Base currency. Required for downloading the currency pairs.
+        log(DEBUG, "Base currency:", base_currency)
 
-    rateman = currencyratesretriever.CurrencyRatesRetriever(config)
-    latest = rateman.get_latest_rates()
+        rateman = currencyrates.CurrencyRatesRetriever(self.settings)
+        # Get the rates json.
+        latest = rateman.get_latest_rates()
 
-    # iterate over rates and import for specified currencies only.
-    rates = latest["rates"]
-    print("Rates for", latest["date"])
-    for currency in currencies:
-        value = rates[currency]
-        print(config.base_currency + '/' + currency, value)
+        # iterate over rates and display rates for specified currencies only.
+        rates = latest["rates"]
+        log(DEBUG, "Rates for %s", latest["date"])
+        for currency in currencies:
+            value = rates[currency]
+            log(DEBUG, base_currency + '/' + currency, value)
 
-    return latest
+        return latest
 
-def __display_gnucash_rates():
-    with BookAggregate() as svc:
-        # display prices for all currencies as the rates are expressed in the base currency.
-        for currency in svc.book.currencies:
-            prices = currency.prices.all()
-            if prices:
-                print(currency.mnemonic)
-                for price in prices:
-                    print(price)
+    def display_gnucash_rates(self):
+        with BookAggregate() as svc:
+            # display prices for all currencies as the rates are expressed in the base currency.
+            for currency in svc.book.currencies:
+                prices = currency.prices.all()
+                if prices:
+                    log(DEBUG, currency.mnemonic)
+                    for price in prices:
+                        log(DEBUG, price)
 
-def __save_rates(latest_rates):
-    '''
-    Saves the rates to GnuCash
-    '''
-    with BookAggregate(for_writing=True) as svc:
-        base_currency = svc.currencies.get_default_currency()
+    def get_count(self, query):
+        """
+        Returns a number of query results. This is faster than .count() on the query
+        """
+        count_q = query.statement.with_only_columns([func.count()]).order_by(None)
+        count = query.session.execute(count_q).scalar()
+        return count
 
-        rate_date_string = latest_rates["date"]
-        rate_date = datetime.strptime(rate_date_string, "%Y-%m-%d")
-        rates = latest_rates["rates"]
-        have_new_rates = False
-
-        for rate in rates:
-            currency = svc.currencies.get_by_symbol(rate)
-            amount = rates[rate]
-
-            # Do not import duplicate prices.
-            # todo: if the price differs, update it!
-            exists = currency.prices.filter(Price.date == rate_date).all()
-            if not exists:
-                log(INFO, "Creating entry for", base_currency.mnemonic, currency.mnemonic,
-                    rate_date_string, amount)
-                # Save the price in the exchange currency, not the default.
-                # Invert the rate in that case.
-                inverted_rate = 1 / amount
-                price = Price(commodity=currency,
-                              currency=base_currency,
-                              date=rate_date,
-                              value=str(inverted_rate))
-                have_new_rates = True
-
-        # Save the book after the prices have been created.
-        if have_new_rates:
-            svc.save()
-        else:
-            print("No prices imported.")
-    return
-
-def get_count(query):
-    """
-    Returns a number of query results. This is faster than .count() on the query
-    """
-    count_q = query.statement.with_only_columns([func.count()]).order_by(None)
-    count = query.session.execute(count_q).scalar()
-    return count
+#####################################
 
 def main():
     """
     Default entry point
     """
-    config = get_settings()
+    importer = ExchangeRatesImporter()
 
     print("####################################")
-    latest_rates = __get_latest_rates(config)
+    latest_rates_json = importer.get_latest_rates()
+
+    # TODO translate into an array of PriceModels
+    mapper = currencyrates.FixerioModelMapper()
+    rates = mapper.map_to_model(latest_rates_json)
 
     print("####################################")
     print("importing rates into gnucash...")
-    __save_rates(latest_rates)
+    importer.save_rates(rates)
 
     print("####################################")
     print("displaying rates from gnucash...")
-    __display_gnucash_rates()
+    importer.display_gnucash_rates()
 
 ###############################################################################
 if __name__ == "__main__":

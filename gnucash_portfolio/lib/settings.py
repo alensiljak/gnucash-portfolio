@@ -11,7 +11,6 @@ from gnucash_portfolio.lib import fileutils
 
 class Settings:
     """Provides access to user settings from settings.json file."""
-
     def __init__(self, config=None):
         self.FILENAME = "settings.json"
         # Content of the settings.json file. JSON object.

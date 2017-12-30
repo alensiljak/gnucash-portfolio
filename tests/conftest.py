@@ -6,6 +6,7 @@ https://docs.pytest.org/en/latest/fixture.html
 try: import simplejson as json 
 except ImportError: import json
 import pytest
+import data_factory
 from gnucash_portfolio.lib.settings import Settings
 from gnucash_portfolio.bookaggregate import BookAggregate
 
@@ -34,11 +35,22 @@ def settings_db() -> Settings:
     config = Settings(config_json)
     return config
 
-
 @pytest.fixture(scope="module")
 def svc(settings) -> BookAggregate:
-    """ Module-level book aggregate, using test settings """
-    return BookAggregate(settings)
+    """
+    Module-level book aggregate, using test settings, in-memory db. Read-only.
+    This is the default option as it is fast.
+    """
+    svc = BookAggregate(settings)
+    #create_test_data(svc)
+    return svc
+
+@pytest.fixture(scope="module")
+def svc_rw(settings) -> BookAggregate:
+    """ Returns Book Aggregate for a read/write access to in-memory book """
+    svc = BookAggregate(settings, for_writing=True)
+    create_test_data(svc)
+    return svc
 
 @pytest.fixture(scope="module")
 def svc_db(settings_db) -> BookAggregate:
@@ -64,3 +76,9 @@ class TestSettings(object):
     def svc(self):
         """ global Book Aggregate for all tests """
         return svc(self.settings)
+
+
+def create_test_data(svc: BookAggregate):
+    """ Create some data for in-memory database """
+    cur = data_factory.create_currency("AUD")
+    svc.book.session.add(cur)

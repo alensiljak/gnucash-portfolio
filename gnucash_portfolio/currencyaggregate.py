@@ -1,11 +1,15 @@
 """ Currencies service """
 
+from logging import log, INFO
 import locale
 import sys
 import winreg
+from decimal import Decimal
 from typing import List
 from sqlalchemy import desc
+#from sqlalchemy.sql.expression import exists
 from piecash import Book, Commodity, Price
+from gnucash_portfolio.model.price_model import PriceModel
 
 
 class CurrencyAggregate():
@@ -81,11 +85,50 @@ class CurrenciesAggregate():
 
     def get_by_symbol(self, symbol: str) -> Commodity:
         """ Loads currency by symbol """
+        assert isinstance(symbol, str)
+
         query = (
             self.currencies_query
             .filter(Commodity.mnemonic == symbol)
         )
         return query.one()
+
+    def import_fx_rates(self, rates: List[PriceModel]):
+        """ Imports the given prices into database. Write operation! """
+        have_new_rates = False
+
+        base_currency = self.get_default_currency()
+
+        for rate in rates:
+            assert isinstance(rate, PriceModel)
+
+            currency = self.get_by_symbol(rate.symbol)
+            amount = rate.value
+
+            # Do not import duplicate prices.
+            # todo: if the price differs, update it!
+            #exists_query = exists(rates_query)
+            has_rate = currency.prices.filter(Price.date == rate.date).first()
+            if not has_rate:
+                log(INFO, "Creating entry for", base_currency.mnemonic, currency.mnemonic,
+                    rate.date, amount)
+                # Save the price in the exchange currency, not the default.
+                # Invert the rate in that case.
+                inverted_rate = 1 / amount
+                inverted_rate = inverted_rate.quantize(Decimal('.00000000'))
+
+                price = Price(commodity=currency,
+                              currency=base_currency,
+                              date=rate.date,
+                              value=str(inverted_rate))
+                have_new_rates = True
+
+        # Save the book after the prices have been created.
+        if have_new_rates:
+            self.book.flush()
+            self.book.save()
+        else:
+            log(INFO, "No prices imported.")
 
     ##############
     # Private

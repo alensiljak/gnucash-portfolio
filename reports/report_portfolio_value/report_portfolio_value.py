@@ -7,6 +7,7 @@ as well as income generated.
 import sys
 #import os
 import piecash
+from datetime import datetime
 #from piecash import Commodity, Price, Book
 from piecash_utilities.report import report, execute_report
 from gnucash_portfolio.lib import generic, templates, portfoliovalue
@@ -45,7 +46,8 @@ def generate_report(book_url):
         # get all commodities that are not currencies.
         all_stocks = portfoliovalue.get_all_stocks(book)
         for stock in all_stocks:
-            model = portfoliovalue.get_stock_model_from(book, stock)
+            for_date = datetime.today().date
+            model = portfoliovalue.get_stock_model_from(book, stock, for_date)
             stock_rows += stock_template.render(model)
 
     # Load HTML template file.

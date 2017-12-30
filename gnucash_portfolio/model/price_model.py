@@ -1,28 +1,28 @@
 """
 Represents a price.
 """
-from datetime import datetime
+from datetime import datetime, date
 from decimal import Decimal
 
 
 class PriceModel:
     """ Price model """
-    def __init__(self):
-        self.date: datetime = None  # datetime.today()
-        self.value: Decimal = None  # Decimal(0)
-        self.name: str = None       #"AUD"
-        self.currency: str = None   #"EUR"
+    def __init__(self, symbol=None, base_cur=None, value: Decimal = None,
+                 rate_date: datetime = None):
+        assert isinstance(rate_date, datetime)
+        self.date: datetime = rate_date      # datetime.today().date
 
+        assert isinstance(value, Decimal)
+        self.value: Decimal = value      # Decimal(0)
+        self.symbol: str = symbol        #"AUD"
+        self.base_cur: str = base_cur    #"EUR"
 
     def parse_euro_date(self, date_string: str):
-        """
-        Parses dd/MM/yyyy dates.
-        """
+        """ Parses dd/MM/yyyy dates """
         #dateutil.parser.parse(date_string,)
         #d = datetime.datetime.strptime( "2012-10-09T19:00:55Z", "%Y-%m-%dT%H:%M:%SZ")
         self.date = datetime.strptime(date_string, "%d/%m/%Y")
         return self.date
-
 
     def parse_value(self, value_string: str):
         """

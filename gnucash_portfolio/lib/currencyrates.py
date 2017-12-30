@@ -4,6 +4,7 @@ Fetches the current exchange rates.
 Currently uses Fixer API.
 """
 import glob
+from typing import List
 try: import simplejson as json
 except ImportError: import json
 import os
@@ -11,22 +12,21 @@ from logging import log, ERROR
 from fixerio import Fixerio
 from gnucash_portfolio.lib import generic
 from gnucash_portfolio.lib.settings import Settings
+from gnucash_portfolio.model.price_model import PriceModel
+from gnucash_portfolio.lib import datetimeutils
 
 
 class CurrencyRatesRetriever:
     """Retrieves prices from data files or online provider(s)"""
-
-    settings = None
-    cache_path = "data/"
-
     def __init__(self, settings):
-        self.settings: Settings = settings #.Settings(settings_path)
-        return
+        self.settings: Settings = settings
+        self.cache_path = "data/"
 
     def get_latest_rates(self):
         """
         Retrieves the latest rates. If cached, loads cached file, otherwise
         downloads the rates.
+        Returns json response object from Fixer.io.
         """
         # todo: check cached rates
         if self.latest_rates_exist:
@@ -41,6 +41,7 @@ class CurrencyRatesRetriever:
         """
         Downloads the latest rates. Requires base currency and a list of currencies to
         retrieve.
+        Returns json response object from Fixer.io.
         """
         # get default currency
         if not base_currency:
@@ -174,6 +175,34 @@ class CurrencyRatesRetriever:
         if latest:
             print(latest)
         return
+
+
+class FixerioModelMapper:
+    """ Maps the result from Fixer.io into an array of PriceModels """
+    def __init__(self):
+        pass
+
+    def map_to_model(self, response_json) -> List[PriceModel]:
+        """ Perform the mapping """
+        rates_dict = response_json["rates"]
+        rate_date = datetimeutils.parse_iso_date(response_json["date"])
+        base = response_json["base"]
+        result: List[PriceModel] = []
+
+        for symbol in rates_dict:
+            #print(symbol)
+            value = rates_dict[symbol]
+
+            model = PriceModel()
+            model.symbol = symbol
+            model.value = value
+            model.date = rate_date
+            model.base_cur = base
+
+            result.append(model)
+
+        return result
+
 
 # If run directly, download the latest rates if not found, and display the rates.
 if __name__ == "__main__":

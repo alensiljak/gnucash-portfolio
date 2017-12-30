@@ -40,8 +40,8 @@ class AccountAggregate(AggregateBase):
         return self.__get_all_child_accounts_as_array(self.account)
 
     def get_cash_balance_with_children(self, root_account: Account, currency: Commodity) -> Decimal:
-        """ 
-        Loads cash balances in given currency 
+        """
+        Loads cash balances in given currency.
         currency: the currency for the total
         """
         total = Decimal(0)
@@ -191,7 +191,8 @@ class AccountsAggregate(AggregateBase):
         query = (
             self.book.session.query(Account)
         )
-        #sql = str(query.statement.compile(dialect=sqlite.dialect(), compile_kwargs={"literal_binds": True}))
+        #sql = str(query.statement.compile(dialect=sqlite.dialect(), 
+        # compile_kwargs={"literal_binds": True}))
         #print(sql)
         all_accounts = query.all()
         for account in all_accounts:
@@ -228,17 +229,17 @@ class AccountsAggregate(AggregateBase):
         """ Loads an account entity """
         return self.book.get(Account, guid=acct_id)
 
-    def get_by_name(self, name:str) -> List[Account]:
+    def get_by_name(self, name: str) -> List[Account]:
         """ Searches accounts by name """
         #return self.query.filter(Account.name == name).all()
         return self.get_by_name_from(self.book.root, name)
 
-    def get_by_name_from(self, root: Account, name:str) -> List[Account]:
+    def get_by_name_from(self, root: Account, name: str) -> List[Account]:
         """ Searches child accounts by name, starting from the given account """
         result = []
 
         if root.name == name:
-            result.append(child)
+            result.append(root)
 
         for child in root.children:
             child_results = self.get_by_name_from(child, name)

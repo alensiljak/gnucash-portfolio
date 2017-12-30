@@ -140,7 +140,10 @@ class Main extends React.Component {
             cur.rate = rate;
             cur.rateDate = rates_result.date;
         }
-        this.setState({ currencies: currencies });
+        this.setState({ 
+            currencies: currencies,
+            response: rates_result
+        });
     }
 
     importAll = function () {
@@ -150,7 +153,8 @@ class Main extends React.Component {
             method: 'POST',
             data: { 
                 currencies: JSON.stringify(this.state.currencies),
-                base: this.state.response.base
+                base: this.state.response.base,
+                date: this.state.response.date
             },
             success: function (data) {
                 console.log("server response:", data);

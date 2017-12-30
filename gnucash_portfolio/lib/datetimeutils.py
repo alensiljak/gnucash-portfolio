@@ -45,6 +45,10 @@ def get_period_end(period: str) -> datetime:
     obj = parse_period(period)
     return obj[1]
 
+def parse_iso_date(date_str: str) -> datetime:
+    """ Parse ISO date string (YYYY-MM-DD) """
+    return datetime.strptime(date_str, "%Y-%m-%d")
+
 def parse_period(period: str):
     """ parses period from date range picker """
     period = period.split(" - ")

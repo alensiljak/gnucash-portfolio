@@ -11,8 +11,10 @@ try: import simplejson as json
 except ImportError: import json
 from piecash import Commodity
 from gnucash_portfolio.lib.database import Database
+from gnucash_portfolio.lib import datetimeutils
 from gnucash_portfolio.bookaggregate import BookAggregate
 from gnucash_portfolio.currencyaggregate import CurrencyAggregate
+from gnucash_portfolio.model.price_model import PriceModel
 from app.models.currency_models import CurrencySearchModel, RateViewModel
 
 currency_controller = Blueprint( # pylint: disable=invalid-name
@@ -40,7 +42,7 @@ def post():
 @currency_controller.route('/rates')
 def rates():
     """ currency exchange rates """
-    rates = []
+    fx_rates = []
     # get all used currencies and their (latest?) rates
     with BookAggregate() as svc:
         base_currency = svc.currencies.get_default_currency()
@@ -60,12 +62,11 @@ def rates():
             if price:
                 rate.date = price.date
                 rate.value = price.value
-                #print(price.commodity.mnemonic)
                 rate.base_currency = price.currency.mnemonic
 
-            rates.append(rate)
+            fx_rates.append(rate)
 
-        output = render_template('price.rates.html', rates=rates)
+        output = render_template('price.rates.html', rates=fx_rates)
     return output
 
 @currency_controller.route('/download')
@@ -88,6 +89,7 @@ def api_save_rates():
     # parse data
     cur_json = request.form.get('currencies')
     base_cur_symbol = request.form.get('base')
+    rate_date = datetimeutils.parse_iso_date(request.form.get("date"))
     fx_rates = json.loads(cur_json)
     # filter out the ones without rates
     filtered_rates = [item for item in fx_rates if "rate" in item]
@@ -95,10 +97,13 @@ def api_save_rates():
     with BookAggregate() as svc:
         book_base_cur = svc.currencies.get_default_currency().mnemonic
         if book_base_cur != base_cur_symbol:
-            raise ValueError("The base currencies are not same!", base_cur_symbol, "vs", 
+            raise ValueError("The base currencies are not same!", base_cur_symbol, "vs",
                              book_base_cur)
         # Import rates
-        
+        prices_model = ([PriceModel(symbol=in_rate["symbol"], base_cur=base_cur_symbol,
+                                    value=in_rate["rate"], rate_date=rate_date)
+                         for in_rate in filtered_rates])
+        svc.currencies.import_fx_rates(prices_model)
 
     return "I'll think about it"
 
