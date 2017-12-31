@@ -41,7 +41,13 @@ SCSS is compiled using node-sass:
 
 ### JS
 
-JavaScript is bundled through Flask Assets. It collects the vendor code from installed development node modules. Make sure all the npm dependencies are installed in order for this to work.
+JavaScript is prepared through Webpack. Run
+
+`npm run webpack` 
+
+to compile the .js output into the `/static` directory.
+
+Vendor libraries are bundled through Flask Assets. It collects the vendor code from installed development node modules. Make sure all the npm dependencies are installed in order for this to work.
 The bundle will be built automatically during the app runtime. No additional actions required by the user.
 
 ## Running

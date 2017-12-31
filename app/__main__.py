@@ -79,15 +79,17 @@ bundles = {
         #'../node_modules/react-dom/umd/react-dom.production.min.js',
         '../node_modules/react-dom/umd/react-dom.development.js',
         '../node_modules/babel-standalone/babel.min.js',
-        output='vendor.js'),
+        # Use the development build
+        '../node_modules/vue/dist/vue.js',
+        output='vendor.js')
     # 'site_css': Bundle(
     #     'site.scss',
     #     filters='pyscss',
     #     output='site.css')
-    'site_js': Bundle(
-        '../scripts/basic.js',
-        output='site.js'
-    )
+    # 'site_js': Bundle(
+    #     '../scripts/basic.js',
+    #     output='site.js'
+    # )
 }
 assets = Environment(app)
 assets.register(bundles)

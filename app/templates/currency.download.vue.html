@@ -1,0 +1,23 @@
+{% extends "layout.html" %} {% block title %}Download Rates{% endblock %} {% block content %}
+<h1>Download Rates</h1>
+
+<p>
+    This operation will update your database!
+</p>
+<p>
+    Click here to see the <a href="{{ url_for('currency_controller.rates') }}">latest rates in the book</a>.
+</p>
+
+<div id="root"></div>
+
+{% endblock %} {% block scripts %}
+<script type="text/jsx" src="{{ url_for('scripts.static', filename='currency.download.vue') }}"></script>
+<script type="text/jsx">
+    //var currencies = JSON.parse('{{ model.currencies | tojson | safe }}');
+    var currencies = {{ model.currencies | tojson | safe }};
+    ReactDOM.render(
+        <Main currencies={currencies} />,
+        document.getElementById('root')
+    );
+
+</script> {% endblock %}

@@ -80,7 +80,8 @@ def download():
         model = {
             "currencies": currencies
         }
-        return render_template('currency.download.html', model=model)
+        # return render_template('currency.download.react.html', model=model)
+        return render_template('currency.download.vue.html', model=model)
 
 ###############
 # API

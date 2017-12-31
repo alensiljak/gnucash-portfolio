@@ -10,7 +10,8 @@
   },
   "scripts": {
     "css": "node-sass styles -o static",
-    "css:watch": "npm run scss && node-sass styles -wo static"
+    "css:watch": "npm run scss && node-sass styles -wo static",
+    "webpack": "webpack"
   },
   "devDependencies": {
     "babel-standalone": "^6.26.0",
@@ -27,7 +28,9 @@
     "react": "^16.2.0",
     "react-dom": "^16.2.0",
     "select2": "^4.0.6-rc.1",
-    "typeahead.js": "twitter/typeahead.js"
+    "typeahead.js": "twitter/typeahead.js",
+    "vue": "^2.5.13",
+    "webpack": "^3.10.0"
   },
   "dependencies": {}
 }
