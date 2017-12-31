@@ -82,14 +82,6 @@ bundles = {
         # Use the development build
         '../node_modules/vue/dist/vue.js',
         output='vendor.js')
-    # 'site_css': Bundle(
-    #     'site.scss',
-    #     filters='pyscss',
-    #     output='site.css')
-    # 'site_js': Bundle(
-    #     '../scripts/basic.js',
-    #     output='site.js'
-    # )
 }
 assets = Environment(app)
 assets.register(bundles)
