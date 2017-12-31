@@ -15,9 +15,10 @@
   "scripts": {
     "css": "node-sass styles -o static",
     "css:watch": "npm run scss && node-sass styles -wo static",
-    "webpack": "webpack --progress --colors --config webpack.config.js --bail",
-    "dev": "cross-env NODE_ENV=development webpack-dev-server --open --hot",
-    "build": "cross-env NODE_ENV=production webpack --progress --hide-modules"
+    "webpack-old": "webpack --progress --colors --config webpack.config.js --bail",
+    "webpack": "cross-env NODE_ENV=development webpack --watch",
+    "dev-vue-sample": "cross-env NODE_ENV=development webpack-dev-server --open --hot",
+    "build-vue-sample": "cross-env NODE_ENV=production webpack --progress --hide-modules"
   },
   "devDependencies": {
     "babel-core": "^6.26.0",

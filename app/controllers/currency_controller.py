@@ -110,6 +110,18 @@ def api_save_rates():
 
     return "true"
 
+@currency_controller.route('/api/book_currencies')
+def api_book_currencies():
+    """ Returns a JSON array of book currency symbols """
+    symbols = []
+    with BookAggregate() as svc:
+        currencies = svc.currencies.get_book_currencies()
+        for cur in currencies:
+            symbols.append(cur.mnemonic)
+
+    result = json.dumps(symbols)
+    return result
+
 ###############################################################################
 
 def __search(svc: BookAggregate, model: CurrencySearchModel):

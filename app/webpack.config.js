@@ -54,13 +54,24 @@ module.exports = {
         //     }
         // ]
     },
+
     resolve: {
         alias: {
             'vue$': 'vue/dist/vue.esm.js'
         },
         extensions: ['*', '.js', '.vue', '.json']
     },
+
     devtool: '#eval-source-map'
+}
+
+// Development configuration
+
+if (process.env.NODE_ENV === "development") {
+    module.exports.watch = "true",
+        module.exports.watchOptions = {
+            ignored: /node_modules/
+        }
 }
 
 // Production configuration

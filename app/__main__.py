@@ -75,12 +75,12 @@ bundles = {
         '../node_modules/chosen-js/chosen.jquery.min.js',
         '../node_modules/devbridge-autocomplete/dist/jquery.autocomplete.min.js',
         #'../node_modules/react/umd/react.production.min.js',
-        '../node_modules/react/umd/react.development.js',
+        # '../node_modules/react/umd/react.development.js',
         #'../node_modules/react-dom/umd/react-dom.production.min.js',
-        '../node_modules/react-dom/umd/react-dom.development.js',
-        '../node_modules/babel-standalone/babel.min.js',
+        # '../node_modules/react-dom/umd/react-dom.development.js',
+        # '../node_modules/babel-standalone/babel.min.js',
         # Use the development build
-        '../node_modules/vue/dist/vue.js',
+        # '../node_modules/vue/dist/vue.js',
         output='vendor.js')
 }
 assets = Environment(app)
