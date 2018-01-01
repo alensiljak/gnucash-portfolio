@@ -9,7 +9,7 @@
             <a class="nav-link ml-3" href="/account/favourites">Favourites</a>
             <a class="nav-link ml-3" href="/account/search">Search</a>
             <a class="nav-link ml-3" href="/account/cash">Cash Balances</a>
-            <a class="nav-link ml-3" href="/account/transactions">Transactions</a>
+            <a class="nav-link ml-3" href="{{ url_for('account_controller.transactions') }}">Transactions</a>
         </nav>
     </nav>
     <nav class="nav nav-pills flex-column">
@@ -36,25 +36,13 @@
     </nav>
 
     <nav class="nav nav-pills flex-column">
-        <a class="nav-link" href="/price/">Prices</a>
-        <nav class="nav nav-pills flex-column">
-            <a class="nav-link ml-3" href="/price/import">Import</a>
-        </nav>
-    </nav>
-
-    <nav class="nav nav-pills flex-column">
         <a class="nav-link" href="/scheduled">Scheduled</a>
     </nav>
     {# Securities #}
 
     <nav class="nav nav-pills flex-column">
         <a class="nav-link" href="/security/">Securities</a>
-    </nav>
-
-    <nav class="nav nav-pills flex-column">
-        <a class="nav-link" href="#">Transactions</a>
-        <nav class="nav nav-pills flex-column">
-        </nav>
+        <a class="nav-link ml-3" href="/price/import">Price Import</a>
     </nav>
 
     <nav class="nav nav-pills flex-column">
