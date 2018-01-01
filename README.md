@@ -33,6 +33,13 @@ in the app directory.
 Besides this, `piecash`, and `gnucash_portfolio` packages must be installed. These are not enabled in the requirements.txt because I'm using the latest development versions cloned directly from GitHub and/or modified locally.
 Install these with `pip install -e <path to>/piecash`.
 
+To compile all client-side (.scss, .js) code, run
+
+`npm run build`
+
+This will compile images, styles, and scripts into `/static` folder.
+`npm run dev` will do the same but for development. Meaning source code will not be minimized and webpack will continue monitoring the folders for any changes.
+
 ### CSS
 
 SCSS is compiled using node-sass:
@@ -41,11 +48,7 @@ SCSS is compiled using node-sass:
 
 ### JS
 
-JavaScript is prepared through Webpack. Run
-
-`npm run webpack` 
-
-to compile the .js output into the `/static` directory.
+JavaScript is mostly compiled through Webpack. 
 
 Vendor libraries are bundled through Flask Assets. It collects the vendor code from installed development node modules. Make sure all the npm dependencies are installed in order for this to work.
 The bundle will be built automatically during the app runtime. No additional actions required by the user.

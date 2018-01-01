@@ -7,9 +7,7 @@ config/settings.json
 app/node_modules/*
 
 # Compiled web assets
-app/static/*.css
-app/static/*.js
-app/static/*.map
+app/static/*
 
 #####################################################
 # Byte-compiled / optimized / DLL files

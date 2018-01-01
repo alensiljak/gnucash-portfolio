@@ -3,13 +3,16 @@
 
 const path = require('path')
 const webpack = require('webpack')
-var webpack = require('webpack')
-const CopyWebpackPlugin = require('copy-webpack-plugin');
+const CopyWebpackPlugin = require('copy-webpack-plugin');   // Copy files to destination.
+const CleanWebpackPlugin = require('clean-webpack-plugin'); // Clean destination folder.
+const ExtractTextPlugin = require('extract-text-webpack-plugin');
+// const siteSCSS = new ExtractTextPlugin('styles/site.scss');
 
 module.exports = {
     entry: {
         site: "./scripts/site.js",
-        currency_download: "./scripts/currency.download.js"
+        currency_download: "./scripts/currency.download.js",
+        // styles_webpack: "./styles/site.scss",
     },
 
     output: {
@@ -27,13 +30,22 @@ module.exports = {
                     'css-loader'
                 ],
             },
+            // {
+            //     test: /\.scss$/,
+            //     // use: siteSCSS.extract({
+            //     use: ExtractTextPlugin.extract({
+            //         fallback: 'style-loader',
+            //         use: ['sass-loader']
+            //     })
+            // },
             {
                 test: /\.scss$/,
+                exclude: /site.scss/,
                 use: [
                     'vue-style-loader',
                     'css-loader',
                     'sass-loader'
-                ],
+                ]
             },
             {
                 test: /\.vue$/,
@@ -58,12 +70,6 @@ module.exports = {
                 }
             }
         ]
-        // loaders: [
-        //     {
-        //         test: /\.vue$/,
-        //         loader: 'vue'
-        //     }
-        // ]
     },
 
     resolve: {
@@ -74,6 +80,14 @@ module.exports = {
     },
 
     plugins: [
+        new CleanWebpackPlugin(['static'], { verbose: true }),
+
+        // Copy all image files to /static folder.
+        new CopyWebpackPlugin([
+            // output is already pointing to /static.
+            { from: 'images', to: './' }
+        ]),
+
         // Separate into vendor file all used libraries from node_modules.
         new webpack.optimize.CommonsChunkPlugin({
             name: 'vendor',
@@ -83,11 +97,10 @@ module.exports = {
                     module.context.indexOf('node_modules') >= 0;
             }
         }),
-        // Copy all image files to /static folder.
-        new CopyWebpackPlugin([
-            // output is already pointing to /static.
-            { from: 'images', to: './' }
-        ]),
+
+        // new ExtractTextPlugin("styles_webpack.css"),
+        // new ExtractTextPlugin({ filename: 'bundle.css', disable: false, allChunks: true }),
+        // siteSCSS
 
         // Provides "jquery" package whenever $ or jQuery is encountered.
         // new webpack.ProvidePlugin({
@@ -100,8 +113,10 @@ module.exports = {
         hints: false
     },
 
-    devtool: '#eval-source-map'
-    // devtool: 'source-map'
+    // eval = inline source map
+    // devtool: '#eval-source-map'
+    // source map = separate .map file
+    devtool: 'source-map'
 }
 
 // Development configuration
