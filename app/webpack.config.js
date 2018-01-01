@@ -2,7 +2,9 @@
 // template: https://github.com/vuejs-templates/webpack/blob/develop/template/config/index.js
 
 const path = require('path')
+const webpack = require('webpack')
 var webpack = require('webpack')
+const CopyWebpackPlugin = require('copy-webpack-plugin');
 
 module.exports = {
     entry: {
@@ -80,7 +82,12 @@ module.exports = {
                 return module.context &&
                     module.context.indexOf('node_modules') >= 0;
             }
-        })
+        }),
+        // Copy all image files to /static folder.
+        new CopyWebpackPlugin([
+            // output is already pointing to /static.
+            { from: 'images', to: './' }
+        ]),
 
         // Provides "jquery" package whenever $ or jQuery is encountered.
         // new webpack.ProvidePlugin({
