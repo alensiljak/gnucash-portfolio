@@ -25,10 +25,11 @@ import CurrencyTable from "./currency.download.table.vue";
 class Currency {
   constructor() {
     //super();
-    this.symbol = undefined;
-    this.rate = undefined;
-    this.rateDate = undefined;
-    this.saved = false;
+    this.symbol = null;
+    this.rate = null;
+    this.inverseRate = null;
+    this.rateDate = null;
+    this.saved = null;
   }
 }
 
@@ -56,6 +57,10 @@ export default {
         var rate = rates_dict[cur.symbol];
         // console.log("assigning", rate, "to", cur.symbol);
         cur.rate = rate;
+        if (!rate) 
+          continue;
+
+        cur.inverseRate = 1 / rate;
         cur.rateDate = rates_result.date;
       }
     },

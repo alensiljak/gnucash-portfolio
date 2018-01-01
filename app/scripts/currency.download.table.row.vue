@@ -4,16 +4,11 @@ Currency table row component.
 
 <template>
     <tr key={{currency.symbol}}>
-        <td>
-            {{currency.symbol}}
-        </td>
+        <td>{{currency.symbol}}</td>
         <td class="text-right">{{currency.rate}}</td>
-        <td>
-            {{currency.rateDate}}
-        </td>
-        <td>
-            {{currency.saved}}
-        </td>
+        <td class="text-right">{{currency.inverseRate}}</td>
+        <td>{{currency.rateDate}}</td>
+        <td>{{currency.saved}}</td>
     </tr>
 </template>
 <script>

@@ -33,7 +33,7 @@ $(function () {
         l.href = href;
         return l;
     };
-    currentLocation = getLocation(window.location);
+    var currentLocation = getLocation(window.location);
     // Now find the link with the current path.
     $("#leftnav").find("a[href='" + currentLocation.pathname + "']")
         .addClass("active");

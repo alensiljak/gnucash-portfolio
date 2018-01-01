@@ -8,6 +8,7 @@ Currency download page, implemented in vue.js.
             <tr>
                 <th>Currency</th>
                 <th>Value</th>
+                <th>Inverse</th>
                 <th>Date</th>
                 <th>Saved</th>
             </tr>
