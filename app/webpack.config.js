@@ -13,6 +13,7 @@ module.exports = {
     output: {
         path: path.resolve(__dirname, 'static'),
         filename: '[name].js'
+        // [chunkhash]
     },
 
     module: {
@@ -62,7 +63,25 @@ module.exports = {
         extensions: ['*', '.js', '.vue', '.json']
     },
 
-    devtool: '#eval-source-map'
+    plugins: [
+        // new webpack.optimize.CommonsChunkPlugin({
+        //     name: 'vendor',
+        //     filename: 'vendor.[chunkhash].js',
+        //     minChunks(module) {
+        //         return module.context &&
+        //             module.context.indexOf('node_modules') >= 0;
+        //     }
+        // })
+
+        // Provides "jquery" package whenever $ or jQuery is encountered.
+        // new webpack.ProvidePlugin({
+        //     $: "jquery",
+        //     jQuery: "jquery"
+        // })
+    ],
+
+    // devtool: '#eval-source-map'
+    devtool: 'source-map'
 }
 
 // Development configuration
@@ -77,7 +96,9 @@ if (process.env.NODE_ENV === "development") {
 // Production configuration
 
 if (process.env.NODE_ENV === 'production') {
-    module.exports.devtool = '#source-map'
+    // module.exports.devtool = '#source-map'
+    module.exports.devtool = 'cheap-module-source-map';
+
     // http://vue-loader.vuejs.org/en/workflow/production.html
     module.exports.plugins = (module.exports.plugins || []).concat([
         new webpack.DefinePlugin({
