@@ -3,8 +3,8 @@ Currency download page, implemented in vue.js.
 </docs>
 
 <template>
-    <table className="table table-bordered table-striped">
-        <thead className="thead-dark">
+    <table class="table table-bordered table-striped">
+        <thead class="thead-dark">
             <tr>
                 <th>Currency</th>
                 <th>Value</th>
@@ -13,7 +13,7 @@ Currency download page, implemented in vue.js.
             </tr>
         </thead>
         <tbody>
-            <CurrencyTableRow v-for="currency in currencies" currency={currency} />
+            <CurrencyTableRow v-for="currency in currencies" :key="currency.symbol" v-bind:currency="currency" />
         </tbody>
     </table>
 </template>

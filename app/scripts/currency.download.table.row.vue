@@ -3,16 +3,16 @@ Currency table row component.
 </docs>
 
 <template>
-    <tr key={this.state.currency.symbol}>
+    <tr key={{currency.symbol}}>
         <td>
-            {this.state.currency.symbol}
+            {{currency.symbol}}
         </td>
-        <td>{this.state.currency.rate}</td>
+        <td class="text-right">{{currency.rate}}</td>
         <td>
-            {this.state.currency.rateDate}
+            {{currency.rateDate}}
         </td>
         <td>
-            {indicator}
+            {{currency.saved}}
         </td>
     </tr>
 </template>
@@ -22,6 +22,7 @@ export default {
     return {
       msg: "Hello world!"
     };
-  }
+  },
+  props: ['currency']
 };
 </script>

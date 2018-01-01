@@ -5,16 +5,14 @@ Currency download page, implemented in vue.js.
 <template>
     <div>
         <h3>Book currencies</h3>
-        <CurrencyTable currencies={this.currencies} />
+        <CurrencyTable v-bind:currencies="currencies" />
         <div className="text-center">
-            <button className="btn btn-primary" @click="downloadAll">
+            <button class="btn btn-primary" @click="downloadAll">
                 Download all
             </button>
-            {this.state.importEnabled ?
-                <button className="btn btn-outline-primary ml-3" @click="importAll">
-                    Import all
+            <button v-if="importEnabled" class="btn btn-outline-primary ml-3" @click="importAll">
+                Import all
             </button>
-                : null}
         </div>
     </div>
 </template>
@@ -25,23 +23,43 @@ import CurrencyTable from "./currency.download.table.vue";
  * Represents the data model for the currency row.
  */
 class Currency {
-    constructor() {
-        //super();
-        this.symbol = undefined;
-        this.rate = undefined;
-        this.rateDate = undefined;
-        this.saved = false;
-    }
+  constructor() {
+    //super();
+    this.symbol = undefined;
+    this.rate = undefined;
+    this.rateDate = undefined;
+    this.saved = false;
+  }
 }
 
 export default {
   data() {
     return {
-      currencies: []
+      currencies: [],
+      // Response from the server when getting the rates from rates provider.
+      response: null,
+      importEnabled: false
     };
   },
-//   props: ['currencies'],
+  //   props: ['currencies'],
   methods: {
+    /**
+     * Stores and displays the information received from the rates server.
+     */
+    displayRates: function(rates_result) {
+      // Populate rows by updating the collection.
+      this.response = rates_result;
+      var rates_dict = rates_result.rates;
+
+      for (var i = 0; i < this.currencies.length; i++) {
+        var cur = this.currencies[i];
+        var rate = rates_dict[cur.symbol];
+        // console.log("assigning", rate, "to", cur.symbol);
+        cur.rate = rate;
+        cur.rateDate = rates_result.date;
+      }
+    },
+
     downloadAll: function(event) {
       // Just get all and then parse the result
       // console.log("fetching rates...");
@@ -56,17 +74,22 @@ export default {
         }
       });
     },
-    get_book_currencies: function() {
-        var that = this;
 
-        $.ajax({
-            url: '/currency/api/book_currencies',
-            success: function(data) {
-                // console.log(data);
-                that.initCurrencies(data);
-            }
-        })
+    enableImport: function() {
+      this.importEnabled = true;
     },
+
+    get_book_currencies: function() {
+      var that = this;
+
+      $.ajax({
+        url: "/currency/api/book_currencies",
+        success: function(data) {
+          that.initCurrencies(data);
+        }
+      });
+    },
+
     importAll: function() {
       // Send the rates to GnuCash Portfolio.
 
@@ -78,9 +101,9 @@ export default {
         url: "/currency/api/saverates",
         method: "POST",
         data: {
-          currencies: JSON.stringify(this.state.currencies),
-          base: this.state.response.base,
-          date: this.state.response.date
+          currencies: JSON.stringify(this.currencies),
+          base: this.response.base,
+          date: this.response.date
         },
         success: function(data) {
           var saved = false;
@@ -93,34 +116,44 @@ export default {
         }
       });
     },
+
     /**
      * Initialize the list of Currency objects from the list of symbols received from the page.
      */
-    initCurrencies: function (symbols) {
-        // console.log("got", symbols);
+    initCurrencies: function(symbolsString) {
+      var symbols = JSON.parse(symbolsString);
+      // console.log("got", symbols);
 
-        var currencies = [];
-        // console.log("received", symbols.length, "symbols.");
+      var currencies = [];
+      // console.log("received", symbols.length, "symbols.");
 
-        for (var i = 0; i < symbols.length; i++) {
-            var symbol = symbols[i];
-            // console.log("creating", symbol);
-            var currency = new Currency();
-            currency.symbol = symbol;
+      for (var i = 0; i < symbols.length; i++) {
+        var symbol = symbols[i];
+        // console.log("creating", symbol);
+        var currency = new Currency();
+        currency.symbol = symbol;
 
-            currencies.push(currency);
-        }
+        currencies.push(currency);
+      }
 
-        // console.log(currencies);
-        // return currencies;
-        this.currencies = currencies;
+      // console.log(currencies);
+      // return currencies;
+      this.currencies = currencies;
+    },
+
+    setSaved: function(value) {
+      // Set all currency 'saved' indicators to the given value.
+
+      for (var i = 0; i < this.currencies.length; i++) {
+        this.currencies[i].saved = value;
+      }
     }
   },
   mounted: function() {
     // `this` points to the vm instance
     // console.log('a is: ' + this.a)
     console.log("Initializing currencies...");
-    this.get_book_currencies()
+    this.get_book_currencies();
   },
   components: {
     CurrencyTable
