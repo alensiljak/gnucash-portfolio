@@ -12,7 +12,7 @@ module.exports = {
     entry: {
         site: "./scripts/site.js",
         currency_download: "./scripts/currency.download.js",
-        // styles_webpack: "./styles/site.scss",
+        styles: "./styles/styles.scss",
     },
 
     output: {
@@ -30,17 +30,17 @@ module.exports = {
                     'css-loader'
                 ],
             },
-            // {
-            //     test: /\.scss$/,
-            //     // use: siteSCSS.extract({
-            //     use: ExtractTextPlugin.extract({
-            //         fallback: 'style-loader',
-            //         use: ['sass-loader']
-            //     })
-            // },
+            {
+                test: /styles\.scss$/,
+                loader: ExtractTextPlugin.extract({
+                    fallback: 'style-loader',
+                    minimize: true,
+                    use: ['css-loader', 'sass-loader']
+                })
+            },
             {
                 test: /\.scss$/,
-                exclude: /site.scss/,
+                exclude: /styles\.scss$/,
                 use: [
                     'vue-style-loader',
                     'css-loader',
@@ -98,7 +98,7 @@ module.exports = {
             }
         }),
 
-        // new ExtractTextPlugin("styles_webpack.css"),
+        new ExtractTextPlugin("styles.css"),
         // new ExtractTextPlugin({ filename: 'bundle.css', disable: false, allChunks: true }),
         // siteSCSS
 

@@ -37,14 +37,13 @@ To compile all client-side (.scss, .js) code, run
 
 `npm run build`
 
-This will compile images, styles, and scripts into `/static` folder.
+This will compile production-ready images, styles, and scripts into `/static` folder.
+
 `npm run dev` will do the same but for development. Meaning source code will not be minimized and webpack will continue monitoring the folders for any changes.
 
 ### CSS
 
-SCSS is compiled using node-sass:
-
-`npm run css`
+SCSS is compiled with Webpack.
 
 ### JS
 

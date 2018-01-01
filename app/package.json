@@ -15,9 +15,6 @@
   "scripts": {
     "build": "cross-env NODE_ENV=production webpack",
     "dev": "cross-env NODE_ENV=development webpack --watch",
-    "css": "node-sass styles -o static",
-    "css:watch": "npm run scss && node-sass styles -wo static",
-    "example-webpack": "webpack --progress --colors --config webpack.config.js --bail",
     "example-dev-vue": "cross-env NODE_ENV=development webpack-dev-server --open --hot",
     "example-build-vue": "cross-env NODE_ENV=production webpack --progress --hide-modules"
   },
