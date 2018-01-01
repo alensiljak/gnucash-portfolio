@@ -23,7 +23,7 @@ import CurrencyTableRow from './currency.download.table.row.vue'
 export default {
   data() {
     return {
-      msg: "Hello world!"
+    //   msg: "Hello world!"
     };
   },
   props: ['currencies'],

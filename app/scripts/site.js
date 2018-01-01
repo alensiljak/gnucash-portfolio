@@ -1,4 +1,9 @@
 // import popper from 'popper.js'
+// import $ from 'jquery'
+// import moment from 'moment'
+// import daterangepicker from 'daterangepicker'
+// import bootstrap from 'bootstrap'
+
 
 $(function () {
     //var start = moment().subtract(29, 'days');

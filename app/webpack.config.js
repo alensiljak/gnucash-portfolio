@@ -26,6 +26,14 @@ module.exports = {
                 ],
             },
             {
+                test: /\.scss$/,
+                use: [
+                    'vue-style-loader',
+                    'css-loader',
+                    'sass-loader'
+                ],
+            },
+            {
                 test: /\.vue$/,
                 loader: 'vue-loader',
                 options: {
@@ -64,14 +72,15 @@ module.exports = {
     },
 
     plugins: [
-        // new webpack.optimize.CommonsChunkPlugin({
-        //     name: 'vendor',
-        //     filename: 'vendor.[chunkhash].js',
-        //     minChunks(module) {
-        //         return module.context &&
-        //             module.context.indexOf('node_modules') >= 0;
-        //     }
-        // })
+        // Separate into vendor file all used libraries from node_modules.
+        new webpack.optimize.CommonsChunkPlugin({
+            name: 'vendor',
+            filename: 'vendor.[chunkhash].js',
+            minChunks(module) {
+                return module.context &&
+                    module.context.indexOf('node_modules') >= 0;
+            }
+        })
 
         // Provides "jquery" package whenever $ or jQuery is encountered.
         // new webpack.ProvidePlugin({
@@ -80,17 +89,32 @@ module.exports = {
         // })
     ],
 
-    // devtool: '#eval-source-map'
-    devtool: 'source-map'
+    performance: {
+        hints: false
+    },
+
+    devtool: '#eval-source-map'
+    // devtool: 'source-map'
 }
 
 // Development configuration
 
 if (process.env.NODE_ENV === "development") {
+    // Watch source folders for changes in dev mode.
     module.exports.watch = "true",
+
         module.exports.watchOptions = {
             ignored: /node_modules/
-        }
+        },
+
+        module.exports.plugins = (module.exports.plugins || []).concat([
+            // minify only the vendor package
+            new webpack.optimize.UglifyJsPlugin({
+                test: /vendor\..*\.js$/,
+                compress: { warnings: false },
+                sourceMap: true
+            })
+        ])
 }
 
 // Production configuration
@@ -108,9 +132,7 @@ if (process.env.NODE_ENV === 'production') {
         }),
         new webpack.optimize.UglifyJsPlugin({
             sourceMap: true,
-            compress: {
-                warnings: false
-            }
+            compress: { warnings: false }
         }),
         new webpack.LoaderOptionsPlugin({
             minimize: true

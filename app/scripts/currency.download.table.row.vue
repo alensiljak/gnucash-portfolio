@@ -20,7 +20,7 @@ Currency table row component.
 export default {
   data() {
     return {
-      msg: "Hello world!"
+    //   msg: "Hello world!"
     };
   },
   props: ['currency']
