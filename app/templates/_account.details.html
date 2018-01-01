@@ -7,11 +7,11 @@
     <div class="card-body">
         <form class="form">
             <div class="form-row">
-            <div class="form-group col-md-8">
-                <label>Full Name</label>
-                <input type="text" class="form-control" readonly value="{{ model.account.fullname }}">
-            </div>
-            <div class="form-group col-md-4">
+                <div class="form-group col-md-8">
+                    <label>Full Name</label>
+                    <input type="text" class="form-control" readonly value="{{ model.account.fullname }}">
+                </div>
+                <div class="form-group col-md-4">
                     <label>Id</label>
                     <input type="text" class="form-control" readonly value="{{ model.account.guid }}">
                 </div>
@@ -20,6 +20,15 @@
             <div class="form-group">
                 <label>Description</label>
                 <input type="text" class="form-control" readonly value="{{ model.account.description }}">
+            </div>
+
+            <div class="form-row">
+                <div class="form-group col">
+                    <label>Quantity</label>
+                    <input type="text" class="form-control" readonly 
+                        value="{{ '{:,.2f}'.format(model.quantity) }}">
+                </div>
+                
             </div>
         </form>
     </div>

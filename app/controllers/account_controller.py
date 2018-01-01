@@ -167,7 +167,11 @@ def account_details(acct_id):
     """ Displays account details """
     with BookAggregate() as svc:
         account = svc.accounts.get_by_id(acct_id)
-        model = {"account": account}
+        agg = svc.accounts.get_account_aggregate(account)
+        model = {
+            "account": account,
+            "quantity": agg.get_balance()
+        }
         return render_template('account.details.html', model=model)
 
 @account_controller.route('/<acct_id>/transactions')

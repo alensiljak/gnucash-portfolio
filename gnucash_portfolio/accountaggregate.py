@@ -131,8 +131,15 @@ class AccountAggregate(AggregateBase):
         #log(DEBUG, "getting balance on %s", date_corrected)
         return self.get_balance_on(date_corrected)
 
+    def get_balance(self):
+        """ Current account balance """
+        on_date = datetimeutils.today_datetime()
+        return self.get_balance_on(on_date)
+
     def get_balance_on(self, on_date: datetime) -> Decimal:
         """ Returns the balance on (and including) a certain date """
+        assert isinstance(on_date, datetime)
+
         total = Decimal(0)
 
         splits = self.get_splits_up_to(on_date)
