@@ -1,12 +1,6 @@
 {% extends "layout.html" %} {% block title %}Distributions in Period{% endblock %} {% block content %}
 <h1>Distributions in Period</h1>
 
-<style>
-    span.twitter-typeahead {
-        width: 100%;
-    }
-</style>
-
 {# Parameters #}
 <div id="accordion" role="tablist">
     <div class="card bg-secondary text-dark">
@@ -25,7 +19,7 @@
                         <div class="col form-group">
                             <label for="accounts">Income account(s) (includes all sub-accounts):</label>
                             <div class="w-100">
-                                <input type="text" id="accounts" name="accounts" class="form-control typeahead" value="{% if in_model.accounts %}{{ in_model.accounts }}{% else %}Income:Investment{% endif %}">
+                                <input type="text" id="accounts" name="accounts" class="form-control" value="{% if in_model.accounts %}{{ in_model.accounts }}{% else %}Income:Investment{% endif %}">
                             </div>
                         </div>
                     </div>
