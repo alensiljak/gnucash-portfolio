@@ -81,7 +81,7 @@ class Settings:
 
     def dumps(self) -> str:
         """ Dumps the json content as a string """
-        return json.dumps(self.data)
+        return json.dumps(self.data, sort_keys=True, indent=4)
 
     def loads(self, settings: str):
         """ Loads settings from json string """

@@ -216,6 +216,11 @@ def search_api():
         result = json.dumps(result_dict)
     return result
 
+@account_controller.route('/api/favourites')
+def api_favourites():
+    """ list of favourite accounts with balances """
+    return None
+
 ######################
 # Private
 

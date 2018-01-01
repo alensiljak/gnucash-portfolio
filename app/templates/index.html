@@ -14,7 +14,13 @@
 </p>
 
 <div class="row">
-  <div class="col-md-4"></div>
+  <div class="col-md-4">
+    {# favourite accounts #}
+    <div class="card bg-dark text-light">
+        <div class="card-body" id="favouriteAccounts">
+        </div>
+      </div>
+    </div>
   <div class="col-md-4"></div>
   <div class="col-md-4" style="height: 1em;">
     <div class="card bg-dark text-light">
@@ -52,7 +58,7 @@
       success: function (data) {
         $("#recurringContainer").html(data);
       }
-    })
+    });
 
   });
 </script> {% endblock %}
