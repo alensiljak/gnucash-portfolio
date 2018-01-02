@@ -192,6 +192,11 @@ class AccountsAggregate(AggregateBase):
         )
         return query.all()
 
+    def get_aggregate_by_id(self, account_id:str) -> AccountAggregate:
+        """ Returns the aggregate for the given id """
+        account = self.get_by_id(account_id)
+        return self.get_account_aggregate(account)
+
     def get_by_fullname(self, fullname: str) -> Account:
         """ Loads account by full name """
         # get all accounts and iterate, comparing the fullname. :S

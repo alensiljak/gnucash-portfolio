@@ -33,8 +33,11 @@ Besides this, "piecash", and "gnucash_portfolio" packages must be installed. The
 The local/development versions of these can be registered with
 
 `pip install -e <path to>/piecash`
+
 and
+
 `pip install -e .`
+
 for gnucash_portfolio package.
 
 To compile all client-side (.scss, .js) code, run
@@ -53,7 +56,7 @@ Vendor CSS is bundled with Flask Assets automatically when the site starts.
 
 ### JS
 
-Custom JavaScript code is compiled through Webpack. 
+Custom JavaScript code is compiled through Webpack.
 
 Vendor libraries are currently bundled through Flask Assets. It collects the vendor code from installed development node modules. Make sure all the npm dependencies are installed in order for this to work.
 The bundle will be built automatically during the app runtime. No additional actions required by the user.

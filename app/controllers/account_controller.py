@@ -15,7 +15,9 @@ from gnucash_portfolio.lib import datetimeutils, generic
 from gnucash_portfolio.lib.settings import Settings
 from gnucash_portfolio.bookaggregate import BookAggregate
 from gnucash_portfolio.accountaggregate import AccountAggregate, AccountsAggregate
-from app.models import account_models
+from app.models.account_models import (
+    AccountDetailsViewModel, AccountTransactionsInputModel,
+    AccountTransactionsViewModel, AccountTransactionsRefModel)
 
 
 account_controller = Blueprint( # pylint: disable=invalid-name
@@ -134,7 +136,7 @@ def cash_balances():
 def transactions():
     """ Account transactions """
     with BookAggregate() as svc:
-        in_model = model = account_models.AccountTransactionsInputModel()
+        in_model = model = AccountTransactionsInputModel()
 
         reference = __load_ref_model_for_tx(svc)
 
@@ -166,12 +168,8 @@ def transactions_post():
 def account_details(acct_id):
     """ Displays account details """
     with BookAggregate() as svc:
-        account = svc.accounts.get_by_id(acct_id)
-        agg = svc.accounts.get_account_aggregate(account)
-        model = {
-            "account": account,
-            "quantity": agg.get_balance()
-        }
+        model = __load_account_details_model(svc, acct_id)
+
         return render_template('account.details.html', model=model)
 
 @account_controller.route('/<acct_id>/transactions')
@@ -185,7 +183,7 @@ def details(fullname):
     with BookAggregate() as svc:
         account = svc.accounts.get_by_fullname(fullname)
 
-        model = account_models.AccountDetailsViewModel()
+        model = AccountDetailsViewModel()
         model.account = account
 
         return render_template('account.details.html', model=model)
@@ -195,8 +193,8 @@ def details(fullname):
 @account_controller.route('/partial/accountdetail/<account_id>')
 def account_details_partial(account_id):
     with BookAggregate() as svc:
-        account = svc.accounts.get_by_id(account_id)
-        model = {"account": account}
+        model = __load_account_details_model(svc, account_id)
+
         return render_template('_account.details.html', model=model)
 
 #################
@@ -224,9 +222,9 @@ def api_favourites():
 ######################
 # Private
 
-def __get_input_model_for_tx() -> account_models.AccountTransactionsInputModel:
+def __get_input_model_for_tx() -> AccountTransactionsInputModel:
     """ Parse user input or create a blank input model """
-    model = account_models.AccountTransactionsInputModel()
+    model = AccountTransactionsInputModel()
 
     if not request.form:
         return model
@@ -239,7 +237,7 @@ def __get_input_model_for_tx() -> account_models.AccountTransactionsInputModel:
 
 def __load_ref_model_for_tx(svc: BookAggregate):
     """ Load reference model """
-    model = account_models.AccountTransactionsRefModel()
+    model = AccountTransactionsRefModel()
 
     root_acct = svc.accounts.get_by_fullname("Assets")
     model.accounts = (
@@ -251,10 +249,10 @@ def __load_ref_model_for_tx(svc: BookAggregate):
 
 def __load_view_model_for_tx(
         svc: BookAggregate,
-        input_model: account_models.AccountTransactionsInputModel
-    ) -> account_models.AccountTransactionsViewModel():
+        input_model: AccountTransactionsInputModel
+    ) -> AccountTransactionsViewModel():
     """ Loads the filtered data """
-    model = account_models.AccountTransactionsViewModel()
+    model = AccountTransactionsViewModel()
     if not input_model.account_id:
         return model
 
@@ -300,3 +298,13 @@ def __load_search_model(search_term):
             model_array.append(account_model)
 
     return model_array
+
+def __load_account_details_model(svc: BookAggregate, acct_id: str) -> AccountDetailsViewModel:
+    """ Loads account details view model """
+    agg = svc.accounts.get_aggregate_by_id(acct_id)
+
+    model = AccountDetailsViewModel()
+    model.account = agg.account
+    model.quantity = agg.get_balance()
+
+    return model

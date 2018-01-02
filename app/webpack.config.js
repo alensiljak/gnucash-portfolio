@@ -101,7 +101,8 @@ module.exports = {
         // Separate into vendor file all used libraries from node_modules.
         new webpack.optimize.CommonsChunkPlugin({
             name: 'vendor',
-            filename: 'vendor.[chunkhash].js',
+            filename: 'vendor.webpack.js',
+            // [chunkhash]
             minChunks(module) {
                 return module.context &&
                     module.context.indexOf('node_modules') >= 0;
