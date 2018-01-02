@@ -155,14 +155,8 @@ def transactions():
 @account_controller.route('/transactions', methods=['POST'])
 def transactions_post():
     """ Account transactions """
-    with BookAggregate() as svc:
-        reference = __load_ref_model_for_tx(svc)
-        input_model = __get_input_model_for_tx()
-        model = __load_view_model_for_tx(svc, input_model)
-
-        return render_template(
-            'account.transactions.html',
-            model=model, input_model=input_model, reference=reference)
+    input_model = __get_input_model_for_tx()
+    return account_transactions(input_model.account_id)
 
 @account_controller.route('/<acct_id>/details')
 def account_details(acct_id):
@@ -174,8 +168,17 @@ def account_details(acct_id):
 
 @account_controller.route('/<acct_id>/transactions')
 def account_transactions(acct_id: str):
-    # TODO get other parameters
-    return render_template('incomplete.html')
+    """ Displays account transactions in period """
+    input_model = __get_input_model_for_tx()
+    input_model.account_id = acct_id
+
+    with BookAggregate() as svc:
+        reference = __load_ref_model_for_tx(svc)
+        model = __load_view_model_for_tx(svc, input_model)
+
+        return render_template(
+            'account.transactions.html',
+            model=model, input_model=input_model, reference=reference)
 
 @account_controller.route('/details/<path:fullname>')
 def details(fullname):
@@ -183,8 +186,7 @@ def details(fullname):
     with BookAggregate() as svc:
         account = svc.accounts.get_by_fullname(fullname)
 
-        model = AccountDetailsViewModel()
-        model.account = account
+        model = __load_account_details_model(svc, account.guid)
 
         return render_template('account.details.html', model=model)
 
@@ -226,12 +228,14 @@ def __get_input_model_for_tx() -> AccountTransactionsInputModel:
     """ Parse user input or create a blank input model """
     model = AccountTransactionsInputModel()
 
-    if not request.form:
-        return model
+    if request.args:
+        # model.account_id = request.args.get('account')
+        model.period = request.args.get('period')
 
-    # read from request
-    model.account_id = request.form.get('account')
-    model.period = request.form.get('period')
+    if request.form:
+        # read from request
+        model.account_id = request.form.get('account')
+        model.period = request.form.get('period')
 
     return model
 
