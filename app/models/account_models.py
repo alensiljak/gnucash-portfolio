@@ -38,3 +38,4 @@ class AccountDetailsViewModel:
     """ View model for account details """
     def __init__(self):
         self.account = None
+        self.balance = None

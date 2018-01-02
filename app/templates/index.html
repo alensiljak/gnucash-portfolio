@@ -16,11 +16,14 @@
 <div class="row">
   <div class="col-md-4">
     {# favourite accounts #}
-    <div class="card bg-dark text-light">
-        <div class="card-body" id="favouriteAccounts">
-        </div>
+    <div class="card">
+      <div class="card-header">
+        Favourite Accounts
+      </div>
+      <div class="card-body" id="favouriteAccounts">
       </div>
     </div>
+  </div>
   <div class="col-md-4"></div>
   <div class="col-md-4" style="height: 1em;">
     <div class="card bg-dark text-light">
@@ -52,7 +55,7 @@
 {% endblock %} {% block scripts %}
 <script>
   $(function () {
-    // TODO load partials via Ajax.
+    // Recurring transactions.
     $.ajax({
       url: '/scheduled/partial/top10',
       success: function (data) {
@@ -60,5 +63,12 @@
       }
     });
 
+    // Favourite accounts
+    $.ajax({
+      url: '/account/partial/favourites',
+      success: function(data) {
+        $("#favouriteAccounts").html(data);
+      }
+    });
   });
 </script> {% endblock %}

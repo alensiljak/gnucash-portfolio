@@ -1,0 +1,14 @@
+{# partial for favourite accounts #}
+
+{% for account in model.accounts %}
+<div class="row">
+    <div class="col">
+        <a href="/account/{{account.guid}}/details">
+            {{account.name}}
+        </a>
+    </div>
+    <div class="col text-right">
+        {{ "{:,.2f}".format(account.get_balance()) }}
+    </div>
+</div>
+{% endfor %}

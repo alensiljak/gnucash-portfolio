@@ -4,7 +4,6 @@ Account operations
 - editing of metadata (?)
 - list of transactions / register -> see transaction controller
 """
-import os
 try: import simplejson as json
 except ImportError: import json
 from logging import log, DEBUG
@@ -32,47 +31,10 @@ def index():
 @account_controller.route('/favourites')
 def favourites():
     """ Favourite accounts """
-    # TODO load list of favourite accouns
-    settings = Settings()
-    favourite_accts = settings.favourite_accounts
-
     with BookAggregate() as svc:
-        accounts = svc.accounts.get_list(favourite_accts)
+        model = __load_favourite_accounts_model(svc)
 
-        model = {
-            "accounts": accounts
-        }
         return render_template('account.favourites.html', model=model)
-
-# @account_controller.route('/favourites/settings')
-# def favourites_settings():
-#     """ Settings for favourite accounts """
-#     # read settings file
-#     settings = Settings()
-#     account_ids = settings.favourite_accounts
-#     # file_path = os.path.abspath('config/favourite_accounts.json')
-#     # content = fileutils.read_text_from_file(file_path)
-#     #favourites = json.loads(content)
-#     model = {
-#         "settings": account_ids
-#     }
-#     return render_template('account.favourites.settings.html', model=model)
-
-# @account_controller.route('/favourites/settings', methods=['POST'])
-# def favourites_settings_save():
-#     """ Settings for favourite accounts """
-#     accts = request.form.get('settings')
-#     # validate json
-#     json_settings = generic.validate_json(accts)
-#     if not json_settings:
-#         raise ValueError("invalid content")
-
-#     # save
-#     settings = Settings()
-#     settings.data["favourite_accounts"] = accts
-#     settings.save()
-
-#     return render_template('settings.confirmation.html')
 
 @account_controller.route('/list')
 def all_accounts():
@@ -199,6 +161,14 @@ def account_details_partial(account_id):
 
         return render_template('_account.details.html', model=model)
 
+@account_controller.route('/partial/favourites')
+def api_favourites():
+    """ list of favourite accounts with balances """
+    with BookAggregate() as svc:
+        model = __load_favourite_accounts_model(svc)
+
+        return render_template('_account.favourites.html', model=model)
+
 #################
 # API section
 
@@ -215,11 +185,6 @@ def search_api():
         result_dict = {"suggestions": model_list}
         result = json.dumps(result_dict)
     return result
-
-@account_controller.route('/api/favourites')
-def api_favourites():
-    """ list of favourite accounts with balances """
-    return None
 
 ######################
 # Private
@@ -311,4 +276,15 @@ def __load_account_details_model(svc: BookAggregate, acct_id: str) -> AccountDet
     model.account = agg.account
     model.quantity = agg.get_balance()
 
+    return model
+
+def __load_favourite_accounts_model(svc: BookAggregate):
+    """ Loads favourite accounts view model """
+    settings = Settings()
+    favourite_accts = settings.favourite_accounts
+    accounts = svc.accounts.get_list(favourite_accts)
+
+    model = {
+        "accounts": accounts
+    }
     return model
