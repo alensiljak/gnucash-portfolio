@@ -19,6 +19,7 @@
     "example-build-vue": "cross-env NODE_ENV=production webpack --progress --hide-modules"
   },
   "devDependencies": {
+    "@babel/preset-env": "^7.0.0-beta.36",
     "babel-core": "^6.26.0",
     "babel-eslint": "^8.1.2",
     "babel-loader": "^7.1.2",
