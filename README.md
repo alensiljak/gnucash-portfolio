@@ -21,35 +21,41 @@ My development environment in on Windows and consists of the following:
 
 All the libraries are listed in `requirements.txt` for Python and `package.json` for node.
 
-## Compiling
+## Compiling (pre-run)
 
-All the commands for setting up the web app are run from the /app directory.
-To get the required development and runtime dependencies, run
+To install the required development and runtime dependencies, run
 
-`npm install`
 `pip install -r requirements.txt`
+`npm install`
 
-in the app directory.
-Besides this, `piecash`, and `gnucash_portfolio` packages must be installed. These are not enabled in the requirements.txt because I'm using the latest development versions cloned directly from GitHub and/or modified locally.
-Install these with `pip install -e <path to>/piecash`.
+in the root and app directory since requirements.txt is in the project root and npm's package.json is in the app directory.
+Besides this, "piecash", and "gnucash_portfolio" packages must be installed. These are not enabled in the requirements.txt because I'm using the latest development versions cloned directly from GitHub and/or modified locally. If you are happy with the default package, add piecash to requirements.txt or install with pip.
+The local/development versions of these can be registered with
+
+`pip install -e <path to>/piecash`
+and
+`pip install -e .`
+for gnucash_portfolio package.
 
 To compile all client-side (.scss, .js) code, run
 
 `npm run build`
 
-This will compile production-ready images, styles, and scripts into `/static` folder.
+in the app directory. This will compile production-ready images, styles, and scripts into `/static` folder.
 
-`npm run dev` will do the same but for development. Meaning source code will not be minimized and webpack will continue monitoring the folders for any changes.
+`npm run dev` will do the same but for development. Meaning, source code will not be minimized and webpack will continue monitoring the folders for any changes to the source files.
 
 ### CSS
 
-SCSS is compiled with Webpack.
+Custom SCSS is compiled with Webpack (`npm run build` or `npm run dev`).
+
+Vendor CSS is bundled with Flask Assets automatically when the site starts.
 
 ### JS
 
 Custom JavaScript code is compiled through Webpack. 
 
-Vendor libraries are bundled through Flask Assets. It collects the vendor code from installed development node modules. Make sure all the npm dependencies are installed in order for this to work.
+Vendor libraries are currently bundled through Flask Assets. It collects the vendor code from installed development node modules. Make sure all the npm dependencies are installed in order for this to work.
 The bundle will be built automatically during the app runtime. No additional actions required by the user.
 
 ## Running
@@ -57,34 +63,39 @@ The bundle will be built automatically during the app runtime. No additional act
 ### First-Time Setup
 
 - Config:
-  In order to run the scripts, copy `config/settings.json.template` into `config/settings.json` and customize the settings by editing the file or through the web interface.
-- Register the library with ```pip install -e <path to>/gnucash-portfolio``` root directory.
+  In order to run the app, copy `config/settings.json.template` into `config/settings.json`. The options can be customized via the Settings link in the web app.
 
 ### Execution
 
-All the functionality will be provided through a web UI. There are still parts of code that are not exposed through the web interface, though.
+All the functionality is provided through a web UI. To run, simply run the app with Python. Running
 
-To run, simply run the app with Python. I.e. `py app` from the root folder.
+`py app`
+
+from the root folder will do.
 
 There are several ways to run the web app:
 
-1. Run `py app` directly
-2. Run a task from VS Code
-3. Run "run.py run" (This script was created so that the app could be debugged with Python extension for Visual Studio Code)
+1. Run `py app` directly,
+2. Run the "run" task from VS Code,
+3. Run "run.py run" (This script was created so that the app could be debugged with Python extension for Visual Studio Code).
 
 ## Testing
 
 See `tests` directory and documentation and tests there.
-Simply run `pytest` to run all tests.
+Simply run 
+
+`pytest`
+
+to run all tests.
 
 ### Lint
 
 pylint can be used to check for errors. You can check the code by doing the following:
 
-- run `utils\lint_app.cmd` from project root directory
-- run lint tasks from vscode
-- run `pylint app/` to run lint on the web app
-- run `pylint gnucash_portfolio` to check the library
+- run `utils\lint_app.cmd` from project root directory,
+- run lint tasks from vscode,
+- run `pylint app/` to run lint on the web app,
+- run `pylint gnucash_portfolio` to check the library.
 
 Pay attention to the Error and Fatal lines. See utils/lint_app.cmd script for coloring output.
 
