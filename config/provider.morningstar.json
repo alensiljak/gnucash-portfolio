@@ -1,0 +1,36 @@
+{
+    "description": "Parse the template and replace the values for each stock record. If symbols are the same, use the existing symbol, perhaps, to avoid redundancy? Then change it to mnemonic and search for a property on the commodity?",
+    "suggestions": [
+        "Just map the namespace to exchange, and mnemonic to symbol."
+    ],
+    "url": "https://www.morningstar.com/etfs/",
+    "template": "https://www.morningstar.com/etfs/%exchange%/%symbol%/quote.html",
+    "securities": [
+        {
+            "id": "NYSEARCA:AMLP",
+            "exchange": "arcx",
+            "symbol": "amlp"
+        },
+        {
+            "id": "",
+            "exchange": "xetr",
+            "symbol": "el4x"
+        },
+        { 
+            "id": "NYSEARCA:SHYG",
+            "exchange": "arcx",
+            "symbol": "shyg"
+        },
+        {
+            "id": "ASX:VHY",
+            "exchange": "xasx",
+            "symbol": "vhy"
+        },
+        {
+            "id": "WBCPD",
+            "url": "https://financials.morningstar.com/preferred/quote.html?t=0p0000y6ei",
+            "exchange": "",
+            "symbol": ""
+        }
+    ]
+}
