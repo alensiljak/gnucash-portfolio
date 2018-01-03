@@ -38,19 +38,12 @@ def index():
         }
         return render_template('security.search.html', model=model, filter=search)
 
-@stock_controller.route('/<symbol>/details')
+@stock_controller.route('/details/<symbol>')
 def details(symbol: str):
     """ Displays the details in a separate page. Restful url. """
     with BookAggregate() as svc:
         model = __get_model_for_details(svc, symbol)
         return render_template('security.details.html', model=model)
-
-@stock_controller.route('/details/partial/<symbol>')
-def details_partial(symbol: str):
-    """ Displays the details in a separate page. Restful url. """
-    with BookAggregate() as svc:
-        model = __get_model_for_details(svc, symbol)
-        return render_template('_security.details.html', model=model)
 
 @stock_controller.route('/transactions/<symbol>')
 def transactions():
@@ -61,6 +54,30 @@ def transactions():
 def distributions():
     """ Distributions for the security """
     return render_template('distributions.html', model=None)
+
+####################
+# Partials
+
+@stock_controller.route('/details/partial/<symbol>')
+def details_partial(symbol: str):
+    """ Displays the details in a separate page. Restful url. """
+    with BookAggregate() as svc:
+        model = __get_model_for_details(svc, symbol)
+        return render_template('_security.details.html', model=model)
+
+###################
+# API
+
+@stock_controller.route('/api/search')
+def search_api():
+    """ Search for security """
+    query = request.args.get('query')
+    with BookAggregate() as svc:
+        securities = svc.securities.find(query)
+        sec_list = [{"value": sec.mnemonic, "data": sec.guid} for sec in securities]
+        model = {"suggestions": sec_list}
+        result = json.dumps(model)
+        return result
 
 ####################
 # Private
@@ -93,17 +110,3 @@ def __get_model_for_analysis(svc: BookAggregate):
     model.securities = all_securities
 
     return model
-
-###################
-# API
-
-@stock_controller.route('/api/search')
-def search_api():
-    """ Search for security """
-    query = request.args.get('query')
-    with BookAggregate() as svc:
-        securities = svc.securities.find(query)
-        sec_list = [{"value": sec.mnemonic, "data": sec.guid} for sec in securities]
-        model = {"suggestions": sec_list}
-        result = json.dumps(model)
-        return result

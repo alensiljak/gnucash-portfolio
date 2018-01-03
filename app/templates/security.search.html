@@ -33,7 +33,10 @@
 <script type="text/javascript">
     $(function () {
         var getDetailsUrl = function(symbol) {
-            return '/security/details/partial/' + symbol;
+            // sanitize the symbol
+            //var sanitized = $('<div/>').text(symbol).html(); <= this is html-encode
+            var sanitized = encodeURIComponent(symbol);
+            return '/security/details/' + sanitized;
         };
 
         var navigate = function(symbol) {
@@ -52,8 +55,8 @@
 
         $("#search_symbol").chosen().change(function(event) {
             symbol = $(this).chosen().val();
-            //navigate(symbol);
-            loadPage(symbol);
+            navigate(symbol);
+            //loadPage(symbol);
         });
 
         $("#select").click(function () {
