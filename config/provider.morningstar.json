@@ -1,11 +1,10 @@
 {
-    "description": "Parse the template and replace the values for each stock record. If symbols are the same, use the existing symbol, perhaps, to avoid redundancy? Then change it to mnemonic and search for a property on the commodity?",
-    "suggestions": [
-        "Just map the namespace to exchange, and mnemonic to symbol."
-    ],
-    "url": "https://www.morningstar.com/etfs/",
-    "template": "https://www.morningstar.com/etfs/%exchange%/%symbol%/quote.html",
-    "securities": [
+    "description": "Any scheme that saves space will ultimately contain an algorhythm that must be kept up to date. Storing pure links might be better. Definitely simpler.",
+    "links": [
+        {
+            "id": "ANZPC",
+            "url": "http://financials.morningstar.com/preferred/quote.html?t=XASX%3aANZPC"
+        },
         {
             "id": "NYSEARCA:AMLP",
             "exchange": "arcx",
