@@ -1,6 +1,5 @@
 {
     "gnucash.database": "test.gnucash",
-    "baseCurrency": "EUR",
     "currencies": [
         "AUD",
         "USD"

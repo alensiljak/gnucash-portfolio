@@ -19,6 +19,11 @@
     <div class="card">
       <div class="card-header">
         Favourite Accounts
+        <span class="float-right">
+          <a href="/settings/edit">
+            <i class="fa fa-cog"></i>
+          </a>
+        </span>
       </div>
       <div class="card-body" id="favouriteAccounts">
       </div>
@@ -66,7 +71,7 @@
     // Favourite accounts
     $.ajax({
       url: '/account/partial/favourites',
-      success: function(data) {
+      success: function (data) {
         $("#favouriteAccounts").html(data);
       }
     });
