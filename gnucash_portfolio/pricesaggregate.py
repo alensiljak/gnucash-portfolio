@@ -24,11 +24,9 @@ class PricesAggregate:
         )
         return query
 
-
     def get_price_as_of(self, stock: Commodity, on_date: datetime):
         """ Gets the latest price on or before the given date. """
         return self.get_price_as_of_query(stock, on_date).first()
-
 
     def import_prices(self, prices: List[PriceModel]):
         """ Import prices (from csv) """
@@ -38,6 +36,8 @@ class PricesAggregate:
 
         return result
 
+    #################
+    # Private
 
     def __import_price(self, price: PriceModel):
         """ Import individual price """
@@ -60,7 +60,6 @@ class PricesAggregate:
             existing_price.value = price.value
 
         return True
-
 
     def __get_commodity(self, symbol: str):
         """ Loads the stock from the book. """
@@ -87,7 +86,6 @@ class PricesAggregate:
 
         return security
 
-
     def __create_price_for(self, commodity: Commodity, price: PriceModel):
         """
         Creates a new Price entry in the book, for the given commodity.
@@ -104,7 +102,8 @@ class PricesAggregate:
                 "Requested currency does not match the currency previously used",
                 currency.mnemonic, price.currency)
 
-        new_price = Price(commodity, currency, price.date, price.value)
+        new_price = Price(commodity, currency, price.date, price.value, 
+            source="user:gnucash-portfolio")
         commodity.prices.append(new_price)
 
 

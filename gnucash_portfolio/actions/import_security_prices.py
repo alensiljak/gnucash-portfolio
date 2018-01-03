@@ -15,7 +15,6 @@ from piecash import Commodity, Price
 from gnucash_portfolio.bookaggregate import BookAggregate
 from gnucash_portfolio.lib.csv_parser import CsvPriceParser
 
-
 def import_file(filename):
     """
     Imports the commodity prices from the given .csv file.
@@ -45,7 +44,6 @@ def __read_prices_from_file(file_path: str) -> List[Price]:
     prices = parser.get_prices_from_csv(content)
 
     return prices
-
 
 ###############################################################################
 def test():
