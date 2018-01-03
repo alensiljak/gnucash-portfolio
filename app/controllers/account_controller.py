@@ -283,6 +283,8 @@ def __load_favourite_accounts_model(svc: BookAggregate):
     settings = Settings()
     favourite_accts = settings.favourite_accounts
     accounts = svc.accounts.get_list(favourite_accts)
+    # sort by name
+    accounts.sort(key=lambda acc: acc.name)
 
     model = {
         "accounts": accounts
