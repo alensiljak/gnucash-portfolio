@@ -58,7 +58,8 @@
   },
   "dependencies": {
     "axios": "^0.17.1",
-    "vue": "^2.5.13"
+    "vue": "^2.5.13",
+    "vue-search-select": "^2.4.0"
   },
   "browserslist": [
     "> 1%",

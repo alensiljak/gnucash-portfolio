@@ -19,10 +19,12 @@ Currency calculator
             </div>
             <div class="card-body">
               <div class="form-group">
-                  <label for="sourceCurrency" class="mr-2">Currency symbol</label>
-                  <select name="sourceCurrency" class="form-control chosen">
-                      <option v-for="currency in currencies">{{ currencies[currency] }}</option>
-                  </select>
+                <label for="srcCurrency" class="mr-2">Currency symbol</label>
+                <model-select :options="listModel"
+                                v-model="srcCurrency"
+                                placeholder="select item"
+                                @select="onSelect">
+                </model-select>
               </div>
             </div>
           </div>
@@ -33,9 +35,14 @@ Currency calculator
               Destination Currency
             </div>
             <div class="card-body">
-              <ul>
-                <li v-for="currency in Object.keys(currencies)">{{ currency }} ({{ currencies[currency] }})</li>
-              </ul>
+              <div class="form-group">
+                <label for="srcCurrency" class="mr-2">Currency symbol</label>
+                <model-select :options="listModel"
+                                v-model="dstCurrency"
+                                placeholder="select item"
+                                @select="onSelect">
+                </model-select>
+              </div>
             </div>
           </div>
       </div>
@@ -44,48 +51,65 @@ Currency calculator
 
 </template>
 <script>
-import axios from 'axios';
+import axios from 'axios'
+import { ModelSelect } from 'vue-search-select'
 
 export default {
   data() {
     return {
-      currencies: [],
-      srcCurrency: null,
-      dstCurrency: null
+      currencies: {},
+      listModel: [],
+      srcCurrency: {
+        value: '',
+        text: ''
+      },
+      dstCurrency: {
+        value: '',
+        text: ''
+      }
     };
   },
   props: {
 
   },
   methods: {
-
+    onSelect: function(item) {
+      // TODO: recalculate the amount
     },
+    recalculate: function() {
+      // get source
+      // get destination
+      // recalculate?
+      // should this be a server-side operation?
+    }
+  },
   mounted: function mounted() {
+    // Initialization.
+    var self = this;
+
     $("#amount").focus();
 
     // load currencies
     axios.get('/currency/api/rates')
-      .then(response => {
-        // console.log(response.data);
+      .then(function(response) {
         console.log("rates fetched");
-        this.currencies = response.data;
+        self.currencies = response.data;
+
+        for (var symbol in response.data) {
+          // console.log("adding", index, response.data[symbol]);
+          self.listModel.push({ text: symbol, value: response.data[symbol] });
+        }
+
+        // refresh the selectors
+        $('#srcCurrency').trigger("chosen:updated");
+        // $('#srcCurrency').chosen();
       })
-      .catch(error => {
+      .catch(function(error) {
         console.error(error);
       });
-
-    // $.ajax({
-    //   url: '/currency/api/rates',
-    //   success: function(data) {
-    //     // console.log(data);
-    //     // for (var key in data) {
-    //     //   if (data.hasOwnProperty(key)) {
-    //     //     currencies.push(data[key])
-    //     //   }
-    //     // }
-    //     that.currencies = data;
-    //   }
-    // });
+  },
+  components: {
+    ModelSelect
   }
 };
 </script>

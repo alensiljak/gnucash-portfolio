@@ -62,6 +62,14 @@ class CurrenciesAggregate():
         """ currencies, sorted alphabetically """
         return self.currencies_query.order_by(Commodity.mnemonic)
 
+    def get_amount_in_base_currency(self, currency: str, amount: Decimal) -> Decimal:
+        """ Calculates the amount in base currency """
+        agg = self.get_currency_aggregate_by_symbol(currency)
+        rate_to_base = agg.get_latest_price()
+
+        result = amount * rate_to_base.value
+        return result
+
     def get_default_currency(self) -> Commodity:
         """ returns the book default currency """
         result = None
@@ -86,6 +94,12 @@ class CurrenciesAggregate():
     def get_currency_aggregate(self, cur: Commodity) -> CurrencyAggregate:
         """ Returns a single-currency aggregate """
         return CurrencyAggregate(self.book, cur)
+
+    def get_currency_aggregate_by_symbol(self, symbol: str) -> CurrencyAggregate:
+        """ Creates currency aggregate for the given currency symbol """
+        currency = self.get_by_symbol(symbol)
+        result = self.get_currency_aggregate(currency)
+        return result
 
     def get_by_symbol(self, symbol: str) -> Commodity:
         """ Loads currency by symbol """

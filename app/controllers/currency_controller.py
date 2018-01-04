@@ -138,8 +138,8 @@ def api_rates():
             agg = svc.currencies.get_currency_aggregate(cur)
             code = agg.currency.mnemonic
             price = agg.get_latest_price()
-            if price:
-                rates[code] = price.value
+
+            rates[code] = price.value if price else 0
 
     result = json.dumps(rates)
     return result
