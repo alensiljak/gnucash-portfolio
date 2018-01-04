@@ -27,7 +27,6 @@ update splits
 set reconcile_date = substr(reconcile_date, 0, 5) || substr(reconcile_date, 6, 2) || substr(reconcile_date, 9, 2) 
 	|| substr(reconcile_date, 12, 2) || substr(reconcile_date, 15, 2) || substr(reconcile_date, 18,2)
 where length(reconcile_date) = 19;
-rollback
 
 -- Transactions, post_date
 begin transaction;
