@@ -23,13 +23,14 @@ where length(post_date) = 19
 
 -- Splits, reconcile_date
 begin transaction;
+
+-- Splits: reconcile_date
 update splits
 set reconcile_date = substr(reconcile_date, 0, 5) || substr(reconcile_date, 6, 2) || substr(reconcile_date, 9, 2) 
 	|| substr(reconcile_date, 12, 2) || substr(reconcile_date, 15, 2) || substr(reconcile_date, 18,2)
 where length(reconcile_date) = 19;
 
--- Transactions, post_date
-begin transaction;
+-- Transactions: post_date, enter_date
 update transactions
 set enter_date = substr(enter_date, 0, 5) || substr(enter_date, 6, 2) || substr(enter_date, 9, 2) 
 	|| substr(enter_date, 12, 2) || substr(enter_date, 15, 2) || substr(enter_date, 18,2)
@@ -40,7 +41,7 @@ set post_date = substr(post_date, 0, 5) || substr(post_date, 6, 2) || substr(pos
 	|| substr(post_date, 12, 2) || substr(post_date, 15, 2) || substr(post_date, 18,2)
 where length(post_date) = 19;
 
--- Prices, [date]
+-- Prices: [date]
 update Prices
 set date = substr(date, 0, 5) || substr(date, 6, 2) || substr(date, 9, 2) 
 	|| substr(date, 12, 2) || substr(date, 15, 2) || substr(date, 18,2)

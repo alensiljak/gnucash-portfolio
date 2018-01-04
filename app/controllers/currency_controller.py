@@ -32,6 +32,11 @@ def index():
         output = render_template('currency.html', search=search_model)
     return output
 
+@currency_controller.route('/calculator')
+def calculator():
+    """ Currency exchange calculator """
+    return render_template('currency.calculator.html')
+
 @currency_controller.route('/search', methods=['GET', 'POST'])
 def post():
     """ Receives post form """
@@ -120,6 +125,18 @@ def api_book_currencies():
             symbols.append(cur.mnemonic)
 
     result = json.dumps(symbols)
+    return result
+
+@currency_controller.route('/api/rates')
+def api_rates():
+    """ book currencies with current exchange rates """
+    with BookAggregate() as svc:
+        currencies = svc.currencies.get_book_currencies()
+        for cur in currencies:
+            agg = svc.currencies.get_currency_aggregate(cur)
+            agg.get_latest_price()
+
+    result = {}
     return result
 
 ###############################################################################

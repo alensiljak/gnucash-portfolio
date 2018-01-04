@@ -10,8 +10,12 @@ const ExtractTextPlugin = require('extract-text-webpack-plugin');
 
 module.exports = {
     entry: {
+        // Vendor .js
         site: "./scripts/site.js",
+        // Custom .js
         currency_download: "./scripts/currency.download.js",
+        currency_calculator: "./scripts/currency.calculator.js",
+        // Styles
         styles: "./styles/styles.scss",
     },
 

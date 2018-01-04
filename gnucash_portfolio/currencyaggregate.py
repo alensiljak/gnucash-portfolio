@@ -30,7 +30,7 @@ class CurrencyAggregate():
         return query.first()
 
     def get_latest_price(self) -> Price:
-        """ Returns the latest price entity """
+        """ Returns the latest rate compared to default currency """
         query = (
             self.currency.prices
             .order_by(desc(Price.date))

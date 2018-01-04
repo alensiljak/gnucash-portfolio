@@ -10,9 +10,11 @@
 {% endif %}
 
 <div>
-    <a href="{{ url_for('currency_controller.download')}}">Download exchange rates</a>
+    <a class="btn btn-outline-primary" href="{{ url_for('currency_controller.download')}}">Download exchange rates</a>
     ●
-    <a href="{{ url_for('currency_controller.rates')}}">Exchange rates</a>
+    <a class="btn btn-outline-primary" href="{{ url_for('currency_controller.rates')}}">Exchange rates</a>
+    ●
+    <a class="btn btn-outline-primary" href="{{ url_for('currency_controller.calculator')}}">Calculator</a>
 </div>
 {% endblock %}
 {% block scripts %}
