@@ -16,7 +16,7 @@ My development environment in on Windows and consists of the following:
 - Visual Studio Code with
   - Python extension
   - ctags (see [new project](https://github.com/universal-ctags/ctags-win32/releases))
-- Python 3.7
+- Python 3.6
 - node + npm
 
 All the libraries are listed in `requirements.txt` for Python and `package.json` for node.
@@ -25,12 +25,15 @@ All the libraries are listed in `requirements.txt` for Python and `package.json`
 
 To install the required development and runtime dependencies, run
 
-`pip install -r requirements.txt`
-`npm install`
+```
+pip install -r requirements.txt
+npm install
+```
 
 in the root and app directory since requirements.txt is in the project root and npm's package.json is in the app directory.
-Besides this, "piecash", and "gnucash_portfolio" packages must be installed. These are not enabled in the requirements.txt because I'm using the latest development versions cloned directly from GitHub and/or modified locally. If you are happy with the default package, add piecash to requirements.txt or install with pip.
-The local/development versions of these can be registered with
+
+Besides this, `piecash`, and `gnucash_portfolio` Python packages must be installed. These are not enabled in the requirements.txt because I'm using the latest development versions cloned directly from GitHub and/or modified locally. If you are happy with the default package, add piecash to requirements.txt or install with pip separately.
+The local/development versions of these two libraries can be registered with
 
 `pip install -e <path to>/piecash`
 
@@ -44,9 +47,9 @@ To compile all client-side (.scss, .js) code, run
 
 `npm run build`
 
-in the app directory. This will compile production-ready images, styles, and scripts into `/static` folder.
+in the "app" directory. This will compile production-ready images, styles, and scripts into `/static` folder.
 
-`npm run dev` will do the same but for development. Meaning, source code will not be minimized and webpack will continue monitoring the folders for any changes to the source files.
+`npm run dev` will do the same but for development. Meaning, the source code will not be minimized and webpack will continue monitoring the folders for any changes to the source files.
 
 ### CSS
 
