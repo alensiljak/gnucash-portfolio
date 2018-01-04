@@ -7,7 +7,7 @@ User-oriented documentation is at http://portfolio.alensiljak.tk
 ## Introduction
 
 The purpose of the project is to provide tools that help in managing an investment portfolio in a GnuCash book.
-The code is (mostly) written in Python.
+The code is written in Python on the server-side, and HTML/JavaScript/CSS on the client-side.
 
 ## Development
 
