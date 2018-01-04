@@ -130,13 +130,18 @@ def api_book_currencies():
 @currency_controller.route('/api/rates')
 def api_rates():
     """ book currencies with current exchange rates """
+    rates = {}
+
     with BookAggregate() as svc:
         currencies = svc.currencies.get_book_currencies()
         for cur in currencies:
             agg = svc.currencies.get_currency_aggregate(cur)
-            agg.get_latest_price()
+            code = agg.currency.mnemonic
+            price = agg.get_latest_price()
+            if price:
+                rates[code] = price.value
 
-    result = {}
+    result = json.dumps(rates)
     return result
 
 ###############################################################################

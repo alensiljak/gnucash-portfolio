@@ -57,6 +57,7 @@
     "webpack-dev-server": "^2.9.7"
   },
   "dependencies": {
+    "axios": "^0.17.1",
     "vue": "^2.5.13"
   },
   "browserslist": [

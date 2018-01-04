@@ -31,8 +31,11 @@ class CurrencyAggregate():
 
     def get_latest_price(self) -> Price:
         """ Returns the latest rate compared to default currency """
+        default_currency = self.book.default_currency
+        # Ensure that the rate is against the default currency only.
         query = (
             self.currency.prices
+            .filter(Price.currency == default_currency)
             .order_by(desc(Price.date))
         )
         latest_price = query.first()
