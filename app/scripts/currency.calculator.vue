@@ -11,7 +11,7 @@ Currency calculator
           <input id="amount" class="form-control text-right">
       </div>
   </div>
-  <div class="row">
+  <div class="row mt-2">
       <div class="col">
           <div class="card">
             <div class="card-header">
@@ -45,6 +45,17 @@ Currency calculator
               </div>
             </div>
           </div>
+      </div>
+  </div>
+  <div class="row w-100 mt-2">
+    <div class="mx-auto">
+      <button class="btn btn-primary">Calculate</button>
+    </div>
+  </div>
+  <div class="row w-100 mt-3">
+      <div class="form-group mx-auto">
+          <label>Result</label>
+          <input id="result" readonly="readonly" class="form-control text-right">
       </div>
   </div>
 </div>
