@@ -1,5 +1,7 @@
 /*
-
+	This script migrates the date formats between GnuCash versions 2.6 and 2.7.
+	Version 2.6 stores dates in YYYYMMDDHHmmss format, while
+	version 2.7 stores dates in YYYY-MM-DD HH:mm:ss format.
 */
 
 /*
