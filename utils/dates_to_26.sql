@@ -2,6 +2,8 @@
 	This script migrates the date formats between GnuCash versions 2.6 and 2.7.
 	Version 2.6 stores dates in YYYYMMDDHHmmss format, while
 	version 2.7 stores dates in YYYY-MM-DD HH:mm:ss format.
+
+	To run, first test and then replace the 'rollback' statement at the end with 'commit'.
 */
 
 /*
@@ -38,11 +40,8 @@ update transactions
 set post_date = substr(post_date, 0, 5) || substr(post_date, 6, 2) || substr(post_date, 9, 2) 
 	|| substr(post_date, 12, 2) || substr(post_date, 15, 2) || substr(post_date, 18,2)
 where length(post_date) = 19;
-rollback;
-
 
 -- Prices, [date]
-begin transaction;
 update Prices
 set date = substr(date, 0, 5) || substr(date, 6, 2) || substr(date, 9, 2) 
 	|| substr(date, 12, 2) || substr(date, 15, 2) || substr(date, 18,2)
