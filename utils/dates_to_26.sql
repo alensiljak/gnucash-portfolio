@@ -15,8 +15,8 @@ where length(post_date) = 14
 
 -- Sample statement for migration back to 2.6:
 select post_date, 
-	substr(post_date, 0, 5) || '-' || substr(post_date, 6, 2) || '-' || substr(post_date, 9, 2) 
-	|| " " || substr(post_date, 12, 2) || ":" || substr(post_date, 15, 2) || ":" || substr(post_date, 18,2) as newdate
+	substr(post_date, 0, 5) || substr(post_date, 6, 2) || substr(post_date, 9, 2) 
+	|| substr(post_date, 12, 2) || substr(post_date, 15, 2) || substr(post_date, 18,2) as newdate
 from transactions
 where length(post_date) = 19
 */
