@@ -24,7 +24,22 @@ def get_next_occurrence(tx: ScheduledTransaction) -> date:
     # Reference documentation:
     # https://github.com/MisterY/gnucash-portfolio/issues/3
 
-    ref_date: datetime = datetimeutils.today_date()
+    # Preparing ref day is an important part before the calculation.
+    #ref_date: datetime = datetimeutils.today_date()
+    ref_date: datetime = None
+    # This should be: the last occurrence date; or the recurrence start date.
+    if tx.last_occur:
+        ref_date = tx.last_occur
+    if not ref_date:
+        ref_date = tx.recurrence.recurrence_period_start
+    today = datetimeutils.today_date()
+    if ref_date > today:
+        ref_date = today
+
+    ###########################################################
+    # The code below mimics the function
+    # recurrenceNextInstance(const Recurrence *r, const GDate *refDate, GDate *nextDate)
+
     start_date: datetime = tx.recurrence.recurrence_period_start
 
     if start_date > ref_date:
@@ -36,11 +51,12 @@ def get_next_occurrence(tx: ScheduledTransaction) -> date:
     if not last_date:
         last_date = start_date
 
+    next_date: datetime = ref_date
+
     # print(tx.name, base_date, tx.recurrence.recurrence_period_start,
     #       tx.recurrence.recurrence_mult, tx.recurrence.recurrence_period_type)
-    next_date: datetime = last_date
-    period: str = tx.recurrence.recurrence_period_type
     mult: int = tx.recurrence.recurrence_mult
+    period: str = tx.recurrence.recurrence_period_type
     #wadj = tx.recurrence.recurrence_weekend_adjust
 
     if period == RecurrencePeriod.DAY.value:
@@ -80,6 +96,7 @@ def get_next_occurrence(tx: ScheduledTransaction) -> date:
         )
         next_date = datetimeutils.subtract_months(next_date, n_months % mult)
 
+        # dim
         days_in_month = datetimeutils.get_days_in_month(next_date.year, next_date.month)
 
         # Handle adjustment for 3 ways.
