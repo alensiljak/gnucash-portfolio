@@ -62,10 +62,10 @@
                 {{ stock.description }}
             </td>
             <td class="text-right">
-                {{ stock.currency }} {{ "{:,.2f}".format(stock.value) }}
+                {{ "{:,.2f}".format(stock.value) }} {{ stock.currency }}
             </td>
             <td class="text-right">
-                {{ model.base_currency }} {{ "{:,.2f}".format(stock.value_base_cur) }}
+                {{ "{:,.2f}".format(stock.value_base_cur) }} {{ model.base_currency }}
             </td>
         </tr>
         {% endfor %}
