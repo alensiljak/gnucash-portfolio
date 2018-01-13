@@ -25,4 +25,8 @@ class SecurityDetailsViewModel:
         self.price: Price = None
         self.value: Decimal = None
         self.currency: str = None
+        # Total amount paid in currency. Used for calculation of the average price.
+        self.total_paid: Decimal = None
+        # Average price paid per unit.
+        self.average_price: Decimal = None
         self.accounts: List[Account] = None

@@ -181,6 +181,11 @@ class SecurityAggregate(AggregateBase):
         #generic.print_sql(query)
         return query.all()
 
+    def get_total_paid(self) -> Decimal:
+        """ Returns the total amount paid, in currency, for the stocks owned """
+        # TODO use lots to find only the remaining stocks and remove the sold ones from calculation?
+        return None
+
     @property
     def accounts(self):
         """ Returns the asset accounts in which the security is held """

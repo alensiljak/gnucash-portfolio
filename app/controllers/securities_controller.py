@@ -55,16 +55,6 @@ def distributions():
     """ Distributions for the security """
     return render_template('distributions.html', model=None)
 
-####################
-# Partials
-
-@stock_controller.route('/details/partial/<symbol>')
-def details_partial(symbol: str):
-    """ Displays the details in a separate page. Restful url. """
-    with BookAggregate() as svc:
-        model = __get_model_for_details(svc, symbol)
-        return render_template('_security.details.html', model=model)
-
 ###################
 # API
 
@@ -94,6 +84,8 @@ def __get_model_for_details(
     model.value = sec.get_value()
     model.currency = sec.get_currency().mnemonic
     model.price = sec.get_last_available_price()
+
+    #model.total_paid = Decimal(0)
 
     # load all accounts
     sec_agg = svc.securities.get_aggregate(sec)
