@@ -1,6 +1,8 @@
 <!-- 
   Scheduled Transactions Calendar
   https://www.npmjs.com/package/vue-full-calendar
+  For tiny version, see
+  https://stackoverflow.com/questions/5372328/tiny-version-of-fullcalendar
 -->
 <template>
 <div>
@@ -18,22 +20,6 @@ import axios from 'axios';
 export default {
   data() {
     return {
-      // events: [
-      //   {
-      //     title: "event1",
-      //     start: "2018-01-01"
-      //   },
-      //   {
-      //     title: "event2",
-      //     start: "2018-01-05",
-      //     end: "2018-01-07"
-      //   },
-      //   {
-      //     title: "event3",
-      //     start: "2018-01-09T12:30:00",
-      //     allDay: false
-      //   }
-      // ]
       eventSources: [
         {
           events(start, end, timezone, callback) {
@@ -51,7 +37,7 @@ export default {
         height: "35em",
         //aspectRatio: 4/3,
         firstDay: 1,
-      }
+      },
     };
   },
   components: {
