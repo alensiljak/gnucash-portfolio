@@ -61,10 +61,11 @@
     <a href="/components">Components</a> used. ● {% endblock %}
   </footer>
 
-  {% assets "vendor_js" %}
-  <script type="text/javascript" src="{{ ASSET_URL }}"></script> {% endassets %}
   {# common scripts for all webpack-ed code #}
   <script type="text/javascript" src="/static/vendor.webpack.js"></script>
+  <script type="text/javascript" src="/static/vendor1.js"></script>
+  {% assets "vendor_js" %}
+  <script type="text/javascript" src="{{ ASSET_URL }}"></script> {% endassets %}
 
   <script type="text/javascript" src="{{ url_for('static', filename='site.js') }}"></script> {% block scripts %} {% endblock %}
 </body>

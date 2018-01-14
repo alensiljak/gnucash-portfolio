@@ -26,7 +26,7 @@
     <nav class="nav nav-pills flex-column">
         <a class="nav-link" href="/currency/">Currency</a>
         <nav class="nav nav-pills flex-column">
-                <a class="nav-link ml-3" href="/currency/calculator">Calculator</a>
+            <a class="nav-link ml-3" href="/currency/calculator">Calculator</a>
             <a class="nav-link ml-3" href="/currency/rates">Exchange Rates</a>
             <a class="nav-link ml-3" href="{{ url_for('currency_controller.download') }}">Download Rates</a>
         </nav>
@@ -40,7 +40,7 @@
 
     <nav class="nav nav-pills flex-column">
         <a class="nav-link" href="/scheduled">Scheduled</a>
-        <nav class="nav nav-pills flex-column">
+        <nav class="nav nav-pills flex-column ml-3">
             <a class="nav-link" href="/scheduled/calendar">Calendar</a>
             <a class="nav-link" href="/scheduled/duedate">Due Dates</a>
         </nav>
@@ -49,9 +49,11 @@
     {# Securities #}
     <nav class="nav nav-pills flex-column">
         <a class="nav-link" href="/security/">Securities</a>
-        <a class="nav-link ml-3" href="#">Price Download</a>
-        <a class="nav-link ml-3" href="/price/import">Price Import</a>
-        <a class="nav-link ml-3" href="/vanguard/prices">Vanguard Fund Prices</a>
+        <nav class="nav nav-pills flex-column ml-3">
+            <a class="nav-link" href="#">Price Download</a>
+            <a class="nav-link" href="/price/import">Price Import</a>
+            <a class="nav-link" href="/vanguard/prices">Vanguard Fund Prices</a>
+        </nav>
     </nav>
 
     <nav class="nav nav-pills flex-column w-100">

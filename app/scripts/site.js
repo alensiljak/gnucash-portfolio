@@ -1,4 +1,6 @@
-
+/**
+ * Common code for the whole site, embedded in the layout template.
+ */
 $(function () {
     //var start = moment().subtract(29, 'days');
     //var end = moment();

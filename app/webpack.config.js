@@ -11,6 +11,7 @@ const ExtractTextPlugin = require('extract-text-webpack-plugin');
 module.exports = {
     entry: {
         // Vendor .js
+        vendor1: "./scripts/vendor.js",
         site: "./scripts/site.js",
         // Custom .js
         currency_download: "./scripts/currency.download.js",

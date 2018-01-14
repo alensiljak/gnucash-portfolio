@@ -65,7 +65,7 @@ bundles = {
         output='vendor.css'),
     'vendor_js': Bundle(
         '../node_modules/popper.js/dist/umd/popper.min.js',
-        '../node_modules/jquery/dist/jquery.min.js',
+        # '../node_modules/jquery/dist/jquery.min.js',
         '../node_modules/moment/min/moment.min.js',
         '../node_modules/daterangepicker/daterangepicker.js',
         '../node_modules/bootstrap/dist/js/bootstrap.min.js',
