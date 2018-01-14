@@ -48,6 +48,9 @@ export default {
       ],
       config: {
         defaultView: "month",
+        height: "35em",
+        //aspectRatio: 4/3,
+        firstDay: 1,
       }
     };
   },
@@ -59,5 +62,10 @@ export default {
 
 <style>
 @import "~fullcalendar/dist/fullcalendar.css";
+
+/* color weekend */
+/*.fc-fri { color:blue; }*/
+.fc-sat { color:red;  }
+.fc-sun { color:red;  }
 </style>
  
