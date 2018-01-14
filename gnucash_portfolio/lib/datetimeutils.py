@@ -31,6 +31,11 @@ def get_from_gnucash26_date(date_str: str) -> date:
     result = datetime.strptime(date_str, date_format).date()
     return result
 
+def get_iso_string(date: date) -> str:
+    """ Returns full ISO string for the given date """
+    my_datetime = datetime(date.year, date.month, date.day)
+    return datetime.isoformat(my_datetime)
+
 def today_date() -> date:
     """ Returns today as a date """
     return datetime.today().date()

@@ -4,7 +4,8 @@
 <template>
 <div>
   <p>Calendar</p>
-  <full-calendar :events="events"></full-calendar>
+  <!-- :events="events" -->
+  <full-calendar :event-sources="eventSources" :config="config"></full-calendar>
 </div>
 </template>
 
@@ -12,26 +13,42 @@
 import Vue from "vue";
 import { FullCalendar } from "vue-full-calendar";
 Vue.use(FullCalendar);
+import axios from 'axios';
 
 export default {
   data() {
     return {
-      events: [
+      // events: [
+      //   {
+      //     title: "event1",
+      //     start: "2018-01-01"
+      //   },
+      //   {
+      //     title: "event2",
+      //     start: "2018-01-05",
+      //     end: "2018-01-07"
+      //   },
+      //   {
+      //     title: "event3",
+      //     start: "2018-01-09T12:30:00",
+      //     allDay: false
+      //   }
+      // ]
+      eventSources: [
         {
-          title: "event1",
-          start: "2010-01-01"
+          events(start, end, timezone, callback) {
+            axios.get("/scheduled/api/top10", { timezone: timezone }).then(response => {
+              // console.log(response.data);
+              callback(response.data);
+            });
+          },
+          color: "yellow",
+          textColor: "black"
         },
-        {
-          title: "event2",
-          start: "2010-01-05",
-          end: "2010-01-07"
-        },
-        {
-          title: "event3",
-          start: "2010-01-09T12:30:00",
-          allDay: false
-        }
-      ]
+      ],
+      config: {
+        defaultView: "month",
+      }
     };
   },
   components: {

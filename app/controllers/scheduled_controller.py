@@ -1,11 +1,14 @@
 """ Scheduled Transactions """
 
 #from logging import log, DEBUG
+from datetime import datetime
 from typing import List
 from flask import Blueprint, render_template, request
+try: import simplejson as json
+except ImportError: import json
 from piecash import ScheduledTransaction
 from gnucash_portfolio.bookaggregate import BookAggregate
-#from gnucash_portfolio.scheduledtxaggregate import ScheduledTxAggregate
+from gnucash_portfolio.lib import datetimeutils
 from app.models.transaction_models import ScheduledTxInputModel
 
 
@@ -52,6 +55,18 @@ def scheduled_with_due_date():
     return output
 
 ##################
+# API
+
+@scheduled_controller.route('/api/top10')
+def api_top_10():
+    """ Returns next 10 scheduled transactions in JSON """
+    with BookAggregate() as svc:
+        upcoming = svc.scheduled.get_upcoming(10)
+        result = __get_api_model_from_sx(upcoming)
+        json_result = json.dumps(result)
+    return json_result
+
+##################
 # Partials
 
 @scheduled_controller.route('/partial/top10')
@@ -67,6 +82,16 @@ def topten_partial():
 
 #################
 # Private
+
+def __get_api_model_from_sx(transactions: List[ScheduledTransaction]):
+    result = []
+    for tx in transactions:
+        result.append({
+            "title": tx.name,
+            "start": datetimeutils.get_iso_string(tx["next_date"].value),
+            "allDay": True
+        })
+    return result
 
 def __parse_sch_tx_search_params() -> ScheduledTxInputModel:
     """ Parses the search parameters from the request """
