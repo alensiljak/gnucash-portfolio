@@ -146,9 +146,17 @@ class ScheduledTxsAggregate:
         top_n = all_tx[:count]
         return top_n
 
-    def get_all(self):
+    def get_all(self) -> List[ScheduledTransaction]:
         """ All scheduled transactions """
         return self.query.all()
+
+    def get_enabled(self) -> List[ScheduledTransaction]:
+        """ Returns only enabled scheduled transactions """
+        query = (
+            self.query
+            .filter(ScheduledTransaction.enabled == True)
+        )
+        return query.all()
 
     def get_by_id(self, tx_id: str) -> ScheduledTransaction:
         """ Fetches a tx by id """

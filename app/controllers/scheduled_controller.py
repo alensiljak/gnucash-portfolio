@@ -28,6 +28,23 @@ def scheduled_transactions():
         output = render_template('scheduled.html', model=model, input_model=input_model)
     return output
 
+@scheduled_controller.route('/duedate')
+def scheduled_with_due_date():
+    """ Returns scheduled transactions with their next occurrence date """
+    input_model = __parse_sch_tx_search_params()
+    if not input_model:
+        # Initial run
+        input_model = ScheduledTxInputModel()
+
+    with BookAggregate() as svc:
+        transactions = __load_model_for_scheduled_transactions(input_model, svc)
+        transactions = __load_due_dates(svc, transactions)
+        model = {
+            "data": transactions
+        }
+        output = render_template('scheduled.duedate.html', model=model, input_model=input_model)
+    return output
+
 ##################
 # Partials
 
@@ -61,5 +78,15 @@ def __load_model_for_scheduled_transactions(
     if not search:
         return None
 
-    query = svc.scheduled.get_all()
+    query = svc.scheduled.get_enabled()
     return query
+
+def __load_due_dates(
+        svc: BookAggregate, transactions: List[ScheduledTransaction]
+    ) -> List[ScheduledTransaction]:
+    """ Populates due dates on scheduled transactions """
+    for sx in transactions:
+        agg = svc.scheduled.get_aggregate_for(sx)
+        sx["due_date"] = agg.get_next_occurrence()
+
+    return transactions

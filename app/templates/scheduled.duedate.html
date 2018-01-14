@@ -1,5 +1,5 @@
 {% extends "layout.html" %} {% block title %}Scheduled Transactions{% endblock %} {% block content %}
-<h1>Scheduled Transactions</h1>
+<h1>Scheduled Transactions with Due Dates</h1>
 
 <div class="card bg-secondary">
     <div class="card-header"></div>
@@ -33,11 +33,6 @@
     </div>
 </div>
 
-{# links #}
-<div class="mt-2">
-    <a href="/scheduled/duedate">with due dates</a>
-</div>
-
 <div class="mt-3"></div>
 
 <table class="table table-sm table-striped">
@@ -46,6 +41,7 @@
         <th>Name</th>
         <th>Start Date</th>
         <th>Last Occurred</th>
+        <th>Due Date</th>
     </thead>
     <tbody>
         {% for row in model.data %}
@@ -53,6 +49,7 @@
             <td>{{ row.name }}</td>
             <td>{{ "{:%Y-%m-%d}".format(row.start_date) }}</td>
             <td>{% if row.last_occur %}{{ "{:%Y-%m-%d}".format(row.last_occur) }}{% endif %}</td>
+            <td>{{ row.due_date.value }}</td>
         </tr>
         {% endfor %}
     </tbody>
