@@ -1,9 +1,9 @@
 <!-- 
   Scheduled Transactions Calendar
+  https://www.npmjs.com/package/vue-full-calendar
 -->
 <template>
 <div>
-  <p>Calendar</p>
   <!-- :events="events" -->
   <full-calendar :event-sources="eventSources" :config="config"></full-calendar>
 </div>

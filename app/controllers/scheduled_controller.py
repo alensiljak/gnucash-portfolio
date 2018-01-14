@@ -1,7 +1,6 @@
 """ Scheduled Transactions """
 
 #from logging import log, DEBUG
-from datetime import datetime
 from typing import List
 from flask import Blueprint, render_template, request
 try: import simplejson as json
