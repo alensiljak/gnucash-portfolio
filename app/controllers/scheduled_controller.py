@@ -28,6 +28,12 @@ def scheduled_transactions():
         output = render_template('scheduled.html', model=model, input_model=input_model)
     return output
 
+@scheduled_controller.route('/calendar')
+def calendar():
+    """ Full Calendar """
+    # todo load data
+    return render_template('scheduled.calendar.html')
+
 @scheduled_controller.route('/duedate')
 def scheduled_with_due_date():
     """ Returns scheduled transactions with their next occurrence date """

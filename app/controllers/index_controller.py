@@ -1,9 +1,8 @@
 """
-Home controller
+Index/Home controller
 """
-from logging import log, DEBUG #, INFO, WARN, ERROR, FATAL
+#from logging import log, DEBUG, INFO, WARN, ERROR, FATAL
 from flask import Blueprint, render_template #, request
-from gnucash_portfolio.bookaggregate import BookAggregate
 
 
 index_controller = Blueprint( # pylint: disable=invalid-name

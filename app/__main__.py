@@ -7,7 +7,7 @@ from flask_assets import Bundle, Environment
 # Controllers/blueprints
 from app.controllers import (
     account_controller, currency_controller, vanguard, distributions_controller,
-    assetallocation_controller, index, portfolio_controller, price_controller,
+    assetallocation_controller, index_controller, portfolio_controller, price_controller,
     securities_controller, settings_controller, scheduled_controller, transaction_controller)
 
 
@@ -29,7 +29,7 @@ app = Flask(__name__, static_url_path='/static') # pylint: disable=invalid-name
 # Configurations
 app.config.from_object('config')
 # Register blueprints
-app.register_blueprint(index.index_controller)
+app.register_blueprint(index_controller.index_controller)
 app.register_blueprint(account_controller.account_controller)
 app.register_blueprint(assetallocation_controller.assetallocation_controller)
 app.register_blueprint(currency_controller.currency_controller)
@@ -74,13 +74,6 @@ bundles = {
         '../node_modules/select2/dist/js/select2.min.js',
         '../node_modules/chosen-js/chosen.jquery.min.js',
         '../node_modules/devbridge-autocomplete/dist/jquery.autocomplete.min.js',
-        #'../node_modules/react/umd/react.production.min.js',
-        # '../node_modules/react/umd/react.development.js',
-        #'../node_modules/react-dom/umd/react-dom.production.min.js',
-        # '../node_modules/react-dom/umd/react-dom.development.js',
-        # '../node_modules/babel-standalone/babel.min.js',
-        # Use the development build
-        # '../node_modules/vue/dist/vue.js',
         output='vendor.js')
 }
 assets = Environment(app)
