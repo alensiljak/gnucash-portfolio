@@ -17,6 +17,7 @@ module.exports = {
         currency_download: "./scripts/currency.download.js",
         currency_calculator: "./scripts/currency.calculator.js",
         scheduled_calendar: "./scripts/scheduled.calendar.js",
+        securities: "./scripts/securities.js",
         // Styles
         styles: "./styles/styles.scss",
     },

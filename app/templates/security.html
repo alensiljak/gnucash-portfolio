@@ -26,10 +26,10 @@
     </div>
 </div>
 
-{# Results, only for Ajax call. Not in use. #}
-<div id="results" class="mt-3"></div>
+<div id="app" class="mt-3"></div>
 
 {% endblock %} {% block scripts %}
+<script type="text/javascript" src="/static/securities.js"></script>
 <script type="text/javascript">
     $(function () {
         var getDetailsUrl = function(symbol) {

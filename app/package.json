@@ -61,7 +61,8 @@
     "fullcalendar": "^3.8.0",
     "vue": "^2.5.13",
     "vue-full-calendar": "^2.5.1",
-    "vue-search-select": "^2.4.0"
+    "vue-search-select": "^2.4.0",
+    "vue2-typeahead": "^1.0.17"
   },
   "browserslist": [
     "> 1%",
