@@ -2,7 +2,6 @@
 #from logging import log, DEBUG
 from flask import Blueprint, request, render_template
 from gnucash_portfolio.bookaggregate import BookAggregate
-#from gnucash_portfolio.pricesaggregate import PricesAggregate
 from gnucash_portfolio.lib.csv_parser import CsvPriceParser
 from app.models.price_models import (
     PriceImportViewModel, PriceImportInputModel, PriceImportSearchViewModel)
@@ -18,7 +17,6 @@ def index():
     """ Index page for prices """
     return render_template('incomplete.html')
 
-
 @price_controller.route('/import')
 def import_prices(message: str = None):
     """ Stock price import. Data input. """
@@ -31,7 +29,6 @@ def import_prices(message: str = None):
         search = None
 
         return render_template('price.import.html', model=model, search=search, ref=ref)
-
 
 @price_controller.route('/review', methods=['POST'])
 def import_post():
@@ -88,6 +85,9 @@ def load_prices():
         model.prices = prices
 
         return render_template('price.import.result.html', model=model, result=result)
+
+###############################################
+# Private
 
 def __read_review_input_model() -> PriceImportInputModel:
     """ Read input model on price load """
