@@ -9,7 +9,7 @@ Information describing the project.
 package = 'gnucash-portfolio'
 project = "Portfolio tools for GnuCash"
 project_no_spaces = project.replace(' ', '')
-version = '0.2.0'
+version = '0.3.0'
 description = 'Portfolio tools for GnuCash'
 authors = ['alen.siljak']
 authors_string = ', '.join(authors)
