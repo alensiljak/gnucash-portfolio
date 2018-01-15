@@ -4,8 +4,10 @@ Account operations
 - editing of metadata (?)
 - list of transactions / register -> see transaction controller
 """
-try: import simplejson as json
-except ImportError: import json
+try:
+    import simplejson as json
+except ImportError:
+    import json
 from logging import log, DEBUG
 from flask import Blueprint, request, render_template
 from piecash import Account, Split, Transaction
@@ -19,7 +21,7 @@ from app.models.account_models import (
     AccountTransactionsViewModel, AccountTransactionsRefModel)
 
 
-account_controller = Blueprint( # pylint: disable=invalid-name
+account_controller = Blueprint(  # pylint: disable=invalid-name
     'account_controller', __name__, url_prefix='/account')
 
 
@@ -28,6 +30,7 @@ def index():
     """ root page """
     return render_template('account.html')
 
+
 @account_controller.route('/favourites')
 def favourites():
     """ Favourite accounts """
@@ -35,6 +38,7 @@ def favourites():
         model = __load_favourite_accounts_model(svc)
 
         return render_template('account.favourites.html', model=model)
+
 
 @account_controller.route('/list')
 def all_accounts():
@@ -47,10 +51,12 @@ def all_accounts():
         model = {"accounts": accounts}
         return render_template('account.list.html', model=model)
 
+
 @account_controller.route('/search')
 def search():
     """ Search for an account by typing in a part of the name """
     return render_template('account.search.html')
+
 
 @account_controller.route("/find")
 def find():
@@ -76,6 +82,7 @@ def find():
     json_output = json.dumps(model)
     return json_output
 
+
 @account_controller.route('/cash')
 def cash_balances():
     """ Investment cash balances """
@@ -90,9 +97,11 @@ def cash_balances():
         accts_svc = AccountsAggregate(book_svc.book)
         acct = accts_svc.get_by_fullname(account_names)
         acct_svc = accts_svc.get_account_aggregate(acct)
-        model["data"] = acct_svc.load_cash_balances_with_children(account_names)
+        model["data"] = acct_svc.load_cash_balances_with_children(
+            account_names)
     # Display the report
     return render_template('account.cash.html', model=model)
+
 
 @account_controller.route('/splits', methods=['GET'])
 def transactions():
@@ -114,11 +123,13 @@ def transactions():
             'account.transactions.html',
             model=model, input_model=in_model, reference=reference)
 
+
 @account_controller.route('/splits', methods=['POST'])
 def transactions_post():
     """ Account transactions """
     input_model = __get_input_model_for_tx()
     return account_splits(input_model.account_id)
+
 
 @account_controller.route('/<acct_id>/details')
 def account_details(acct_id):
@@ -127,6 +138,7 @@ def account_details(acct_id):
         model = __load_account_details_model(svc, acct_id)
 
         return render_template('account.details.html', model=model)
+
 
 @account_controller.route('/<acct_id>/splits')
 def account_splits(acct_id: str):
@@ -142,10 +154,12 @@ def account_splits(acct_id: str):
             'account.transactions.html',
             model=model, input_model=input_model, reference=reference)
 
+
 @account_controller.route('/transactions')
 def account_transactions():
     """ Lists only transactions """
     return render_template('account.transactions.vue.html')
+
 
 @account_controller.route('/details/<path:fullname>')
 def details(fullname):
@@ -159,12 +173,15 @@ def details(fullname):
 
 #############
 # Partials
+
+
 @account_controller.route('/partial/accountdetail/<account_id>')
 def account_details_partial(account_id):
     with BookAggregate() as svc:
         model = __load_account_details_model(svc, account_id)
 
         return render_template('_account.details.html', model=model)
+
 
 @account_controller.route('/partial/favourites')
 def api_favourites():
@@ -177,6 +194,7 @@ def api_favourites():
 #################
 # API section
 
+
 @account_controller.route('/api/search')
 def search_api():
     """ searches for account by name and returns the json list of results """
@@ -184,26 +202,32 @@ def search_api():
     with BookAggregate() as svc:
         accounts = svc.accounts.find_by_name(term)
         #result = json.dumps(accounts)
-        model_list = [{"value": account.fullname, "data": account.guid} for account in accounts]
+        model_list = [{"value": account.fullname, "data": account.guid}
+                      for account in accounts]
         model_list.sort(key=lambda x: x["value"])
 
         result_dict = {"suggestions": model_list}
         result = json.dumps(result_dict)
     return result
 
+
 @account_controller.route('/api/transactions')
 def api_transactions():
     """ Returns account transactions """
     dummy = {
-        "name": "xy",
-        "date": "1/1/2016",
-        "value": "yooo!!!"
+        "links": [],
+        "data": {
+            "name": "xy",
+            "date": "1/1/2016",
+            "value": "yooo!!!"
+        }
     }
     result = json.dumps(dummy)
     return result
 
 ######################
 # Private
+
 
 def __get_input_model_for_tx() -> AccountTransactionsInputModel:
     """ Parse user input or create a blank input model """
@@ -220,6 +244,7 @@ def __get_input_model_for_tx() -> AccountTransactionsInputModel:
 
     return model
 
+
 def __load_ref_model_for_tx(svc: BookAggregate):
     """ Load reference model """
     model = AccountTransactionsRefModel()
@@ -232,10 +257,11 @@ def __load_ref_model_for_tx(svc: BookAggregate):
 
     return model
 
+
 def __load_view_model_for_tx(
-        svc: BookAggregate,
-        input_model: AccountTransactionsInputModel
-    ) -> AccountTransactionsViewModel():
+    svc: BookAggregate,
+    input_model: AccountTransactionsInputModel
+) -> AccountTransactionsViewModel():
     """ Loads the filtered data """
     model = AccountTransactionsViewModel()
     if not input_model.account_id:
@@ -247,11 +273,14 @@ def __load_view_model_for_tx(
     period = datetimeutils.parse_period(input_model.period)
     date_from = period[0]
     date_to = period[1]
-    log(DEBUG, "got range: %s. Parsed to %s - %s", input_model.period, date_from, date_to)
+    log(DEBUG, "got range: %s. Parsed to %s - %s",
+        input_model.period, date_from, date_to)
 
     account = svc.accounts.get_by_id(input_model.account_id)
-    model.start_balance = svc.accounts.get_account_aggregate(account).get_start_balance(date_from)
-    model.end_balance = svc.accounts.get_account_aggregate(account).get_end_balance(date_to)
+    model.start_balance = svc.accounts.get_account_aggregate(
+        account).get_start_balance(date_from)
+    model.end_balance = svc.accounts.get_account_aggregate(
+        account).get_end_balance(date_to)
 
     query = (
         svc.book.session.query(Split)
@@ -264,6 +293,7 @@ def __load_view_model_for_tx(
     model.splits = query.all()
 
     return model
+
 
 def __load_search_model(search_term):
     """ Loads the data and returns an array of model objects"""
@@ -284,6 +314,7 @@ def __load_search_model(search_term):
 
     return model_array
 
+
 def __load_account_details_model(svc: BookAggregate, acct_id: str) -> AccountDetailsViewModel:
     """ Loads account details view model """
     agg = svc.accounts.get_aggregate_by_id(acct_id)
@@ -293,6 +324,7 @@ def __load_account_details_model(svc: BookAggregate, acct_id: str) -> AccountDet
     model.quantity = agg.get_balance()
 
     return model
+
 
 def __load_favourite_accounts_model(svc: BookAggregate):
     """ Loads favourite accounts view model """

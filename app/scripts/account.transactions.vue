@@ -71,13 +71,8 @@
     </tbody>
 </table>
 
-<div id="tableContent" class="ui basic segment">
-    <vuetable
-        api-url="/account/api/transactions"
-        table-wrapper="#tableContent"
-        :fields="columns"
-    ></vuetable>
-</div>
+<!-- <b-table striped hover :items="items"></b-table> -->
+
 
 </div>
 </template>
@@ -85,10 +80,9 @@
 import vSelect from "vue-select";
 import DatePicker from "vue2-datepicker";
 import axios from "axios";
-// tabel
-import Vuetable from "vuetable-2/src/components/Vuetable.vue";
-import VuetablePagination from "vuetable-2/src/components/VuetablePagination.vue";
-import VuetablePaginationDropdown from "vuetable-2/src/components/VuetablePaginationDropdown.vue";
+import BootstrapVue from 'bootstrap-vue'
+// import 'bootstrap/dist/css/bootstrap.css'
+// import 'bootstrap-vue/dist/bootstrap-vue.css'
 
 /**
     Focus directive.
@@ -97,8 +91,6 @@ import VuetablePaginationDropdown from "vuetable-2/src/components/VuetablePagina
 const focus = {
   inserted(el) {
     el.querySelector("input").focus();
-    // el.focus();
-    //alert("yo!" + el)
   }
 };
 
@@ -111,7 +103,8 @@ export default {
       dateTo: "",
       account: "",
       options: [],
-      columns: ["name", "date"]
+      columns: ["name", "date", "value"],
+      items: [{ name: "blah", date: "2018-01-10", value: "yo!"}]
     };
   },
 
@@ -150,9 +143,7 @@ export default {
   components: {
     vSelect,
     DatePicker,
-    Vuetable,
-    VuetablePagination,
-    VuetablePaginationDropdown
+    BootstrapVue,
   }
 };
 </script>
