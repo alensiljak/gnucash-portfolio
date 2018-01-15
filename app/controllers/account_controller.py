@@ -94,7 +94,7 @@ def cash_balances():
     # Display the report
     return render_template('account.cash.html', model=model)
 
-@account_controller.route('/transactions', methods=['GET'])
+@account_controller.route('/splits', methods=['GET'])
 def transactions():
     """ Account transactions """
     with BookAggregate() as svc:
@@ -114,11 +114,11 @@ def transactions():
             'account.transactions.html',
             model=model, input_model=in_model, reference=reference)
 
-@account_controller.route('/transactions', methods=['POST'])
+@account_controller.route('/splits', methods=['POST'])
 def transactions_post():
     """ Account transactions """
     input_model = __get_input_model_for_tx()
-    return account_transactions(input_model.account_id)
+    return account_splits(input_model.account_id)
 
 @account_controller.route('/<acct_id>/details')
 def account_details(acct_id):
@@ -128,9 +128,9 @@ def account_details(acct_id):
 
         return render_template('account.details.html', model=model)
 
-@account_controller.route('/<acct_id>/transactions')
-def account_transactions(acct_id: str):
-    """ Displays account transactions in period """
+@account_controller.route('/<acct_id>/splits')
+def account_splits(acct_id: str):
+    """ Displays account transactions with splits in period """
     input_model = __get_input_model_for_tx()
     input_model.account_id = acct_id
 
@@ -141,6 +141,11 @@ def account_transactions(acct_id: str):
         return render_template(
             'account.transactions.html',
             model=model, input_model=input_model, reference=reference)
+
+@account_controller.route('/transactions')
+def account_transactions():
+    """ Lists only transactions """
+    return render_template('account.transactions.vue.html')
 
 @account_controller.route('/details/<path:fullname>')
 def details(fullname):

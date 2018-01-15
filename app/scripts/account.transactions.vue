@@ -1,26 +1,23 @@
-{% extends "layout.html" %} {% block title %}Account Splits{% endblock %} {% block content %}
-<h1>Account Splits</h1>
-
+/**
+    Account transactions
+    - Incomplete! -
+ */
+<template>
+<div>
 <div class="card bg-secondary text-dark">
     <div class="card-header"></div>
     <div class="card-body">
-        <form action="/account/splits" method="POST">
-            {# Account #}
+        <form action="/account/transactions" method="POST">
+            <!-- Account -->
             <input type="hidden" name="account_id" value="{{ input_model.account_id }}">
             <div class="form-group">
                 <label for="account">Account</label>
                 <div class="text-dark">
-                    <select name="account" class="form-control chosen">
-                        {% for account in reference.accounts %}
-                        <option {% if account.guid==input_model.account_id %}selected{% endif %} value="{{ account.guid }}">
-                            {{ account.fullname }}
-                        </option>
-                        {% endfor %}
-                    </select>
+                        <type-ahead />
                 </div>
             </div>
 
-            {# Date Period #}
+            <!-- Date Period -->
             <div class="form-group">
                 <label for="period">Period</label>
                 <input id="period" type="text" name="period" class="form-control daterange" {% if input_model.period %}value="{{ input_model.period }}"
@@ -40,7 +37,7 @@
 
 {% if model.splits %}
 <table class="table table-sm table-bordered mt-3">
-    {#
+    <!--
     <thead class="thead-dark">
         <th>Date</th>
         <th>Account</th>
@@ -49,7 +46,7 @@
         <th>Quantity</th>
         <th>Memo</th>
     </thead>
-    #}
+    -->
     <tbody>
         {% for split in model.splits %}
         <tr class="table-secondary">
@@ -71,6 +68,24 @@
         {% endfor %} {% endfor %}
     </tbody>
 </table>
-{% endif %} {% endblock %} {% block scripts %}
+</div>
+</template>
+<script>
+import TypeAhead from 'vue2-typeahead';
 
-{% endblock %}
+export default {
+    data() {
+
+    },
+
+    methods: {
+
+    },
+
+    components: {
+        TypeAhead
+    }
+}
+</script>
+<style>
+</style>

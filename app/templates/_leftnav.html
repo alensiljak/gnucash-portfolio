@@ -5,11 +5,12 @@
     {# Account #}
     <nav class="nav nav-pills flex-column">
         <a class="nav-link" href="/account/">Account</a>
-        <nav class="nav nav-pills flex-column">
-            <a class="nav-link ml-3" href="/account/favourites">Favourites</a>
-            <a class="nav-link ml-3" href="/account/search">Search</a>
-            <a class="nav-link ml-3" href="/account/cash">Cash Balances</a>
-            <a class="nav-link ml-3" href="{{ url_for('account_controller.transactions') }}">Transactions</a>
+        <nav class="nav nav-pills flex-column ml-3">
+            <a class="nav-link" href="/account/favourites">Favourites</a>
+            <a class="nav-link" href="/account/search">Search</a>
+            <a class="nav-link" href="/account/cash">Cash Balances</a>
+            <a class="nav-link" href="/account/splits">Splits</a>
+            <a class="nav-link" href="/account/transactions">Transactions</a>
         </nav>
     </nav>
     <nav class="nav nav-pills flex-column">

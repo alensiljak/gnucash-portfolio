@@ -14,6 +14,7 @@ module.exports = {
         vendor1: "./scripts/vendor.js",
         site: "./scripts/site.js",
         // Custom .js
+        account_transactions: "./scripts/account.transactions.js",
         currency_download: "./scripts/currency.download.js",
         currency_calculator: "./scripts/currency.calculator.js",
         scheduled_calendar: "./scripts/scheduled.calendar.js",
