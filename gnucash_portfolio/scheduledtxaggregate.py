@@ -25,9 +25,8 @@ def get_next_occurrence(tx: ScheduledTransaction) -> date:
     # https://github.com/MisterY/gnucash-portfolio/issues/3
 
     # Preparing ref day is an important part before the calculation.
-    #ref_date: datetime = datetimeutils.today_date()
     ref_date: datetime = None
-    # This should be: the last occurrence date; or the recurrence start date.
+    # It should be: a) the last occurrence date; or b) the recurrence start date.
     if tx.last_occur:
         ref_date = tx.last_occur
     if not ref_date:
