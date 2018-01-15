@@ -7,13 +7,14 @@
 <div class="card bg-secondary text-dark">
     <div class="card-header"></div>
     <div class="card-body">
-        <form action="/account/transactions" method="POST" class="form">
+        <form class="form">
             <div class="row">
                 <!-- Account -->
                 <div class="form-group col-md">
                     <!-- <label for="account">Account</label> -->
                     <v-select
                         class="form-control"
+                        v-focus
                         :debounce="250"
                         :on-search="getOptions"
                         :options="options"
@@ -31,7 +32,7 @@
             </div>
             <div class="form-row">
                 <div class="text-center col-md">
-                    <button id="submit" class="btn btn-primary">Apply</button>
+                    <button type="button" class="btn btn-primary">Apply</button>
                 </div>
             </div>
         </form>
@@ -69,45 +70,89 @@
         </tr>
     </tbody>
 </table>
+
+<div id="tableContent" class="ui basic segment">
+    <vuetable
+        api-url="/account/api/transactions"
+        table-wrapper="#tableContent"
+        :fields="columns"
+    ></vuetable>
+</div>
+
 </div>
 </template>
 <script>
-import vSelect from "vue-select"
-import DatePicker from "vue2-datepicker"
-import axios from "axios"
+import vSelect from "vue-select";
+import DatePicker from "vue2-datepicker";
+import axios from "axios";
+// tabel
+import Vuetable from "vuetable-2/src/components/Vuetable.vue";
+import VuetablePagination from "vuetable-2/src/components/VuetablePagination.vue";
+import VuetablePaginationDropdown from "vuetable-2/src/components/VuetablePaginationDropdown.vue";
+
+/**
+    Focus directive.
+    Used to focus on the account name search box.
+ */
+const focus = {
+  inserted(el) {
+    el.querySelector("input").focus();
+    // el.focus();
+    //alert("yo!" + el)
+  }
+};
 
 export default {
+  directives: { focus },
+
   data() {
     return {
       dateFrom: "",
       dateTo: "",
       account: "",
-      options: []
+      options: [],
+      columns: ["name", "date"]
     };
   },
 
   methods: {
     getOptions: function(search, loading) {
-        if (search.length < 2) return;
+      if (search.length < 2) return;
 
-        loading(true)
+      loading(true);
 
-      axios.get("/account/api/search", {
+      axios
+        .get("/account/api/search", {
           params: {
-              query: search
+            query: search
           }
-      }).then(response => {
-        // TODO: store into model.
-        this.options = response.data.suggestions
-        // var result = response.data.suggestions.map(x => x.value);
-        loading(false)
-      });
+        })
+        .then(response => {
+          // TODO: store into model.
+          this.options = response.data.suggestions;
+          // var result = response.data.suggestions.map(x => x.value);
+          loading(false);
+        });
     }
+  },
+
+  mounted: function() {
+    // focus
+    // set dates
+    var from = new Date();
+    from.setMonth(from.getMonth() - 3);
+    this.dateFrom = from;
+
+    var to = new Date();
+    this.dateTo = to;
   },
 
   components: {
     vSelect,
-    DatePicker
+    DatePicker,
+    Vuetable,
+    VuetablePagination,
+    VuetablePaginationDropdown
   }
 };
 </script>

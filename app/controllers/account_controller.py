@@ -191,6 +191,17 @@ def search_api():
         result = json.dumps(result_dict)
     return result
 
+@account_controller.route('/api/transactions')
+def api_transactions():
+    """ Returns account transactions """
+    dummy = {
+        "name": "xy",
+        "date": "1/1/2016",
+        "value": "yooo!!!"
+    }
+    result = json.dumps(dummy)
+    return result
+
 ######################
 # Private
 
