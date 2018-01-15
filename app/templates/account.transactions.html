@@ -3,7 +3,7 @@
 
 <div class="card bg-secondary text-dark">
     <div class="card-header"></div>
-    <div class="card-body">
+    <div class="card-body" id=">
 
         <form action="/account/transactions" method="POST">
             {# Account #}
@@ -75,6 +75,15 @@
     </tbody>
 </table>
 {% endif %} {% endblock %} {% block scripts %}
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/vue/2.5.13/vue.js"></script>
+<script type="text/javascript">
+// Vue components
+
+Vue.component('search-box', {
+    template: '#'
+});
+
+</script>
 <script type="text/javascript">
     $(function () {
         // $("#submit").click(function(event) {
