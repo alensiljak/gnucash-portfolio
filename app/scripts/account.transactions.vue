@@ -7,23 +7,32 @@
 <div class="card bg-secondary text-dark">
     <div class="card-header"></div>
     <div class="card-body">
-        <form action="/account/transactions" method="POST">
-            <!-- Account -->
-            <div class="form-group">
-                <label for="account">Account</label>
-                <div class="text-dark">
-                    <type-ahead />
+        <form action="/account/transactions" method="POST" class="form">
+            <div class="row">
+                <!-- Account -->
+                <div class="form-group col-md">
+                    <!-- <label for="account">Account</label> -->
+                    <v-select
+                        class="form-control"
+                        :debounce="250"
+                        :on-search="getOptions"
+                        :options="options"
+                        placeholder="Search account..."
+                        label="value"
+                    ></v-select>
+                </div>
+
+                <!-- Date Period -->
+                <div class="form-group col-md">
+                    <!-- <label for="period">Period</label> -->
+                    <date-picker lang="en" name="dateFrom" placeholder="Date from" v-model="dateFrom" /> - 
+                    <date-picker lang="en" name="dateTo" placeholder="Date to" v-model="dateTo" />
                 </div>
             </div>
-
-            <!-- Date Period -->
-            <div class="form-group">
-                <label for="period">Period</label>
-                <date-picker lang="en" /> - <date-picker lang="en" />
-            </div>
-
-            <div class="text-center">
-                <button id="submit" class="btn btn-primary">Apply</button>
+            <div class="form-row">
+                <div class="text-center col-md">
+                    <button id="submit" class="btn btn-primary">Apply</button>
+                </div>
             </div>
         </form>
     </div>
@@ -63,25 +72,46 @@
 </div>
 </template>
 <script>
-import TypeAhead from 'vue2-typeahead';
-import DatePicker from 'vue2-datepicker';
+import vSelect from "vue-select"
+import DatePicker from "vue2-datepicker"
+import axios from "axios"
 
 export default {
-    data() {
-        return {
+  data() {
+    return {
+      label: "label?",
+      dateFrom: "",
+      dateTo: "",
+      account: "",
+      options: []
+    };
+  },
 
-        }
-    },
+  methods: {
+    getOptions: function(search, loading) {
+        if (search.length < 2) return;
 
-    methods: {
+        loading(true)
 
-    },
-
-    components: {
-        TypeAhead,
-        DatePicker
+      axios.get("/account/api/search", {
+          params: {
+              query: search
+          }
+      }).then(response => {
+        // TODO: store into model.
+        this.options = response.data.suggestions
+        // var result = response.data.suggestions.map(x => x.value);
+        loading(false)
+      });
     }
-}
+  },
+
+  components: {
+    vSelect,
+    DatePicker
+  }
+};
 </script>
 <style>
+
 </style>

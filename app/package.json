@@ -62,8 +62,8 @@
     "vue": "^2.5.13",
     "vue-full-calendar": "^2.5.1",
     "vue-search-select": "^2.4.0",
-    "vue2-datepicker": "^1.8.1",
-    "vue2-typeahead": "^1.0.17"
+    "vue-select": "github:sagalbot/vue-select",
+    "vue2-datepicker": "^1.8.1"
   },
   "browserslist": [
     "> 1%",
