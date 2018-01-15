@@ -41,35 +41,31 @@ def get_next_occurrence(tx: ScheduledTransaction) -> date:
     # recurrenceNextInstance(const Recurrence *r, const GDate *refDate, GDate *nextDate)
 
     start_date: datetime = tx.recurrence.recurrence_period_start
-
-    if start_date > ref_date:
+    if ref_date < start_date:
         # If the occurrence hasn't even started, the next date is the start date.
         # this should also handle the "once" type in most cases.
         return start_date
 
-    last_date: datetime = tx.last_occur
-    if not last_date:
-        last_date = start_date
-
     next_date: datetime = ref_date
 
+    # last_date: datetime = tx.last_occur
     # print(tx.name, base_date, tx.recurrence.recurrence_period_start,
     #       tx.recurrence.recurrence_mult, tx.recurrence.recurrence_period_type)
+
+    # /* Step 1: move FORWARD one period, passing exactly one occurrence. */
+
     mult: int = tx.recurrence.recurrence_mult
     period: str = tx.recurrence.recurrence_period_type
     #wadj = tx.recurrence.recurrence_weekend_adjust
 
-    if period == RecurrencePeriod.DAY.value:
-        log(WARN, "daily not handled")
-
-    elif period in ([RecurrencePeriod.YEAR.value, RecurrencePeriod.MONTH.value,
-                     RecurrencePeriod.END_OF_MONTH.value]):
+    if period in ([RecurrencePeriod.YEAR.value, RecurrencePeriod.MONTH.value,
+                   RecurrencePeriod.END_OF_MONTH.value]):
         if period == RecurrencePeriod.YEAR.value:
             mult *= 12
 
         # handle weekend adjustment here.
 
-        # if the date is already at end of month, then increase
+        # Line 274.
         if (datetimeutils.is_end_of_month(next_date) or
                 (period in [RecurrencePeriod.MONTH.value, RecurrencePeriod.YEAR.value]
                  and (next_date.day >= start_date.day))
@@ -82,6 +78,10 @@ def get_next_occurrence(tx: ScheduledTransaction) -> date:
 
     # elif period == "once":
     #     next_date = tx.recurrence.recurrence_period_start
+
+    elif period == RecurrencePeriod.DAY.value:
+        log(WARN, "daily not handled")
+
     else:
         log(INFO, "recurrence not handled: %s", period)
 

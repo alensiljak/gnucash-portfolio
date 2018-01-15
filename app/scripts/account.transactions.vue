@@ -79,7 +79,6 @@ import axios from "axios"
 export default {
   data() {
     return {
-      label: "label?",
       dateFrom: "",
       dateTo: "",
       account: "",

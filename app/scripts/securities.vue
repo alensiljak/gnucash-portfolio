@@ -3,29 +3,50 @@
   <div>
     <p>Test Vue autocomplete</p>
 
-    <type-ahead src="/security/api/search?query=:keyword" :value="symbol" :getResponse="getResponse"
-        :placeholder="placeholder" />
+    <v-select
+        class="form-control"
+        :debounce="250"
+        :on-search="getOptions"
+        :options="options"
+        placeholder="Search account..."
+        label="value"
+    ></v-select>
   </div>
 </template>
 
 <script>
-import TypeAhead from "vue2-typeahead";
+import vSelect from "vue-select"
+import axios from "axios"
 
 export default {
   data() {
     return {
         "symbol": "",
-        "placeholder": "type symbol to search securities"
+        "placeholder": "type symbol to search securities",
+        options: []
     };
   },
 
   components: {
-    TypeAhead
+    vSelect
   },
 
   methods: {
-    getResponse: function(data) {
-      return data;
+    getOptions: function(search, loading) {
+        if (search.length < 2) return;
+
+        loading(true)
+
+      axios.get("/security/api/search", {
+          params: {
+              query: search
+          }
+      }).then(response => {
+        // TODO: store into model.
+        this.options = response.data.suggestions
+        // var result = response.data.suggestions.map(x => x.value);
+        loading(false)
+      });
     }
   }
 };
