@@ -46,6 +46,7 @@ def get_next_occurrence(tx: ScheduledTransaction) -> date:
         # this should also handle the "once" type in most cases.
         return start_date
 
+    # start at refDate.
     next_date: datetime = ref_date
 
     # last_date: datetime = tx.last_occur
