@@ -158,6 +158,21 @@ class AccountAggregate(AggregateBase):
         )
         return query.all()
 
+    def get_transactions(self, date_from: date, date_to: date) -> List[Transaction]:
+        """ Returns account transactions """
+        # fix up the parameters as we need datetime
+        dt_from = datetimeutils.get_datetime_from_date(date_from)
+        dt_to = datetimeutils.get_datetime_from_date(date_to)
+
+        query = (
+            self.book.session.query(Transaction)
+            .join(Split)
+            .filter(Split.account_guid == self.account.guid)
+            .filter(Transaction.post_date >= dt_from, Transaction.post_date <= dt_to)
+            .order_by(Transaction.post_date)
+        )
+        return query.all()
+
     ####################
     # Private
 

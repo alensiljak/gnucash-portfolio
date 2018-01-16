@@ -1,13 +1,20 @@
 """ Date/time utilities """
 
+import calendar
 from datetime import datetime, date, time, timedelta
 #import dateutil
 from dateutil.relativedelta import relativedelta
-import calendar
+
+ISO_SHORT_FORMAT = "%Y-%m-%d"
+ISO_LONG_FORMAT = "%Y-%m-%dT%H:%M:%S.%fZ"
 
 def add_months(date_value: date, value: int) -> date:
     """ Add a number of months to the given date """
     return date_value + relativedelta(months=value)
+
+def get_datetime_from_date(value: date) -> datetime:
+    """ Gets a new datetime value from date """
+    return datetime(value.year, value.month, value.day)
 
 def get_days_in_month(year: int, month: int) -> int:
     """ Returns number of days in the given month.
@@ -31,9 +38,9 @@ def get_from_gnucash26_date(date_str: str) -> date:
     result = datetime.strptime(date_str, date_format).date()
     return result
 
-def get_iso_string(date: date) -> str:
+def get_iso_string(value: date) -> str:
     """ Returns full ISO string for the given date """
-    my_datetime = datetime(date.year, date.month, date.day)
+    my_datetime = get_datetime_from_date(value)
     return datetime.isoformat(my_datetime)
 
 def today_date() -> date:
@@ -58,7 +65,11 @@ def get_period_end(period: str) -> datetime:
 
 def parse_iso_date(date_str: str) -> datetime:
     """ Parse ISO date string (YYYY-MM-DD) """
-    return datetime.strptime(date_str, "%Y-%m-%d")
+    return datetime.strptime(date_str, ISO_SHORT_FORMAT)
+
+def parse_iso_long_date(date_str: str) -> datetime:
+    """ Parse ISO date string (YYYY-MM-DDTHH:mm:ss) """
+    return datetime.strptime(date_str, ISO_LONG_FORMAT)
 
 def parse_period(period: str):
     """ parses period from date range picker """

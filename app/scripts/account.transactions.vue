@@ -32,39 +32,22 @@
                     <date-picker lang="en" name="dateTo" placeholder="Date to" v-model="dateTo"
                         :width="120" />
                 </div>
-            </div>
-            <div class="form-row">
-                <div class="text-center col-md">
+
+                <div class="text-center col-md-1">
                     <button @click="loadTransactions" type="button" class="btn btn-primary">Apply</button>
                 </div>
+
             </div>
         </form>
     </div>
 </div>
 
 <p>
-    Starting balance: <span>{{ startBalance }}</span>, Ending balance: {{ endBalance }}
+    Transactions for account <strong>{{ model.accountName }}</strong> <br>
+    Starting balance: <span>{{ model.startBalance }}</span>, Ending balance: {{ model.endBalance }}
 </p>
 
-<table class="table table-sm table-bordered mt-3">
-    <tbody>
-        <tr class="table-secondary">
-            <td>split.transaction.post_date</td>
-            <td>split.transaction.description</td>
-            <td colspan="2">split.transaction.notes</td>
-        </tr>
-        <tr>
-            <td>&nbsp;</td>
-            <td>sp.account.fullname</td>
-            <td>sp.action</td>
-            <td>sp.memo</td>
-            <td class="text-right">sp.value</td>
-            <td class="text-right">sp.quantity</td>
-        </tr>
-    </tbody>
-</table>
-
-<b-table striped hover small :items="txRows"></b-table>
+<b-table striped hover small :items="model.transactions"></b-table>
 
 </div>
 </template>
@@ -74,7 +57,7 @@ import DatePicker from "vue2-datepicker";
 import axios from "axios";
 import BootstrapVue from "bootstrap-vue";
 // import 'bootstrap/dist/css/bootstrap.css'
-import 'bootstrap-vue/dist/bootstrap-vue.css'
+import "bootstrap-vue/dist/bootstrap-vue.css";
 
 /**
     Focus directive.
@@ -97,11 +80,12 @@ export default {
       account: "",
       options: [],
       // Table.
-    //   columns: ["date", "account", "action", "value", "quantity", "memo"],
-      txRows: [{ action: "blah", date: "2018-01-10", account: "some account", value: "yo!", quantity: "40", memo: "eh" }],
-      //
-      startBalance: 0,
-      endBalance: 0
+      model: {
+        accountName: "",
+        startBalance: 0,
+        endBalance: 0,
+        transactions: []
+      }
     };
   },
 
@@ -128,22 +112,26 @@ export default {
         });
     },
     loadTransactions: function() {
-        // validations
-        // TODO: check for all input fields: account, date range.
+      // validations
+      // TODO: check for all input fields: account, date range.
 
-        axios.get('/account/api/transactions', {
-            params: {
-                dateFrom: this.dateFrom,
-                dateTo: this.dateTo,
-                account: this.account.id
-            }
-        }).then(response => {
-            this.txRows = response.data.transactions
-            this.startBalance = response.startBalance
-            this.endBalance = response.endBalance
-        }).catch(error => {
-            console.error(error)
+      axios
+        .get("/account/api/transactions", {
+          params: {
+            dateFrom: this.dateFrom,
+            dateTo: this.dateTo,
+            account: this.account.id
+          }
         })
+        .then(response => {
+          this.model = response.data;
+          // this.txRows = response.data.transactions
+          // this.startBalance = response.startBalance
+          // this.endBalance = response.endBalance
+        })
+        .catch(error => {
+          console.error(error);
+        });
     }
   },
 

@@ -57,7 +57,6 @@ def search():
     """ Search for an account by typing in a part of the name """
     return render_template('account.search.html')
 
-
 @account_controller.route("/find")
 def find():
     """
@@ -82,7 +81,6 @@ def find():
     json_output = json.dumps(model)
     return json_output
 
-
 @account_controller.route('/cash')
 def cash_balances():
     """ Investment cash balances """
@@ -101,7 +99,6 @@ def cash_balances():
             account_names)
     # Display the report
     return render_template('account.cash.html', model=model)
-
 
 @account_controller.route('/splits', methods=['GET'])
 def transactions():
@@ -123,13 +120,11 @@ def transactions():
             'account.transactions.html',
             model=model, input_model=in_model, reference=reference)
 
-
 @account_controller.route('/splits', methods=['POST'])
 def transactions_post():
     """ Account transactions """
     input_model = __get_input_model_for_tx()
     return account_splits(input_model.account_id)
-
 
 @account_controller.route('/<acct_id>/details')
 def account_details(acct_id):
@@ -138,7 +133,6 @@ def account_details(acct_id):
         model = __load_account_details_model(svc, acct_id)
 
         return render_template('account.details.html', model=model)
-
 
 @account_controller.route('/<acct_id>/splits')
 def account_splits(acct_id: str):
@@ -154,12 +148,10 @@ def account_splits(acct_id: str):
             'account.transactions.html',
             model=model, input_model=input_model, reference=reference)
 
-
 @account_controller.route('/transactions')
 def account_transactions():
     """ Lists only transactions """
     return render_template('account.transactions.vue.html')
-
 
 @account_controller.route('/details/<path:fullname>')
 def details(fullname):
@@ -174,14 +166,12 @@ def details(fullname):
 #############
 # Partials
 
-
 @account_controller.route('/partial/accountdetail/<account_id>')
 def account_details_partial(account_id):
     with BookAggregate() as svc:
         model = __load_account_details_model(svc, account_id)
 
         return render_template('_account.details.html', model=model)
-
 
 @account_controller.route('/partial/favourites')
 def api_favourites():
@@ -213,29 +203,38 @@ def search_api():
 def api_transactions():
     """ Returns account transactions """
     # get parameters
-    dateFrom = request.args.get("dateFrom")
-    dateTo = request.args.get("dateTo")
+    dateFromStr = request.args.get("dateFrom")
+    dateFrom = datetimeutils.parse_iso_long_date(dateFromStr).date()
+    dateToStr = request.args.get("dateTo")
+    dateTo = datetimeutils.parse_iso_long_date(dateToStr).date()
     account_id = request.args.get("account")
 
     # get data
     with BookAggregate() as svc:
-        account = svc.accounts.get_by_id(account_id)
+        #account = svc.accounts.get_by_id(account_id)
+        acc_agg = svc.accounts.get_aggregate_by_id(account_id)
+        txs = acc_agg.get_transactions(dateFrom, dateTo)
+        records = []
 
         # return results
-        dummy_data = {
-            "startBalance": 150,
-            "endBalance": 280,
-            "transactions": [
-                {
-                    "name": account.name,
-                    "date": dateFrom,
-                    "value": "yooo!!!",
-                    "action": "yeah"
-                }
-            ]
+        model = {
+            "accountName": acc_agg.account.fullname,
+            "startBalance": acc_agg.get_start_balance(dateFrom),
+            "endBalance": acc_agg.get_end_balance(dateTo),
+            "transactions": []
         }
 
-    result = json.dumps(dummy_data)
+        for tx in txs:
+            records.append({
+                "date": tx.post_date.strftime("%Y-%m-%d"),
+                "description": tx.description,
+                "notes": tx.notes,
+                "value": 0,
+                "quantity": 0
+            })
+        model["transactions"] = records
+
+    result = json.dumps(model)
     return result
 
 ######################
