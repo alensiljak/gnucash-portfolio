@@ -209,7 +209,7 @@ class AccountsAggregate(AggregateBase):
         if not include_placeholders:
             query = query.filter(Account.placeholder == 0)
 
-        print(generic.get_sql(query))
+        # print(generic.get_sql(query))
         return query.all()
 
     def get_aggregate_by_id(self, account_id:str) -> AccountAggregate:

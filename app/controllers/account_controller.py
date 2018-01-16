@@ -213,7 +213,6 @@ def api_search_autocomplete():
         result_dict = {"suggestions": model_list}
         result = json.dumps(result_dict)
     return result
-    
 
 @account_controller.route('/api/transactions')
 def api_transactions():
@@ -227,7 +226,6 @@ def api_transactions():
 
     # get data
     with BookAggregate() as svc:
-        #account = svc.accounts.get_by_id(account_id)
         acc_agg = svc.accounts.get_aggregate_by_id(account_id)
         txs = acc_agg.get_transactions(dateFrom, dateTo)
         records = []

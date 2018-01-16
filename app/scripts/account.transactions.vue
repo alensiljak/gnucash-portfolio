@@ -21,6 +21,7 @@
                         :options="options"
                         placeholder="Search account..."
                         label="name"
+                        :on-change="accountSelected"
                     ></v-select>
                 </div>
 
@@ -114,6 +115,14 @@ export default {
           // var result = response.data.suggestions.map(x => x.value);
           loading(false);
         });
+    },
+    accountSelected: function(account) {
+        if (!account) return;
+
+        this.account = account
+
+        // re-load transactions
+        this.loadTransactions()
     },
     loadTransactions: function() {
       // validations
