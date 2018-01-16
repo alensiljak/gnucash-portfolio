@@ -13,10 +13,11 @@
                 <div class="form-group col-md-7">
                     <!-- <label for="account">Account</label> -->
                     <v-select
+                        v-model="account"
                         class="form-control"
                         v-focus
                         :debounce="250"
-                        :on-search="getOptions"
+                        :on-search="getAccounts"
                         :options="options"
                         placeholder="Search account..."
                         label="value"
@@ -34,7 +35,7 @@
             </div>
             <div class="form-row">
                 <div class="text-center col-md">
-                    <button type="button" class="btn btn-primary">Apply</button>
+                    <button @click="loadTransactions" type="button" class="btn btn-primary">Apply</button>
                 </div>
             </div>
         </form>
@@ -42,20 +43,10 @@
 </div>
 
 <p>
-    Starting balance: model.start_balance, Ending balance: model.end_balance
+    Starting balance: <span>{{ startBalance }}</span>, Ending balance: {{ endBalance }}
 </p>
 
 <table class="table table-sm table-bordered mt-3">
-    <!--
-    <thead class="thead-dark">
-        <th>Date</th>
-        <th>Account</th>
-        <th>Action</th>
-        <th>Value</th>
-        <th>Quantity</th>
-        <th>Memo</th>
-    </thead>
-    -->
     <tbody>
         <tr class="table-secondary">
             <td>split.transaction.post_date</td>
@@ -73,8 +64,7 @@
     </tbody>
 </table>
 
-<b-table striped hover small :items="items"></b-table>
-
+<b-table striped hover small :items="txRows"></b-table>
 
 </div>
 </template>
@@ -103,15 +93,23 @@ export default {
     return {
       dateFrom: "",
       dateTo: "",
+      // Account selector
       account: "",
       options: [],
-      columns: ["name", "date", "value"],
-      items: [{ name: "blah", date: "2018-01-10", value: "yo!" }]
+      // Table.
+    //   columns: ["date", "account", "action", "value", "quantity", "memo"],
+      txRows: [{ action: "blah", date: "2018-01-10", account: "some account", value: "yo!", quantity: "40", memo: "eh" }],
+      //
+      startBalance: 0,
+      endBalance: 0
     };
   },
 
   methods: {
-    getOptions: function(search, loading) {
+    /**
+        Load account list for dropdown.
+       */
+    getAccounts: function(search, loading) {
       if (search.length < 2) return;
 
       loading(true);
@@ -128,12 +126,30 @@ export default {
           // var result = response.data.suggestions.map(x => x.value);
           loading(false);
         });
+    },
+    loadTransactions: function() {
+        // validations
+        // TODO: check for all input fields: account, date range.
+
+        axios.get('/account/api/transactions', {
+            params: {
+                dateFrom: this.dateFrom,
+                dateTo: this.dateTo,
+                account: this.account
+            }
+        }).then(response => {
+            this.txRows = response.data.transactions
+            this.startBalance = response.startBalance
+            this.endBalance = response.endBalance
+        }).catch(error => {
+            console.error(error)
+        })
     }
   },
 
   mounted: function() {
-    // focus
-    // set dates
+    // Focus is done with the custom directive. See above.
+    // Initialize dates.
     var from = new Date();
     from.setMonth(from.getMonth() - 3);
     this.dateFrom = from;

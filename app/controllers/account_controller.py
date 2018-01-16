@@ -194,7 +194,6 @@ def api_favourites():
 #################
 # API section
 
-
 @account_controller.route('/api/search')
 def search_api():
     """ searches for account by name and returns the json list of results """
@@ -210,24 +209,30 @@ def search_api():
         result = json.dumps(result_dict)
     return result
 
-
 @account_controller.route('/api/transactions')
 def api_transactions():
     """ Returns account transactions """
-    dummy = {
-        "links": [],
-        "data": {
-            "name": "xy",
-            "date": "1/1/2016",
-            "value": "yooo!!!"
-        }
+    # get parameters
+    dateFrom = request.args.get('dateFrom')
+
+    dummy_data = {
+        "startBalance": 150,
+        "endBalance": 280,
+        "transactions": [
+            {
+                "name": "xy",
+                "date": dateFrom,
+                "value": "yooo!!!",
+                "action": "yeah"
+            }
+        ]
+
     }
-    result = json.dumps(dummy)
+    result = json.dumps(dummy_data)
     return result
 
 ######################
 # Private
-
 
 def __get_input_model_for_tx() -> AccountTransactionsInputModel:
     """ Parse user input or create a blank input model """
@@ -244,7 +249,6 @@ def __get_input_model_for_tx() -> AccountTransactionsInputModel:
 
     return model
 
-
 def __load_ref_model_for_tx(svc: BookAggregate):
     """ Load reference model """
     model = AccountTransactionsRefModel()
@@ -256,7 +260,6 @@ def __load_ref_model_for_tx(svc: BookAggregate):
     )
 
     return model
-
 
 def __load_view_model_for_tx(
     svc: BookAggregate,
@@ -294,7 +297,6 @@ def __load_view_model_for_tx(
 
     return model
 
-
 def __load_search_model(search_term):
     """ Loads the data and returns an array of model objects"""
     model_array = []
@@ -314,7 +316,6 @@ def __load_search_model(search_term):
 
     return model_array
 
-
 def __load_account_details_model(svc: BookAggregate, acct_id: str) -> AccountDetailsViewModel:
     """ Loads account details view model """
     agg = svc.accounts.get_aggregate_by_id(acct_id)
@@ -324,7 +325,6 @@ def __load_account_details_model(svc: BookAggregate, acct_id: str) -> AccountDet
     model.quantity = agg.get_balance()
 
     return model
-
 
 def __load_favourite_accounts_model(svc: BookAggregate):
     """ Loads favourite accounts view model """
