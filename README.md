@@ -9,7 +9,7 @@ User-oriented documentation is at http://portfolio.alensiljak.tk
 The purpose of the project is to provide tools that help in managing an investment portfolio in a GnuCash book.
 The code is written in Python on the server-side, and HTML/JavaScript/CSS on the client-side.
 
-## Development
+## Development Environment
 
 My development environment in on Windows and consists of the following:
 
@@ -21,7 +21,7 @@ My development environment in on Windows and consists of the following:
 
 All the libraries are listed in `requirements.txt` for Python and `package.json` for node.
 
-## Compiling (pre-run)
+## Set-Up
 
 To install the required development and runtime dependencies, run
 
@@ -53,7 +53,7 @@ in the "app" directory. This will compile production-ready images, styles, and s
 
 ### CSS
 
-Custom SCSS is compiled with Webpack (`npm run build` or `npm run dev`).
+Custom SCSS is compiled with Webpack (`npm run build`).
 
 Vendor CSS is bundled with Flask Assets automatically when the site starts.
 
@@ -64,7 +64,18 @@ Custom JavaScript code is compiled through Webpack.
 Vendor libraries are currently bundled through Flask Assets. It collects the vendor code from installed development node modules. Make sure all the npm dependencies are installed in order for this to work.
 The bundle will be built automatically during the app runtime. No additional actions required by the user.
 
+## Development
+
+For development, run the web site:
+`py app`
+
+and compile and monitor the client-side code with
+
+`npm run dev`
+
 ## Running
+
+How to run the web app.
 
 ### First-Time Setup
 
