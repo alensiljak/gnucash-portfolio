@@ -20,7 +20,7 @@
                         :on-search="getAccounts"
                         :options="options"
                         placeholder="Search account..."
-                        label="value"
+                        label="name"
                     ></v-select>
                 </div>
 
@@ -135,7 +135,7 @@ export default {
             params: {
                 dateFrom: this.dateFrom,
                 dateTo: this.dateTo,
-                account: this.account
+                account: this.account.id
             }
         }).then(response => {
             this.txRows = response.data.transactions

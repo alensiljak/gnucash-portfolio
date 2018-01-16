@@ -201,9 +201,9 @@ def search_api():
     with BookAggregate() as svc:
         accounts = svc.accounts.find_by_name(term)
         #result = json.dumps(accounts)
-        model_list = [{"value": account.fullname, "data": account.guid}
+        model_list = [{"name": account.fullname, "id": account.guid}
                       for account in accounts]
-        model_list.sort(key=lambda x: x["value"])
+        model_list.sort(key=lambda x: x["name"])
 
         result_dict = {"suggestions": model_list}
         result = json.dumps(result_dict)
@@ -213,21 +213,28 @@ def search_api():
 def api_transactions():
     """ Returns account transactions """
     # get parameters
-    dateFrom = request.args.get('dateFrom')
+    dateFrom = request.args.get("dateFrom")
+    dateTo = request.args.get("dateTo")
+    account_id = request.args.get("account")
 
-    dummy_data = {
-        "startBalance": 150,
-        "endBalance": 280,
-        "transactions": [
-            {
-                "name": "xy",
-                "date": dateFrom,
-                "value": "yooo!!!",
-                "action": "yeah"
-            }
-        ]
+    # get data
+    with BookAggregate() as svc:
+        account = svc.accounts.get_by_id(account_id)
 
-    }
+        # return results
+        dummy_data = {
+            "startBalance": 150,
+            "endBalance": 280,
+            "transactions": [
+                {
+                    "name": account.name,
+                    "date": dateFrom,
+                    "value": "yooo!!!",
+                    "action": "yeah"
+                }
+            ]
+        }
+
     result = json.dumps(dummy_data)
     return result
 
