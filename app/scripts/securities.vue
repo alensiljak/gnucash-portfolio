@@ -15,15 +15,15 @@
 </template>
 
 <script>
-import vSelect from "vue-select"
-import axios from "axios"
+import vSelect from "vue-select";
+import axios from "axios";
 
 export default {
   data() {
     return {
-        "symbol": "",
-        "placeholder": "type symbol to search securities",
-        options: []
+      symbol: "",
+      placeholder: "type symbol to search securities",
+      options: []
     };
   },
 
@@ -33,20 +33,22 @@ export default {
 
   methods: {
     getOptions: function(search, loading) {
-        if (search.length < 2) return;
+      if (search.length < 2) return;
 
-        loading(true)
+      loading(true);
 
-      axios.get("/security/api/search", {
+      axios
+        .get("/security/api/search", {
           params: {
-              query: search
+            query: search
           }
-      }).then(response => {
-        // TODO: store into model.
-        this.options = response.data.suggestions
-        // var result = response.data.suggestions.map(x => x.value);
-        loading(false)
-      });
+        })
+        .then(response => {
+          // TODO: store into model.
+          this.options = response.data.suggestions;
+          // var result = response.data.suggestions.map(x => x.value);
+          loading(false);
+        });
     }
   }
 };

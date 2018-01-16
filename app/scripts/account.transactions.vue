@@ -10,7 +10,7 @@
         <form class="form">
             <div class="row">
                 <!-- Account -->
-                <div class="form-group col-md">
+                <div class="form-group col-md-7">
                     <!-- <label for="account">Account</label> -->
                     <v-select
                         class="form-control"
@@ -26,8 +26,10 @@
                 <!-- Date Period -->
                 <div class="form-group col-md">
                     <!-- <label for="period">Period</label> -->
-                    <date-picker lang="en" name="dateFrom" placeholder="Date from" v-model="dateFrom" /> - 
-                    <date-picker lang="en" name="dateTo" placeholder="Date to" v-model="dateTo" />
+                    <date-picker lang="en" name="dateFrom" placeholder="Date from" v-model="dateFrom"
+                        :width="120" /> - 
+                    <date-picker lang="en" name="dateTo" placeholder="Date to" v-model="dateTo"
+                        :width="120" />
                 </div>
             </div>
             <div class="form-row">
@@ -71,7 +73,7 @@
     </tbody>
 </table>
 
-<!-- <b-table striped hover :items="items"></b-table> -->
+<b-table striped hover small :items="items"></b-table>
 
 
 </div>
@@ -80,9 +82,9 @@
 import vSelect from "vue-select";
 import DatePicker from "vue2-datepicker";
 import axios from "axios";
-import BootstrapVue from 'bootstrap-vue'
+import BootstrapVue from "bootstrap-vue";
 // import 'bootstrap/dist/css/bootstrap.css'
-// import 'bootstrap-vue/dist/bootstrap-vue.css'
+import 'bootstrap-vue/dist/bootstrap-vue.css'
 
 /**
     Focus directive.
@@ -104,7 +106,7 @@ export default {
       account: "",
       options: [],
       columns: ["name", "date", "value"],
-      items: [{ name: "blah", date: "2018-01-10", value: "yo!"}]
+      items: [{ name: "blah", date: "2018-01-10", value: "yo!" }]
     };
   },
 
@@ -143,7 +145,7 @@ export default {
   components: {
     vSelect,
     DatePicker,
-    BootstrapVue,
+    BootstrapVue
   }
 };
 </script>
