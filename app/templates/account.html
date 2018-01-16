@@ -37,21 +37,20 @@
         };
 
         $('#account').autocomplete({
-            serviceUrl: '/account/api/search',
+            serviceUrl: '/account/api/search_autocomplete',
             minChars: 2,
             onSelect: function (suggestion) {
                 //alert('You selected: ' + suggestion.value + ', ' + suggestion.data);
-
-                // show details
-                // $.ajax({
-                //     url: '/account/partial/accountdetail/' + suggestion.data,
-                //     success: function (data, textStatus, jqxhr) {
-                //         $("#accountDetails").html(data);
-                //     }
-                // })
-
                 showDetails(suggestion.data);
-            }
+            },
+            // transformResult: function(response) {
+            //     console.log(response);
+            //     return {
+            //         suggestions: $.map(response.suggestions, function(item) {
+            //             return { value: item.name, data: item.id };
+            //         })
+            //     }
+            // }
         });
 
         $("form button").click(function() {

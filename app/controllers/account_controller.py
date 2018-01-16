@@ -199,6 +199,22 @@ def search_api():
         result = json.dumps(result_dict)
     return result
 
+@account_controller.route('/api/search_autocomplete')
+def api_search_autocomplete():
+    """ format the output for autocomplete. Client-side customization does not work for some reason. """
+    term = request.args.get('query')
+    with BookAggregate() as svc:
+        accounts = svc.accounts.find_by_name(term)
+        #result = json.dumps(accounts)
+        model_list = [{"value": account.fullname, "data": account.guid}
+                      for account in accounts]
+        model_list.sort(key=lambda x: x["value"])
+
+        result_dict = {"suggestions": model_list}
+        result = json.dumps(result_dict)
+    return result
+    
+
 @account_controller.route('/api/transactions')
 def api_transactions():
     """ Returns account transactions """

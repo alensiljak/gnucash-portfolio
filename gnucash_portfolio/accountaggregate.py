@@ -8,7 +8,7 @@ from typing import List
 from decimal import Decimal
 from logging import log, DEBUG
 from piecash import Book, Account, Commodity, Split, Transaction
-from gnucash_portfolio.lib import datetimeutils
+from gnucash_portfolio.lib import datetimeutils, generic
 from gnucash_portfolio.lib.aggregatebase import AggregateBase
 from gnucash_portfolio.currencyaggregate import CurrencyAggregate, CurrenciesAggregate
 
@@ -205,9 +205,11 @@ class AccountsAggregate(AggregateBase):
             .filter(Account.name.like('%' + term + '%'))
             .order_by(Account.name)
         )
+        # Exclude placeholder accounts?
         if not include_placeholders:
-            query.filter(Account.placeholder == False)
+            query = query.filter(Account.placeholder == 0)
 
+        print(generic.get_sql(query))
         return query.all()
 
     def get_aggregate_by_id(self, account_id:str) -> AccountAggregate:
@@ -221,8 +223,7 @@ class AccountsAggregate(AggregateBase):
         query = (
             self.book.session.query(Account)
         )
-        #sql = str(query.statement.compile(dialect=sqlite.dialect(), 
-        # compile_kwargs={"literal_binds": True}))
+        # generic.get_sql()
         #print(sql)
         all_accounts = query.all()
         for account in all_accounts:
@@ -291,8 +292,7 @@ class AccountsAggregate(AggregateBase):
         query = (
             self.book.session.query(Account)
             .join(Commodity)
-            .filter(Commodity.namespace != "TEMPLATE")
+            .filter(Commodity.namespace != "template")
             .filter(Account.type != AccountType.ROOT.name)
-            # .filter(Account.type != "TEMPLATE")
         )
         return query
