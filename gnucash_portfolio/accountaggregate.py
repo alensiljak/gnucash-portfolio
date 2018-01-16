@@ -198,13 +198,16 @@ class AccountsAggregate(AggregateBase):
         #self.book = book
         pass
 
-    def find_by_name(self, term: str) -> List[Account]:
+    def find_by_name(self, term: str, include_placeholders: bool = False) -> List[Account]:
         """ Search for account by part of the name """
         query = (
             self.query
             .filter(Account.name.like('%' + term + '%'))
             .order_by(Account.name)
         )
+        if not include_placeholders:
+            query.filter(Account.placeholder == False)
+
         return query.all()
 
     def get_aggregate_by_id(self, account_id:str) -> AccountAggregate:
@@ -287,6 +290,9 @@ class AccountsAggregate(AggregateBase):
         """ Main accounts query """
         query = (
             self.book.session.query(Account)
+            .join(Commodity)
+            .filter(Commodity.namespace != "TEMPLATE")
             .filter(Account.type != AccountType.ROOT.name)
+            # .filter(Account.type != "TEMPLATE")
         )
         return query

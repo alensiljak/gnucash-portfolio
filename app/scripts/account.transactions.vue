@@ -31,6 +31,8 @@
                         :width="120" /> - 
                     <date-picker lang="en" name="dateTo" placeholder="Date to" v-model="dateTo"
                         :width="120" />
+
+                    <b-alert variant="warning" :show="datesNotSelected">Dates not selected!</b-alert>
                 </div>
 
                 <div class="text-center col-md-1">
@@ -79,6 +81,8 @@ export default {
       // Account selector
       account: "",
       options: [],
+      // Validation
+      datesNotSelected: false,
       // Table.
       model: {
         accountName: "",
@@ -114,6 +118,9 @@ export default {
     loadTransactions: function() {
       // validations
       // TODO: check for all input fields: account, date range.
+      if (!this.dateFrom || !this.dateTo) {
+          this.datesNotSelected = true
+      }
 
       axios
         .get("/account/api/transactions", {
