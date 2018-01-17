@@ -28,6 +28,11 @@ class PricesAggregate:
         """ Gets the latest price on or before the given date. """
         return self.get_price_as_of_query(stock, on_date).first()
 
+    def get_for_symbol(self, symbol: str) -> List[Price]:
+        # get commodity
+        cdty = self.__get_commodity(symbol)
+        return cdty.prices
+
     def import_prices(self, prices: List[PriceModel]):
         """ Import prices (from csv) """
         result = {}

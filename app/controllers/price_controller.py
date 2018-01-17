@@ -86,6 +86,13 @@ def load_prices():
 
         return render_template('price.import.result.html', model=model, result=result)
 
+@price_controller.route('/for/<symbol>')
+def prices_for_symbol(symbol):
+    """ displays all prices for symbol """
+    with BookAggregate() as svc:
+        svc.prices.get_for_symbol(symbol)
+        return render_template('incomplete.html')
+
 ###############################################
 # Private
 
