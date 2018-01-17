@@ -61,6 +61,7 @@
     "bootstrap-vue": "^1.4.1",
     "fullcalendar": "^3.8.0",
     "vue": "^2.5.13",
+    "vue-focus": "^2.1.0",
     "vue-full-calendar": "^2.5.1",
     "vue-search-select": "^2.4.0",
     "vue-select": "github:sagalbot/vue-select",

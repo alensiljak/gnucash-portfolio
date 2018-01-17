@@ -1,28 +1,47 @@
 <!-- Securities main page -->
 <template>
   <div>
-    <p>Test Vue autocomplete</p>
 
+<div class="card bg-secondary text-dark">
+    <div class="card-body">
+
+    <form ref="form" class="form">
     <v-select
+      v-model="security"
         class="form-control"
         :debounce="250"
         :on-search="getOptions"
         :options="options"
-        placeholder="Search account..."
+        placeholder="Search securities..."
         label="value"
+        @input="securityChanged"
+        name="search.symbol"
+        v-focus
     ></v-select>
+    </form>
+  </div>
+</div>
+
   </div>
 </template>
 
 <script>
 import vSelect from "vue-select";
 import axios from "axios";
+// import { focus } from 'vue-focus';
+
+const focus = {
+  inserted(el) {
+    el.querySelector("input").focus();
+  }
+};
 
 export default {
+  directives: { focus: focus },
+
   data() {
     return {
-      symbol: "",
-      placeholder: "type symbol to search securities",
+      security: null,
       options: []
     };
   },
@@ -49,6 +68,14 @@ export default {
           // var result = response.data.suggestions.map(x => x.value);
           loading(false);
         });
+    },
+    securityChanged: function(security) {
+      if (!security) return;
+
+      // :on-change="securityChanged"
+      // console.log(security.data);
+      // this.$refs.form.submit();
+      window.location = "/security/details/" + security.data;
     }
   }
 };

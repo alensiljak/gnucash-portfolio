@@ -64,7 +64,9 @@ def search_api():
     query = request.args.get('query')
     with BookAggregate() as svc:
         securities = svc.securities.find(query)
-        sec_list = [{"value": sec.mnemonic, "data": sec.guid} for sec in securities]
+        sec_list = [{
+            "value": sec.mnemonic + " - " + sec.fullname,
+            "data": sec.namespace + ":" + sec.mnemonic} for sec in securities]
         model = {"suggestions": sec_list}
         result = json.dumps(model)
         return result

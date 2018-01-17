@@ -211,7 +211,8 @@ class SecuritiesAggregate(AggregateBase):
         """ Searches for security by part of the name """
         query = (
             self.query
-            .filter(Commodity.mnemonic.like('%' + search_term + '%'))
+            .filter(Commodity.mnemonic.like('%' + search_term + '%') |
+                    Commodity.fullname.like('%' + search_term + '%'))
         )
         return query.all()
 
