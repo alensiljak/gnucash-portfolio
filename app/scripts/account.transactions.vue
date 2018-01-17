@@ -141,9 +141,7 @@ export default {
     loadTransactions: function() {
       // validations
       // TODO: check for all input fields: account, date range.
-      if (!this.dateFrom || !this.dateTo) {
-          this.datesNotSelected = true
-      }
+      this.datesNotSelected = (!this.dateFrom || !this.dateTo)
 
       axios
         .get("/account/api/transactions", {
