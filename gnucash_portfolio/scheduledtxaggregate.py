@@ -20,17 +20,18 @@ class RecurrencePeriod(Enum):
 def get_next_occurrence(tx: ScheduledTransaction) -> date:
     """ Calculates the next occurrence date for scheduled transaction.
     Mimics the recurrenceNextInstance() function from GnuCash.
-    Still not complete but handles the main cases I use. """
+    Still not fully complete but handles the main cases I use. """
     # Reference documentation:
     # https://github.com/MisterY/gnucash-portfolio/issues/3
 
     # Preparing ref day is an important part before the calculation.
-    ref_date: datetime = None
-    # It should be: a) the last occurrence date; or b) the recurrence start date.
-    if tx.last_occur:
-        ref_date = tx.last_occur
-    if not ref_date:
-        ref_date = tx.recurrence.recurrence_period_start
+    # It should be: a) the last occurrence date; or b) the recurrence start date - 1.
+    # because the refDate is the date from which the due dates are being calculated. To include
+    # the ones starting today, we need to calculate from the day before.
+    ref_date: datetime = (
+        tx.last_occur if tx.last_occur
+        else datetimeutils.subtract_days(tx.recurrence.recurrence_period_start, 1)
+    )
     today = datetimeutils.today_date()
     if ref_date > today:
         ref_date = today

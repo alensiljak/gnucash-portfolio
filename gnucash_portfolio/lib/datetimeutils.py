@@ -123,6 +123,10 @@ def is_end_of_month(value: date) -> bool:
     end_of_month = get_end_of_month(value)
     return value == end_of_month
 
+def subtract_days(value: date, days: int) -> date:
+    """ Subtracts dates from the given value """
+    return value - relativedelta(days=days)
+
 def subtract_months(value: date, months: int) -> date:
     """ Subtracts number of months from a date """
     return value - relativedelta(months=months)
