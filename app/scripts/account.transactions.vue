@@ -57,7 +57,7 @@
     Starting balance: <span>{{ model.startBalance }}</span>, Ending balance: {{ model.endBalance }}
 </p>
 
-<b-table striped hover small :items="model.transactions"></b-table>
+<b-table striped hover small :fields="tableFields" :items="model.transactions"></b-table>
 
 </div>
 </template>
@@ -92,6 +92,13 @@ export default {
       // Validation
       datesNotSelected: false,
       // Table.
+      tableFields: ['date', 'description', 'notes', {
+        key: 'value',
+        tdClass: 'text-right'
+      }, {
+        key: 'quantity',
+        tdClass: 'text-right'
+      }],
       model: {
         accountName: "",
         startBalance: 0,

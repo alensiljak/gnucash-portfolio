@@ -239,12 +239,13 @@ def api_transactions():
         }
 
         for tx in txs:
+            this_split = [split for split in tx.splits if split.transaction == tx][0]
             records.append({
                 "date": tx.post_date.strftime("%Y-%m-%d"),
                 "description": tx.description,
                 "notes": tx.notes,
-                "value": 0,
-                "quantity": 0
+                "value": this_split.value,
+                "quantity": this_split.quantity
             })
         model["transactions"] = records
 
