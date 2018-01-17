@@ -34,8 +34,10 @@
                     <date-picker lang="en" name="dateTo" placeholder="Date to" v-model="dateTo"
                         :width="120" />
                     -->
-                    <input type="date" name="dateFrom" class="form-control" v-model="dateFrom" /> -
-                    <input type="date" name="dateTo" class="form-control" v-model="dateTo" />
+                    <input type="date" name="dateFrom" class="form-control" v-model="dateFrom"
+                      @change="loadTransactions" /> -
+                    <input type="date" name="dateTo" class="form-control" v-model="dateTo"
+                      @change="loadTransactions" />
 
                     <b-alert variant="warning" :show="datesNotSelected">Dates not selected!</b-alert>
                 </div>
