@@ -87,7 +87,8 @@ def __get_model_for_details(
     model.currency = sec.get_currency().mnemonic
     model.price = sec.get_last_available_price()
 
-    #model.total_paid = Decimal(0)
+    model.average_price = sec.get_avg_price()
+    model.total_paid = sec.get_total_paid()
 
     # load all accounts
     sec_agg = svc.securities.get_aggregate(sec)

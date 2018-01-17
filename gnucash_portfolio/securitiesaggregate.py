@@ -4,11 +4,11 @@ Accounts should be only accounts that hold these commodities.
 """
 import datetime
 from decimal import Decimal
-#from logging import log, DEBUG
+from logging import log, DEBUG
 from typing import List
 from sqlalchemy import desc
 from sqlalchemy.orm import aliased
-from piecash import Account, Book, Commodity, Price
+from piecash import Account, Book, Commodity, Price, Split
 from gnucash_portfolio.lib import datetimeutils
 from gnucash_portfolio.lib.aggregatebase import AggregateBase
 from gnucash_portfolio.accountaggregate import AccountAggregate # AccountsAggregate
@@ -95,7 +95,6 @@ class SecurityAggregate(AggregateBase):
         security = Commodity
         Returns Decimal value.
         """
-        #print("Calculating stats for", security.mnemonic)
         avg_price = Decimal(0)
 
         #return sum([sp.quantity for sp in self.splits]) * self.sign
@@ -184,7 +183,31 @@ class SecurityAggregate(AggregateBase):
     def get_total_paid(self) -> Decimal:
         """ Returns the total amount paid, in currency, for the stocks owned """
         # TODO use lots to find only the remaining stocks and remove the sold ones from calculation?
-        return None
+
+        query = (
+            self.get_splits_query()
+        )
+        splits = query.all()
+        log(DEBUG, splits)
+
+        total = Decimal(0)
+        for split in splits:
+            total += split.value
+
+        return total
+
+    def get_splits_query(self):
+        """ Returns the query for all splits for this security """
+        query = (
+            self.book.session.query(Split)
+            .join(Account)
+            .filter(Account.type != "TRADING")
+            .filter(Account.commodity_guid == self.security.guid)
+        )
+        return query
+
+    ######################
+    # Properties
 
     @property
     def accounts(self):

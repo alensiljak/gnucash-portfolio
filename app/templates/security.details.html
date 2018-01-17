@@ -48,12 +48,12 @@
                 <div class="form-group col">
                     <label>Total Paid</label>
                     <input type="text" class="form-control text-right" readonly
-                        value="{{ model.total_paid }}">
+                        value="{{ '{:,.2f}'.format(model.total_paid) }}">
                 </div>
                 <div class="form-group col">
                     <label>Average Price</label>
                     <input type="text" class="form-control text-right" readonly
-                        value="{{ model.average_price }}">
+                        value="{{ '{:,.2f}'.format(model.average_price) }}">
                 </div>
                 <div class="col"></div>
             </div>
@@ -63,7 +63,7 @@
 
 <div class="row mt-3">
     <div class="col">
-        <h3>Holdings</h3>
+        <h3>Holding Accounts</h3>
         <ul>
             {% for account in model.accounts %}
             <li>
@@ -89,6 +89,7 @@
         <li>Prices (chart?)</li>
         <li>Link to analysis page (Morningstar, Yahoo Finance)</li>
         <li>Transactions (buy/sell)</li>
+        <li>Update price</li>
     </ul>
 </div>
 
