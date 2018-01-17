@@ -20,6 +20,7 @@ class AssetGroupChildDetailViewModel:
         self.fullname = None
         self.name = None
         self.description = None
+        self.quantity = None
         self.value = None
         # Currency name
         self.currency = None

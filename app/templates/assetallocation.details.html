@@ -48,6 +48,7 @@
         <thead class="thead-dark">
             <th>Symbol</th>
             <th>Name</th>
+            <th>Quantity</th>
             <th>Value</th>
             <th>Value in base cur.</th>
         </thead>
@@ -60,6 +61,9 @@
             </td>
             <td>
                 {{ stock.description }}
+            </td>
+            <td class="text-right">
+                {{ stock.quantity }}
             </td>
             <td class="text-right">
                 {{ "{:,.2f}".format(stock.value) }} {{ stock.currency }}

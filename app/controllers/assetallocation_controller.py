@@ -86,6 +86,7 @@ def __get_details_model(fullname: str) -> AssetGroupDetailsViewModel:
                 child.fullname = stock.symbol
                 child.name = stock.symbol
                 child.description = sec.security.fullname
+                child.quantity = sec.get_quantity()
                 child.value = sec.get_value()
                 child.currency = sec.get_currency().mnemonic
                 child.value_base_cur = sec.get_value_in_base_currency()
