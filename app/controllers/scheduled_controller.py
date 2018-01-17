@@ -58,9 +58,15 @@ def scheduled_with_due_date():
 
 @scheduled_controller.route('/api/top10')
 def api_top_10():
-    """ Returns next 10 scheduled transactions in JSON """
+    return api_transactions(10)
+
+@scheduled_controller.route('/api/transactions/<int:count>')
+def api_transactions(count: int):
+    """ Returns next n scheduled transactions in JSON """
+    assert isinstance(count, int)
+
     with BookAggregate() as svc:
-        upcoming = svc.scheduled.get_upcoming(10)
+        upcoming = svc.scheduled.get_upcoming(count)
         result = __get_api_model_from_sx(upcoming)
         json_result = json.dumps(result)
     return json_result

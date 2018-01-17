@@ -23,7 +23,7 @@ export default {
       eventSources: [
         {
           events(start, end, timezone, callback) {
-            axios.get("/scheduled/api/top10", { timezone: timezone }).then(response => {
+            axios.get("/scheduled/api/transactions/30", { timezone: timezone }).then(response => {
               // console.log(response.data);
               callback(response.data);
             });
