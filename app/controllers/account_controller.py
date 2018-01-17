@@ -219,9 +219,9 @@ def api_transactions():
     """ Returns account transactions """
     # get parameters
     dateFromStr = request.args.get("dateFrom")
-    dateFrom = datetimeutils.parse_iso_long_date(dateFromStr).date()
+    dateFrom = datetimeutils.parse_iso_date(dateFromStr).date()
     dateToStr = request.args.get("dateTo")
-    dateTo = datetimeutils.parse_iso_long_date(dateToStr).date()
+    dateTo = datetimeutils.parse_iso_date(dateToStr).date()
     account_id = request.args.get("account")
 
     # get data

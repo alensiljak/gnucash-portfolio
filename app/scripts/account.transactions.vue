@@ -26,16 +26,21 @@
                 </div>
 
                 <!-- Date Period -->
-                <div class="form-group col-md">
+                <div class="form-group col-md form-inline">
                     <!-- <label for="period">Period</label> -->
-                    <date-picker lang="en" name="dateFrom" placeholder="Date from" v-model="dateFrom"
+                    <!--
+                    <date-picker lang="en" placeholder="Date from" v-model="dateFrom"
                         :width="120" /> - 
                     <date-picker lang="en" name="dateTo" placeholder="Date to" v-model="dateTo"
                         :width="120" />
+                    -->
+                    <input type="date" name="dateFrom" class="form-control" v-model="dateFrom" /> -
+                    <input type="date" name="dateTo" class="form-control" v-model="dateTo" />
 
                     <b-alert variant="warning" :show="datesNotSelected">Dates not selected!</b-alert>
                 </div>
 
+                <!-- apply button -->
                 <div class="text-center col-md-1">
                     <button @click="loadTransactions" type="button" class="btn btn-primary">Apply</button>
                 </div>
@@ -56,7 +61,7 @@
 </template>
 <script>
 import vSelect from "vue-select";
-import DatePicker from "vue2-datepicker";
+// import DatePicker from "vue2-datepicker";
 import axios from "axios";
 import BootstrapVue from "bootstrap-vue";
 // import 'bootstrap/dist/css/bootstrap.css'
@@ -148,6 +153,12 @@ export default {
         .catch(error => {
           console.error(error);
         });
+    },
+    isoDate(date) {
+      // return date.getFullYear() + "-" + (date.getMonth() + 1) + "-" + date.getDate();
+      var result = date.toISOString().substring(0, 10)
+      // console.log(result)
+      return result
     }
   },
 
@@ -156,15 +167,15 @@ export default {
     // Initialize dates.
     var from = new Date();
     from.setMonth(from.getMonth() - 3);
-    this.dateFrom = from;
+    this.dateFrom = this.isoDate(from);
 
     var to = new Date();
-    this.dateTo = to;
+    this.dateTo = this.isoDate(to);
   },
 
   components: {
     vSelect,
-    DatePicker,
+    // DatePicker,
     BootstrapVue
   }
 };
