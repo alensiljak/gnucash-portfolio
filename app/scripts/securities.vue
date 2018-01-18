@@ -22,6 +22,10 @@
   </div>
 </div>
 
+<div class="mt-3" />
+
+  <a href="/security/list" class="btn btn-outline-primary">show all</a>
+
   </div>
 </template>
 

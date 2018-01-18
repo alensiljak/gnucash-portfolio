@@ -1,0 +1,38 @@
+{% extends "layout.html" %} {% block title %}Securities List{% endblock %} {% block content %}
+<h1>Securities List</h1>
+
+<table class="table table-small table-striped datatable">
+    <thead class="bg-dark text-light">
+        <th>Symbol</th>
+        <th>Exchange</th>
+        <th>Name</th>
+    </thead>
+    <tbody>
+{% for sec in model.securities %}
+        <tr>
+            <td>
+                <a href="/security/details/{{ sec.mnemonic }}">
+                    {{ sec.mnemonic }}
+                </a>
+            </td>
+            <td>
+                {{ sec.namespace }}
+            </td>
+            <td>
+                {{ sec.fullname }}
+            </td>
+        </tr>
+{% endfor %}
+    </tbody>
+</table>
+
+{% endblock %} {% block scripts %}
+<script type="text/javascript">
+    $(function () {
+        $("table").DataTable({
+            "lengthMenu": [ [ 10, 20, 50, 100, -1 ], [ 10, 20, 50, 100, "All" ] ],
+            "pageLength": 20
+        });
+
+    });
+</script> {% endblock %}

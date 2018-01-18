@@ -38,6 +38,17 @@ def index():
         }
         return render_template('security.html', model=model, filter=search)
 
+@stock_controller.route('/list')
+def list():
+    """ List all securities """
+    with BookAggregate() as svc:
+        all_sec = svc.securities.get_all()
+        model = {
+            "securities": all_sec
+        }
+        result = render_template('security.list.html', model=model)
+    return result
+
 @stock_controller.route('/details/<symbol>')
 def details(symbol: str):
     """ Displays the details in a separate page. Restful url. """
