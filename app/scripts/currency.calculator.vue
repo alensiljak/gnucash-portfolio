@@ -54,6 +54,8 @@ Currency calculator
     </div>
 
     <a href="#" @click="use('EUR','USD')">EUR-USD</a>
+    &bullet;
+    <a href="#" @click="use('EUR','AUD')">EUR-AUD</a>
 </div>
 
 </template>
