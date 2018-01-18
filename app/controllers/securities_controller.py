@@ -25,7 +25,7 @@ def index():
     """ Root. Search form. """
     # Check if we have a symbol
     symbol = request.args.get('search.symbol')
-    log(DEBUG, "symbol = %s, args: %s", symbol, request.args)
+    # log(DEBUG, "symbol = %s, args: %s", symbol, request.args)
     if symbol:
         return flask.redirect(flask.url_for('stock_controller.details', symbol=symbol), code=307)
         # code 307, 302
@@ -88,22 +88,22 @@ def search_api():
 def __get_model_for_details(
         svc: BookAggregate, symbol: str) -> security_models.SecurityDetailsViewModel:
     """ Loads the model for security details """
-    sec = svc.securities.get_aggregate_for_symbol(symbol)
+    sec_agg = svc.securities.get_aggregate_for_symbol(symbol)
 
     model = security_models.SecurityDetailsViewModel()
-    model.security = sec.security
+    model.security = sec_agg.security
     # Quantity
-    model.quantity = sec.get_quantity()
-    model.value = sec.get_value()
-    model.currency = sec.get_currency().mnemonic
-    model.price = sec.get_last_available_price()
+    model.quantity = sec_agg.get_quantity()
+    model.value = sec_agg.get_value()
+    model.currency = sec_agg.get_currency().mnemonic
+    model.price = sec_agg.get_last_available_price()
 
-    model.average_price = sec.get_avg_price()
-    model.total_paid = sec.get_total_paid()
+    model.average_price = sec_agg.get_avg_price()
+    model.total_paid = sec_agg.get_total_paid()
 
     # load all accounts
-    sec_agg = svc.securities.get_aggregate(sec)
     model.accounts = sec_agg.accounts
+    model.income_accounts = sec_agg.get_dividend_accounts()
 
     return model
 

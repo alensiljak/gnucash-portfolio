@@ -26,19 +26,16 @@
 
                 <div class="form-group col">
                     <label>Value ({{ model.currency }})</label>
-                    <input type="text" class="form-control text-right" readonly 
-                        value="{{ '{:,.2f}'.format(model.value) }}">
+                    <input type="text" class="form-control text-right" readonly value="{{ '{:,.2f}'.format(model.value) }}">
                 </div>
 
                 <div class="form-group col">
                     <label>Price ({{ model.currency }})</label>
-                    <input type="text" class="form-control text-right" readonly 
-                        value="{{ model.price.value }}">
+                    <input type="text" class="form-control text-right" readonly value="{{ model.price.value }}">
                 </div>
                 <div class="form-group col">
                     <label>Price Date</label>
-                    <input type="text" class="form-control text-right" readonly 
-                        value="{{ '{:%Y-%m-%d}'.format(model.price.date) }}">
+                    <input type="text" class="form-control text-right" readonly value="{{ '{:%Y-%m-%d}'.format(model.price.date) }}">
                 </div>
             </div>
             <div class="form-row">
@@ -47,13 +44,11 @@
                 </div>
                 <div class="form-group col">
                     <label>Total Paid</label>
-                    <input type="text" class="form-control text-right" readonly
-                        value="{{ '{:,.2f}'.format(model.total_paid) }}">
+                    <input type="text" class="form-control text-right" readonly value="{{ '{:,.2f}'.format(model.total_paid) }}">
                 </div>
                 <div class="form-group col">
                     <label>Average Price</label>
-                    <input type="text" class="form-control text-right" readonly
-                        value="{{ '{:,.2f}'.format(model.average_price) }}">
+                    <input type="text" class="form-control text-right" readonly value="{{ '{:,.2f}'.format(model.average_price) }}">
                 </div>
                 <div class="col"></div>
             </div>
@@ -75,17 +70,28 @@
         </ul>
     </div>
     <div class="col">
-        <h3>Distributions</h3>
-        <a href="/distributions/{{ model.security.namespace }}:{{ model.security.mnemonic }}" class="btn btn-outline-primary">
-            Distributions</a>
+        <h3>Distribution Accounts</h3>
+        <ul>
+            {% for account in model.income_accounts %}
+            <li>
+                <a href="/account/details/{{ account.fullname }}">
+                    {{ account. fullname }}
+                </a>
+            </li>
+            {% endfor %}
+        </ul>
     </div>
 </div>
 
 <hr class="w-75 mb-2">
 
 <div>
-    <a href="/price/for/{{ model.security.namespace }}:{{ model.security.mnemonic }}" 
-        class="btn btn-outline-primary">Prices</a>
+    <a href="/price/for/{{ model.security.namespace }}:{{ model.security.mnemonic }}" class="btn btn-outline-primary">Prices</a>
+    &bullet;
+    <a href="/distributions/{{ model.security.namespace }}:{{ model.security.mnemonic }}" 
+        class="btn btn-outline-primary">
+        Distributions</a>
+
 </div>
 
 <div class="mt-2">

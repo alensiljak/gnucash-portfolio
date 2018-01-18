@@ -127,9 +127,6 @@ class SecurityAggregate(AggregateBase):
         Finds all the distribution accounts (they are in Income group and have the same name
         as the stock symbol).
         """
-        # get the stock
-        #stock = selfbook.session.query(Commodity).filter(Commodity.mnemonic == symbol)
-
         # find all the income accounts with the same name.
         acct_query = (
             self.book.session.query(Account)

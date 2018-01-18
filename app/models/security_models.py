@@ -29,4 +29,6 @@ class SecurityDetailsViewModel:
         self.total_paid: Decimal = None
         # Average price paid per unit.
         self.average_price: Decimal = None
+
         self.accounts: List[Account] = None
+        self.income_accounts: List[Account] = None
