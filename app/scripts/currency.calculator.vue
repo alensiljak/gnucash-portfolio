@@ -16,48 +16,51 @@ Currency calculator
                         <label for="srcCurrency" class="mr-2">Source Currency</label>
                         <model-select :options="listModel" v-model="srcCurrency" placeholder="source currency" @input="onSelect">
                         </model-select>
-                        
+                        <b-alert variant="warning" :show="srcCurrency">Currency not selected</b-alert>
                     </div>
                 </div>
                 <div class="col">
                     <div class="form-group">
                         <label for="srcCurrency" class="mr-2">Destination Currency</label>
-                        <model-select :options="listModel" v-model="dstCurrency" placeholder="destination currency" @select="onSelect">
+                        <model-select :options="listModel" v-model="dstCurrency" placeholder="destination currency" @input="onSelect">
                         </model-select>
                     </div>
                 </div>
             </div>
-                <div class="row">
-                  <div class="col">
+            <div class="row">
+                <div class="col">
+                  <!-- Amount -->
                     <div class="form-group">
                         <label>Amount</label>
                         <input id="amount" class="form-control text-right" v-model.number="amount" @change="onSelect" @focus="$event.target.select()">
                     </div>
-                  </div>
+                </div>
 
-                  <div class="col">
+                <div class="col">
                     <!-- Result -->
                     <div class="form-group">
                         <label>Result</label>
                         <input id="result" readonly="readonly" class="form-control text-right" v-model="result">
                     </div>
                 </div>
-                </div>
-
             </div>
-        </div>
-        <div class="row w-100 mt-2">
-            <div class="mx-auto">
-                <button class="btn btn-primary" @click="recalculate">Calculate</button>
+
+            <div class="row mt-2">
+                <div class="mx-auto">
+                    <button class="btn btn-primary" @click="recalculate">Calculate</button>
+                </div>
             </div>
         </div>
     </div>
+
+    <a href="#" @click="use('EUR','USD')">EUR-USD</a>
 </div>
 
 </template>
 <script>
 import axios from "axios";
 import { ModelSelect } from "vue-search-select";
+import BootstrapVue from 'bootstrap-vue'
 
 export default {
   data() {
@@ -80,13 +83,10 @@ export default {
   props: {},
   methods: {
     onSelect: function(item) {
-      // TODO: recalculate the amount
-      console.log("selected");
-
       this.recalculate();
     },
     recalculate: function() {
-      // console.debug("recalculating...", this.amount, this.srcCurrency.value, this.dstCurrency.value)
+      console.debug("recalculating...", this.amount, this.srcCurrency.text, "into", this.dstCurrency.text)
 
       if (!this.amount || !this.srcCurrency.text || !this.dstCurrency.text) {
         // console.log("input missing. Exiting.")
@@ -107,10 +107,22 @@ export default {
       // console.log(JSON.stringify(this.dstCurrency));
       this.result = this.amountInBase / this.dstCurrency.value;
       // round to 2 decimals
-      this.result = Math.round(this.result * 10) / 10;
+      this.result = Math.round(this.result * 100) / 100;
 
       // recalculate
       // console.log("recalculation complete");
+    },
+    use: function (src, dst) {
+      // console.log(src, dst)
+      this.srcCurrency = {
+        value: this.currencies[src],
+        text: src
+      }
+      this.dstCurrency = {
+        value: this.currencies[dst],
+        text: dst
+      }
+      this.recalculate()
     }
   },
   mounted: function mounted() {
@@ -140,7 +152,8 @@ export default {
       });
   },
   components: {
-    ModelSelect
+    ModelSelect,
+    BootstrapVue
   }
 };
 </script>
