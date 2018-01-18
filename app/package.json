@@ -1,7 +1,7 @@
 {
   "name": "gnucash-portfolio-app",
   "description": "GnuCash Portfolio web application",
-  "version": "0.3.0",
+  "version": "0.4.0",
   "author": {
     "name": "Alen Siljak",
     "url": "http://alensiljak.tk"
