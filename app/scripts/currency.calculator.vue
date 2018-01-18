@@ -8,7 +8,8 @@ Currency calculator
   <div class="row w-100">
       <div class="form-group mx-auto">
           <label>Amount</label>
-          <input id="amount" class="form-control text-right">
+          <input id="amount" class="form-control text-right"
+            v-model.number="amount" @change="onSelect" @focus="$event.target.select()">
       </div>
   </div>
   <div class="row mt-2">
@@ -49,9 +50,10 @@ Currency calculator
   </div>
   <div class="row w-100 mt-2">
     <div class="mx-auto">
-      <button class="btn btn-primary">Calculate</button>
+      <button class="btn btn-primary" @click="recalculate">Calculate</button>
     </div>
   </div>
+  <!-- Result -->
   <div class="row w-100 mt-3">
       <div class="form-group mx-auto">
           <label>Result</label>
@@ -68,6 +70,7 @@ import { ModelSelect } from 'vue-search-select'
 export default {
   data() {
     return {
+      amount: 0,
       currencies: {},
       listModel: [],
       srcCurrency: {
@@ -86,13 +89,23 @@ export default {
   methods: {
     onSelect: function(item) {
       // TODO: recalculate the amount
+      console.log("selected")
+
+      this.recalculate()
     },
     recalculate: function() {
+      if (!this.amount || !this.srcCurrency.value || !this.dstCurrency.value) return;
+
       // get source
+      console.log(JSON.stringify(this.srcCurrency))
+
       // get destination
+      console.log(JSON.stringify(this.dstCurrency))
+
       // recalculate?
       // should this be a server-side operation?
-    }
+      console.log("recalculating here")
+    },
   },
   mounted: function mounted() {
     // Initialization.
