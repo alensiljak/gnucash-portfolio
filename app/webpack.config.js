@@ -19,6 +19,7 @@ module.exports = {
         currency_calculator: "./scripts/currency.calculator.js",
         scheduled_calendar: "./scripts/scheduled.calendar.js",
         securities: "./scripts/securities.js",
+        security_prices: "./scripts/security.prices.js",
         // Styles
         styles: "./styles/styles.scss",
     },

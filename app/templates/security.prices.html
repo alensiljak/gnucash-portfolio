@@ -1,6 +1,8 @@
 {% extends "layout.html" %} {% block title %}Security Prices{% endblock %} {% block content %}
 <h1>Security Prices <small>for {{ model.symbol }}</small> </h1>
 
+<div id="chart"></div>
+
 <table class="table table-small table-striped datatable">
     <thead class="bg-dark text-light">
         <th>Price</th>
