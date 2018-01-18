@@ -7,7 +7,6 @@ from app.models.price_models import (
     PriceImportViewModel, PriceImportInputModel, PriceImportSearchViewModel)
 from app.models.generic_models import ValidationResult
 
-
 price_controller = Blueprint( # pylint: disable=invalid-name
     'price_controller', __name__, url_prefix='/price')
 
@@ -90,8 +89,13 @@ def load_prices():
 def prices_for_symbol(symbol):
     """ displays all prices for symbol """
     with BookAggregate() as svc:
-        svc.prices.get_for_symbol(symbol)
-        return render_template('incomplete.html')
+        sec_agg = svc.securities.get_aggregate_for_symbol(symbol)
+        prices = sec_agg.get_prices()
+        model = {
+            "symbol": symbol,
+            "prices": prices
+        }
+        return render_template('security.prices.html', model=model)
 
 ###############################################
 # Private

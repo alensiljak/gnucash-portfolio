@@ -67,15 +67,20 @@ class PricesAggregate:
         return True
 
     def __get_commodity(self, symbol: str):
-        """ Loads the stock from the book. """
+        """ Loads the stock from the book. Symbol is yahoo-style symbol """
         # TODO: use the securities aggregate
 
         # Handle yahoo-style symbols with extension.
         symbol_only = symbol.split(".")[0]
 
-        securities = self.book.session.query(Commodity).filter(
-            Commodity.namespace != "template", Commodity.namespace != "CURRENCY",
-            or_(Commodity.mnemonic.ilike(symbol_only), Commodity.mnemonic.ilike(symbol))
+        securities = (
+            self.book.session.query(Commodity)
+            .filter(
+                Commodity.namespace != "template", 
+                Commodity.namespace != "CURRENCY",
+                or_(Commodity.mnemonic.ilike(symbol_only), 
+                    Commodity.mnemonic.ilike(symbol))
+            )
         ).all()
 
         security = None

@@ -1,0 +1,41 @@
+{% extends "layout.html" %} {% block title %}Security Prices{% endblock %} {% block content %}
+<h1>Security Prices <small>for {{ model.symbol }}</small> </h1>
+
+<table class="table table-small table-striped datatable">
+    <thead class="bg-dark text-light">
+        <th>Price</th>
+        <th>Date</th>
+        <th>Currency</th>
+    </thead>
+    <tbody>
+{% for item in model.prices %}
+        <tr>
+            <td class="text-right">
+                {{ item.value }}
+            </td>
+            <td>
+                {{ '{:%Y-%m-%d}'.format(item. date) }}
+            </td>
+            <td>
+                {{ item.currency.mnemonic }}
+            </td>
+        </tr>
+{% endfor %}
+    </tbody>
+</table>
+
+<p>
+    To-do: link to price download
+</p>
+
+{% endblock %} {% block scripts %}
+<script type="text/javascript">
+    $(function () {
+        $("table").DataTable({
+            "lengthMenu": [ [ 10, 20, 50, 100, -1 ], [ 10, 20, 50, 100, "All" ] ],
+            "pageLength": 20,
+            "order": [[1, 'desc']]
+        });
+
+    });
+</script> {% endblock %}
