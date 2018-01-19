@@ -1,8 +1,13 @@
 """ Price controller """
 from logging import log, DEBUG
+from decimal import Decimal
 from flask import Blueprint, request, render_template
+try: import simplejson as json
+except ImportError: import json
 from gnucash_portfolio.bookaggregate import BookAggregate
+from gnucash_portfolio.lib import datetimeutils
 from gnucash_portfolio.lib.csv_parser import CsvPriceParser
+from gnucash_portfolio.model.price_model import PriceModel
 from app.models.price_models import (
     PriceImportViewModel, PriceImportInputModel, PriceImportSearchViewModel)
 from app.models.generic_models import ValidationResult
@@ -105,6 +110,34 @@ def prices_for_symbol(symbol):
             "prices": prices
         }
         return render_template('security.prices.html', model=model)
+
+###############################################
+# API
+
+@price_controller.route('/api/create', methods=['POST'])
+def api_create():
+    """ Create a new price if it does not exist, or update existing for the date """
+    symbol = request.json.get("symbol")
+    currency = request.json.get("currency")
+
+    date_str = request.json.get("date")
+    date_val = datetimeutils.parse_us_date(date_str[:10])
+
+    price_str = request.json.get("price")
+
+    model = PriceModel(symbol=symbol, currency=currency, value=Decimal(price_str),
+                       rate_date=date_val)
+
+
+    # log(DEBUG, "%s %s %s %s %s", date_str, timezone, price_str, currency, date_val)
+    with BookAggregate() as svc:
+        success = svc.prices.import_price(model)
+
+    result = {
+        "success": success,
+        "message": "check the success"
+    }
+    return json.dumps(result)
 
 ###############################################
 # Private

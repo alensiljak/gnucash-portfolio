@@ -22,6 +22,10 @@ class SecurityAggregate(AggregateBase):
         # self.book = book
         self.security = security
 
+    def create_price(self):
+        """ Create price for security """
+        pass
+
     def get_quantity(self) -> Decimal:
         """
         Returns the number of shares for the given security.
@@ -253,22 +257,16 @@ class SecuritiesAggregate(AggregateBase):
         Returns the commodity with the given symbol.
         If more are found, an exception will be thrown.
         """
-        # handle namespace
-        parts = symbol.split(':')
-        if len(parts) > 1:
-            namespace = parts[0]
-            mnemonic = parts[1]
-        else:
-            mnemonic = symbol
+        # handle namespace. Accept GnuCash and Yahoo-style symbols.
+        full_symbol = self.__parse_gc_symbol(symbol)
 
         query = (
             self.query
-            .filter(Commodity.mnemonic == mnemonic)
+            .filter(Commodity.mnemonic == full_symbol["mnemonic"])
         )
-        if len(parts) > 1:
-            query = query.filter(Commodity.namespace == namespace)
+        if full_symbol["namespace"]:
+            query = query.filter(Commodity.namespace == full_symbol["namespace"])
 
-        #return query.all()
         return query.first()
 
     def get_stock(self, symbol: str) -> Commodity:
@@ -313,3 +311,22 @@ class SecuritiesAggregate(AggregateBase):
                     Commodity.namespace != "template")
         )
         return query
+
+    #######################################
+    # Private
+
+    def __parse_gc_symbol(self, gc_symbol: str):
+        """ Parse GnuCash-style symbol "namespace:mnemonic" """
+        result = {
+            "namespace": None,
+            "mnemonic": None
+        }
+
+        parts = gc_symbol.split(':')
+        if len(parts) > 1:
+            result["namespace"] = parts[0]
+            result["mnemonic"] = parts[1]
+        else:
+            result["mnemonic"] = gc_symbol
+
+        return result

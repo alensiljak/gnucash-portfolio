@@ -8,7 +8,7 @@ from decimal import Decimal
 
 class PriceModel:
     """ Price model """
-    def __init__(self, symbol=None, base_cur=None, value: Decimal = None,
+    def __init__(self, symbol=None, currency=None, value: Decimal = None,
                  rate_date: datetime = None):
         if rate_date:
             assert isinstance(rate_date, datetime)
@@ -17,8 +17,8 @@ class PriceModel:
         if value:
             assert isinstance(value, Decimal)
         self.value: Decimal = value      # Decimal(0)
-        self.symbol: str = symbol        #"AUD"
-        self.base_cur: str = base_cur    #"EUR"
+        self.symbol: str = symbol        #"AUD" or "AMS:VEUR"
+        self.currency: str = currency    #"EUR"
 
     def parse_euro_date(self, date_string: str):
         """ Parses dd/MM/yyyy dates """

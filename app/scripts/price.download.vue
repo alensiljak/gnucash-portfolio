@@ -6,21 +6,24 @@
       <div class="card">
           <div class="card-header">
           </div>
-          <div class="card-body">
-              <button v-show="!price" class="btn" @click="fetchPrice">Fetch</button>
+          <div class="card-body form-inline">
+            <div class="w-100 text-center">
+              <button v-show="!price" class="btn btn-primary mx-auto" @click="fetchPrice">Fetch</button>
+            </div>
 
-            <div v-show="price">
+            <div v-show="price" class="form-row">
               <div class="form-group">
-                  <label>Current Price:</label>
-              <input id="currentPrice" class="form-control" v-model="price" />
+                <label>Current Price:</label>
+                <input id="currentPrice" class="form-control text-center ml-2" v-model="price" />
               </div>
+              <div class="form-group ml-3">
+                  <label>Currency:</label>
+                  <input class="form-control text-center" readonly v-model="currency" />
+              </div>
+              <div class="ml-3">
+                  <button class="btn btn-outline-primary" @click="importPrice">Import</button>
 
-              <div>
-                  todo: select currency
-                  {{ currency }}
-              </div>
-              <div>
-                  todo: import (send the values to an api endpoint)
+                  
               </div>
             </div>
           </div>
@@ -29,14 +32,17 @@
 </template>
 
 <script>
-import axios from "axios";
+import axios from "axios"
+import BootstrapVue from 'bootstrap-vue'
 
 export default {
   data() {
     return {
       symbol: "",
       currency: null,
-      price: null
+      price: null,
+      date: null,
+      timezone: null
     };
   },
   props: {},
@@ -46,7 +52,6 @@ export default {
     var model = window.model;
 
     this.symbol = model.symbol;
-    this.currency = model.currency;
   },
 
   methods: {
@@ -79,19 +84,42 @@ export default {
         })
         .then(response => {
           // test for 200?
+          // console.log(response.data);
+
           this.price = this.parseMsHtml(response.data);
         });
     },
     parseMsHtml: function(html) {
-      // todo: get the price
+      // get the price
       var doc = new DOMParser().parseFromString(html, "text/html");
+
       var priceEl = doc.getElementById("last-price-value");
       var price = priceEl.textContent.trim();
 
-      console.log(price);
+      this.date = doc.getElementById("asOfDate").textContent.trim();
+      this.timezone = doc.getElementById("timezone").textContent.trim();
+      this.currency = doc.getElementById("curency").textContent.trim();
+
+      // console.log(x);
 
       return price;
+    },
+    importPrice: function() {
+      axios
+        .post("/price/api/create", {
+          date: this.date,
+          symbol: this.symbol,
+          price: this.price,
+          currency: this.currency
+        })
+        .then(function(response) {
+          console.log(response.data);
+        });
     }
+  },
+
+  components: {
+    BootstrapVue
   }
 };
 </script>

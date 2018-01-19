@@ -39,7 +39,7 @@ def index():
         return render_template('security.html', model=model, filter=search)
 
 @stock_controller.route('/list')
-def list():
+def list_securities():
     """ List all securities """
     with BookAggregate() as svc:
         all_sec = svc.securities.get_all()

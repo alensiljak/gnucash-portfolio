@@ -79,6 +79,10 @@ def parse_period(period: str):
 
     return (date_from, date_to)
 
+def parse_us_date(date_us: str) -> datetime:
+    """ Parses US date mm/dd/yyyy """
+    return datetime.strptime(date_us, "%m/%d/%Y")
+
 def start_of_day(datum: datetime) -> datetime:
     """ Returns start of day """
     return datetime(datum.year, datum.month, datum.day)

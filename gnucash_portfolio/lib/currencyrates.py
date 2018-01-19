@@ -197,7 +197,7 @@ class FixerioModelMapper:
             model.symbol = symbol
             model.value = value
             model.date = rate_date
-            model.base_cur = base
+            model.currency = base
 
             result.append(model)
 
