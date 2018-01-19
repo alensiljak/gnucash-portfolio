@@ -1,5 +1,7 @@
 {% extends "layout.html" %} {% block title %}Price Download{% endblock %} {% block content %}
-<h1>Price Download <small>for {{ model.symbol }}</small></h1>
+<h1>Price Download
+    <small>for {{ model.symbol }}</small>
+</h1>
 
 <div id="app"></div>
 
@@ -7,8 +9,8 @@
 <script>
     // model to be used in the Vue app.
     var model = {
-        symbol: "{{ model.symbol }}"
+        symbol: "{{ model.symbol }}",
+        currency: ""
     };
 </script>
-<script type="text/javascript" src="/static/price_download.js"></script>
-{% endblock %}
+<script type="text/javascript" src="/static/price_download.js"></script> {% endblock %}

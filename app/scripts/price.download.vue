@@ -7,7 +7,7 @@
           <div class="card-header">
           </div>
           <div class="card-body">
-              <button class="btn" @click="fetchPrice">Fetch</button>
+              <button v-show="!price" class="btn" @click="fetchPrice">Fetch</button>
 
             <div v-show="price">
               <div class="form-group">
@@ -17,6 +17,7 @@
 
               <div>
                   todo: select currency
+                  {{ currency }}
               </div>
               <div>
                   todo: import (send the values to an api endpoint)
@@ -27,8 +28,6 @@
   </div>
 </template>
 
-{{ test }}
-
 <script>
 import axios from "axios";
 
@@ -36,6 +35,7 @@ export default {
   data() {
     return {
       symbol: "",
+      currency: null,
       price: null
     };
   },
@@ -43,21 +43,54 @@ export default {
 
   // created: () => console.log("created"),
   mounted: function() {
-    this.symbol = window.model.symbol;
+    var model = window.model;
+
+    this.symbol = model.symbol;
+    this.currency = model.currency;
   },
 
   methods: {
+    // Convert GnuCash-style symbol to Morningstar.
+    getMorningstarSymbol: function(gncSymbol) {
+      var parts = gncSymbol.split(":");
+      var namespace = parts[0];
+      var symbol = parts[1];
+
+      var namespaceMap = {
+        AMS: "XAMS",
+        ASX: "XASX",
+        XETRA: "XETR",
+        LSE: "XLON"
+      };
+      namespace = namespaceMap[namespace];
+
+      var msSymbol = namespace + ":" + symbol;
+      return msSymbol;
+    },
     fetchPrice: function() {
       // using Morningstar.
+      var msSymbol = this.getMorningstarSymbol(this.symbol);
 
-      axios.get("/").then(response => {
-        // test for 200?
-        this.price = this.parseMsHtml(response.data);
-      });
+      axios
+        .get("http://quotes.morningstar.com/stockq/c-header", {
+          params: {
+            t: msSymbol
+          }
+        })
+        .then(response => {
+          // test for 200?
+          this.price = this.parseMsHtml(response.data);
+        });
     },
     parseMsHtml: function(html) {
       // todo: get the price
-      return html;
+      var doc = new DOMParser().parseFromString(html, "text/html");
+      var priceEl = doc.getElementById("last-price-value");
+      var price = priceEl.textContent.trim();
+
+      console.log(price);
+
+      return price;
     }
   }
 };

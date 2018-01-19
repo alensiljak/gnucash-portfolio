@@ -19,7 +19,7 @@ def index():
 @price_controller.route('/download/<path:symbol>')
 def download(symbol):
     """ download the latest price for security """
-    log(DEBUG, symbol)
+    # log(DEBUG, symbol)
     model = {
         "symbol": symbol
     }
