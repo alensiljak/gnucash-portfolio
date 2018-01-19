@@ -88,27 +88,14 @@
     </div>
 </div>
 
-<hr class="w-75 mb-2">
-
 {# Links #}
-<div>
-    <a href="/price/for/{{ model.security.namespace }}:{{ model.security.mnemonic }}" class="btn btn-outline-primary">Prices</a>
-    &bullet;
-    <a href="/price/download/{{ model.security.namespace }}:{{ model.security.mnemonic }}" class="btn btn-outline-primary">Download Price</a>
-    &bullet;
-    <a href="/distributions/{{ model.security.namespace }}:{{ model.security.mnemonic }}" 
-        class="btn btn-outline-primary">
-        Distributions</a>
-
-</div>
+{% include '_security.links.html' %}
 
 <div class="mt-2">
     To-do:
     <ul>
-        <li>Prices (chart?)</li>
         <li>Link to analysis page (Morningstar, Yahoo Finance)</li>
         <li>Transactions (buy/sell) - in this commodity, across all holding accounts</li>
-        <li>Update price</li>
     </ul>
 </div>
 

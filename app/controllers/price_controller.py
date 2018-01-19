@@ -130,8 +130,9 @@ def api_create():
 
 
     # log(DEBUG, "%s %s %s %s %s", date_str, timezone, price_str, currency, date_val)
-    with BookAggregate() as svc:
+    with BookAggregate(for_writing=True) as svc:
         success = svc.prices.import_price(model)
+        svc.save()
 
     result = {
         "success": success,

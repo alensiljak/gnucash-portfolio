@@ -91,6 +91,7 @@ def __get_model_for_details(
     sec_agg = svc.securities.get_aggregate_for_symbol(symbol)
 
     model = security_models.SecurityDetailsViewModel()
+    model.symbol = sec_agg.security.namespace + ":" + sec_agg.security.mnemonic
     model.security = sec_agg.security
     # Quantity
     model.quantity = sec_agg.get_quantity()

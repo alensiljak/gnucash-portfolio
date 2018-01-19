@@ -7,8 +7,8 @@
           <div class="card-header">
           </div>
           <div class="card-body form-inline">
-            <div class="w-100 text-center">
-              <button v-show="!price" class="btn btn-primary mx-auto" @click="fetchPrice">Fetch</button>
+            <div class="w-100 text-center" v-show="!price">
+              <button class="btn btn-primary mx-auto" @click="fetchPrice">Fetch</button>
             </div>
 
             <div v-show="price" class="form-row">
@@ -20,10 +20,12 @@
                   <label>Currency:</label>
                   <input class="form-control text-center" readonly v-model="currency" />
               </div>
-              <div class="ml-3">
+              <div class="form-group ml-3" v-show="!imported">
                   <button class="btn btn-outline-primary" @click="importPrice">Import</button>
-
-                  
+              </div>
+              <div class="form-group ml-3 float-right">
+                  <b-alert class="my-auto" variant="danger" :show="alertNotImported">✗ Not imported</b-alert>
+                  <b-alert class="my-auto" variant="success" :show="alertImported">✓ Imported</b-alert>
               </div>
             </div>
           </div>
@@ -32,8 +34,7 @@
 </template>
 
 <script>
-import axios from "axios"
-import BootstrapVue from 'bootstrap-vue'
+import axios from "axios";
 
 export default {
   data() {
@@ -42,12 +43,16 @@ export default {
       currency: null,
       price: null,
       date: null,
-      timezone: null
+      timezone: null,
+      // indicators
+      imported: false,
+      // alerts
+      alertImported: false,
+      alertNotImported: false
     };
   },
   props: {},
 
-  // created: () => console.log("created"),
   mounted: function() {
     var model = window.model;
 
@@ -74,6 +79,8 @@ export default {
     },
     fetchPrice: function() {
       // using Morningstar.
+      window.document.body.style.cursor = "wait"
+
       var msSymbol = this.getMorningstarSymbol(this.symbol);
 
       axios
@@ -84,9 +91,9 @@ export default {
         })
         .then(response => {
           // test for 200?
-          // console.log(response.data);
 
           this.price = this.parseMsHtml(response.data);
+          window.document.body.style.cursor = "default"
         });
     },
     parseMsHtml: function(html) {
@@ -105,6 +112,8 @@ export default {
       return price;
     },
     importPrice: function() {
+      window.document.body.style.cursor = "wait"
+
       axios
         .post("/price/api/create", {
           date: this.date,
@@ -112,15 +121,22 @@ export default {
           price: this.price,
           currency: this.currency
         })
-        .then(function(response) {
-          console.log(response.data);
+        .then(response => {
+          // console.log(response.data);
+          var result = response.data;
+          if (result.success) {
+            this.alertImported = true;
+            this.imported = true;
+          } else {
+            this.alertNotImported = true;
+          }
+
+          window.document.body.style.cursor = "default"
         });
     }
   },
 
-  components: {
-    BootstrapVue
-  }
+  components: {}
 };
 </script>
 

@@ -20,6 +20,7 @@ class SecurityAnalysisRefModel:
 
 class SecurityDetailsViewModel:
     def __init__(self):
+        self.symbol = None
         self.security: Commodity = None
         self.quantity: Decimal = Decimal(0)
         self.price: Price = None
