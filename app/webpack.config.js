@@ -20,6 +20,7 @@ module.exports = {
         scheduled_calendar: "./scripts/scheduled.calendar.js",
         securities: "./scripts/securities.js",
         security_prices: "./scripts/security.prices.js",
+        price_download: "./scripts/price.download.js",
         // Styles
         styles: "./styles/styles.scss",
     },

@@ -1,5 +1,5 @@
 """ Price controller """
-#from logging import log, DEBUG
+from logging import log, DEBUG
 from flask import Blueprint, request, render_template
 from gnucash_portfolio.bookaggregate import BookAggregate
 from gnucash_portfolio.lib.csv_parser import CsvPriceParser
@@ -15,6 +15,15 @@ price_controller = Blueprint( # pylint: disable=invalid-name
 def index():
     """ Index page for prices """
     return render_template('incomplete.html')
+
+@price_controller.route('/download/<path:symbol>')
+def download(symbol):
+    """ download the latest price for security """
+    log(DEBUG, symbol)
+    model = {
+        "symbol": symbol
+    }
+    return render_template('price.download.html', model=model)
 
 @price_controller.route('/import')
 def import_prices(message: str = None):

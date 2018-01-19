@@ -1,0 +1,14 @@
+{% extends "layout.html" %} {% block title %}Price Download{% endblock %} {% block content %}
+<h1>Price Download <small>for {{ model.symbol }}</small></h1>
+
+<div id="app"></div>
+
+{% endblock %}{% block scripts %}
+<script>
+    // model to be used in the Vue app.
+    var model = {
+        symbol: "{{ model.symbol }}"
+    };
+</script>
+<script type="text/javascript" src="/static/price_download.js"></script>
+{% endblock %}

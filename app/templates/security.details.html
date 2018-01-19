@@ -10,10 +10,15 @@
             <div class="form-row">
                 <div class="form-group col-3">
                     <label>Symbol</label>
-                    <input type="text" class="form-control" readonly value="{{ model.security.namespace}}:{{ model.security.mnemonic }}">
+                    <input type="text" class="form-control" readonly value="{{ model.security.mnemonic }}">
                 </div>
 
-                <div class="form-group col-9">
+                <div class="form-group col-3">
+                    <label>Exchange</label>
+                    <input type="text" class="form-control" readonly value="{{ model.security.namespace}}">
+                </div>
+
+                <div class="form-group col-6">
                     <label>Description</label>
                     <input type="text" class="form-control" readonly value="{{ model.security.fullname }}">
                 </div>
@@ -85,8 +90,11 @@
 
 <hr class="w-75 mb-2">
 
+{# Links #}
 <div>
     <a href="/price/for/{{ model.security.namespace }}:{{ model.security.mnemonic }}" class="btn btn-outline-primary">Prices</a>
+    &bullet;
+    <a href="/price/download/{{ model.security.namespace }}:{{ model.security.mnemonic }}" class="btn btn-outline-primary">Download Price</a>
     &bullet;
     <a href="/distributions/{{ model.security.namespace }}:{{ model.security.mnemonic }}" 
         class="btn btn-outline-primary">
