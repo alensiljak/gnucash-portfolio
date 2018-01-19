@@ -16,7 +16,7 @@ Currency calculator
                         <label for="srcCurrency" class="mr-2">Source Currency</label>
                         <model-select :options="listModel" v-model="srcCurrency" placeholder="source currency" @input="onSelect">
                         </model-select>
-                        <b-alert variant="warning" :show="srcCurrency">Currency not selected</b-alert>
+                        <b-alert variant="warning" :show="alertSrcCurrency">Currency not selected</b-alert>
                     </div>
                 </div>
                 <div class="col">
@@ -24,6 +24,7 @@ Currency calculator
                         <label for="srcCurrency" class="mr-2">Destination Currency</label>
                         <model-select :options="listModel" v-model="dstCurrency" placeholder="destination currency" @input="onSelect">
                         </model-select>
+                        <b-alert variant="warning" :show="alertDstCurrency">Currency not selected</b-alert>
                     </div>
                 </div>
             </div>
@@ -62,7 +63,6 @@ Currency calculator
 <script>
 import axios from "axios";
 import { ModelSelect } from "vue-search-select";
-import BootstrapVue from 'bootstrap-vue'
 
 export default {
   data() {
@@ -79,7 +79,10 @@ export default {
       },
       amount: 0,
       amountInBase: 0, // Amount in base currency
-      result: 0
+      result: 0,
+      //alerts
+      alertSrcCurrency: false,
+      alertDstCurrency: false
     };
   },
   props: {},
@@ -88,7 +91,10 @@ export default {
       this.recalculate();
     },
     recalculate: function() {
-      console.debug("recalculating...", this.amount, this.srcCurrency.text, "into", this.dstCurrency.text)
+      console.debug("recalculating...", this.amount, this.srcCurrency.text, "into", this.dstCurrency.text);
+
+      this.alertSrcCurrency = !this.srcCurrency.text;
+      this.alertDstCurrency = !this.dstCurrency.text;
 
       if (!this.amount || !this.srcCurrency.text || !this.dstCurrency.text) {
         // console.log("input missing. Exiting.")
@@ -114,17 +120,17 @@ export default {
       // recalculate
       // console.log("recalculation complete");
     },
-    use: function (src, dst) {
+    use: function(src, dst) {
       // console.log(src, dst)
       this.srcCurrency = {
         value: this.currencies[src],
         text: src
-      }
+      };
       this.dstCurrency = {
         value: this.currencies[dst],
         text: dst
-      }
-      this.recalculate()
+      };
+      this.recalculate();
     }
   },
   mounted: function mounted() {
@@ -154,8 +160,7 @@ export default {
       });
   },
   components: {
-    ModelSelect,
-    BootstrapVue
+    ModelSelect
   }
 };
 </script>
