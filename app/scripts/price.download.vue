@@ -14,16 +14,23 @@
             <div v-show="price" class="form-row">
               <div class="form-group">
                 <label>Current Price:</label>
-                <input id="currentPrice" class="form-control text-center ml-2" v-model="price" />
+                <input id="currentPrice" class="form-control text-center ml-2" readonly :value="price" />
+              </div>
+              <div class="form-group ml-3">
+                  <label>Date:</label>
+                  <input class="form-control text-center ml-2" readonly :value="date" />
               </div>
               <div class="form-group ml-3">
                   <label>Currency:</label>
-                  <input class="form-control text-center" readonly v-model="currency" />
+                  <input class="form-control text-center ml-2" readonly :value="currency" />
               </div>
-              <div class="form-group ml-3" v-show="!imported">
+            </div>
+
+            <div v-show="price" class="form-row w-100 mt-3">
+              <div class="form-group ml-3 mx-auto" v-show="!imported">
                   <button class="btn btn-outline-primary" @click="importPrice">Import</button>
               </div>
-              <div class="form-group ml-3 float-right">
+              <div class="form-group ml-3 mx-auto">
                   <b-alert class="my-auto" variant="danger" :show="alertNotImported">✗ Not imported</b-alert>
                   <b-alert class="my-auto" variant="success" :show="alertImported">✓ Imported</b-alert>
               </div>
