@@ -1,18 +1,17 @@
 <docs>
     Price chart
 </docs>
-<template>
-  
-</template>
 
 <script>
-import { Line } from 'vue-chartjs'
+import { Line, mixins } from 'vue-chartjs'
+const { reactiveProp } = mixins
 
 export default {
     extends: Line,
-    props: ['data', 'options'],
+    mixins: [reactiveProp],
+    props: ['options'], // 'data',
     mounted () {
-        this.renderChart(this.data, this.options)
+        this.renderChart(this.chartData, this.options)
     }
 }
 </script>

@@ -1,5 +1,7 @@
 {% extends "layout.html" %} {% block title %}Security Prices{% endblock %} {% block content %}
-<h1>Security Prices <small>for {{ model.symbol }}</small> </h1>
+<h1>Security Prices
+    <small>for {{ model.symbol }}</small>
+</h1>
 
 <div id="chart"></div>
 
@@ -11,7 +13,7 @@
         <th>Source</th>
     </thead>
     <tbody>
-{% for item in model.prices %}
+        {% for item in model.prices %}
         <tr>
             <td class="text-right">
                 {{ item.value }}
@@ -26,20 +28,40 @@
                 {{ item.source }}
             </td>
         </tr>
-{% endfor %}
+        {% endfor %}
     </tbody>
 </table>
 
-{% include '_security.links.html' %}
-
-{% endblock %} {% block scripts %}
+{% include '_security.links.html' %} {% endblock %} {% block scripts %}
 <script type="text/javascript">
     $(function () {
         $("table").DataTable({
-            "lengthMenu": [ [ 10, 20, 50, 100, -1 ], [ 10, 20, 50, 100, "All" ] ],
+            "lengthMenu": [[10, 20, 50, 100, -1], [10, 20, 50, 100, "All"]],
             "pageLength": 20,
             "order": [[1, 'desc']]
         });
 
     });
-</script> {% endblock %}
+
+    // prices
+    window.model = {}
+    window.model.chartData = {
+        labels: [
+        {% for item in model.prices %}
+            '{{ "{:%Y-%m-%d}".format(item.date) }}',
+        {% endfor %}
+        ],
+        datasets: [
+            {
+                label: 'Price Chart',
+                backgroundColor: '#056571',
+                data: [
+                    {% for item in model.prices %}
+                        {{ item.value }},
+                    {% endfor %}
+            ]
+            }
+        ]
+    };
+</script>
+<script type="text/javascript" src="/static/security_prices.js"></script> {% endblock %}
