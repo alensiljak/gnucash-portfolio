@@ -53,7 +53,7 @@ def list_securities():
                 continue
             last_price = sec.prices[-1]
             model["last_prices"][sec.mnemonic] = last_price
-        print(model)
+
         result = render_template('security.list.html', model=model)
     return result
 
