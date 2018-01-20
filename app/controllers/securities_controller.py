@@ -96,7 +96,8 @@ def __get_model_for_details(
     # Quantity
     model.quantity = sec_agg.get_quantity()
     model.value = sec_agg.get_value()
-    model.currency = sec_agg.get_currency().mnemonic
+    if sec_agg.get_currency():
+        model.currency = sec_agg.get_currency().mnemonic
     model.price = sec_agg.get_last_available_price()
 
     model.average_price = sec_agg.get_avg_price()

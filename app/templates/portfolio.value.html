@@ -4,21 +4,21 @@
 <div class="card bg-secondary">
     <div class="card-header"></div>
     <div class="card-body">
-        <form method="POST">
+        <form method="POST" class="form-inline">
             <div class="form-row">
                 <div class="form-group">
                     <label for="filter.as_of_date">As of date:</label>
-                    <input type="date" id="as_of_date" name="filter.as_of_date" class="form-control" value="{{ '{:%Y-%m-%d}'.format(model.filter.as_of_date) }}">
+                    <input type="date" id="as_of_date" name="filter.as_of_date" class="form-control ml-2" value="{{ '{:%Y-%m-%d}'.format(model.filter.as_of_date) }}">
                 </div>
             </div>
             {# Security #}
-            <div class="form-group">
-                    <label for="security">Stock:</label>
-                    <input id="security" name="security" type="text" class="form-control" placeholder="type partial name to search (min. 2 characters)"
-                value="{{ model.filter.stock }}">
+            <div class="form-group ml-3">
+                <label for="security">Stock:</label>
+                <input id="security" name="security" type="text" class="form-control ml-2" placeholder="type to search (min. 2 characters)"
+                    value="{{ model.filter.stock }}">
             </div>
 
-            <div class="text-center">
+            <div class="text-center ml-3">
                 <button class="btn btn-primary mx-auto">Apply</button>
             </div>
 

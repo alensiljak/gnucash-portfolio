@@ -40,7 +40,8 @@
                 </div>
                 <div class="form-group col">
                     <label>Price Date</label>
-                    <input type="text" class="form-control text-right" readonly value="{{ '{:%Y-%m-%d}'.format(model.price.date) }}">
+                    <input type="text" class="form-control text-right" readonly 
+                        value="{% if model.price %}{{ '{:%Y-%m-%d}'.format(model.price.date) }}{% endif %}">
                 </div>
             </div>
             <div class="form-row">

@@ -58,7 +58,8 @@ class SecurityAggregate(AggregateBase):
         quantity = self.get_quantity()
         price = self.get_last_available_price()
         if not price:
-            raise ValueError("no price found for", self.full_symbol)
+            # raise ValueError("no price found for", self.full_symbol)
+            return Decimal(0)
 
         value = quantity * price.value
         return value
@@ -149,11 +150,9 @@ class SecurityAggregate(AggregateBase):
         Reads the currency from the latest available price information,
         assuming that all the prices are in the same currency for any symbol.
         """
-        stock: Commodity = self.security
-        #first_price = stock.prices.first()
         last_price = self.get_last_available_price()
         if not last_price:
-            raise AssertionError("Price not found for", stock.mnemonic)
+            return None
 
         return last_price.currency
 

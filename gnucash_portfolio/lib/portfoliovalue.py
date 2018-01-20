@@ -58,14 +58,3 @@ def get_stock_model_from(book: Book, commodity: Commodity, as_of_date: date):
     model.income = float(income)
 
     return model
-
-def get_all_stocks(book: Book) -> List[Commodity]:
-    """ Load all stocks """
-    query = (
-        book.session.query(Commodity)
-        .filter(Commodity.namespace != "CURRENCY",
-                Commodity.mnemonic != "template")
-        .order_by(Commodity.mnemonic)
-    )
-    all_stocks = query.all()
-    return all_stocks

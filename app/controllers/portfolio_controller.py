@@ -44,12 +44,14 @@ def __get_model_for_portfolio_value(input_model: PortfolioValueInputModel):
     result.stock_rows = []
     with BookAggregate() as svc:
         book = svc.book
+        stocks_svc = SecuritiesAggregate(book)
+
         if input_model.stock:
             symbols = input_model.stock.split(",")
-            stocks_svc = SecuritiesAggregate(book)
             stocks = stocks_svc.get_stocks(symbols)
         else:
-            stocks = portfoliovalue.get_all_stocks(book)
+            # stocks = portfoliovalue.get_all_stocks(book)
+            stocks = stocks_svc.get_all()
 
         for stock in stocks:
             row = portfoliovalue.get_stock_model_from(
