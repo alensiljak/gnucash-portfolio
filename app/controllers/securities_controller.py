@@ -51,7 +51,9 @@ def list_securities():
         for sec in all_sec:
             if not sec.prices.count():
                 continue
-            last_price = sec.prices[-1]
+            agg = svc.securities.get_aggregate(sec)
+            # last_price = sec.prices.order_by[-1]
+            last_price = agg.get_last_available_price()
             model["last_prices"][sec.mnemonic] = last_price
 
         result = render_template('security.list.html', model=model)
