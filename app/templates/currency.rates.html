@@ -6,6 +6,7 @@
     <thead class="thead-dark">
         <th>Date</th>
         <th>Rate</th>
+        <th>Inv.Rate</th>
         <th>Currency</th>
         <th>Base</th>
         <th>Chart</th>
@@ -15,6 +16,7 @@
 <tr>
     <td>{% if rate.date %}{{ "{:%Y-%m-%d}".format(rate.date) }}{% endif %}</td>
     <td class="text-right">{{ rate.value }}</td>
+    <td class="text-right">{% if rate.value %}{{ "{:,.4f}".format(1 / rate.value) }}{% endif %}</td>
     <td>{{ rate.currency }}</td>
     <td>{{ rate.base_currency }}</td>
     <td>
