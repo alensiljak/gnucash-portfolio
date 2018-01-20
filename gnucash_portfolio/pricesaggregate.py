@@ -87,7 +87,7 @@ class PricesAggregate:
                 currency.mnemonic, price.currency)
 
         new_price = Price(commodity, currency, price.date, price.value,
-                          source="user:gnucash-portfolio")
+                          source="Finance::Quote")
         commodity.prices.append(new_price)
 
 
