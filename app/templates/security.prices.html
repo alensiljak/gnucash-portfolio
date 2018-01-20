@@ -8,6 +8,7 @@
         <th>Price</th>
         <th>Date</th>
         <th>Currency</th>
+        <th>Source</th>
     </thead>
     <tbody>
 {% for item in model.prices %}
@@ -20,6 +21,9 @@
             </td>
             <td>
                 {{ item.currency.mnemonic }}
+            </td>
+            <td>
+                {{ item.source }}
             </td>
         </tr>
 {% endfor %}
