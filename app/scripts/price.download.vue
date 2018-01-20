@@ -77,7 +77,9 @@ export default {
         AMS: "XAMS",
         ASX: "XASX",
         XETRA: "XETR",
-        LSE: "XLON"
+        LSE: "XLON",
+        NASDAQ: "XNAS",
+        NYSEARCA: "ARCX"
       };
       namespace = namespaceMap[namespace];
 
@@ -99,6 +101,9 @@ export default {
         .then(response => {
           // test for 200?
           // console.log(response)
+          if (!response.date) {
+            console.warn("no price data found for", msSymbol)
+          }
 
           this.parseMsHtml(response.data);
           window.document.body.style.cursor = "default"
@@ -106,7 +111,10 @@ export default {
     },
     parseMsHtml: function(html) {
       // get the price
-      if (!html) return;
+      if (!html) {
+        // console.warn("no data available for parsing!")
+        return
+      }
       var doc = new DOMParser().parseFromString(html, "text/html");
 
       var priceEl = doc.getElementById("last-price-value");
@@ -114,15 +122,11 @@ export default {
         console.warn("No price information found in", html)
         return;
       }
-      var price = priceEl.textContent.trim();
+      this.price = priceEl.textContent.trim();
 
       this.date = doc.getElementById("asOfDate").textContent.trim();
       this.timezone = doc.getElementById("timezone").textContent.trim();
       this.currency = doc.getElementById("curency").textContent.trim();
-
-      // console.log(x);
-
-      return price;
     },
     importPrice: function() {
       window.document.body.style.cursor = "wait"
