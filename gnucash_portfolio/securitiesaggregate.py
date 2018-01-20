@@ -183,7 +183,7 @@ class SecurityAggregate(AggregateBase):
 
     def get_prices(self) -> List[Price]:
         """ Returns all available prices for security """
-        return self.security.prices
+        return self.security.prices.order_by(Price.date)
 
     def get_total_paid(self) -> Decimal:
         """ Returns the total amount paid, in currency, for the stocks owned """
