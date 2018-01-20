@@ -108,7 +108,7 @@ def api_save_rates():
             raise ValueError("The base currencies are not same!", base_cur_symbol, "vs",
                              book_base_cur)
         # Import rates
-        prices_model = ([PriceModel(symbol=in_rate["symbol"], base_cur=base_cur_symbol,
+        prices_model = ([PriceModel(symbol=in_rate["symbol"], currency=base_cur_symbol,
                                     value=Decimal(in_rate["rate"]), rate_date=rate_date)
                          for in_rate in filtered_rates])
         svc.currencies.import_fx_rates(prices_model)
