@@ -98,16 +98,22 @@ export default {
         })
         .then(response => {
           // test for 200?
+          // console.log(response)
 
-          this.price = this.parseMsHtml(response.data);
+          this.parseMsHtml(response.data);
           window.document.body.style.cursor = "default"
         });
     },
     parseMsHtml: function(html) {
       // get the price
+      if (!html) return;
       var doc = new DOMParser().parseFromString(html, "text/html");
 
       var priceEl = doc.getElementById("last-price-value");
+      if (!priceEl) {
+        console.warn("No price information found in", html)
+        return;
+      }
       var price = priceEl.textContent.trim();
 
       this.date = doc.getElementById("asOfDate").textContent.trim();
