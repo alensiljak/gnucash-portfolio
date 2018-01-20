@@ -6,6 +6,7 @@
         <th>Symbol</th>
         <th>Exchange</th>
         <th>Name</th>
+        <th>Last Price</th>
     </thead>
     <tbody>
 {% for sec in model.securities %}
@@ -20,6 +21,11 @@
             </td>
             <td>
                 {{ sec.fullname }}
+            </td>
+            <td>
+                {% if model.last_prices[sec.mnemonic] %}
+                {{ "{:%Y-%m-%d}".format(model.last_prices[sec.mnemonic].date) }}
+                {% endif %}
             </td>
         </tr>
 {% endfor %}

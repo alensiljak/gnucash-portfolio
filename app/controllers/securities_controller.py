@@ -44,8 +44,16 @@ def list_securities():
     with BookAggregate() as svc:
         all_sec = svc.securities.get_all()
         model = {
-            "securities": all_sec
+            "securities": all_sec,
+            "last_prices": {}
         }
+        # get last prices
+        for sec in all_sec:
+            if not sec.prices.count():
+                continue
+            last_price = sec.prices[-1]
+            model["last_prices"][sec.mnemonic] = last_price
+        print(model)
         result = render_template('security.list.html', model=model)
     return result
 
