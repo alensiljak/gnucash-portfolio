@@ -26,11 +26,9 @@
               </div>
             </div>
 
-            <div v-show="price" class="form-row w-100 mt-3">
-              <div class="form-group ml-3 mx-auto" v-show="!imported">
-                  <button class="btn btn-outline-primary" @click="importPrice">Import</button>
-              </div>
-              <div class="form-group ml-3 mx-auto">
+            <div v-show="price" class="w-100 mt-3 text-center">
+              <button v-show="!imported" class="btn btn-outline-primary" @click="importPrice">Import</button>
+              <div class="ml-3 mx-auto">
                   <b-alert class="my-auto" variant="danger" :show="alertNotImported">✗ Not imported</b-alert>
                   <b-alert class="my-auto" variant="success" :show="alertImported">✓ Imported</b-alert>
               </div>
@@ -88,7 +86,7 @@ export default {
     },
     fetchPrice: function() {
       // using Morningstar.
-      window.document.body.style.cursor = "wait"
+      window.document.body.style.cursor = "wait";
 
       var msSymbol = this.getMorningstarSymbol(this.symbol);
 
@@ -102,24 +100,24 @@ export default {
           // test for 200?
           // console.log(response)
           if (!response.date) {
-            console.warn("no price data found for", msSymbol)
+            console.warn("no price data found for", msSymbol);
           }
 
           this.parseMsHtml(response.data);
-          window.document.body.style.cursor = "default"
+          window.document.body.style.cursor = "default";
         });
     },
     parseMsHtml: function(html) {
       // get the price
       if (!html) {
         // console.warn("no data available for parsing!")
-        return
+        return;
       }
       var doc = new DOMParser().parseFromString(html, "text/html");
 
       var priceEl = doc.getElementById("last-price-value");
       if (!priceEl) {
-        console.warn("No price information found in", html)
+        console.warn("No price information found in", html);
         return;
       }
       this.price = priceEl.textContent.trim();
@@ -129,7 +127,7 @@ export default {
       this.currency = doc.getElementById("curency").textContent.trim();
     },
     importPrice: function() {
-      window.document.body.style.cursor = "wait"
+      window.document.body.style.cursor = "wait";
 
       axios
         .post("/price/api/create", {
@@ -148,7 +146,7 @@ export default {
             this.alertNotImported = true;
           }
 
-          window.document.body.style.cursor = "default"
+          window.document.body.style.cursor = "default";
         });
     }
   },

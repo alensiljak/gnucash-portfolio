@@ -48,7 +48,9 @@
     <tbody>
         {% for row in model.stock_rows %}
         <tr>
-            <td>{{ row.symbol }}</td>
+            <td>
+                <a href="/security/details/{{ row.symbol }}">{{ row.symbol }}</a>
+            </td>
             <td>{{ row.exchange }}</td>
             <td class="text-right">{{ "{:,.2f}".format(row.shares_num) }}</td>
             <td class="text-right">{{ "{:,.2f}".format(row.avg_price) }}</td>
