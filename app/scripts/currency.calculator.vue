@@ -19,6 +19,11 @@ Currency calculator
                         <b-alert variant="warning" :show="alertSrcCurrency">Currency not selected</b-alert>
                     </div>
                 </div>
+                <div class="col-1 my-auto">
+                  <button class="btn btn-dark text-light" @click="swap">
+                    <i class="fa fa-exchange"></i>
+                  </button>
+                </div>
                 <div class="col">
                     <div class="form-group">
                         <label for="srcCurrency" class="mr-2">Destination Currency</label>
@@ -112,13 +117,24 @@ export default {
       }
 
       // calculate destination
-      // console.log(JSON.stringify(this.dstCurrency));
+      // handle 0 values
+      if (!this.dstCurrency.value) {
+        this.dstCurrency.value = 1
+      }
       this.result = this.amountInBase / this.dstCurrency.value;
       // round to 2 decimals
       this.result = Math.round(this.result * 100) / 100;
 
       // recalculate
       // console.log("recalculation complete");
+    },
+    swap: function() {
+      // swap the currencies
+      var temp = this.dstCurrency
+      this.dstCurrency = this.srcCurrency
+      this.srcCurrency = temp
+
+      this.recalculate()
     },
     use: function(src, dst) {
       // console.log(src, dst)
