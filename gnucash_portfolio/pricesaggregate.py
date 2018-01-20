@@ -86,6 +86,9 @@ class PricesAggregate:
                 "Requested currency does not match the currency previously used",
                 currency.mnemonic, price.currency)
 
+        # Description of the source field values:
+        # https://www.gnucash.org/docs/v2.6/C/gnucash-help/tool-price.html
+
         new_price = Price(commodity, currency, price.date, price.value,
                           source="Finance::Quote")
         commodity.prices.append(new_price)
