@@ -29,8 +29,10 @@
             <div v-show="price" class="w-100 mt-3 text-center">
               <button v-show="!imported" class="btn btn-outline-primary" @click="importPrice">Import</button>
               <div class="ml-3 mx-auto">
-                  <b-alert class="my-auto" variant="danger" :show="alertNotImported">✗ Not imported</b-alert>
-                  <b-alert class="my-auto" variant="success" :show="alertImported">✓ Imported</b-alert>
+                  <b-alert class="my-auto" variant="danger" :show="alertNotImported">
+                    <i class="fa fa-close"></i> Not imported</b-alert>
+                  <b-alert class="my-auto" variant="success" :show="alertImported">
+                    <i class="fa fa-check"></i> Imported</b-alert>
               </div>
             </div>
           </div>
@@ -77,6 +79,7 @@ export default {
         XETRA: "XETR",
         LSE: "XLON",
         NASDAQ: "XNAS",
+        NYSE: "XNYS",
         NYSEARCA: "ARCX"
       };
       namespace = namespaceMap[namespace];
