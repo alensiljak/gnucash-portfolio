@@ -88,6 +88,9 @@ import "bootstrap-vue/dist/bootstrap-vue.css";
  */
 const focus = {
   inserted(el) {
+    // don't focus if we have some data passed from the page.
+    if (window.model) return
+
     el.querySelector("input").focus();
   }
 };
@@ -181,6 +184,9 @@ export default {
           // this.txRows = response.data.transactions
           // this.startBalance = response.startBalance
           // this.endBalance = response.endBalance
+          if (!this.account.name) {
+            this.account.name = this.model.accountName
+          }
         })
         .catch(error => {
           console.error(error);
