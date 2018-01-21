@@ -27,19 +27,26 @@
 
                 <!-- Date Period -->
                 <div class="form-group col-md form-inline">
-                    <!-- <label for="period">Period</label> -->
-                    <!--
-                    <date-picker lang="en" placeholder="Date from" v-model="dateFrom"
-                        :width="120" /> - 
-                    <date-picker lang="en" name="dateTo" placeholder="Date to" v-model="dateTo"
-                        :width="120" />
-                    -->
                     <input type="date" name="dateFrom" class="form-control" v-model="dateFrom"
                       @change="loadTransactions" /> -
                     <input type="date" name="dateTo" class="form-control" v-model="dateTo"
                       @change="loadTransactions" />
 
                     <b-alert variant="warning" :show="datesNotSelected">Dates not selected!</b-alert>
+
+                    <span>
+                      <a href="#" @click="setPeriod('7')">
+                        <small>7 days</small>
+                      </a>
+                      &bullet;
+                      <a href="#" @click="setPeriod('30')">
+                        <small>30 days</small>
+                      </a>
+                      &bullet;
+                      <a href="#" @click="setPeriod('90')">
+                        <small>90 days</small>
+                      </a>
+                    </span>
                 </div>
 
                 <!-- apply button -->
@@ -85,6 +92,12 @@ const focus = {
   }
 };
 
+Date.prototype.addDays = function(days) {
+  var dat = new Date(this.valueOf());
+  dat.setDate(dat.getDate() + days);
+  return dat;
+}
+
 export default {
   directives: { focus },
 
@@ -98,13 +111,19 @@ export default {
       // Validation
       datesNotSelected: false,
       // Table.
-      tableFields: ['date', 'description', 'notes', {
-        key: 'value',
-        tdClass: 'text-right'
-      }, {
-        key: 'quantity',
-        tdClass: 'text-right'
-      }],
+      tableFields: [
+        "date",
+        "description",
+        "notes",
+        {
+          key: "value",
+          tdClass: "text-right"
+        },
+        {
+          key: "quantity",
+          tdClass: "text-right"
+        }
+      ],
       model: {
         accountName: "",
         startBalance: 0,
@@ -137,17 +156,17 @@ export default {
         });
     },
     accountSelected: function(account) {
-        if (!account) return;
+      if (!account) return;
 
-        this.account = account
+      this.account = account;
 
-        // re-load transactions
-        this.loadTransactions()
+      // re-load transactions
+      this.loadTransactions();
     },
     loadTransactions: function() {
       // validations
       // TODO: check for all input fields: account, date range.
-      this.datesNotSelected = (!this.dateFrom || !this.dateTo)
+      this.datesNotSelected = !this.dateFrom || !this.dateTo;
 
       axios
         .get("/account/api/transactions", {
@@ -169,9 +188,21 @@ export default {
     },
     isoDate(date) {
       // return date.getFullYear() + "-" + (date.getMonth() + 1) + "-" + date.getDate();
-      var result = date.toISOString().substring(0, 10)
+      var result = date.toISOString().substring(0, 10);
       // console.log(result)
-      return result
+      return result;
+    },
+    setPeriod: function(days) {
+      var from = new Date();
+      //from.setMonth(from.getMonth() - 3);
+      from = from.addDays(-days)
+      this.dateFrom = this.isoDate(from)
+
+      //today
+      var to = new Date();
+      this.dateTo = this.isoDate(to)
+
+      this.loadTransactions()
     }
   },
 
@@ -183,16 +214,11 @@ export default {
       this.account = {
         id: window.model.accountId,
         name: ""
-      }
+      };
     }
 
     // Initialize dates.
-    var from = new Date();
-    from.setMonth(from.getMonth() - 3);
-    this.dateFrom = this.isoDate(from);
-
-    var to = new Date();
-    this.dateTo = this.isoDate(to);
+    this.setPeriod(7);
   },
 
   components: {
