@@ -30,13 +30,16 @@
     </div>
   </div>
   <div class="col-md-4"></div>
-  <div class="col-md-4" style="height: 1em;">
+  <div class="col-md-4" style="height: 5em;">
     <div class="card">
       <div class="card-header">
         Upcoming scheduled transactions
       </div>
-      <div class="card-body" id="recurringContainer">
-        {# include '_index.recurring.html' #}
+      <div class="card-body">
+          <div id="tinyCalendar"></div>
+          <div id="recurringContainer" class="mt-2">
+          {# include '_index.recurring.html' #}
+        </div>
       </div>
     </div>
   </div>
@@ -79,4 +82,5 @@
       }
     });
   });
-</script> {% endblock %}
+</script>
+<script src="/static/dashboard.js"></script> {% endblock %}
