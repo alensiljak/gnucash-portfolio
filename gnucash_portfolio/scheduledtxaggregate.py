@@ -7,6 +7,12 @@ from datetime import date, datetime
 from piecash import Book, ScheduledTransaction #, Recurrence
 from gnucash_portfolio.lib import datetimeutils
 
+class WeekendAdjustment(Enum):
+    """ Weekend adjustment types """
+    NONE = "none"
+    BACK = "back"
+    FORWARD = "forward"
+
 
 class RecurrencePeriod(Enum):
     """ Recurrence Types """
@@ -57,7 +63,7 @@ def get_next_occurrence(tx: ScheduledTransaction) -> date:
 
     mult: int = tx.recurrence.recurrence_mult
     period: str = tx.recurrence.recurrence_period_type
-    #wadj = tx.recurrence.recurrence_weekend_adjust
+    wadj = tx.recurrence.recurrence_weekend_adjust
 
     if period in ([RecurrencePeriod.YEAR.value, RecurrencePeriod.MONTH.value,
                    RecurrencePeriod.END_OF_MONTH.value]):
@@ -65,6 +71,8 @@ def get_next_occurrence(tx: ScheduledTransaction) -> date:
             mult *= 12
 
         # handle weekend adjustment here.
+        if wadj == WeekendAdjustment.BACK.value:
+            log(WARN, "weekend adjustment backwards not handled")
 
         # Line 274.
         if (datetimeutils.is_end_of_month(next_date) or
@@ -109,7 +117,17 @@ def get_next_occurrence(tx: ScheduledTransaction) -> date:
             # Same day as the start.
             next_date = next_date.replace(day=start_date.day)
 
-        # handle weekend
+        # Adjust for dates on the weekend.
+        if (period == RecurrencePeriod.YEAR.value or period == RecurrencePeriod.MONTH.value or
+                period == RecurrencePeriod.END_OF_MONTH.value):
+            weekday = datetimeutils.get_day_name(next_date)
+            if weekday == "Saturday" or weekday == "Sunday":
+                if wadj == WeekendAdjustment.BACK.value:
+                    next_date = datetimeutils.subtract_days(
+                        next_date, 1 if weekday == "Saturday" else 2)
+                elif wadj == WeekendAdjustment.FORWARD.value:
+                    next_date = datetimeutils.add_days(
+                        next_date, 2 if weekday == "Saturday" else 1)
 
     return next_date
 

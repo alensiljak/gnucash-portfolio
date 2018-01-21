@@ -1,5 +1,5 @@
 """ Date/time utilities """
-
+from logging import log, DEBUG
 import calendar
 from datetime import datetime, date, time, timedelta
 #import dateutil
@@ -8,6 +8,10 @@ from dateutil.relativedelta import relativedelta
 ISO_SHORT_FORMAT = "%Y-%m-%d"
 ISO_LONG_FORMAT = "%Y-%m-%dT%H:%M:%S.%fZ"
 
+def add_days(value: datetime, days: int) -> datetime:
+    """ Adds days """
+    return value + relativedelta(days=days)
+
 def add_months(date_value: date, value: int) -> date:
     """ Add a number of months to the given date """
     return date_value + relativedelta(months=value)
@@ -15,6 +19,12 @@ def add_months(date_value: date, value: int) -> date:
 def get_datetime_from_date(value: date) -> datetime:
     """ Gets a new datetime value from date """
     return datetime(value.year, value.month, value.day)
+
+def get_day_name(value: datetime) -> str:
+    """ Returns the day name """
+    weekday = value.isoweekday() - 1
+    # log(DEBUG, weekday)
+    return calendar.day_name[weekday]
 
 def get_days_in_month(year: int, month: int) -> int:
     """ Returns number of days in the given month.
