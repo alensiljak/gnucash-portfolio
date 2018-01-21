@@ -84,18 +84,7 @@
         });
 
         $("#security").autocomplete({
-            serviceUrl: '/security/api/search',
-            //minChars: 2,
-            onSelect: function (suggestion) {
-                //alert('You selected: ' + suggestion.value + ', ' + suggestion.data);
-                // show details
-                $.ajax({
-                    url: '/account/partial/accountdetail/' + suggestion.data,
-                    success: function (data, textStatus, jqxhr) {
-                        $("#accountDetails").html(data);
-                    }
-                })
-            }
+            serviceUrl: '/security/api/search'
         });
     });
 </script> {% endblock %}

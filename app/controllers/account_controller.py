@@ -149,7 +149,11 @@ def account_splits(acct_id: str):
 @account_controller.route('/transactions')
 def account_transactions():
     """ Lists only transactions """
-    return render_template('account.transactions.vue.html')
+    account_id = request.args.get("accountId")
+    model = {
+        "account_id": account_id
+    }
+    return render_template('account.transactions.vue.html', model=model)
 
 @account_controller.route('/details/<path:fullname>')
 def details(fullname):
@@ -163,13 +167,6 @@ def details(fullname):
 
 #############
 # Partials
-
-@account_controller.route('/partial/accountdetail/<account_id>')
-def account_details_partial(account_id):
-    with BookAggregate() as svc:
-        model = __load_account_details_model(svc, account_id)
-
-        return render_template('_account.details.html', model=model)
 
 @account_controller.route('/partial/favourites')
 def api_favourites():
@@ -239,6 +236,7 @@ def api_transactions():
         for tx in txs:
             this_split = [split for split in tx.splits if split.transaction == tx][0]
             records.append({
+                "id": tx.guid,
                 "date": tx.post_date.strftime("%Y-%m-%d"),
                 "description": tx.description,
                 "notes": tx.notes,

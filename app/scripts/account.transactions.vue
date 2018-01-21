@@ -57,13 +57,19 @@
     Starting balance: <span>{{ model.startBalance }}</span>, Ending balance: {{ model.endBalance }}
 </p>
 
-<b-table striped hover small :fields="tableFields" :items="model.transactions"></b-table>
+<b-table striped hover small :fields="tableFields" :items="model.transactions">
+  <template slot="description" slot-scope="data">
+    <a :href="'/transaction/details/' + data.item.id">
+    <!-- {{ data }} -->
+    {{ data.value }}
+    </a>
+  </template>
+</b-table>
 
 </div>
 </template>
 <script>
 import vSelect from "vue-select";
-// import DatePicker from "vue2-datepicker";
 import axios from "axios";
 import BootstrapVue from "bootstrap-vue";
 // import 'bootstrap/dist/css/bootstrap.css'
@@ -171,6 +177,15 @@ export default {
 
   mounted: function() {
     // Focus is done with the custom directive. See above.
+
+    // get the account id from the page
+    if (window.model) {
+      this.account = {
+        id: window.model.accountId,
+        name: ""
+      }
+    }
+
     // Initialize dates.
     var from = new Date();
     from.setMonth(from.getMonth() - 3);

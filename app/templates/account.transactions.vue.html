@@ -4,5 +4,11 @@
 <div id="app"></div>
 
 {% endblock %} {% block scripts %}
+<script>
+    // pass the account id, if any
+    window.model = {
+        accountId: '{{ model.account_id }}'
+    }
+</script>
 <script type="text/javascript" src="/static/account_transactions.js"></script>
 {% endblock %}
