@@ -10,7 +10,7 @@
         <form class="form">
             <div class="row">
                 <!-- Account -->
-                <div class="form-group col-md-7">
+                <div class="form-group">
                     <!-- <label for="account">Account</label> -->
                     <v-select
                         v-model="account"
@@ -50,7 +50,7 @@
                 </div>
 
                 <!-- apply button -->
-                <div class="text-center col-md-1">
+                <div class="text-center">
                     <button @click="loadTransactions" type="button" class="btn btn-primary">Apply</button>
                 </div>
 
