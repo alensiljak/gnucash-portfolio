@@ -71,6 +71,12 @@
     {{ data.value }}
     </a>
   </template>
+  <template slot="value" slot-scope="data">
+    {{ formatNumber(data.value) }}
+  </template>
+  <template slot="quantity" slot-scope="data">
+    {{ formatNumber(data.value) }}
+  </template>
 </b-table>
 
 </div>
@@ -81,6 +87,7 @@ import axios from "axios";
 import BootstrapVue from "bootstrap-vue";
 // import 'bootstrap/dist/css/bootstrap.css'
 import "bootstrap-vue/dist/bootstrap-vue.css";
+import format from 'number-format.js'
 
 /**
     Focus directive.
@@ -137,6 +144,9 @@ export default {
   },
 
   methods: {
+    formatNumber: function(number) {
+      return format("#,##0.00", number)
+    },
     /**
         Load account list for dropdown.
        */

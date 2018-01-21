@@ -61,6 +61,7 @@
     "bootstrap-vue": "^1.4.1",
     "chart.js": "^2.7.1",
     "fullcalendar": "^3.8.0",
+    "number-format.js": "^1.1.11",
     "vue": "^2.5.13",
     "vue-chartjs": "^3.1.0",
     "vue-focus": "^2.1.0",

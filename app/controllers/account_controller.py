@@ -214,9 +214,9 @@ def api_transactions():
     """ Returns account transactions """
     # get parameters
     dateFromStr = request.args.get("dateFrom")
-    dateFrom = datetimeutils.parse_iso_date(dateFromStr).date()
+    dateFrom = datetimeutils.parse_iso_date(dateFromStr)
     dateToStr = request.args.get("dateTo")
-    dateTo = datetimeutils.parse_iso_date(dateToStr).date()
+    dateTo = datetimeutils.parse_iso_date(dateToStr)
     account_id = request.args.get("account")
 
     # get data
@@ -234,14 +234,19 @@ def api_transactions():
         }
 
         for tx in txs:
-            this_split = [split for split in tx.splits if split.transaction == tx][0]
+            # this_split = [split for split in tx.splits if split.transaction == tx][0]
+            # this_split = tx.splits.filter(Split.account_guid == account_id).one()
+            tx_agg = svc.transactions.get_aggregate(tx)
+            value = tx_agg.get_value_of_splits_for_account(account_id)
+            quantity = tx_agg.get_quantity_of_splits_for_account(account_id)
+
             records.append({
                 "id": tx.guid,
                 "date": tx.post_date.strftime("%Y-%m-%d"),
                 "description": tx.description,
                 "notes": tx.notes,
-                "value": this_split.value,
-                "quantity": this_split.quantity
+                "value": value,
+                "quantity": quantity
             })
         model["transactions"] = records
 

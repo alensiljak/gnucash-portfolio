@@ -158,11 +158,14 @@ class AccountAggregate(AggregateBase):
         )
         return query.all()
 
-    def get_transactions(self, date_from: date, date_to: date) -> List[Transaction]:
+    def get_transactions(self, date_from: datetime, date_to: datetime) -> List[Transaction]:
         """ Returns account transactions """
+        assert isinstance(date_from, datetime)
+        assert isinstance(date_to, datetime)
+
         # fix up the parameters as we need datetime
-        dt_from = datetimeutils.get_datetime_from_date(date_from)
-        dt_to = datetimeutils.get_datetime_from_date(date_to)
+        dt_from = datetimeutils.start_of_day(date_from)
+        dt_to = datetimeutils.end_of_day(date_to)
 
         query = (
             self.book.session.query(Transaction)
