@@ -8,9 +8,9 @@
     <div class="card-header"></div>
     <div class="card-body">
         <form class="form">
-            <div class="row">
+            <div class="form-row">
                 <!-- Account -->
-                <div class="form-group">
+                <div class="form-group col-md-8">
                     <!-- <label for="account">Account</label> -->
                     <v-select
                         v-model="account"
@@ -28,13 +28,13 @@
                 <!-- Date Period -->
                 <div class="form-group col-md form-inline">
                     <input type="date" name="dateFrom" class="form-control" v-model="dateFrom"
-                      @change="loadTransactions" /> -
+                      @change="loadTransactions" />
                     <input type="date" name="dateTo" class="form-control" v-model="dateTo"
                       @change="loadTransactions" />
 
                     <b-alert variant="warning" :show="datesNotSelected">Dates not selected!</b-alert>
 
-                    <span>
+                    <div>
                       <a href="#" @click="setPeriod('7')">
                         <small>7 days</small>
                       </a>
@@ -46,12 +46,14 @@
                       <a href="#" @click="setPeriod('90')">
                         <small>90 days</small>
                       </a>
-                    </span>
+                    </div>
                 </div>
 
                 <!-- apply button -->
                 <div class="text-center">
-                    <button @click="loadTransactions" type="button" class="btn btn-primary">Apply</button>
+                    <button @click="loadTransactions" type="button" class="btn btn-primary">
+                      <i class="fa fa-chevron-right"></i>
+                    </button>
                 </div>
 
             </div>
@@ -64,7 +66,7 @@
     Starting balance: <span>{{ model.startBalance }}</span>, Ending balance: {{ model.endBalance }}
 </p>
 
-<b-table striped hover small :fields="tableFields" :items="model.transactions">
+<b-table striped hover small head-variant="dark" :fields="tableFields" :items="model.transactions">
   <template slot="date" slot-scope="data">
     <a :href="'/transaction/details/' + data.item.id">
     <!-- {{ data }} -->
