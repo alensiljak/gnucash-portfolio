@@ -65,7 +65,7 @@
 </p>
 
 <b-table striped hover small :fields="tableFields" :items="model.transactions">
-  <template slot="description" slot-scope="data">
+  <template slot="date" slot-scope="data">
     <a :href="'/transaction/details/' + data.item.id">
     <!-- {{ data }} -->
     {{ data.value }}
