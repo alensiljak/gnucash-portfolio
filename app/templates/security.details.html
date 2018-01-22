@@ -9,30 +9,15 @@
     <div class="card-body">
         <form class="form">
             <div class="form-row">
-                <div class="form-group col-3">
+                <div class="form-group col">
                     <label>Symbol</label>
-                    <input type="text" class="form-control" readonly value="{{ model.security.mnemonic }}">
+                    <input type="text" class="form-control" readonly 
+                        value="{{ model.security.namespace}}:{{ model.security.mnemonic }}">
                 </div>
-
-                <div class="form-group col-3">
-                    <label>Exchange</label>
-                    <input type="text" class="form-control" readonly value="{{ model.security.namespace}}">
-                </div>
-
-                <div class="form-group col-6">
-                    <label>Description</label>
-                    <input type="text" class="form-control" readonly value="{{ model.security.fullname }}">
-                </div>
-            </div>
-            <div class="form-row">
                 <div class="form-group col">
                     <label>Quantity</label>
                     <input type="text" class="form-control text-right" readonly value="{{ '{:,.2f}'.format(model.quantity) }}">
                 </div>
-
-                <div class="form-group col">
-                </div>
-
                 <div class="form-group col">
                     <label>Average Price</label>
                     <input type="text" class="form-control text-right" readonly value="{{ '{:,.2f}'.format(model.average_price) }}">
@@ -43,9 +28,9 @@
                 </div>
             </div>
             <div class="form-row">
-                <div class="form-group col">
-                </div>
-                <div class="form-group col">
+                <div class="form-group col-6">
+                    <label>Description</label>
+                    <input type="text" class="form-control" readonly value="{{ model.security.fullname }}">
                 </div>
                 <div class="form-group col">
                     <label>Price ({{ model.currency }})</label>, 
@@ -71,13 +56,13 @@
                 </div>
                 <div class="form-group col">
                     <label>Unrealized Gain/Loss %</label>
-                    <input type="text" class="form-control text-right {% if model.profit_loss > 0 %}text-success{% else %}text-danger{% endif %}" readonly 
-                        value="{{ '{:,.2f}'.format(model.profit_loss_perc) }} %">
+                    <input type="text" class="form-control text-right {% if model.profit_loss > 0 %}text-success{% else %}text-danger{% endif %}"
+                        readonly value="{{ '{:,.2f}'.format(model.profit_loss_perc) }} %">
                 </div>
                 <div class="form-group col">
                     <label>Unrealized Gain/Loss</label>
-                    <input type="text" class="form-control text-right {% if model.profit_loss > 0 %}text-success{% else %}text-danger{% endif %}" readonly 
-                        value="{{ '{:,.2f}'.format(model.profit_loss) }}">
+                    <input type="text" class="form-control text-right {% if model.profit_loss > 0 %}text-success{% else %}text-danger{% endif %}"
+                        readonly value="{{ '{:,.2f}'.format(model.profit_loss) }}">
                 </div>
             </div>
         </form>
@@ -111,8 +96,7 @@
     </div>
 </div>
 
-{# Links #}
-{% include '_security.links.html' %}
+{# Links #} {% include '_security.links.html' %}
 
 <div class="mt-2">
     To-do:
