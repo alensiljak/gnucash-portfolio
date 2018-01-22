@@ -36,6 +36,9 @@ class SecurityDetailsViewModel:
         # Income amount in currency
         self.income = None
         self.income_perc = None
+        # Total return = value diff + income
+        self.total_return = None
+        self.total_return_perc = None
 
         self.accounts: List[Account] = None
         self.income_accounts: List[Account] = None

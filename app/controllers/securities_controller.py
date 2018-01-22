@@ -118,6 +118,9 @@ def __get_model_for_details(
     # Income
     model.income = sec_agg.get_income_total()
     model.income_perc = model.income * 100 / model.total_paid
+    # total return
+    model.total_return = model.profit_loss + model.income
+    model.total_return_perc = model.total_return * 100 / model.total_paid
 
     # load all accounts
     model.accounts = sec_agg.accounts
