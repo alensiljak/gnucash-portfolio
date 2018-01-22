@@ -90,6 +90,7 @@ class SecurityAggregate(AggregateBase):
         """ Returns all unused splits in the account. Used for the calculation of avg.price.
         The split that has been partially used will have its quantity reduced to available
         quantity only. """
+        available_splits = []
         # get all purchase splits in the account
         query = (
             self.get_splits_query()
@@ -104,15 +105,20 @@ class SecurityAggregate(AggregateBase):
         sell_splits = query.filter(Split.quantity < 0).all()
         sell_q = sum(split.quantity for split in sell_splits)
         balance = buy_q + sell_q
-        available_splits = []
+        if balance == 0:
+            return available_splits
 
         for split in buy_splits:
             if split.quantity < balance:
                 # take this split and reduce the balance.
                 balance -= split.quantity
             else:
-                # This is the last split. Take only the remaining quantity.
+                # This is the last split.
+                price = split.value / split.quantity
+                # Take only the remaining quantity.
                 split.quantity -= balance
+                # Also adjust the value for easier calculation elsewhere.
+                split.value = balance * price
                 # The remaining balance is now distributed into splits.
                 balance = 0
             # add to the collection.
@@ -144,24 +150,6 @@ class SecurityAggregate(AggregateBase):
         last_price = query.first()
         #return last_price.value
         return last_price
-
-    # def get_dividend_accounts(self) -> List[Account]:
-    #     """
-    #     Finds all the distribution accounts (they are in Income group and have the same name
-    #     as the stock symbol).
-    #     """
-    #     # find all the income accounts with the same name.
-    #     acct_query = (
-    #         self.book.session.query(Account)
-    #         .filter(Account.name == self.security.mnemonic)
-    #     )
-    #     related = acct_query.all()
-    #     income_accounts = []
-    #     for related_account in related:
-    #         if related_account.fullname.startswith("Income"):
-    #             income_accounts.append(related_account)
-
-    #     return income_accounts
 
     def get_currency(self) -> Commodity:
         """
@@ -242,10 +230,6 @@ class SecurityAggregate(AggregateBase):
         )
         return query
 
-    def get_total_received(self) -> Decimal:
-        """ Total amount, in currency, received for the sale of security """
-        pass
-
     def get_total_paid(self) -> Decimal:
         """ Returns the total amount paid, in currency, for the stocks owned """
         query = (
@@ -258,6 +242,16 @@ class SecurityAggregate(AggregateBase):
             total += split.value
 
         return total
+
+    def get_total_paid_for_remaining_stock(self) -> Decimal:
+        """ Returns the amount paid only for the remaining stock """
+        paid = Decimal(0)
+
+        accounts = self.get_holding_accounts_query().all()
+        for acc in accounts:
+            splits = self.get_available_splits_for_account(acc)
+            paid += sum(split.value for split in splits)
+        return paid
 
     def get_value(self) -> Decimal:
         """ Returns the current value of stocks """

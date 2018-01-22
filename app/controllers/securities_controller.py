@@ -111,7 +111,8 @@ def __get_model_for_details(
     model.price = sec_agg.get_last_available_price()
 
     model.average_price = sec_agg.get_avg_price()
-    model.total_paid = sec_agg.get_total_paid()
+    # Here we take only the amount paid for the remaining stock.
+    model.total_paid = sec_agg.get_total_paid_for_remaining_stock()
 
     # Profit/loss
     model.profit_loss = model.value - model.total_paid
