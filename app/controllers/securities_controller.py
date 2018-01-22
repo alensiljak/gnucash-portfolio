@@ -113,8 +113,12 @@ def __get_model_for_details(
     model.average_price = sec_agg.get_avg_price()
     model.total_paid = sec_agg.get_total_paid()
 
+    # Profit/loss
     model.profit_loss = model.value - model.total_paid
-    model.profit_loss_perc = model.profit_loss * 100 / model.value
+    if abs(model.value) > abs(model.total_paid):
+        model.profit_loss_perc = model.profit_loss * 100 / model.value
+    else:
+        model.profit_loss_perc = model.value * 100 / model.profit_loss
     # Income
     model.income = sec_agg.get_income_total()
     model.income_perc = model.income * 100 / model.total_paid
