@@ -113,6 +113,9 @@ def __get_model_for_details(
     model.average_price = sec_agg.get_avg_price()
     model.total_paid = sec_agg.get_total_paid()
 
+    model.profit_loss = model.value - model.total_paid
+    model.profit_loss_perc = model.profit_loss * 100 / model.value
+
     # load all accounts
     model.accounts = sec_agg.accounts
     model.income_accounts = sec_agg.get_dividend_accounts()

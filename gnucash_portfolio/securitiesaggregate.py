@@ -192,7 +192,7 @@ class SecurityAggregate(AggregateBase):
             self.get_splits_query()
         )
         splits = query.all()
-        log(DEBUG, splits)
+        # log(DEBUG, splits)
 
         total = Decimal(0)
         for split in splits:

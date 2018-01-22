@@ -30,6 +30,9 @@ class SecurityDetailsViewModel:
         self.total_paid: Decimal = None
         # Average price paid per unit.
         self.average_price: Decimal = None
+        # Unrealized Profit/Loss
+        self.profit_loss = None
+        self.profit_loss_perc = None
 
         self.accounts: List[Account] = None
         self.income_accounts: List[Account] = None
