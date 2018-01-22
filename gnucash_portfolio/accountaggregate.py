@@ -33,7 +33,6 @@ class AccountAggregate(AggregateBase):
         super(AccountAggregate, self).__init__(book)
 
         self.account = account
-        #self.book = book
 
     def get_all_child_accounts_as_array(self) -> List[Account]:
         """ Returns the whole tree of child accounts in a list """
@@ -133,7 +132,7 @@ class AccountAggregate(AggregateBase):
 
     def get_balance(self):
         """ Current account balance """
-        on_date = datetimeutils.today_datetime()
+        on_date = datetimeutils.today()
         return self.get_balance_on(on_date)
 
     def get_balance_on(self, on_date: datetime) -> Decimal:
@@ -147,6 +146,14 @@ class AccountAggregate(AggregateBase):
         for split in splits:
             total += split.quantity * self.account.sign
         return total
+
+    def get_splits_query(self):
+        """ Returns all the splits in the account """
+        query = (
+            self.book.session.query(Split)
+            .filter(Split.account == self.account)
+        )
+        return query
 
     def get_splits_up_to(self, date_to: datetime) -> List[Split]:
         """ returns splits only up to the given date """

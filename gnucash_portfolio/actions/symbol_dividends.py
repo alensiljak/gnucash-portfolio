@@ -24,11 +24,11 @@ def get_dividend_sum(book: Book, income_account: Account):
 
 
 def get_dividend_sum_for_symbol(book: Book, symbol: str):
-    """    Calculates all income for a symbol    """
+    """ Calculates all income for a symbol """
     svc = SecuritiesAggregate(book)
     security = svc.get_by_symbol(symbol)
     sec_svc = SecurityAggregate(book, security)
-    accounts = sec_svc.get_dividend_accounts()
+    accounts = sec_svc.get_income_accounts()
     total = Decimal(0)
 
     for account in accounts:

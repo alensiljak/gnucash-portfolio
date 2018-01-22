@@ -115,23 +115,32 @@ def __get_model_for_details(
 
     # Profit/loss
     model.profit_loss = model.value - model.total_paid
-    model.profit_loss_perc = abs(model.profit_loss) * 100 / model.total_paid
+    if model.total_paid:
+        model.profit_loss_perc = abs(model.profit_loss) * 100 / model.total_paid
+    else:
+        model.profit_loss_perc = 0
     if abs(model.value) < abs(model.total_paid):
         model.profit_loss_perc *= -1
     # Income
     model.income = sec_agg.get_income_total()
-    model.income_perc = model.income * 100 / model.total_paid
+    if model.total_paid:
+        model.income_perc = model.income * 100 / model.total_paid
+    else:
+        model.income_perc = 0
     # income in the last 12 months
     #income_last_year = sec_agg.get_income_total
     # model.income_perc_last_12m = 0
-    
+
     # total return
     model.total_return = model.profit_loss + model.income
-    model.total_return_perc = model.total_return * 100 / model.total_paid
+    if model.total_paid:
+        model.total_return_perc = model.total_return * 100 / model.total_paid
+    else:
+        model.total_return_perc = 0
 
     # load all accounts
     model.accounts = sec_agg.accounts
-    model.income_accounts = sec_agg.get_dividend_accounts()
+    model.income_accounts = sec_agg.get_income_accounts()
 
     return model
 

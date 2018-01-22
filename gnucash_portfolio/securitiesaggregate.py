@@ -4,11 +4,11 @@ Accounts should be only accounts that hold these commodities.
 """
 import datetime
 from decimal import Decimal
-# from logging import log, DEBUG
+from logging import log, DEBUG
 from typing import List
 from sqlalchemy import desc
 from sqlalchemy.orm import aliased
-from piecash import Account, Book, Commodity, Price, Split
+from piecash import Account, Book, Commodity, Price, Split, Transaction
 from gnucash_portfolio.lib import datetimeutils
 from gnucash_portfolio.lib.aggregatebase import AggregateBase
 from gnucash_portfolio.accountaggregate import AccountAggregate # AccountsAggregate
@@ -26,11 +26,16 @@ class SecurityAggregate(AggregateBase):
         """ Create price for security """
         pass
 
-    def get_avg_price(self) -> Decimal:
+    def get_avg_price(self):
+        """ Returns the default avg. price """
+        # Use statistical average of the price until fifo calculation is complete.
+        # return self.get_avg_price_stat()
+        return self.get_avg_price_fifo()
+
+    def get_avg_price_stat(self) -> Decimal:
         """
-        Calculates the average price paid for the security.
-        security = Commodity
-        Returns Decimal value.
+        Calculates the statistical average price for the security,
+        by averaging only the prices paid. Very simple first implementation.
         """
         avg_price = Decimal(0)
 
@@ -59,26 +64,70 @@ class SecurityAggregate(AggregateBase):
             avg_price = price_total / price_count
         return avg_price
 
-    def get_quantity(self) -> Decimal:
+    def get_avg_price_fifo(self) -> Decimal:
         """
-        Returns the number of shares for the given security.
-        It gets the number from all the accounts in the book.
+        Calculates the average price paid for the security.
+        security = Commodity
+        Returns Decimal value.
         """
-        # Use today's date but reset hour and lower.
-        today = datetimeutils.today_datetime()
-        today = datetimeutils.end_of_day(today)
-        return self.get_num_shares_on(today)
+        balance = self.get_quantity()
+        if not balance:
+            return 0
+
+        paid = Decimal(0)
+        accounts = self.get_holding_accounts_query().all()
+        # get unused splits (quantity and total paid) per account.
+        for account in accounts:
+            splits = self.get_available_splits_for_account(account)
+
+            for split in splits:
+                paid += split.value
+
+        avg_price = paid / balance
+        return avg_price
+
+    def get_available_splits_for_account(self, account: Account) -> List[Split]:
+        """ Returns all unused splits in the account. Used for the calculation of avg.price.
+        The split that has been partially used will have its quantity reduced to available
+        quantity only. """
+        # get all purchase splits in the account
+        query = (
+            self.get_splits_query()
+            .filter(Split.account == account)
+        )
+        buy_splits = (
+            query.filter(Split.quantity > 0)
+            .join(Transaction)
+            .order_by(desc(Transaction.post_date))
+        ).all()
+        buy_q = sum(split.quantity for split in buy_splits)
+        sell_splits = query.filter(Split.quantity < 0).all()
+        sell_q = sum(split.quantity for split in sell_splits)
+        balance = buy_q + sell_q
+        available_splits = []
+
+        for split in buy_splits:
+            if split.quantity < balance:
+                # take this split and reduce the balance.
+                balance -= split.quantity
+            else:
+                # This is the last split. Take only the remaining quantity.
+                split.quantity -= balance
+                # The remaining balance is now distributed into splits.
+                balance = 0
+            # add to the collection.
+            available_splits.append(split)
+            if balance == 0:
+                break
+
+        return available_splits
 
     def get_num_shares_on(self, on_date: datetime) -> Decimal:
         """ Returns the number of shares for security on (and including) the given date. """
         total_quantity = Decimal(0)
-        #accts_svc = AccountsAggregate(self.book)
 
-        for account in self.security.accounts:
-            # exclude Trading accouns explicitly.
-            if account.type == "TRADING":
-                continue
-
+        accounts = self.get_holding_accounts_query().all()
+        for account in accounts:
             acct_svc = AccountAggregate(self.book, account)
             quantity = acct_svc.get_balance_on(on_date)
 
@@ -96,23 +145,23 @@ class SecurityAggregate(AggregateBase):
         #return last_price.value
         return last_price
 
-    def get_dividend_accounts(self) -> List[Account]:
-        """
-        Finds all the distribution accounts (they are in Income group and have the same name
-        as the stock symbol).
-        """
-        # find all the income accounts with the same name.
-        acct_query = (
-            self.book.session.query(Account)
-            .filter(Account.name == self.security.mnemonic)
-        )
-        related = acct_query.all()
-        income_accounts = []
-        for related_account in related:
-            if related_account.fullname.startswith("Income"):
-                income_accounts.append(related_account)
+    # def get_dividend_accounts(self) -> List[Account]:
+    #     """
+    #     Finds all the distribution accounts (they are in Income group and have the same name
+    #     as the stock symbol).
+    #     """
+    #     # find all the income accounts with the same name.
+    #     acct_query = (
+    #         self.book.session.query(Account)
+    #         .filter(Account.name == self.security.mnemonic)
+    #     )
+    #     related = acct_query.all()
+    #     income_accounts = []
+    #     for related_account in related:
+    #         if related_account.fullname.startswith("Income"):
+    #             income_accounts.append(related_account)
 
-        return income_accounts
+    #     return income_accounts
 
     def get_currency(self) -> Commodity:
         """
@@ -125,6 +174,15 @@ class SecurityAggregate(AggregateBase):
 
         return last_price.currency
 
+    def get_holding_accounts_query(self) -> List[Account]:
+        """ Returns all holding accounts, except Trading accounts. """
+        query = (
+            self.book.session.query(Account)
+            .filter(Account.commodity == self.security)
+            .filter(Account.type != "TRADING")
+        )
+        return query
+
     def get_income_accounts(self) -> List[Account]:
         """
         Returns all income accounts for this security.
@@ -132,7 +190,7 @@ class SecurityAggregate(AggregateBase):
         having the same name as the mnemonic.
         They should be under Assets but this requires a recursive SQL query.
         """
-        trading = self.book.trading_account(self.security)
+        # trading = self.book.trading_account(self.security)
         # log(DEBUG, "trading account = %s, %s", trading.fullname, trading.guid)
         parent_alias = aliased(Account)
         query = (
@@ -141,8 +199,9 @@ class SecurityAggregate(AggregateBase):
             .join(parent_alias, Account.parent)
             .filter(Account.name == self.security.mnemonic,
                     Commodity.namespace == "CURRENCY",
-                    parent_alias.parent_guid != trading.guid)
+                    Account.type != "TRADING")
         )
+        # parent_alias.parent_guid != trading.guid
         #generic.print_sql(query)
         return query.all()
 
@@ -163,21 +222,15 @@ class SecurityAggregate(AggregateBase):
         """ Returns all available prices for security """
         return self.security.prices.order_by(Price.date)
 
-    def get_total_paid(self) -> Decimal:
-        """ Returns the total amount paid, in currency, for the stocks owned """
-        # TODO use lots to find only the remaining stocks and remove the sold ones from calculation?
-
-        query = (
-            self.get_splits_query()
-        )
-        splits = query.all()
-        # log(DEBUG, splits)
-
-        total = Decimal(0)
-        for split in splits:
-            total += split.value
-
-        return total
+    def get_quantity(self) -> Decimal:
+        """
+        Returns the number of shares for the given security.
+        It gets the number from all the accounts in the book.
+        """
+        # Use today's date but reset hour and lower.
+        today = datetimeutils.today()
+        today = datetimeutils.end_of_day(today)
+        return self.get_num_shares_on(today)
 
     def get_splits_query(self):
         """ Returns the query for all splits for this security """
@@ -188,6 +241,23 @@ class SecurityAggregate(AggregateBase):
             .filter(Account.commodity_guid == self.security.guid)
         )
         return query
+
+    def get_total_received(self) -> Decimal:
+        """ Total amount, in currency, received for the sale of security """
+        pass
+
+    def get_total_paid(self) -> Decimal:
+        """ Returns the total amount paid, in currency, for the stocks owned """
+        query = (
+            self.get_splits_query()
+        )
+        splits = query.all()
+
+        total = Decimal(0)
+        for split in splits:
+            total += split.value
+
+        return total
 
     def get_value(self) -> Decimal:
         """ Returns the current value of stocks """

@@ -57,7 +57,7 @@ def today_date() -> date:
     """ Returns today as a date """
     return datetime.today().date()
 
-def today_datetime() -> datetime:
+def today() -> datetime:
     """ Returns today (date only) as datetime """
     date_today = today_date()
     today = datetime.combine(date_today, time.min)

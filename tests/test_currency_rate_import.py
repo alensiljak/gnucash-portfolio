@@ -65,7 +65,7 @@ def test_import_without_saving(svc_rw: BookAggregate):
     # Arrange
     aud = svc_rw.currencies.get_by_symbol("AUD")
     expected = 1
-    today = datetimeutils.today_datetime()
+    today = datetimeutils.today()
 
     rates = []
     rates.append(PriceModel("AUD", "EUR", Decimal('0.63'), today))
