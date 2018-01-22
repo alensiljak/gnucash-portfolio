@@ -4,7 +4,7 @@ Accounts should be only accounts that hold these commodities.
 """
 import datetime
 from decimal import Decimal
-from logging import log, DEBUG
+# from logging import log, DEBUG
 from typing import List
 from sqlalchemy import desc
 from sqlalchemy.orm import aliased
@@ -25,74 +25,6 @@ class SecurityAggregate(AggregateBase):
     def create_price(self):
         """ Create price for security """
         pass
-
-    def get_quantity(self) -> Decimal:
-        """
-        Returns the number of shares for the given security.
-        It gets the number from all the accounts in the book.
-        """
-        # Use today's date but reset hour and lower.
-        today = datetimeutils.today_datetime()
-        today = datetimeutils.end_of_day(today)
-        return self.get_num_shares_on(today)
-
-    def get_num_shares_on(self, on_date: datetime) -> Decimal:
-        """ Returns the number of shares for security on (and including) the given date. """
-        total_quantity = Decimal(0)
-        #accts_svc = AccountsAggregate(self.book)
-
-        for account in self.security.accounts:
-            # exclude Trading accouns explicitly.
-            if account.type == "TRADING":
-                continue
-
-            acct_svc = AccountAggregate(self.book, account)
-            quantity = acct_svc.get_balance_on(on_date)
-
-            total_quantity += quantity
-
-        return total_quantity
-
-    def get_value(self) -> Decimal:
-        """ Returns the current value of stocks """
-        quantity = self.get_quantity()
-        price = self.get_last_available_price()
-        if not price:
-            # raise ValueError("no price found for", self.full_symbol)
-            return Decimal(0)
-
-        value = quantity * price.value
-        return value
-
-    def get_value_in_base_currency(self) -> Decimal:
-        """ Calculates the value of security holdings in base currency """
-        # check if the currency is the base currency.
-        amt_orig = self.get_value()
-        # Security currency
-        sec_cur = self.get_currency()
-        #base_cur = self.book.default_currency
-        cur_svc = CurrenciesAggregate(self.book)
-        base_cur = cur_svc.get_default_currency()
-
-        if sec_cur == base_cur:
-            return amt_orig
-
-        # otherwise recalculate
-        single_svc = cur_svc.get_currency_aggregate(sec_cur)
-        rate = single_svc.get_latest_rate(base_cur)
-
-        result = amt_orig * rate.value
-        return result
-
-    def get_last_available_price(self) -> Price:
-        """ Finds the last available price for security """
-        query = (
-            self.security.prices
-            .order_by(desc(Price.date))
-        )
-        last_price = query.first()
-        #return last_price.value
-        return last_price
 
     def get_avg_price(self) -> Decimal:
         """
@@ -127,6 +59,43 @@ class SecurityAggregate(AggregateBase):
             avg_price = price_total / price_count
         return avg_price
 
+    def get_quantity(self) -> Decimal:
+        """
+        Returns the number of shares for the given security.
+        It gets the number from all the accounts in the book.
+        """
+        # Use today's date but reset hour and lower.
+        today = datetimeutils.today_datetime()
+        today = datetimeutils.end_of_day(today)
+        return self.get_num_shares_on(today)
+
+    def get_num_shares_on(self, on_date: datetime) -> Decimal:
+        """ Returns the number of shares for security on (and including) the given date. """
+        total_quantity = Decimal(0)
+        #accts_svc = AccountsAggregate(self.book)
+
+        for account in self.security.accounts:
+            # exclude Trading accouns explicitly.
+            if account.type == "TRADING":
+                continue
+
+            acct_svc = AccountAggregate(self.book, account)
+            quantity = acct_svc.get_balance_on(on_date)
+
+            total_quantity += quantity
+
+        return total_quantity
+
+    def get_last_available_price(self) -> Price:
+        """ Finds the last available price for security """
+        query = (
+            self.security.prices
+            .order_by(desc(Price.date))
+        )
+        last_price = query.first()
+        #return last_price.value
+        return last_price
+
     def get_dividend_accounts(self) -> List[Account]:
         """
         Finds all the distribution accounts (they are in Income group and have the same name
@@ -156,9 +125,6 @@ class SecurityAggregate(AggregateBase):
 
         return last_price.currency
 
-    def get_distributions(self):
-        pass
-
     def get_income_accounts(self) -> List[Account]:
         """
         Returns all income accounts for this security.
@@ -179,6 +145,14 @@ class SecurityAggregate(AggregateBase):
         )
         #generic.print_sql(query)
         return query.all()
+
+    def get_income_total(self) -> Decimal:
+        """ Sum of all income = sum of balances of all income accounts. """
+        accounts = self.get_income_accounts()
+        sum = Decimal(0)
+        for acct in accounts:
+            sum += acct.get_balance()
+        return sum
 
     def get_prices(self) -> List[Price]:
         """ Returns all available prices for security """
@@ -209,6 +183,37 @@ class SecurityAggregate(AggregateBase):
             .filter(Account.commodity_guid == self.security.guid)
         )
         return query
+
+    def get_value(self) -> Decimal:
+        """ Returns the current value of stocks """
+        quantity = self.get_quantity()
+        price = self.get_last_available_price()
+        if not price:
+            # raise ValueError("no price found for", self.full_symbol)
+            return Decimal(0)
+
+        value = quantity * price.value
+        return value
+
+    def get_value_in_base_currency(self) -> Decimal:
+        """ Calculates the value of security holdings in base currency """
+        # check if the currency is the base currency.
+        amt_orig = self.get_value()
+        # Security currency
+        sec_cur = self.get_currency()
+        #base_cur = self.book.default_currency
+        cur_svc = CurrenciesAggregate(self.book)
+        base_cur = cur_svc.get_default_currency()
+
+        if sec_cur == base_cur:
+            return amt_orig
+
+        # otherwise recalculate
+        single_svc = cur_svc.get_currency_aggregate(sec_cur)
+        rate = single_svc.get_latest_rate(base_cur)
+
+        result = amt_orig * rate.value
+        return result
 
     ######################
     # Properties

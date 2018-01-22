@@ -33,6 +33,9 @@ class SecurityDetailsViewModel:
         # Unrealized Profit/Loss
         self.profit_loss = None
         self.profit_loss_perc = None
+        # Income amount in currency
+        self.income = None
+        self.income_perc = None
 
         self.accounts: List[Account] = None
         self.income_accounts: List[Account] = None
