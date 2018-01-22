@@ -31,32 +31,8 @@
                 </div>
 
                 <div class="form-group col">
-                    <label>Price Date</label>
-                    <input type="text" class="form-control text-right" readonly 
-                        value="{% if model.price %}{{ '{:%Y-%m-%d}'.format(model.price.date) }}{% endif %}">
                 </div>
 
-                <div class="form-group col">
-                    <label>Price ({{ model.currency }})</label>
-                    <input type="text" class="form-control text-right" readonly value="{{ model.price.value }}">
-                </div>
-
-                <div class="form-group col">
-                    <label>Value ({{ model.currency }})</label>
-                    <input type="text" class="form-control text-right" readonly value="{{ '{:,.2f}'.format(model.value) }}">
-                </div>
-            </div>
-            <div class="form-row">
-                <div class="form-group col">
-                    <label>Unrealized Gain/Loss</label>
-                    <input type="text" class="form-control text-right {% if model.profit_loss > 0 %}text-success{% else %}text-danger{% endif %}" readonly 
-                        value="{{ '{:,.2f}'.format(model.profit_loss) }}">
-                </div>
-                <div class="form-group col">
-                    <label>Unrealized Gain/Loss %</label>
-                    <input type="text" class="form-control text-right {% if model.profit_loss > 0 %}text-success{% else %}text-danger{% endif %}" readonly 
-                        value="{{ '{:,.2f}'.format(model.profit_loss_perc) }}%">
-                </div>
                 <div class="form-group col">
                     <label>Average Price</label>
                     <input type="text" class="form-control text-right" readonly value="{{ '{:,.2f}'.format(model.average_price) }}">
@@ -64,6 +40,28 @@
                 <div class="form-group col">
                     <label>Total Paid</label>
                     <input type="text" class="form-control text-right" readonly value="{{ '{:,.2f}'.format(model.total_paid) }}">
+                </div>
+            </div>
+            <div class="form-row">
+                <div class="form-group col">
+                    <label>Unrealized Gain/Loss %</label>
+                    <input type="text" class="form-control text-right {% if model.profit_loss > 0 %}text-success{% else %}text-danger{% endif %}" readonly 
+                        value="{{ '{:,.2f}'.format(model.profit_loss_perc) }}%">
+                </div>
+                <div class="form-group col">
+                    <label>Unrealized Gain/Loss</label>
+                    <input type="text" class="form-control text-right {% if model.profit_loss > 0 %}text-success{% else %}text-danger{% endif %}" readonly 
+                        value="{{ '{:,.2f}'.format(model.profit_loss) }}">
+                </div>
+                <div class="form-group col">
+                    <label>Price ({{ model.currency }})</label>, 
+                    <small class="ml-5 align-baseline">{% if model.price %}on {{ '{:%Y-%m-%d}'.format(model.price.date) }}{% endif %}</small>
+
+                    <input type="text" class="form-control text-right" readonly value="{{ model.price.value }}">
+                </div>
+                <div class="form-group col">
+                    <label>Value ({{ model.currency }})</label>
+                    <input type="text" class="form-control text-right" readonly value="{{ '{:,.2f}'.format(model.value) }}">
                 </div>
             </div>
         </form>
