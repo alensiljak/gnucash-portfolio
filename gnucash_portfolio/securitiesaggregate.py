@@ -149,10 +149,15 @@ class SecurityAggregate(AggregateBase):
     def get_income_total(self) -> Decimal:
         """ Sum of all income = sum of balances of all income accounts. """
         accounts = self.get_income_accounts()
-        sum = Decimal(0)
+        income = Decimal(0)
         for acct in accounts:
-            sum += acct.get_balance()
-        return sum
+            income += acct.get_balance()
+        return income
+
+    def get_income_in_period(self, start: datetime, end: datetime) -> Decimal:
+        """ Returns all income in the given period """
+        # get_income_in_account_period
+        pass
 
     def get_prices(self) -> List[Price]:
         """ Returns all available prices for security """
@@ -232,6 +237,9 @@ class SecurityAggregate(AggregateBase):
         """ Returns the full symbol (namespace + symbol) """
         return self.security.namespace + ":" + self.security.mnemonic
 
+    #######################
+    # Private
+    # def get_income_in_account_period(self)
 
 class SecuritiesAggregate(AggregateBase):
     """ Operates on security collections """

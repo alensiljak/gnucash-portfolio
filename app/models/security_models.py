@@ -36,6 +36,8 @@ class SecurityDetailsViewModel:
         # Income amount in currency
         self.income = None
         self.income_perc = None
+        # Income % for the last 12 months
+        self.income_perc_last_12m = None
         # Total return = value diff + income
         self.total_return = None
         self.total_return_perc = None
