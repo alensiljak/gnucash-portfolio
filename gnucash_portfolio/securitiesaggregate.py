@@ -11,7 +11,7 @@ from sqlalchemy.orm import aliased
 from piecash import Account, Book, Commodity, Price, Split, Transaction
 from gnucash_portfolio.lib import datetimeutils, generic
 from gnucash_portfolio.lib.aggregatebase import AggregateBase
-from gnucash_portfolio.accountaggregate import AccountAggregate # AccountsAggregate
+from gnucash_portfolio.accountaggregate import AccountAggregate, AccountType # AccountsAggregate
 from gnucash_portfolio.currencyaggregate import CurrenciesAggregate
 
 
@@ -167,7 +167,7 @@ class SecurityAggregate(AggregateBase):
         query = (
             self.book.session.query(Account)
             .filter(Account.commodity == self.security)
-            .filter(Account.type != "TRADING")
+            .filter(Account.type != AccountType.TRADING.value)
         )
         return query
 
@@ -191,7 +191,8 @@ class SecurityAggregate(AggregateBase):
             .join(Commodity)
             .filter(Account.name == self.security.mnemonic)
             .filter(Commodity.namespace == "CURRENCY")
-            .filter(Account.type != "TRADING")
+            # .filter(Account.type != "TRADING")
+            .filter(Account.type == AccountType.INCOME.value)
         )
         # generic.print_sql(query)
         return query.all()
