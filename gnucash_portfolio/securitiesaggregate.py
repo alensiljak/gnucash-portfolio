@@ -9,7 +9,7 @@ from typing import List
 from sqlalchemy import desc
 from sqlalchemy.orm import aliased
 from piecash import Account, Book, Commodity, Price, Split, Transaction
-from gnucash_portfolio.lib import datetimeutils
+from gnucash_portfolio.lib import datetimeutils, generic
 from gnucash_portfolio.lib.aggregatebase import AggregateBase
 from gnucash_portfolio.accountaggregate import AccountAggregate # AccountsAggregate
 from gnucash_portfolio.currencyaggregate import CurrenciesAggregate
@@ -180,17 +180,20 @@ class SecurityAggregate(AggregateBase):
         """
         # trading = self.book.trading_account(self.security)
         # log(DEBUG, "trading account = %s, %s", trading.fullname, trading.guid)
-        parent_alias = aliased(Account)
+
+        # Example on how to self-link, i.e. parent account, using alias.
+        # parent_alias = aliased(Account)
+            # .join(parent_alias, Account.parent)
+        # parent_alias.parent_guid != trading.guid
+
         query = (
             self.book.session.query(Account)
             .join(Commodity)
-            .join(parent_alias, Account.parent)
-            .filter(Account.name == self.security.mnemonic,
-                    Commodity.namespace == "CURRENCY",
-                    Account.type != "TRADING")
+            .filter(Account.name == self.security.mnemonic)
+            .filter(Commodity.namespace == "CURRENCY")
+            .filter(Account.type != "TRADING")
         )
-        # parent_alias.parent_guid != trading.guid
-        #generic.print_sql(query)
+        # generic.print_sql(query)
         return query.all()
 
     def get_income_total(self) -> Decimal:
