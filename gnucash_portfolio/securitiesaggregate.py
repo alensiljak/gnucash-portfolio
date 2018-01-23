@@ -167,8 +167,9 @@ class SecurityAggregate(AggregateBase):
         query = (
             self.book.session.query(Account)
             .filter(Account.commodity == self.security)
-            .filter(Account.type != AccountType.TRADING.value)
+            .filter(Account.type != AccountType.TRADING.name)
         )
+        # generic.print_sql(query)
         return query
 
     def get_income_accounts(self) -> List[Account]:
