@@ -21,6 +21,8 @@ class SecurityAggregate(AggregateBase):
         super(SecurityAggregate, self).__init__(book)
         # self.book = book
         self.security = security
+        # cache of holding accounts
+        self.__holding_accounts = None
 
     def create_price(self):
         """ Create price for security """
@@ -46,7 +48,7 @@ class SecurityAggregate(AggregateBase):
 
         for account in self.security.accounts:
             # Ignore trading accounts.
-            if account.type == "TRADING":
+            if account.type == AccountType.TRADING.name:
                 continue
 
             for split in account.splits:
@@ -75,7 +77,7 @@ class SecurityAggregate(AggregateBase):
             return 0
 
         paid = Decimal(0)
-        accounts = self.get_holding_accounts_query().all()
+        accounts = self.get_holding_accounts()
         # get unused splits (quantity and total paid) per account.
         for account in accounts:
             splits = self.get_available_splits_for_account(account)
@@ -132,7 +134,7 @@ class SecurityAggregate(AggregateBase):
         """ Returns the number of shares for security on (and including) the given date. """
         total_quantity = Decimal(0)
 
-        accounts = self.get_holding_accounts_query().all()
+        accounts = self.get_holding_accounts()
         # log(DEBUG, "accounts %s", accounts)
         for account in accounts:
             acct_svc = AccountAggregate(self.book, account)
@@ -163,7 +165,14 @@ class SecurityAggregate(AggregateBase):
 
         return last_price.currency
 
-    def get_holding_accounts_query(self) -> List[Account]:
+    def get_holding_accounts(self) -> List[Account]:
+        """ Returns the (cached) list of holding accounts """
+        if not self.__holding_accounts:
+            self.__holding_accounts = self.__get_holding_accounts_query().all()
+
+        return self.__holding_accounts
+
+    def __get_holding_accounts_query(self):
         """ Returns all holding accounts, except Trading accounts. """
         query = (
             self.book.session.query(Account)
@@ -231,7 +240,7 @@ class SecurityAggregate(AggregateBase):
         query = (
             self.book.session.query(Split)
             .join(Account)
-            .filter(Account.type != "TRADING")
+            .filter(Account.type != AccountType.TRADING.name)
             .filter(Account.commodity_guid == self.security.guid)
         )
         return query
@@ -253,7 +262,7 @@ class SecurityAggregate(AggregateBase):
         """ Returns the amount paid only for the remaining stock """
         paid = Decimal(0)
 
-        accounts = self.get_holding_accounts_query().all()
+        accounts = self.get_holding_accounts()
         for acc in accounts:
             splits = self.get_available_splits_for_account(acc)
             paid += sum(split.value for split in splits)
