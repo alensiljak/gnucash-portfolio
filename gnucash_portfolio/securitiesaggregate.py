@@ -209,7 +209,7 @@ class SecurityAggregate(AggregateBase):
             # .filter(Account.type != "TRADING")
             .filter(Account.type == AccountType.INCOME.name)
         )
-        generic.print_sql(query)
+        # generic.print_sql(query)
         return query.all()
 
     def get_income_total(self) -> Decimal:
