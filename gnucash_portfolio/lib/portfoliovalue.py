@@ -25,7 +25,7 @@ def get_stock_model_from(book: Book, commodity: Commodity, as_of_date: date):
     # Ignore 0-balance
     if model.shares_num == 0:
         return None
-    
+
     model.avg_price = svc.get_avg_price()
 
     # Last price
