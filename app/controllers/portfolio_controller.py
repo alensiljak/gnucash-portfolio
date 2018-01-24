@@ -56,7 +56,8 @@ def __get_model_for_portfolio_value(input_model: PortfolioValueInputModel):
         for stock in stocks:
             row = portfoliovalue.get_stock_model_from(
                 book, stock, as_of_date=ref_date)
-            result.stock_rows.append(row)
+            if row:
+                result.stock_rows.append(row)
 
     return result
 
