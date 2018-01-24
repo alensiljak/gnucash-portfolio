@@ -207,14 +207,15 @@ class SecurityAggregate(AggregateBase):
             .filter(Account.name == self.security.mnemonic)
             .filter(Commodity.namespace == "CURRENCY")
             # .filter(Account.type != "TRADING")
-            .filter(Account.type == AccountType.INCOME.value)
+            .filter(Account.type == AccountType.INCOME.name)
         )
-        # generic.print_sql(query)
+        generic.print_sql(query)
         return query.all()
 
     def get_income_total(self) -> Decimal:
         """ Sum of all income = sum of balances of all income accounts. """
         accounts = self.get_income_accounts()
+        # log(DEBUG, "income accounts: %s", accounts)
         income = Decimal(0)
         for acct in accounts:
             income += acct.get_balance()
