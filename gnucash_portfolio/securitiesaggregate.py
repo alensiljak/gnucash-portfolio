@@ -7,12 +7,14 @@ from decimal import Decimal
 from logging import log, DEBUG
 from typing import List
 from sqlalchemy import desc
-from sqlalchemy.orm import aliased
+# from sqlalchemy.orm import aliased
 from piecash import Account, Book, Commodity, Price, Split, Transaction
 from gnucash_portfolio.lib import datetimeutils, generic
 from gnucash_portfolio.lib.aggregatebase import AggregateBase
 from gnucash_portfolio.accountaggregate import AccountAggregate, AccountType # AccountsAggregate
 from gnucash_portfolio.currencyaggregate import CurrenciesAggregate
+from gnucash_portfolio.model.split_model import SplitModel
+from gnucash_portfolio.mappers.splitmapper import SplitMapper
 
 
 class SecurityAggregate(AggregateBase):
@@ -110,7 +112,9 @@ class SecurityAggregate(AggregateBase):
         if balance == 0:
             return available_splits
 
-        for split in buy_splits:
+        for real_split in buy_splits:
+            split = SplitMapper().map_split(real_split, SplitModel())
+
             if split.quantity < balance:
                 # take this split and reduce the balance.
                 balance -= split.quantity
