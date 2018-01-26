@@ -37,7 +37,7 @@ def index():
         search = {
             "symbol": None
         }
-        return render_template('security.html', model=model, filter=search)
+        return render_template('securities.html', model=model, filter=search)
 
 @stock_controller.route('/list')
 def list_securities():
