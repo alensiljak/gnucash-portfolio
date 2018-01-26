@@ -44,3 +44,12 @@ class SecurityDetailsViewModel:
 
         self.accounts: List[Account] = None
         self.income_accounts: List[Account] = None
+
+
+class SecurityYieldModel:
+    """ Yiel view model """
+    def __init__(self):
+        self.average_price = None
+        self.security = None
+        self.quantity = None
+        self.total_paid = None

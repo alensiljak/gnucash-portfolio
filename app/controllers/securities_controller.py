@@ -80,10 +80,13 @@ def distributions():
 def yield_calc(symbol: str):
     """ Display yield calculations for security """
     with BookAggregate() as svc:
-        security = svc.securities.get_by_symbol(symbol)
-        model = {
-            "security": security
-        }
+        agg = svc.securities.get_aggregate_for_symbol(symbol)
+        model = security_models.SecurityYieldModel()
+        model.security = agg.security
+        model.quantity = agg.get_quantity()
+        model.average_price = agg.get_avg_price()
+        model.total_paid = agg.get_total_paid_for_remaining_stock()
+
         result = render_template('security.yield.html', model=model)
     return result
 
