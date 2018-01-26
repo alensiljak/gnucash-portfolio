@@ -7,6 +7,7 @@ Stocks
 - list of all distributions
 - calculation of ROI
 """
+from decimal import Decimal
 from logging import log, DEBUG
 import flask
 from flask import Blueprint, request, render_template
@@ -82,10 +83,20 @@ def yield_calc(symbol: str):
     with BookAggregate() as svc:
         agg = svc.securities.get_aggregate_for_symbol(symbol)
         model = security_models.SecurityYieldModel()
+
         model.security = agg.security
         model.quantity = agg.get_quantity()
         model.average_price = agg.get_avg_price()
         model.total_paid = agg.get_total_paid_for_remaining_stock()
+        model.price = agg.get_last_available_price()
+        model.value = agg.get_value()
+
+        model.profit_loss = Decimal(0)
+        model.income = 0
+        model.total_return = 0
+        model.profit_loss_perc = 0
+        model.income_perc = 0
+        model.total_return_perc = 0
 
         result = render_template('security.yield.html', model=model)
     return result
