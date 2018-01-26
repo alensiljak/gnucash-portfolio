@@ -18,6 +18,13 @@
                     <label>Quantity</label>
                     <input type="text" class="form-control text-right" readonly value="{{ '{:,.2f}'.format(model.quantity) }}">
                 </div>
+                <div class="form-group col-6">
+                    <label>Description</label>
+                    <input type="text" class="form-control" readonly value="{{ model.security.fullname }}">
+                </div>
+            </div>
+            {# Row 2 #}
+            <div class="form-row">
                 <div class="form-group col">
                     <label>Average Price</label>
                     <input type="text" class="form-control text-right" readonly value="{{ '{:,.2f}'.format(model.average_price) }}">
@@ -26,22 +33,17 @@
                     <label>Total Paid</label>
                     <input type="text" class="form-control text-right" readonly value="{{ '{:,.2f}'.format(model.total_paid) }}">
                 </div>
-            </div>
-            {# Row 2 #}
-            <div class="form-row">
-                <div class="form-group col-6">
-                    <label>Description</label>
-                    <input type="text" class="form-control" readonly value="{{ model.security.fullname }}">
-                </div>
                 <div class="form-group col">
                     <label>Price ({{ model.currency }})</label>,
                     <small class="ml-5 align-baseline">{% if model.price %}on {{ '{:%Y-%m-%d}'.format(model.price.date) }}{% endif %}</small>
 
-                    <input type="text" class="form-control text-right" readonly value="{{ model.price.value }}">
+                    <input type="text" class="form-control text-right" readonly 
+                        value="{{ model.price.value }}">
                 </div>
                 <div class="form-group col">
                     <label>Value ({{ model.currency }})</label>
-                    <input type="text" class="form-control text-right" readonly value="{{ '{:,.2f}'.format(model.value) }}">
+                    <input type="text" class="form-control text-right" readonly 
+                        value="{{ '{:,.2f}'.format(model.value) }}">
                 </div>
             </div>
             {# Row 3 #}
