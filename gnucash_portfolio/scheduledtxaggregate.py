@@ -31,11 +31,13 @@ def get_next_occurrence(tx: ScheduledTransaction) -> date:
     # https://github.com/MisterY/gnucash-portfolio/issues/3
 
     # Preparing ref day is an important part before the calculation.
-    # It should be: a) the last occurrence date; or b) the recurrence start date - 1.
+    # It should be:
+    #   a) the last occurrence date + 1, or
+    #   b) the recurrence start date - 1.
     # because the refDate is the date from which the due dates are being calculated. To include
     # the ones starting today, we need to calculate from the day before.
     ref_date: datetime = (
-        tx.last_occur if tx.last_occur
+        datetimeutils.add_days(tx.last_occur, 1) if tx.last_occur
         else datetimeutils.subtract_days(tx.recurrence.recurrence_period_start, 1)
     )
     today = datetimeutils.today_date()
@@ -83,6 +85,7 @@ def get_next_occurrence(tx: ScheduledTransaction) -> date:
             # Set at end of month again (?!)
             #next_date = datetimeutils.get_end_of_month(next_date)
         else:
+            # one fewer month fwd because of the occurrence in this month.
             next_date = datetimeutils.add_months(next_date, mult - 1)
 
     # elif period == "once":
