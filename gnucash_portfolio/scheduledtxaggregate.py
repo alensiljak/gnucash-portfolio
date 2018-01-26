@@ -47,6 +47,7 @@ def get_next_occurrence(tx: ScheduledTransaction) -> date:
     ###########################################################
     # The code below mimics the function
     # recurrenceNextInstance(const Recurrence *r, const GDate *refDate, GDate *nextDate)
+    # https://github.com/Gnucash/gnucash/blob/115c0bf4a4afcae4269fe4b9d1e4a73ec7762ec6/libgnucash/engine/Recurrence.c#L172
 
     start_date: datetime = tx.recurrence.recurrence_period_start
     if ref_date < start_date:
@@ -67,14 +68,28 @@ def get_next_occurrence(tx: ScheduledTransaction) -> date:
     period: str = tx.recurrence.recurrence_period_type
     wadj = tx.recurrence.recurrence_weekend_adjust
 
+    # Not all periods from the original file are included at the moment.
     if period in ([RecurrencePeriod.YEAR.value, RecurrencePeriod.MONTH.value,
                    RecurrencePeriod.END_OF_MONTH.value]):
         if period == RecurrencePeriod.YEAR.value:
             mult *= 12
 
         # handle weekend adjustment here.
-        if wadj == WeekendAdjustment.BACK.value:
-            log(WARN, "weekend adjustment backwards not handled")
+        ## Takes care of short months.
+        next_weekday = datetimeutils.get_day_name(next_date)
+        if wadj == WeekendAdjustment.BACK.value and (
+                period in ([RecurrencePeriod.YEAR.value, RecurrencePeriod.MONTH.value,
+                            RecurrencePeriod.END_OF_MONTH.value]) and
+                (next_weekday == "Saturday" or next_weekday == "Sunday")):
+            # "Allows the following Friday-based calculations to proceed if 'next'
+            #  is between Friday and the target day."
+            days_to_subtract = 1 if next_weekday == "Saturday" else 2
+            next_date = datetimeutils.subtract_days(next_date, days_to_subtract)
+
+        if wadj == WeekendAdjustment.BACK.value and (
+                period in ([RecurrencePeriod.YEAR.value, RecurrencePeriod.MONTH.value,
+                            RecurrencePeriod.END_OF_MONTH.value]) and next_weekday == "Friday"):
+            next_date = handle_friday(next_date, period, mult, start_date)
 
         # Line 274.
         if (datetimeutils.is_end_of_month(next_date) or
@@ -99,6 +114,8 @@ def get_next_occurrence(tx: ScheduledTransaction) -> date:
 
     #######################
     # Step 2
+    # "Back up to align to the base phase. To ensure forward
+    # progress, we never subtract as much as we added (x % mult < mult)"
 
     if period in ([RecurrencePeriod.YEAR.value, RecurrencePeriod.MONTH.value,
                    RecurrencePeriod.END_OF_MONTH.value]):
@@ -131,6 +148,41 @@ def get_next_occurrence(tx: ScheduledTransaction) -> date:
                 elif wadj == WeekendAdjustment.FORWARD.value:
                     next_date = datetimeutils.add_days(
                         next_date, 2 if weekday == "Saturday" else 1)
+
+    return next_date
+
+def handle_friday(next_date: datetime, period: str, mult: int, start_date: datetime):
+    """ Extracted the calculation for when the next_day is Friday """
+    # Starting from line 220.
+    tmp_sat = datetimeutils.add_days(next_date, 1)
+    tmp_sun = datetimeutils.add_days(next_date, 2)
+
+    if period == RecurrencePeriod.END_OF_MONTH.value:
+        if (datetimeutils.is_end_of_month(next_date) or datetimeutils.is_end_of_month(tmp_sat) or
+                datetimeutils.is_end_of_month(tmp_sun)):
+            next_date = datetimeutils.add_months(next_date, 1)
+        else:
+            next_date = datetimeutils.add_months(next_date, mult - 1)
+    else:
+        if datetimeutils.get_day_name(tmp_sat) == datetimeutils.get_day_name(start_date):
+            next_date = datetimeutils.add_days(next_date, 1)
+            next_date = datetimeutils.add_months(next_date, mult)
+        elif datetimeutils.get_day_name(tmp_sun) == datetimeutils.get_day_name(start_date):
+            next_date = datetimeutils.add_days(next_date, 2)
+            next_date = datetimeutils.add_months(next_date, mult)
+        elif next_date.day >= start_date.day:
+            next_date = datetimeutils.add_months(next_date, mult)
+        elif datetimeutils.is_end_of_month(next_date):
+            next_date = datetimeutils.add_months(next_date, mult)
+        elif datetimeutils.is_end_of_month(tmp_sat):
+            next_date = datetimeutils.add_days(next_date, 1)
+            next_date = datetimeutils.add_months(next_date, mult)
+        elif datetimeutils.is_end_of_month(tmp_sun):
+            next_date = datetimeutils.add_days(next_date, 2)
+            next_date = datetimeutils.add_months(next_date, mult)
+        else:
+            # /* one fewer month fwd because of the occurrence in this month */
+            next_date = datetimeutils.subtract_months(next_date, 1)
 
     return next_date
 
