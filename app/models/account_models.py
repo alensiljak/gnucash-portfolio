@@ -39,3 +39,4 @@ class AccountDetailsViewModel:
     def __init__(self):
         self.account = None
         self.balance = None
+        self.security_details_url = None

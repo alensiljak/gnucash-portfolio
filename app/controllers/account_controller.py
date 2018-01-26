@@ -13,11 +13,11 @@ from piecash import Account, Split, Transaction
 from gnucash_portfolio.lib import datetimeutils, generic
 from gnucash_portfolio.lib.settings import Settings
 from gnucash_portfolio.bookaggregate import BookAggregate
-from gnucash_portfolio.accountaggregate import AccountAggregate, AccountsAggregate
+from gnucash_portfolio.accounts import AccountAggregate, AccountsAggregate
 from app.models.account_models import (
     AccountDetailsViewModel, AccountTransactionsInputModel,
     AccountTransactionsViewModel, AccountTransactionsRefModel)
-
+from gnucash_portfolio.currencies import CommodityTypes
 
 account_controller = Blueprint(  # pylint: disable=invalid-name
     'account_controller', __name__, url_prefix='/account')
@@ -28,7 +28,6 @@ def index():
     """ root page """
     return render_template('account.html')
 
-
 @account_controller.route('/favourites')
 def favourites():
     """ Favourite accounts """
@@ -36,7 +35,6 @@ def favourites():
         model = __load_favourite_accounts_model(svc)
 
         return render_template('account.favourites.html', model=model)
-
 
 @account_controller.route('/list')
 def all_accounts():
@@ -48,7 +46,6 @@ def all_accounts():
 
         model = {"accounts": accounts}
         return render_template('account.list.html', model=model)
-
 
 @account_controller.route('/search')
 def search():
@@ -196,7 +193,8 @@ def search_api():
 
 @account_controller.route('/api/search_autocomplete')
 def api_search_autocomplete():
-    """ format the output for autocomplete. Client-side customization does not work for some reason. """
+    """ format the output for autocomplete. Client-side customization does not work
+    for some reason. """
     term = request.args.get('query')
     with BookAggregate() as svc:
         accounts = svc.accounts.find_by_name(term)
@@ -284,8 +282,8 @@ def __load_ref_model_for_tx(svc: BookAggregate):
     return model
 
 def __load_view_model_for_tx(
-    svc: BookAggregate,
-    input_model: AccountTransactionsInputModel
+        svc: BookAggregate,
+        input_model: AccountTransactionsInputModel
 ) -> AccountTransactionsViewModel():
     """ Loads the filtered data """
     model = AccountTransactionsViewModel()
@@ -345,6 +343,8 @@ def __load_account_details_model(svc: BookAggregate, acct_id: str) -> AccountDet
     model = AccountDetailsViewModel()
     model.account = agg.account
     model.quantity = agg.get_balance()
+    if agg.account.commodity.namespace != CommodityTypes.CURRENCY.name:
+        model.security_details_url = "/security/details/" + agg.account.commodity.mnemonic
 
     return model
 

@@ -1,13 +1,13 @@
 """ Aggregate for GnuCash book. """
 from typing import List
-from piecash import Account, Book, Commodity
+from piecash import Book
 from gnucash_portfolio.lib.database import Database, Settings
-from gnucash_portfolio.currencyaggregate import CurrenciesAggregate
+from gnucash_portfolio.currencies import CurrenciesAggregate
 from gnucash_portfolio.pricesaggregate import PricesAggregate
-from gnucash_portfolio.accountaggregate import AccountsAggregate, AccountType
+from gnucash_portfolio.accounts import AccountsAggregate
 from gnucash_portfolio.assetallocation import AssetAllocationAggregate
 from gnucash_portfolio.scheduledtxaggregate import ScheduledTxsAggregate
-from gnucash_portfolio.securitiesaggregate import SecuritiesAggregate
+from gnucash_portfolio.securities import SecuritiesAggregate
 from gnucash_portfolio.transactionaggregate import TransactionsAggregate
 
 

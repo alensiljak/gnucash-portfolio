@@ -10,7 +10,7 @@ from logging import log, DEBUG
 from piecash import Book, Account, Commodity, Split, Transaction
 from gnucash_portfolio.lib import datetimeutils, generic
 from gnucash_portfolio.lib.aggregatebase import AggregateBase
-from gnucash_portfolio.currencyaggregate import CurrencyAggregate, CurrenciesAggregate
+from gnucash_portfolio.currencies import CurrencyAggregate, CurrenciesAggregate
 
 
 class AccountType(Enum):

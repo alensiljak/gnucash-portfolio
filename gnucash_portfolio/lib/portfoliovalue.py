@@ -7,7 +7,7 @@ from typing import List
 from piecash import Book, Commodity, Price
 from gnucash_portfolio.actions import symbol_dividends
 from gnucash_portfolio.pricesaggregate import PricesAggregate
-from gnucash_portfolio.securitiesaggregate import SecurityAggregate
+from gnucash_portfolio.securities import SecurityAggregate
 from gnucash_portfolio.model.stock_model import StockViewModel
 
 

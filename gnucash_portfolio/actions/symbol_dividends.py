@@ -7,7 +7,7 @@ stock (commodity).
 from decimal import Decimal
 from piecash import Account, Book, Split
 from gnucash_portfolio.lib import database
-from gnucash_portfolio.securitiesaggregate import SecurityAggregate, SecuritiesAggregate
+from gnucash_portfolio.securities import SecurityAggregate, SecuritiesAggregate
 
 
 def get_dividend_sum(book: Book, income_account: Account):

@@ -3,10 +3,10 @@
 from logging import log, INFO, WARN
 from typing import List
 from datetime import datetime
-from sqlalchemy import desc, or_
+from sqlalchemy import desc #, or_
 from piecash import Book, Commodity, Price
 from gnucash_portfolio.model.price_model import PriceModel
-from gnucash_portfolio.securitiesaggregate import SecurityAggregate, SecuritiesAggregate
+from gnucash_portfolio.securities import SecurityAggregate, SecuritiesAggregate
 
 
 class PricesAggregate:

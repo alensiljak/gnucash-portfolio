@@ -6,11 +6,17 @@ import locale
 import sys
 import winreg
 from decimal import Decimal
+from enum import Enum, auto
 from typing import List
 from sqlalchemy import desc
 #from sqlalchemy.sql.expression import exists
 from piecash import Book, Commodity, Price
 from gnucash_portfolio.model.price_model import PriceModel
+
+
+class CommodityTypes(Enum):
+    """ Commodity namespaces """
+    CURRENCY = auto()
 
 
 class CurrencyAggregate():

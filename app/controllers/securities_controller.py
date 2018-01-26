@@ -13,7 +13,7 @@ from flask import Blueprint, request, render_template
 try: import simplejson as json
 except ImportError: import json
 from gnucash_portfolio.bookaggregate import BookAggregate
-from gnucash_portfolio.securitiesaggregate import SecuritiesAggregate
+from gnucash_portfolio.securities import SecuritiesAggregate
 from app.models import security_models
 
 

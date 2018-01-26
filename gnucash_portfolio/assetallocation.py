@@ -8,9 +8,9 @@ import os
 from os import path
 #from logging import log, DEBUG
 from piecash import Book, Commodity, Price
-from gnucash_portfolio.accountaggregate import AccountAggregate, AccountsAggregate
-from gnucash_portfolio.securitiesaggregate import SecurityAggregate, SecuritiesAggregate
-from gnucash_portfolio.currencyaggregate import CurrencyAggregate
+from gnucash_portfolio.accounts import AccountAggregate, AccountsAggregate
+from gnucash_portfolio.securities import SecurityAggregate, SecuritiesAggregate
+from gnucash_portfolio.currencies import CurrencyAggregate
 
 
 class AssetBase:

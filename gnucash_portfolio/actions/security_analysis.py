@@ -6,7 +6,7 @@ This logic is used in report_security_analysis.
 """
 from piecash import Commodity
 from gnucash_portfolio.bookaggregate import BookAggregate
-from gnucash_portfolio.securitiesaggregate import SecurityAggregate
+from gnucash_portfolio.securities import SecurityAggregate
 
 
 def main(symbol: str):

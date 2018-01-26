@@ -60,8 +60,8 @@ def today_date() -> date:
 def today() -> datetime:
     """ Returns today (date only) as datetime """
     date_today = today_date()
-    today = datetime.combine(date_today, time.min)
-    return today
+    today_datetime = datetime.combine(date_today, time.min)
+    return today_datetime
 
 def get_period_start(period: str) -> datetime:
     """ Parse period string and return the from date """

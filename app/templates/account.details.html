@@ -41,8 +41,12 @@
 <div class="mt-3">
     <a class="btn btn-outline-primary" 
     href="/account/transactions?accountId={{ model.account.guid }}">Transactions</a>
+    
     <a class="btn btn-outline-primary" href="/account/{{ model.account.guid }}/splits">Splits</a>
 
+    {% if model.security_details_url %}
+    <a class="btn btn-outline-primary" href="{{ model.security_details_url }}">Security Details</a>
+    {% endif %}
 </div>
 
 {% endblock %}
