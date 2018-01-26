@@ -84,6 +84,7 @@ def yield_calc(symbol: str):
         agg = svc.securities.get_aggregate_for_symbol(symbol)
         model = security_models.SecurityYieldModel()
 
+        model.symbol = agg.security.namespace + ":" + agg.security.mnemonic
         model.security = agg.security
         model.quantity = agg.get_quantity()
         model.average_price = agg.get_avg_price()

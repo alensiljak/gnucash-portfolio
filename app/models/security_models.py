@@ -49,6 +49,7 @@ class SecurityDetailsViewModel:
 class SecurityYieldModel:
     """ Yiel view model """
     def __init__(self):
+        self.symbol = None
         self.average_price = None
         self.price = None
         self.profit_loss = None
