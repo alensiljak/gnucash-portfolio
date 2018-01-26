@@ -1,0 +1,93 @@
+{% extends "layout.html" %} {% block title %}Security Yield{% endblock %} {% block content %}
+<h1>Security Yield</h1>
+
+{# Details #}
+<div class="card">
+    <div class="card-header">
+        Security Details
+    </div>
+    <div class="card-body">
+        <form class="form">
+            {# Row 1 #}
+            <div class="form-row">
+                <div class="form-group col">
+                    <label>Symbol</label>
+                    <input type="text" class="form-control" readonly value="{{ model.security.namespace}}:{{ model.security.mnemonic }}">
+                </div>
+                <div class="form-group col">
+                    <label>Quantity</label>
+                    <input type="text" class="form-control text-right" readonly value="{{ '{:,.2f}'.format(model.quantity) }}">
+                </div>
+                <div class="form-group col">
+                    <label>Average Price</label>
+                    <input type="text" class="form-control text-right" readonly value="{{ '{:,.2f}'.format(model.average_price) }}">
+                </div>
+                <div class="form-group col">
+                    <label>Total Paid</label>
+                    <input type="text" class="form-control text-right" readonly value="{{ '{:,.2f}'.format(model.total_paid) }}">
+                </div>
+            </div>
+            {# Row 2 #}
+            <div class="form-row">
+                <div class="form-group col-6">
+                    <label>Description</label>
+                    <input type="text" class="form-control" readonly value="{{ model.security.fullname }}">
+                </div>
+                <div class="form-group col">
+                    <label>Price ({{ model.currency }})</label>,
+                    <small class="ml-5 align-baseline">{% if model.price %}on {{ '{:%Y-%m-%d}'.format(model.price.date) }}{% endif %}</small>
+
+                    <input type="text" class="form-control text-right" readonly value="{{ model.price.value }}">
+                </div>
+                <div class="form-group col">
+                    <label>Value ({{ model.currency }})</label>
+                    <input type="text" class="form-control text-right" readonly value="{{ '{:,.2f}'.format(model.value) }}">
+                </div>
+            </div>
+            {# Row 3 #}
+            <div class="form-row">
+                <div class="form-group col">
+                </div>
+                <div class="form-group col">
+                    <label>Unrealized Gain/Loss</label>
+                    <input type="text" class="form-control text-right {% if model.profit_loss > 0 %}text-success{% else %}text-danger{% endif %}"
+                        readonly value="{{ '{:,.2f}'.format(model.profit_loss) }}">
+                </div>
+                <div class="form-group col">
+                    <label>Income ({{ model.currency }})</label>
+                    <input type="text" class="form-control text-right" readonly value="{{ '{:,.2f}'.format(model.income) }}">
+                </div>
+                <div class="form-group col">
+                    <label>Total Return</label>
+                    <input type="text" class="form-control text-right {% if model.total_return > 0 %}text-success{% else %}text-danger{% endif %}"
+                        readonly value="{{ '{:,.2f}'.format(model.total_return) }}">
+                </div>
+            </div>
+            {# Row 4 #}
+            <div class="form-row">
+                <div class="form-group col">
+                </div>
+                <div class="form-group col">
+                    <label>Unrealized Gain/Loss %</label>
+                    <input type="text" class="form-control text-right {% if model.profit_loss > 0 %}text-success{% else %}text-danger{% endif %}"
+                        readonly value="{{ '{:,.2f}'.format(model.profit_loss_perc) }} %">
+                </div>
+                <div class="form-group col">
+                    <label>Income %</label>
+                    <input type="text" class="form-control text-right" readonly value="{{ '{:,.2f}'.format(model.income_perc) }} %">
+                </div>
+                <div class="form-group col">
+                    <label>Total Return %</label>
+                    <input type="text" class="form-control text-right {% if model.total_return_perc > 0 %}text-success{% else %}text-danger{% endif %}"
+                        readonly value="{{ '{:,.2f}'.format(model.total_return_perc) }} %">
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+<hr>
+
+{# Links #} {% include '_security.links.html' %}
+
+{% endblock %}

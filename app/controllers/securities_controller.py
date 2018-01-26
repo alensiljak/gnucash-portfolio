@@ -76,6 +76,17 @@ def distributions():
     """ Distributions for the security """
     return render_template('distributions.html', model=None)
 
+@stock_controller.route('/yield/<symbol>')
+def yield_calc(symbol: str):
+    """ Display yield calculations for security """
+    with BookAggregate() as svc:
+        security = svc.securities.get_by_symbol(symbol)
+        model = {
+            "security": security
+        }
+        result = render_template('security.yield.html', model=model)
+    return result
+
 ###################
 # API
 
