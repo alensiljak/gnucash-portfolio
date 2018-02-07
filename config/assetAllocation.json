@@ -194,6 +194,7 @@
                             "name": "Aus Gov",
                             "allocation": 4,
                             "stocks": [
+                                "ASX:VAF",
                                 "ASX:IGB",
                                 "ASX:VGB"
                             ]
@@ -211,7 +212,6 @@
                                 "ASX:NABPB",
                                 "ASX:SUNPD",
                                 "ASX:SUNPE",
-                                "ASX:VAF",
                                 "ASX:WBCPD",
                                 "ASX:WBCPE"
                             ]
