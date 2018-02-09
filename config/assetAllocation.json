@@ -117,10 +117,10 @@
                             "allocation": 1.5,
                             "stocks": {
                                 "VBR": {
-                                    "allocation": 1
+                                    "allocation": 100
                                 },
                                 "VTWV": {
-                                    "allocation": 1
+                                    "allocation": 100
                                 }
                             }
                         }
