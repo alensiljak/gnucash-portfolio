@@ -30,15 +30,17 @@
                         {
                             "name": "Aus Small",
                             "allocation": 9,
-                            "stocks": [
-                                "ASX:AEF",
-                                "ASX:CAB",
-                                "ASX:NSC",
-                                "ASX:IPE",
-                                "ASX:MVS",
-                                "ASX:OZG",
-                                "ASX:VSO"
-                            ]
+                            "stocks": {
+                                "ASX:AEF": {
+                                    "allocation": 100
+                                },
+                                "ASX:CAB": {},
+                                "ASX:NSC": {},
+                                "ASX:IPE": {},
+                                "ASX:MVS": {},
+                                "ASX:OZG": {},
+                                "ASX:VSO": {}
+                            }
                         }
                     ]
                 },

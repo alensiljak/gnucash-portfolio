@@ -44,6 +44,8 @@ class SecurityDetailsViewModel:
 
         self.accounts: List[Account] = None
         self.income_accounts: List[Account] = None
+        # List of asset classes the security belongs to.
+        self.asset_classes = []
 
 
 class SecurityYieldModel:

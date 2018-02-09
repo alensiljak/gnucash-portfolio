@@ -23,6 +23,7 @@ class BookAggregate:
         self.__for_writing = for_writing
 
         # Aggregates
+        self.__asset_allocation: AssetAllocationAggregate = None
         self.__currencies_aggregate: CurrenciesAggregate = None
         self.__accounts_aggregate: AccountsAggregate = None
         self.__prices_aggregate: PricesAggregate = None
@@ -44,7 +45,14 @@ class BookAggregate:
             self.__book.close()
 
     @property
-    def book(self):
+    def asset_allocation(self) -> AssetAllocationAggregate:
+        """ Creates an Asset Allocation aggregate """
+        if not self.__asset_allocation:
+            self.__asset_allocation = AssetAllocationAggregate(self.book)
+        return self.__asset_allocation
+
+    @property
+    def book(self) -> Book:
         """ GnuCash Book. Opens the book or creates an in-memory database, based on settings. """
         if not self.__book:
             # Create/open the book.
@@ -129,7 +137,3 @@ class BookAggregate:
         for cur in currencies:
             result.append(cur.mnemonic)
         return result
-
-    def get_asset_allocation(self) -> AssetAllocationAggregate:
-        """ Creates an Asset Allocation aggregate """
-        return AssetAllocationAggregate(self.book)

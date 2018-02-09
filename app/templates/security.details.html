@@ -105,9 +105,19 @@
             {% for account in model.income_accounts %}
             <li>
                 <a href="/account/details/{{ account.fullname }}">
-                    {{ account. fullname }}
+                    {{ account.fullname }}
                 </a>
             </li>
+            {% endfor %}
+        </ul>
+    </div>
+</div>
+<div class="row">
+    <div class="col">
+        <h3>Asset Classes</h3>
+        <ul>
+            {% for asset_class in model.asset_classes %}
+            <li>{{ asset_class.name }}</li>
             {% endfor %}
         </ul>
     </div>

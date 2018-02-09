@@ -2,11 +2,12 @@
 Asset Allocation module
 """
 from decimal import Decimal
+from typing import List
 try: import simplejson as json
 except ImportError: import json
 import os
 from os import path
-#from logging import log, DEBUG
+from logging import log, DEBUG
 from piecash import Book, Commodity, Price
 from gnucash_portfolio.accounts import AccountAggregate, AccountsAggregate
 from gnucash_portfolio.securities import SecurityAggregate, SecuritiesAggregate
@@ -85,7 +86,7 @@ class AssetClass(AssetBase):
         # For cash asset class
         self.root_account = None
 
-        self.stocks: list(Stock) = []
+        self.stocks: List[Stock] = []
         # parse stocks
         if "stocks" not in json_node:
             return
@@ -101,17 +102,28 @@ class Stock:
     def __init__(self, symbol: str):
         """Parse json node"""
         self.symbol = symbol
-
         # Quantity (number of shares)
         self.quantity = Decimal(0)
-
         # Price (last known)
         self.price = Decimal(0)
+        # Parent class
+        self.parent = None
 
     @property
     def value(self) -> Decimal:
         """Value of the shares. Value = Quantity * Price"""
         return self.quantity * self.price
+
+    @property
+    def asset_class(self) -> str:
+        """ Returns the full asset class path for this stock """
+        result = self.parent.name if self.parent else ""
+        # Iterate to the top asset class and add names.
+        cursor = self.parent
+        while cursor:
+            result = cursor.name + ":" + result
+            cursor = cursor.parent
+        return result
 
 
 class _AllocationLoader:
@@ -120,6 +132,8 @@ class _AllocationLoader:
         self.currency = currency
         self.book = book
         self.asset_allocation = None
+        # Asset Class index populated during load, for performance.
+        self.asset_class_index = {}
 
     def load_asset_allocation_model(self):
         """ Loads Asset Allocation model for display """
@@ -212,13 +226,16 @@ class _AllocationLoader:
         entity = None
 
         if "classes" in node:
+            # Asset Class Group
             entity = AssetGroup(node)
             child_allocation_sum = Decimal(0)
             # Process child nodes
             for child_node in node["classes"]:
+                # recursive call
                 child = self.__parse_node(child_node)
 
                 child.parent = entity
+                # log(DEBUG, "adding %s as parent to %s", entity.name, child.name)
                 entity.classes.append(child)
                 child_allocation_sum += child.allocation
 
@@ -228,7 +245,7 @@ class _AllocationLoader:
                                  entity.allocation, child_allocation_sum)
 
         if "stocks" in node:
-            # This is an Asset Class
+            # Asset Class
             entity = AssetClass(node)
 
         # Cash
@@ -241,6 +258,11 @@ class _AllocationLoader:
         if "threshold" in node:
             threshold = node["threshold"].replace('%', '')
             entity.threshold = Decimal(threshold)
+
+        # add asset class to index.
+        self.asset_class_index[entity.name] = entity
+        # log(DEBUG, "adding %s (%s) to asset class index", entity.name, entity.fullname)
+        # log(DEBUG, "%s", self.asset_class_index)
 
         return entity
 
@@ -286,6 +308,10 @@ class AssetAllocationAggregate():
     def __init__(self, book: Book):
         self.book = book
         self.root: AssetGroup = None
+        # index for asset classes
+        self.__asset_class_index = None
+        # index for stocks
+        self.__stock_index: List[Stock] = None
 
     def load_full_model(self, currency: Commodity):
         """ Populates complete Asset Allocation tree """
@@ -295,7 +321,10 @@ class AssetAllocationAggregate():
     def load_config_only(self, currency: Commodity):
         """ Loads only the asset allocation tree from configuration """
         loader = _AllocationLoader(currency, self.book)
-        return loader.load_asset_allocation_config()
+        config = loader.load_asset_allocation_config()
+        # get the asset class index
+        self.__asset_class_index = loader.asset_class_index
+        return config
 
     def find_class_by_fullname(self, fullname: str):
         """ Locates the asset class by fullname. i.e. Equity:International """
@@ -316,3 +345,45 @@ class AssetAllocationAggregate():
                 return found
 
         return None
+
+    def get_stock(self, symbol: str) -> List[Stock]:
+        """ Finds all the stock allocations by symbol """
+        # find this symbol
+        instances = [self.stock_index[symbol] for index_symbol in self.stock_index if index_symbol == symbol]
+        # log(DEBUG, "found %s instances for symbol %s", instances, symbol)
+        return instances
+
+    @property
+    def asset_class_index(self) -> List[AssetClass]:
+        """ Creates and returns an index of asset classes """
+        if self.__asset_class_index:
+            return self.__asset_class_index
+        return self.__asset_class_index
+
+    @property
+    def stock_index(self):
+        """ Creates index of all stock symbols in allocation """
+        # iterate through allocation, get all the stocks, put them into index
+        if self.__stock_index:
+            return self.__stock_index
+        index = {}
+
+        # log(DEBUG, "starting with asset class index %s", self.asset_class_index)
+        # create asset class index first.
+        for name in self.asset_class_index:
+            asset_class = self.asset_class_index[name]
+            # log(DEBUG, "%s found in asset class index. Parent: %s",
+            #     asset_class.name, asset_class.parent)
+
+            if isinstance(asset_class, AssetGroup):
+                continue
+            # if not isinstance(asset_class, AssetClass):
+            for stock in asset_class.stocks:
+                symbol = stock.symbol
+                # populate
+                index[symbol] = stock
+                # log(DEBUG, "adding %s to stock index", symbol)
+
+        # log(DEBUG, "stock index complete: %s", index)
+        self.__stock_index = index
+        return self.__stock_index

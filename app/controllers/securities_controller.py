@@ -13,6 +13,7 @@ import flask
 from flask import Blueprint, request, render_template
 try: import simplejson as json
 except ImportError: import json
+from gnucash_portfolio.assetallocation import AssetAllocationAggregate
 from gnucash_portfolio.bookaggregate import BookAggregate
 from gnucash_portfolio.securities import SecuritiesAggregate
 from app.models import security_models
@@ -127,6 +128,7 @@ def __get_model_for_details(
     sec_agg = svc.securities.get_aggregate_for_symbol(symbol)
 
     model = security_models.SecurityDetailsViewModel()
+
     model.symbol = sec_agg.security.namespace + ":" + sec_agg.security.mnemonic
     model.security = sec_agg.security
     # Quantity
@@ -168,6 +170,14 @@ def __get_model_for_details(
     # load all accounts
     model.accounts = sec_agg.accounts
     model.income_accounts = sec_agg.get_income_accounts()
+
+    # Load asset classes to which this security belongs.
+    # todo load asset allocation, find the parents for this symbol
+    svc.asset_allocation.load_config_only(svc.currencies.default_currency)
+    stocks = svc.asset_allocation.get_stock(model.symbol)
+    log(DEBUG, "found %s stocks for %s", stocks, model.symbol)
+    for stock in stocks:
+        model.asset_classes.append(stock.asset_class)
 
     return model
 
