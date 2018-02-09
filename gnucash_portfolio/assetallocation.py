@@ -92,6 +92,7 @@ class AssetClass(AssetBase):
 
         for symbol in json_node["stocks"]:
             stock = Stock(symbol)
+            # todo add asset class allocation for this security.
             self.stocks.append(stock)
 
 

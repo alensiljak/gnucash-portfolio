@@ -115,10 +115,14 @@
                         {
                             "name": "NAm Small",
                             "allocation": 1.5,
-                            "stocks": [
-                                "VBR",
-                                "VTWV"
-                            ]
+                            "stocks": {
+                                "VBR": {
+                                    "allocation": 1
+                                },
+                                "VTWV": {
+                                    "allocation": 1
+                                }
+                            }
                         }
                     ]
                 }
