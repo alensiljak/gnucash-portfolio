@@ -177,6 +177,7 @@ def __get_model_for_details(
     stocks = svc.asset_allocation.get_stock(model.symbol)
     log(DEBUG, "found %s stocks for %s", stocks, model.symbol)
     for stock in stocks:
+        log(DEBUG, "adding %s asset classes", stock.asset_class)
         model.asset_classes.append(stock.asset_class)
 
     return model
