@@ -15,5 +15,5 @@ authors = ['alen.siljak']
 authors_string = ', '.join(authors)
 emails = ['alen.siljak@gmx.com']
 license = 'GPL3'
-copyright = '2017 ' + authors_string
+copyright = '2018 ' + authors_string
 url = 'https://github.com/MisterY/gnucash-portfolio'
