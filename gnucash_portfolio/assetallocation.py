@@ -1,5 +1,5 @@
 """
-Asset Allocation module
+Asset Allocation module. To be replaced by Asset-Allocation package.
 """
 from decimal import Decimal
 from typing import List
