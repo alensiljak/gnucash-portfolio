@@ -13,17 +13,17 @@ from gnucash_portfolio.lib.aggregatebase import AggregateBase
 from gnucash_portfolio.currencies import CurrencyAggregate, CurrenciesAggregate
 
 
-class AccountType(Enum):
-    """ Account Types """
-    ROOT = auto()
-    ASSET = auto()
-    LIABILITY = auto()
-    EXPENSE = auto()
-    INCOME = auto()
-    TRADING = auto()
-    MUTUAL = auto()
-    STOCK = auto()
-    BANK = auto()
+# class AccountType(Enum):
+#     """ Account Types """
+#     ROOT = auto()
+#     ASSET = auto()
+#     LIABILITY = auto()
+#     EXPENSE = auto()
+#     INCOME = auto()
+#     TRADING = auto()
+#     MUTUAL = auto()
+#     STOCK = auto()
+#     BANK = auto()
 
 
 class AccountAggregate(AggregateBase):
@@ -161,7 +161,7 @@ class AccountAggregate(AggregateBase):
             self.book.session.query(Split)
             .join(Transaction)
             .filter(Split.account == self.account,
-                    Transaction.post_date <= date_to)
+                    Transaction.post_date <= date_to.date())
         )
         return query.all()
 

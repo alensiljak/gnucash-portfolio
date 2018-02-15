@@ -22,7 +22,7 @@ def asset_allocation():
     with BookAggregate() as svc:
         base_currency = svc.currencies.get_default_currency()
 
-        aaloc = svc.get_asset_allocation()
+        aaloc = svc.asset_allocation
         model = aaloc.load_full_model(base_currency)
         # populate actual allocation & difference.
         output = render_template('asset_allocation.html', model=model)
@@ -62,7 +62,7 @@ def __get_details_model(fullname: str) -> AssetGroupDetailsViewModel:
     with BookAggregate() as svc:
         model.base_currency = svc.currencies.get_default_currency().mnemonic
 
-        aaloc = svc.get_asset_allocation()
+        aaloc = svc.asset_allocation
         # Load only the asset class tree without the data from database.
         aaloc.root = aaloc.load_config_only(None)
         asset_class = aaloc.find_class_by_fullname(fullname)
