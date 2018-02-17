@@ -7,7 +7,7 @@ from enum import Enum, auto
 from typing import List
 from decimal import Decimal
 from logging import log, DEBUG
-from piecash import Book, Account, Commodity, Split, Transaction
+from piecash import Book, Account, Commodity, Split, Transaction, AccountType
 from gnucash_portfolio.lib import datetimeutils, generic
 from gnucash_portfolio.lib.aggregatebase import AggregateBase
 from gnucash_portfolio.currencies import CurrencyAggregate, CurrenciesAggregate
@@ -303,6 +303,6 @@ class AccountsAggregate(AggregateBase):
             self.book.session.query(Account)
             .join(Commodity)
             .filter(Commodity.namespace != "template")
-            .filter(Account.type != AccountType.ROOT.name)
+            .filter(Account.type != AccountType.root.value)
         )
         return query
