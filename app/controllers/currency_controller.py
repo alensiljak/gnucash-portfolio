@@ -8,16 +8,19 @@ Currencies
 """
 #from logging import log, DEBUG
 from decimal import Decimal
-from flask import Blueprint, request, render_template
-try: import simplejson as json
-except ImportError: import json
-from piecash import Commodity
-from gnucash_portfolio.lib.database import Database
-from gnucash_portfolio.lib import datetimeutils
+
+from flask import Blueprint, render_template, request
+
+from app.models.currency_models import CurrencySearchModel, RateViewModel
 from gnucash_portfolio.bookaggregate import BookAggregate
 from gnucash_portfolio.currencies import CurrencyAggregate
+from gnucash_portfolio.lib import datetimeutils
+from gnucash_portfolio.lib.database import Database
 from gnucash_portfolio.model.price_model import PriceModel
-from app.models.currency_models import CurrencySearchModel, RateViewModel
+from piecash import Commodity
+
+try: import simplejson as json
+except ImportError: import json
 
 currency_controller = Blueprint( # pylint: disable=invalid-name
     'currency_controller', __name__, url_prefix='/currency')

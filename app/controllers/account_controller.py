@@ -6,18 +6,20 @@ Account operations
 """
 try: import simplejson as json
 except ImportError: import json
-from logging import log, DEBUG
-from flask import Blueprint, request, render_template
-from piecash import Account, Split, Transaction
-#from django.forms.models import model_to_dict
+from logging import DEBUG, log
+
+from flask import Blueprint, render_template, request
+
+from app.models.account_models import (AccountDetailsViewModel,
+                                       AccountTransactionsInputModel,
+                                       AccountTransactionsRefModel,
+                                       AccountTransactionsViewModel)
+from gnucash_portfolio.accounts import AccountAggregate, AccountsAggregate
+from gnucash_portfolio.bookaggregate import BookAggregate
+from gnucash_portfolio.currencies import CommodityTypes
 from gnucash_portfolio.lib import datetimeutils, generic
 from gnucash_portfolio.lib.settings import Settings
-from gnucash_portfolio.bookaggregate import BookAggregate
-from gnucash_portfolio.accounts import AccountAggregate, AccountsAggregate
-from app.models.account_models import (
-    AccountDetailsViewModel, AccountTransactionsInputModel,
-    AccountTransactionsViewModel, AccountTransactionsRefModel)
-from gnucash_portfolio.currencies import CommodityTypes
+from piecash import Account, Split, Transaction
 
 account_controller = Blueprint(  # pylint: disable=invalid-name
     'account_controller', __name__, url_prefix='/account')
