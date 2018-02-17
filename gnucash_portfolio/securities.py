@@ -1,21 +1,24 @@
-""" Stocks aggregate object
+"""
+Stocks aggregate object
 This should include all non-currency commodities.
 Accounts should be only accounts that hold these commodities.
 """
 import datetime
 from decimal import Decimal
-from logging import log, DEBUG
+from logging import DEBUG, log
 from typing import List
+
 from sqlalchemy import desc
-from piecash import AccountType
-# from sqlalchemy.orm import aliased
-from piecash import Account, Book, Commodity, Price, Split, Transaction
-from gnucash_portfolio.lib import datetimeutils #, generic
-from gnucash_portfolio.lib.aggregatebase import AggregateBase
-from gnucash_portfolio.accounts import AccountAggregate #, AccountType # AccountsAggregate
+
+from gnucash_portfolio.accounts import \
+    AccountAggregate  # , AccountType # AccountsAggregate
 from gnucash_portfolio.currencies import CurrenciesAggregate
-from gnucash_portfolio.model.split_model import SplitModel
+from gnucash_portfolio.lib import datetimeutils  # , generic
+from gnucash_portfolio.lib.aggregatebase import AggregateBase
 from gnucash_portfolio.mappers.splitmapper import SplitMapper
+from gnucash_portfolio.model.split_model import SplitModel
+from piecash import (Account, AccountType, Book, Commodity, Price, Split,
+                     Transaction)
 
 
 class SecurityAggregate(AggregateBase):
@@ -208,7 +211,7 @@ class SecurityAggregate(AggregateBase):
             .filter(Account.name == self.security.mnemonic)
             .filter(Commodity.namespace == "CURRENCY")
             # .filter(Account.type != "TRADING")
-            .filter(Account.type == AccountType.INCOME.name)
+            .filter(Account.type == AccountType.income.value)
         )
         # generic.print_sql(query)
         return query.all()
@@ -246,7 +249,7 @@ class SecurityAggregate(AggregateBase):
         query = (
             self.book.session.query(Split)
             .join(Account)
-            .filter(Account.type != AccountType.TRADING.name)
+            .filter(Account.type != AccountType.trading.value)
             .filter(Account.commodity_guid == self.security.guid)
         )
         return query
