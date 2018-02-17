@@ -117,7 +117,7 @@
         <h3>Asset Classes</h3>
         <ul>
             {% for asset_class in model.asset_classes %}
-            <li>{{ asset_class.name }}</li>
+            <li>{{ asset_class }} {{ asset_class.name }}</li>
             {% endfor %}
         </ul>
     </div>

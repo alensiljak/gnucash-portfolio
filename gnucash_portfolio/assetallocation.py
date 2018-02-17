@@ -109,6 +109,9 @@ class Stock:
         # Parent class
         self.parent = None
 
+    def __repr__(self):
+        return f"<Stock (symbol='{self.symbol}')>"
+
     @property
     def value(self) -> Decimal:
         """Value of the shares. Value = Quantity * Price"""
