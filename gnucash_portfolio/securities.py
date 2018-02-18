@@ -395,11 +395,16 @@ class SecuritiesAggregate(AggregateBase):
 
     def get_aggregate(self, security: Commodity) -> SecurityAggregate:
         """ Returns the aggregate for the entity """
+        assert security is not None
+        assert isinstance(security, Commodity)
+
         return SecurityAggregate(self.book, security)
 
     def get_aggregate_for_symbol(self, symbol: str) -> SecurityAggregate:
         """ Returns the aggregate for the security found by full symbol """
         security = self.get_by_symbol(symbol)
+        if not security:
+            raise ValueError(f"Security not found in GC book: {symbol}!")
         return self.get_aggregate(security)
 
     @property
