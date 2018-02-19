@@ -69,8 +69,17 @@ class CurrenciesAggregate():
 
     def get_amount_in_base_currency(self, currency: str, amount: Decimal) -> Decimal:
         """ Calculates the amount in base currency """
+        # If this is already the base currency, do nothing.
+        if currency == self.get_default_currency().mnemonic:
+            return amount
+
         agg = self.get_currency_aggregate_by_symbol(currency)
+        if not agg:
+            raise ValueError(f"Currency not found: {currency}!")
+
         rate_to_base = agg.get_latest_price()
+        if not rate_to_base:
+            raise ValueError(f"Latest price not found for {currency}!")
 
         result = amount * rate_to_base.value
         return result
