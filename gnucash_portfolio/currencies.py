@@ -69,6 +69,8 @@ class CurrenciesAggregate():
 
     def get_amount_in_base_currency(self, currency: str, amount: Decimal) -> Decimal:
         """ Calculates the amount in base currency """
+        assert isinstance(amount, Decimal)
+
         # If this is already the base currency, do nothing.
         if currency == self.get_default_currency().mnemonic:
             return amount
@@ -77,9 +79,11 @@ class CurrenciesAggregate():
         if not agg:
             raise ValueError(f"Currency not found: {currency}!")
 
+        # TODO use pricedb for the price.
         rate_to_base = agg.get_latest_price()
         if not rate_to_base:
             raise ValueError(f"Latest price not found for {currency}!")
+        assert isinstance(rate_to_base.value, Decimal)
 
         result = amount * rate_to_base.value
         return result
@@ -140,10 +144,15 @@ class CurrenciesAggregate():
             # Do not import duplicate prices.
             # todo: if the price differs, update it!
             #exists_query = exists(rates_query)
-            has_rate = currency.prices.filter(Price.date == rate.date).first()
+            has_rate = currency.prices.filter(Price.date == rate.date.date()).first()
+            # has_rate = (
+            #     self.book.session.query(Price)
+            #     .filter(Price.date == rate.date.date())
+            #     .filter(Price.currency == currency)
+            # )
             if not has_rate:
                 log(INFO, "Creating entry for %s, %s, %s, %s",
-                    base_currency.mnemonic, currency.mnemonic, rate.date, amount)
+                    base_currency.mnemonic, currency.mnemonic, rate.date.date(), amount)
                 # Save the price in the exchange currency, not the default.
                 # Invert the rate in that case.
                 inverted_rate = 1 / amount
@@ -151,7 +160,7 @@ class CurrenciesAggregate():
 
                 price = Price(commodity=currency,
                               currency=base_currency,
-                              date=rate.date,
+                              date=rate.date.date(),
                               value=str(inverted_rate))
                 have_new_rates = True
 

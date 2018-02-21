@@ -1,4 +1,3 @@
-#!/usr/bin/python3
 """
 Currencies
 - list of book currencies
