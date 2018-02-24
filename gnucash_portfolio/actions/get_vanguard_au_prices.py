@@ -1,4 +1,3 @@
-#!/usr/bin/python3
 """
 The script downloads fund prices from Vanguard Australia site.
 Retail Funds
@@ -7,6 +6,7 @@ Vanguard International Shares Index Fund (Hedged)     VAN0107AU   8146
 Vanguard Australian Property Securities Index Fund    VAN0012AU   8147
 Vanguard Australian Shares High Yield Fund            VAN0017AU   8148
 """
+from typing import List
 try: import simplejson as json
 except ImportError: import json
 import requests
@@ -45,18 +45,12 @@ def __load_fund_data():
     """
     Fetches retail fund prices.
     """
-    #from .lib.generic import get_today
-
-    #todaysdate =
-    # TODO do we have a cached version?
-    #tempdir = tempfile.gettempdir()
-    #cache_file = os.path.join(tempdir, get_today())
-    #cache =
-
     #url = "https://www.vanguardinvestments.com.au/retail/ret/investments/product.html"
     #url = "https://www.vanguardinvestments.com.au/retail/mvc/getNavPrice?portId=" + fund_id
     # pylint: disable=C0301
-    url = "https://intlgra-globm-209.gra.international.vgdynamic.info/rs/gre/gra/datasets/auw-retail-listview-data.jsonp"
+    #url = "https://www.vanguardinvestments.com.au/retail/mvc/getNavPriceList.jsonp"
+    #url = "https://intlgra-globm-209.gra.international.vgdynamic.info/rs/gre/gra/datasets/auw-retail-listview-data.jsonp"
+    url = "https://intlgra-graapp-72-prd.gra.international.vgdynamic.info/rs/gre/gra/datasets/auw-retail-listview-data.jsonp"
     response = requests.get(url)
     if response.status_code != 200:
         return "Error"
@@ -76,6 +70,7 @@ def __load_fund_data():
 
 def __get_fund_price(fund_data, fund_id):
     """
+    Extracts the price value from json response.
     Returns the Price object with name, identifier, date, value, mstar_id.
     """
     from gnucash_portfolio.lib import messenger
@@ -97,7 +92,7 @@ def __get_fund_price(fund_data, fund_id):
     #       fund_info["name"])
     return price
 
-def download_fund_prices(user_funds):
+def download_fund_prices(user_funds) -> List[str]:
     """
     displays the prices
     """
@@ -106,7 +101,6 @@ def download_fund_prices(user_funds):
     fund_data = __load_fund_data()
     for fund_id in user_funds:
         price = __get_fund_price(fund_data, fund_id)
-        #print(price.identifier, price.date)
         prices.append(price)
 
     return prices
