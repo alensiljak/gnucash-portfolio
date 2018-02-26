@@ -3,8 +3,9 @@ Import currency exchange rates from .csv file into GnuCash
 """
 from logging import log, DEBUG
 from sqlalchemy import func
-from gnucash_portfolio.lib import currencyrates, settings
+from gnucash_portfolio.lib import settings
 from gnucash_portfolio.bookaggregate import BookAggregate
+from pricedb.download import currencyrates
 
 
 class ExchangeRatesImporter:
@@ -23,9 +24,12 @@ class ExchangeRatesImporter:
         # Base currency. Required for downloading the currency pairs.
         log(DEBUG, "Base currency:", base_currency)
 
-        rateman = currencyrates.CurrencyRatesRetriever(self.settings)
+        # self.settings
+        rateman = currencyrates.CurrencyRatesRetriever()
         # Get the rates json.
-        latest = rateman.get_latest_rates()
+        #currencies = ["AUD", "USD"]
+        # TODO refactor this to receive the list of currencies
+        latest = rateman.download("CURRENCY", "AUD", "EUR")
 
         # iterate over rates and display rates for specified currencies only.
         rates = latest["rates"]
