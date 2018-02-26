@@ -1,4 +1,3 @@
-#!/usr/bin/python3
 """
 Import currency exchange rates from .csv file into GnuCash
 """

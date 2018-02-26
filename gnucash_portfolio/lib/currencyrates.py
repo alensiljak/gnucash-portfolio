@@ -1,4 +1,3 @@
-#!/usr/bin/python3
 """
 Fetches the current exchange rates.
 Currently uses Fixer API.
@@ -206,9 +205,5 @@ class FixerioModelMapper:
 
 # If run directly, download the latest rates if not found, and display the rates.
 if __name__ == "__main__":
-    # Display the latest rates
-    #latest = download_rates()
-    #latest = get_latest_rates()
-    #output = __get_all_currency_files()
     runner = CurrencyRatesRetriever(None)
     runner.display_rates()
