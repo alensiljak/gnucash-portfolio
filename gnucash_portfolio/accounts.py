@@ -57,8 +57,6 @@ class AccountAggregate(AggregateBase):
                 # Convert the amount to the given currency.
                 other_cur = svc.get_by_symbol(cur_symbol)
 
-                #log(DEBUG, "loading %s/%s rate", currency.mnemonic, other_cur.mnemonic)
-
                 cur_svc = svc.get_currency_aggregate(other_cur)
 
                 rate = cur_svc.get_latest_rate(currency)
