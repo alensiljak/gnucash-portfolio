@@ -14,3 +14,4 @@ python-dateutil==2.6.1
 rope==0.10.7
 SQLAlchemy==1.1.15
 SQLAlchemy-Utils==0.32.21
+Price-Database
