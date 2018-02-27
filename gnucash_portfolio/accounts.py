@@ -13,22 +13,8 @@ from gnucash_portfolio.lib.aggregatebase import AggregateBase
 from gnucash_portfolio.currencies import CurrencyAggregate, CurrenciesAggregate
 
 
-# class AccountType(Enum):
-#     """ Account Types """
-#     ROOT = auto()
-#     ASSET = auto()
-#     LIABILITY = auto()
-#     EXPENSE = auto()
-#     INCOME = auto()
-#     TRADING = auto()
-#     MUTUAL = auto()
-#     STOCK = auto()
-#     BANK = auto()
-
-
 class AccountAggregate(AggregateBase):
     """ Operations on single account """
-
     def __init__(self, book: Book, account: Account):
         super(AccountAggregate, self).__init__(book)
 
@@ -68,6 +54,8 @@ class AccountAggregate(AggregateBase):
 
     def load_cash_balances_with_children(self, root_account_fullname: str):
         """ loads data for cash balances """
+        assert isinstance(root_account_fullname, str)
+
         svc = AccountsAggregate(self.book)
         root_account = svc.get_by_fullname(root_account_fullname)
         if not root_account:
