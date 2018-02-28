@@ -138,6 +138,11 @@ class SecurityAggregate(AggregateBase):
 
         return available_splits
 
+    def get_num_shares(self) -> Decimal:
+        """ Returns the number of shares at this time """
+        today = datetimeutils.today()
+        return self.get_num_shares_on(today)
+
     def get_num_shares_on(self, on_date: datetime) -> Decimal:
         """ Returns the number of shares for security on (and including) the given date. """
         total_quantity = Decimal(0)
@@ -333,7 +338,6 @@ class SecuritiesAggregate(AggregateBase):
     """ Operates on security collections """
     # def __init__(self, book: Book):
     #     super(SecuritiesAggregate, self).__init__(book)
-    #     pass
 
     def find(self, search_term: str) -> List[Commodity]:
         """ Searches for security by part of the name """
@@ -344,7 +348,7 @@ class SecuritiesAggregate(AggregateBase):
         )
         return query.all()
 
-    def get_all(self):
+    def get_all(self) -> List[Commodity]:
         """ Loads all non-currency commodities, assuming they are stocks. """
         query = (
             self.query

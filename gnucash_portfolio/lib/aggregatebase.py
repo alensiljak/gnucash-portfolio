@@ -7,7 +7,6 @@ from piecash import Book
 
 
 class AggregateBase(metaclass=ABCMeta):
-    #pass
-
+    """ Base for the aggregates """
     def __init__(self, book: Book):
         self.book = book
