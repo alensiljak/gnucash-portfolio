@@ -17,7 +17,7 @@ class BookAggregate:
     def __init__(self, settings: Settings = None,
                  for_writing=False):
         """
-        Accepts custom settings object. Useful for testing.
+        Accepts custom settings object, which are useful for testing.
         """
         self.__book: Book = None
         self.__for_writing = for_writing
