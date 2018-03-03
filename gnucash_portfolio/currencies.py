@@ -3,7 +3,6 @@
 from logging import log, INFO
 import locale
 import sys
-import winreg
 from decimal import Decimal
 from enum import Enum, auto
 from typing import List
@@ -207,6 +206,9 @@ class CurrenciesAggregate():
         return def_curr
 
     def __get_registry_key(self, key):
+        """ Read currency from windows registry """
+        import winreg
+
         root = winreg.OpenKey(
             winreg.HKEY_CURRENT_USER, r'SOFTWARE\GSettings\org\gnucash\general', 0, winreg.KEY_READ)
         [Pathname, regtype] = (winreg.QueryValueEx(root, key))
