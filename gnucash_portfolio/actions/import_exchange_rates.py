@@ -32,11 +32,11 @@ class ExchangeRatesImporter:
         latest = rateman.download("CURRENCY", "AUD", "EUR")
 
         # iterate over rates and display rates for specified currencies only.
-        rates = latest["rates"]
-        log(DEBUG, "Rates for %s", latest["date"])
-        for currency in currencies:
-            value = rates[currency]
-            log(DEBUG, base_currency + '/' + currency, value)
+        # rates = latest["rates"]
+        # log(DEBUG, "Rates for %s", latest["date"])
+        # for currency in currencies:
+        #     value = rates[currency]
+        #     log(DEBUG, base_currency + '/' + currency, value)
 
         return latest
 
