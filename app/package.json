@@ -48,17 +48,17 @@
     "react-dom": "^16.2.0",
     "sass-loader": "^6.0.6",
     "select2": "^4.0.6-rc.1",
-    "style-loader": "^0.19.1",
+    "style-loader": "^0.20.3",
     "vue": "^2.5.13",
-    "vue-loader": "^13.6.2",
-    "vue-style-loader": "^3.0.3",
+    "vue-loader": "^14.2.1",
+    "vue-style-loader": "^4.0.2",
     "vue-template-compiler": "^2.5.13",
-    "webpack": "^3.10.0",
-    "webpack-dev-server": "^2.9.7"
+    "webpack": "^4.1.1",
+    "webpack-dev-server": "^3.1.1"
   },
   "dependencies": {
-    "axios": "^0.17.1",
-    "bootstrap-vue": "^1.4.1",
+    "axios": "^0.18.0",
+    "bootstrap-vue": "^2.0.0-rc.2",
     "chart.js": "^2.7.1",
     "fullcalendar": "^3.8.0",
     "number-format.js": "^1.1.11",
@@ -67,7 +67,7 @@
     "vue-focus": "^2.1.0",
     "vue-full-calendar": "^2.5.1",
     "vue-search-select": "^2.4.0",
-    "vue-select": "github:sagalbot/vue-select",
+    "vue-select": "^2.4.0",
     "vue2-datepicker": "^1.8.1"
   },
   "browserslist": [
