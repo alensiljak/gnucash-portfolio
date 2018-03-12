@@ -36,7 +36,7 @@ def portfolio_value_post():
 
 def __get_model_for_portfolio_value(input_model: PortfolioValueInputModel):
     """ loads the data for portfolio value """
-    from datum import Datum
+    from pydatum import Datum
 
     result = PortfolioValueViewModel()
     result.filter = input_model

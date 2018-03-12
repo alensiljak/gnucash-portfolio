@@ -140,7 +140,7 @@ class SecurityAggregate(AggregateBase):
 
     def get_num_shares(self) -> Decimal:
         """ Returns the number of shares at this time """
-        from datum import Datum
+        from pydatum import Datum
         today = Datum().today()
         return self.get_num_shares_on(today)
 
@@ -245,7 +245,7 @@ class SecurityAggregate(AggregateBase):
         Returns the number of shares for the given security.
         It gets the number from all the accounts in the book.
         """
-        from datum import Datum
+        from pydatum import Datum
         # Use today's date but reset hour and lower.
         today = Datum()
         today.today()

@@ -17,7 +17,7 @@ class AccountTransactionsViewModel:
 class AccountTransactionsInputModel:
     """ User input """
     def __init__(self):
-        from datum import Datum
+        from pydatum import Datum
 
         # Account id
         self.account_id: str = None

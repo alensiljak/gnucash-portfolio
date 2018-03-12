@@ -1,12 +1,14 @@
 """ Scheduled Transactions """
 
-from typing import List
-from enum import Enum
-from logging import log, DEBUG, INFO, WARN
 from datetime import date, datetime
-from piecash import Book, ScheduledTransaction #, Recurrence
+from enum import Enum
+from logging import DEBUG, INFO, WARN, log
+from typing import List
+
 from gnucash_portfolio.lib import datetimeutils
-from datum import Datum
+from piecash import Book, ScheduledTransaction  # , Recurrence
+from pydatum import Datum
+
 
 class WeekendAdjustment(Enum):
     """ Weekend adjustment types """

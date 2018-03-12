@@ -96,7 +96,7 @@ def download():
 @currency_controller.route('/api/saverates', methods=['POST'])
 def api_save_rates():
     """ Saves exchange rates """
-    from datum import Datum
+    from pydatum import Datum
 
     # parse data
     cur_json = request.form.get('currencies')

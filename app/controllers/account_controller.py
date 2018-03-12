@@ -212,7 +212,7 @@ def api_search_autocomplete():
 @account_controller.route('/api/transactions')
 def api_transactions():
     """ Returns account transactions """
-    from datum import Datum
+    from pydatum import Datum
 
     # get parameters
     dateFromStr = request.args.get("dateFrom")

@@ -9,7 +9,7 @@ from gnucash_portfolio.lib import datetimeutils
 class PortfolioValueInputModel(): # pylint: disable=invalid-name
     """ Search model for Portfolio Value """
     def __init__(self):
-        from datum import Datum
+        from pydatum import Datum
 
         today = Datum()
         today.today()

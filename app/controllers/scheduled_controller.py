@@ -92,7 +92,7 @@ def topten_partial():
 # Private
 
 def __get_api_model_from_sx(transactions: List[ScheduledTransaction]):
-    from datum import Datum
+    from pydatum import Datum
 
     result = []
     for tx in transactions:

@@ -2,7 +2,7 @@
 import calendar
 from datetime import date, datetime
 
-from datum import Datum
+from pydatum import Datum
 
 
 def get_days_in_month(year: int, month: int) -> int:
