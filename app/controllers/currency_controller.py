@@ -96,10 +96,13 @@ def download():
 @currency_controller.route('/api/saverates', methods=['POST'])
 def api_save_rates():
     """ Saves exchange rates """
+    from datum import Datum
+
     # parse data
     cur_json = request.form.get('currencies')
     base_cur_symbol = request.form.get('base')
-    rate_date = datetimeutils.parse_iso_date(request.form.get("date"))
+    # rate_date = datetimeutils.parse_iso_date(request.form.get("date"))
+    rate_date = Datum().from_iso_date_string(request.form.get("date"))
     fx_rates = json.loads(cur_json)
     # filter out the ones without rates
     filtered_rates = [item for item in fx_rates if "rate" in item]

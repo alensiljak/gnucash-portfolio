@@ -1,11 +1,12 @@
 """
 Import currency exchange rates from .csv file into GnuCash
 """
-from logging import log, DEBUG
+import logging
+
 from sqlalchemy import func
-from gnucash_portfolio.lib import settings
+
 from gnucash_portfolio.bookaggregate import BookAggregate
-from pricedb.download import currencyrates
+from gnucash_portfolio.lib import settings
 
 
 class ExchangeRatesImporter:
@@ -19,17 +20,17 @@ class ExchangeRatesImporter:
 
         # Currencies to be downloaded/imported.
         currencies = [currency.mnemonic for currency in book_currencies]
-        log(DEBUG, "requested currencies: ", currencies)
+        logging.debug(f"requested currencies: {currencies}")
 
         # Base currency. Required for downloading the currency pairs.
-        log(DEBUG, "Base currency:", base_currency)
+        logging.debug(f"Base currency: {base_currency}")
 
         # self.settings
-        rateman = currencyrates.CurrencyRatesRetriever()
+        # TODO rateman = currencyrates.CurrencyRatesRetriever()
         # Get the rates json.
         #currencies = ["AUD", "USD"]
         # TODO refactor this to receive the list of currencies
-        latest = rateman.download("CURRENCY", "AUD", "EUR")
+        # TODO latest = rateman.download("CURRENCY", "AUD", "EUR")
 
         # iterate over rates and display rates for specified currencies only.
         # rates = latest["rates"]
@@ -38,6 +39,8 @@ class ExchangeRatesImporter:
         #     value = rates[currency]
         #     log(DEBUG, base_currency + '/' + currency, value)
 
+        # TODO redo this to use finance::quote package
+        latest = None
         return latest
 
     def display_gnucash_rates(self):
@@ -46,19 +49,21 @@ class ExchangeRatesImporter:
             for currency in svc.book.currencies:
                 prices = currency.prices.all()
                 if prices:
-                    log(DEBUG, currency.mnemonic)
+                    logging.debug(currency.mnemonic)
                     for price in prices:
-                        log(DEBUG, price)
+                        logging.debug(price)
 
     def get_count(self, query):
         """
         Returns a number of query results. This is faster than .count() on the query
         """
-        count_q = query.statement.with_only_columns([func.count()]).order_by(None)
+        count_q = query.statement.with_only_columns(
+            [func.count()]).order_by(None)
         count = query.session.execute(count_q).scalar()
         return count
 
 #####################################
+
 
 def main():
     """
@@ -70,7 +75,8 @@ def main():
     latest_rates_json = importer.get_latest_rates()
 
     # translate into an array of PriceModels
-    mapper = currencyrates.FixerioModelMapper()
+    # TODO mapper = currencyrates.FixerioModelMapper()
+    mapper = None
     rates = mapper.map_to_model(latest_rates_json)
 
     print("####################################")
@@ -83,7 +89,7 @@ def main():
     print("displaying rates from gnucash...")
     importer.display_gnucash_rates()
 
+
 ###############################################################################
 if __name__ == "__main__":
     main()
-    

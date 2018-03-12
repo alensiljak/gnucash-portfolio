@@ -14,7 +14,7 @@ from app.models.account_models import (AccountDetailsViewModel,
                                        AccountTransactionsInputModel,
                                        AccountTransactionsRefModel,
                                        AccountTransactionsViewModel)
-from gnucash_portfolio.accounts import AccountAggregate, AccountsAggregate
+from gnucash_portfolio.accounts import AccountsAggregate
 from gnucash_portfolio.bookaggregate import BookAggregate
 from gnucash_portfolio.currencies import CommodityTypes
 from gnucash_portfolio.lib import datetimeutils, generic
@@ -212,24 +212,30 @@ def api_search_autocomplete():
 @account_controller.route('/api/transactions')
 def api_transactions():
     """ Returns account transactions """
+    from datum import Datum
+
     # get parameters
     dateFromStr = request.args.get("dateFrom")
-    dateFrom = datetimeutils.parse_iso_date(dateFromStr)
+    # dateFrom = datetimeutils.parse_iso_date(dateFromStr)
+    dateFrom = Datum()
+    dateFrom.from_iso_date_string(dateFromStr)
     dateToStr = request.args.get("dateTo")
-    dateTo = datetimeutils.parse_iso_date(dateToStr)
+    # dateTo = datetimeutils.parse_iso_date(dateToStr)
+    dateTo = Datum()
+    dateTo.from_iso_date_string(dateToStr)
     account_id = request.args.get("account")
 
     # get data
     with BookAggregate() as svc:
         acc_agg = svc.accounts.get_aggregate_by_id(account_id)
-        txs = acc_agg.get_transactions(dateFrom, dateTo)
+        txs = acc_agg.get_transactions(dateFrom.value, dateTo.value)
         records = []
 
         # return results
         model = {
             "accountName": acc_agg.account.fullname,
-            "startBalance": acc_agg.get_start_balance(dateFrom),
-            "endBalance": acc_agg.get_end_balance(dateTo),
+            "startBalance": acc_agg.get_start_balance(dateFrom.value),
+            "endBalance": acc_agg.get_end_balance(dateTo.value),
             "transactions": []
         }
 

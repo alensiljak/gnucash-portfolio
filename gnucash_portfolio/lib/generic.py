@@ -13,22 +13,6 @@ from sqlalchemy.dialects import sqlite
 from gnucash_portfolio.lib import settings, fileutils
 
 
-def get_today():
-    """
-    Returns the current date string in ISO format.
-    """
-    return get_date_iso_string(time)
-
-def get_yesterday():
-    """
-    Returns yesterday's datetime
-    """
-    return datetime.today() - timedelta(days=1)
-
-def get_date_iso_string(value: datetime):
-    """ Gets the iso string representation of the given date """
-    return value.strftime("%Y-%m-%d")
-
 def load_json_file_contents(path: str) -> str:
     """ Loads contents from a json file """
     assert isinstance(path, str)

@@ -140,7 +140,8 @@ class SecurityAggregate(AggregateBase):
 
     def get_num_shares(self) -> Decimal:
         """ Returns the number of shares at this time """
-        today = datetimeutils.today()
+        from datum import Datum
+        today = Datum().today()
         return self.get_num_shares_on(today)
 
     def get_num_shares_on(self, on_date: datetime) -> Decimal:
@@ -244,10 +245,12 @@ class SecurityAggregate(AggregateBase):
         Returns the number of shares for the given security.
         It gets the number from all the accounts in the book.
         """
+        from datum import Datum
         # Use today's date but reset hour and lower.
-        today = datetimeutils.today()
-        today = datetimeutils.end_of_day(today)
-        return self.get_num_shares_on(today)
+        today = Datum()
+        today.today()
+        today.end_of_day()
+        return self.get_num_shares_on(today.value)
 
     def get_splits_query(self):
         """ Returns the query for all splits for this security """

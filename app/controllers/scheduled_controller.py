@@ -2,13 +2,16 @@
 
 #from logging import log, DEBUG
 from typing import List
+
 from flask import Blueprint, render_template, request
-try: import simplejson as json
-except ImportError: import json
-from piecash import ScheduledTransaction
+
+from app.models.transaction_models import ScheduledTxInputModel
 from gnucash_portfolio.bookaggregate import BookAggregate
 from gnucash_portfolio.lib import datetimeutils
-from app.models.transaction_models import ScheduledTxInputModel
+from piecash import ScheduledTransaction
+
+try: import simplejson as json
+except ImportError: import json
 
 
 scheduled_controller = Blueprint( # pylint: disable=invalid-name
@@ -89,11 +92,16 @@ def topten_partial():
 # Private
 
 def __get_api_model_from_sx(transactions: List[ScheduledTransaction]):
+    from datum import Datum
+
     result = []
     for tx in transactions:
+        start_date = Datum()
+        start_date.from_datetime(tx["next_date"].value)
+
         result.append({
             "title": tx.name,
-            "start": datetimeutils.get_iso_string(tx["next_date"].value),
+            "start": start_date.get_iso_string(),
             "allDay": True
         })
     return result

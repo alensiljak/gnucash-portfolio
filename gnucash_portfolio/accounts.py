@@ -102,6 +102,8 @@ class AccountAggregate(AggregateBase):
 
     def get_start_balance(self, before: date) -> Decimal:
         """ Calculates account balance """
+        assert isinstance(before, datetime)
+
         # create a new date without hours
         date_corrected = datetimeutils.start_of_day(before)
         # now subtract 1 second.

@@ -36,10 +36,14 @@ def portfolio_value_post():
 
 def __get_model_for_portfolio_value(input_model: PortfolioValueInputModel):
     """ loads the data for portfolio value """
+    from datum import Datum
+
     result = PortfolioValueViewModel()
     result.filter = input_model
 
-    ref_date = datetimeutils.end_of_day(input_model.as_of_date)
+    ref_datum = Datum()
+    ref_datum.from_datetime(input_model.as_of_date)
+    ref_date = ref_datum.end_of_day()
 
     result.stock_rows = []
     with BookAggregate() as svc:

@@ -9,7 +9,12 @@ from gnucash_portfolio.lib import datetimeutils
 class PortfolioValueInputModel(): # pylint: disable=invalid-name
     """ Search model for Portfolio Value """
     def __init__(self):
-        self.as_of_date: datetime = datetimeutils.today_date()
+        from datum import Datum
+
+        today = Datum()
+        today.today()
+
+        self.as_of_date: datetime = today.value
         self.stock: str = ""
 
 
