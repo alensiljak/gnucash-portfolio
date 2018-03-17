@@ -86,5 +86,5 @@ def get_period_last_3_months() -> str:
     start_date = today.clone()
     start_date.subtract_months(3)
 
-    period = get_period(start_date, today)
+    period = get_period(start_date.date(), today.date())
     return period
