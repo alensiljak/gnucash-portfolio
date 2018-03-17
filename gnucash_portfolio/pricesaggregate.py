@@ -18,8 +18,8 @@ class PricesAggregate:
         """ Gets the price for commodity on given date or last known before the date """
         query = (
             self.book.session.query(Price)
-            .filter(Price.date <= on_date,
-                    Price.commodity == stock)
+            .filter(Price.date <= on_date.date() )
+            .filter(Price.commodity == stock)
             .order_by(desc(Price.date))
         )
         return query
