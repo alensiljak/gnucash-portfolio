@@ -102,21 +102,32 @@ class AccountAggregate(AggregateBase):
 
     def get_start_balance(self, before: date) -> Decimal:
         """ Calculates account balance """
+        from pydatum import Datum
+
         assert isinstance(before, datetime)
 
         # create a new date without hours
-        date_corrected = datetimeutils.start_of_day(before)
+        datum = Datum()
+        datum.from_date(before)
+        #date_corrected = datetimeutils.start_of_day(before)
         # now subtract 1 second.
-        date_corrected -= timedelta(seconds=1)
+        #date_corrected -= timedelta(seconds=1)
         #log(DEBUG, "getting balance on %s", date_corrected)
-        return self.get_balance_on(date_corrected)
+        datum.yesterday()
+        datum.end_of_day()
+        return self.get_balance_on(datum.value)
 
     def get_end_balance(self, after: date) -> Decimal:
         """ Calculates account balance """
+        from pydatum import Datum
+
         # create a new date without hours
-        date_corrected = datetimeutils.end_of_day(after)
+        #date_corrected = datetimeutils.end_of_day(after)
+        datum = Datum()
+        datum.from_date(after)
+        datum.end_of_day()
         #log(DEBUG, "getting balance on %s", date_corrected)
-        return self.get_balance_on(date_corrected)
+        return self.get_balance_on(datum.value)
 
     def get_balance(self):
         """ Current account balance """
