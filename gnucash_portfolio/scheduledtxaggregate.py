@@ -109,8 +109,7 @@ def get_next_occurrence(tx: ScheduledTransaction) -> date:
             next_date = handle_friday(next_date, period, mult, start_date)
 
         # Line 274.
-        temp_date = Datum()
-        temp_date.from_datetime(next_date)
+        temp_date = next_date.clone()
         if (temp_date.is_end_of_month() or
                 (period in [RecurrencePeriod.MONTH.value, RecurrencePeriod.YEAR.value]
                  and (next_date.get_day() >= start_date.get_day()))

@@ -109,7 +109,7 @@ def __get_api_model_from_sx(transactions: List[ScheduledTransaction]):
     result = []
     for tx in transactions:
         start_date = Datum()
-        start_date.from_datetime(tx["next_date"].value)
+        start_date.from_date(tx["next_date"].value)
 
         result.append({
             "title": tx.name,
@@ -117,7 +117,6 @@ def __get_api_model_from_sx(transactions: List[ScheduledTransaction]):
             "allDay": True
         })
     return result
-
 
 def __parse_sch_tx_search_params() -> ScheduledTxInputModel:
     """ Parses the search parameters from the request """
@@ -129,7 +128,6 @@ def __parse_sch_tx_search_params() -> ScheduledTxInputModel:
 
     return model
 
-
 def __load_model_for_scheduled_transactions(
         search: ScheduledTxInputModel, svc: BookAggregate) -> List[ScheduledTransaction]:
     """ loads data for scheduled transactions """
@@ -139,9 +137,8 @@ def __load_model_for_scheduled_transactions(
     query = svc.scheduled.get_enabled()
     return query
 
-
 def __load_due_dates(
-    svc: BookAggregate, transactions: List[ScheduledTransaction]
+        svc: BookAggregate, transactions: List[ScheduledTransaction]
 ) -> List[ScheduledTransaction]:
     """ Populates due dates on scheduled transactions """
     for sx in transactions:
