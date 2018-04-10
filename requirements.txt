@@ -2,10 +2,8 @@ PriceDb
 Flask==0.12.2
 Flask-Assets==0.12
 piecash
-pylint==1.8.1
+pylint==1.8.4
 pyScss==1.3.5
-pytest==3.3.1
-python-dateutil==2.6.1
-rope==0.10.7
-SQLAlchemy==1.1.15
-SQLAlchemy-Utils==0.32.21
+pytest==3.5.0
+SQLAlchemy==1.2.6
+SQLAlchemy-Utils==0.33.2
