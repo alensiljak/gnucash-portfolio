@@ -106,7 +106,7 @@ def get_next_occurrence(tx: ScheduledTransaction) -> date:
         if wadj == WeekendAdjustment.BACK.value and (
                 period in ([RecurrencePeriod.YEAR.value, RecurrencePeriod.MONTH.value,
                             RecurrencePeriod.END_OF_MONTH.value]) and next_weekday == "Friday"):
-            next_date = handle_friday(next_date, period, mult, start_date.value)
+            next_date = handle_friday(next_date, period, mult, start_date)
 
         # Line 274.
         temp_date = next_date.clone()
@@ -169,12 +169,10 @@ def get_next_occurrence(tx: ScheduledTransaction) -> date:
 
     return next_date.value.date()
 
-def handle_friday(next_date: Datum, period: str, mult: int, start_date: datetime):
+def handle_friday(next_date: Datum, period: str, mult: int, start_date: Datum):
     """ Extracted the calculation for when the next_day is Friday """
     assert isinstance(next_date, Datum)
-
-    start_datum = Datum()
-    start_datum.from_datetime(start_date)
+    assert isinstance(start_date, Datum)
 
     # Starting from line 220.
     tmp_sat = next_date.clone()
@@ -190,13 +188,13 @@ def handle_friday(next_date: Datum, period: str, mult: int, start_date: datetime
         else:
             next_date.add_months(mult - 1)
     else:
-        if tmp_sat.get_day_name() == start_datum.get_day_name():
+        if tmp_sat.get_day_name() == start_date.get_day_name():
             next_date.add_days(1)
             next_date.add_months(mult)
-        elif tmp_sun.get_day_name() == start_datum.get_day_name():
+        elif tmp_sun.get_day_name() == start_date.get_day_name():
             next_date.add_days(2)
             next_date.add_months(mult)
-        elif next_date.day >= start_date.day:
+        elif next_date.get_day() >= start_date.get_day():
             next_date.add_months(mult)
         elif next_date.is_end_of_month():
             next_date.add_months(mult)
