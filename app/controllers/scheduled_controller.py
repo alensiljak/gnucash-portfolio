@@ -7,7 +7,6 @@ from flask import Blueprint, render_template, request
 
 from app.models.transaction_models import ScheduledTxInputModel
 from gnucash_portfolio.bookaggregate import BookAggregate
-from gnucash_portfolio.lib import datetimeutils
 from piecash import ScheduledTransaction
 
 try:

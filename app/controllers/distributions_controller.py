@@ -1,7 +1,7 @@
 """ Income reports """
 from typing import List
 from logging import log, DEBUG
-from datetime import date, timedelta
+from datetime import date
 from flask import Blueprint, request, render_template
 from piecash import Account, Commodity, Split, Book, Transaction
 from gnucash_portfolio.bookaggregate import BookAggregate

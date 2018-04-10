@@ -116,3 +116,6 @@ ENV/
 
 # VS Code
 .vscode/tags
+
+# Test cache
+.pytest_cache

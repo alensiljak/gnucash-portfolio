@@ -7,6 +7,8 @@ from enum import Enum, auto
 from typing import List
 from decimal import Decimal
 from logging import log, DEBUG
+
+from pydatum import Datum
 from piecash import Book, Account, Commodity, Split, Transaction, AccountType
 from gnucash_portfolio.lib import datetimeutils, generic
 from gnucash_portfolio.lib.aggregatebase import AggregateBase
@@ -119,8 +121,6 @@ class AccountAggregate(AggregateBase):
 
     def get_end_balance(self, after: date) -> Decimal:
         """ Calculates account balance """
-        from pydatum import Datum
-
         # create a new date without hours
         #date_corrected = datetimeutils.end_of_day(after)
         datum = Datum()
@@ -131,8 +131,9 @@ class AccountAggregate(AggregateBase):
 
     def get_balance(self):
         """ Current account balance """
-        on_date = datetimeutils.today()
-        return self.get_balance_on(on_date)
+        on_date = Datum()
+        on_date.today()
+        return self.get_balance_on(on_date.value)
 
     def get_balance_on(self, on_date: datetime) -> Decimal:
         """ Returns the balance on (and including) a certain date """
@@ -170,8 +171,10 @@ class AccountAggregate(AggregateBase):
         assert isinstance(date_to, datetime)
 
         # fix up the parameters as we need datetime
-        dt_from = datetimeutils.start_of_day(date_from)
-        dt_to = datetimeutils.end_of_day(date_to)
+        dt_from = Datum().from_datetime(date_from)
+        dt_from.start_of_day()
+        dt_to = Datum().from_datetime(date_to)
+        dt_to.end_of_day()
 
         query = (
             self.book.session.query(Transaction)
@@ -221,7 +224,7 @@ class AccountsAggregate(AggregateBase):
         # print(generic.get_sql(query))
         return query.all()
 
-    def get_aggregate_by_id(self, account_id:str) -> AccountAggregate:
+    def get_aggregate_by_id(self, account_id: str) -> AccountAggregate:
         """ Returns the aggregate for the given id """
         account = self.get_by_id(account_id)
         return self.get_account_aggregate(account)

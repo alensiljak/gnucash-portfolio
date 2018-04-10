@@ -106,7 +106,7 @@ def get_next_occurrence(tx: ScheduledTransaction) -> date:
         if wadj == WeekendAdjustment.BACK.value and (
                 period in ([RecurrencePeriod.YEAR.value, RecurrencePeriod.MONTH.value,
                             RecurrencePeriod.END_OF_MONTH.value]) and next_weekday == "Friday"):
-            next_date = handle_friday(next_date, period, mult, start_date)
+            next_date = handle_friday(next_date, period, mult, start_date.value)
 
         # Line 274.
         temp_date = next_date.clone()
