@@ -58,16 +58,6 @@ Pay attention to the Error and Fatal lines. See utils/lint_app.cmd script for co
 
 Ref: [PyLint Output](https://docs.pylint.org/en/1.6.0/output.html)
 
-## Benefits
-
-Considering several factors below, it might be preferrable to use an independent application to work with Portfolio then to provide the UI functionality through GnuCash reports using gnucash_utilities project. This approach would utilize the gnucash book/database directly.
-
-- Ease of development  
-Developing reports on piecash stack seems fairly straightforward and much simpler than Scheme, GnuCash reporting engine. The control of the output is also easier by directly editing HTML templates and CSS styles.
-
-- Performance  
-Comparing the output through GnuCash reports on Windows to the output produced using the Python stack (flask + jinja HTML output + piecash), the advantage is significantly on the side of the Python components.
-
 # Reports
 
 An approach using gnucash_utilities project is found in the /reports directory.
