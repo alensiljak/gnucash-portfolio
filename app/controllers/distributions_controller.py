@@ -1,15 +1,18 @@
 """ Income reports """
+import logging
+from datetime import date, datetime
 from typing import List
-from logging import log, DEBUG
-from datetime import date
+
 from flask import Blueprint, request, render_template
 from piecash import Account, Commodity, Split, Book, Transaction
+
+from app.models.distribution_models import DistributionsInputModel, DistributionsViewModel
 from gnucash_portfolio.bookaggregate import BookAggregate
 from gnucash_portfolio.lib import datetimeutils
-from app.models.distribution_models import DistributionsInputModel, DistributionsViewModel
 
-distribution_controller = Blueprint( # pylint: disable=invalid-name
+distribution_controller = Blueprint(  # pylint: disable=invalid-name
     'distribution_controller', __name__, url_prefix='/distributions')
+
 
 @distribution_controller.route('/')
 def income_in_period():
@@ -24,6 +27,7 @@ def income_in_period():
 
     return render_template('distributions.html', model=None, in_model=in_model)
 
+
 @distribution_controller.route('/', methods=['POST'])
 def income_in_period_data():
     """ Displays the results """
@@ -33,6 +37,7 @@ def income_in_period_data():
     with BookAggregate() as svc:
         model = __get_model_inperiod(in_model, svc)
         return render_template('distributions.html', model=model, in_model=in_model)
+
 
 @distribution_controller.route('/<symbol>', methods=['GET'])
 def for_security(symbol):
@@ -44,11 +49,12 @@ def for_security(symbol):
         sec_agg = svc.securities.get_aggregate_for_symbol(symbol)
         accounts = [account.fullname for account in sec_agg.get_income_accounts()]
         in_model.accounts = ','.join(accounts)
-        log(DEBUG, "accounts = %s", in_model.accounts)
+        logging.debug(f"accounts = {in_model.accounts}")
 
         model = __get_model_inperiod(in_model, svc)
 
         return render_template('distributions.html', model=model, in_model=in_model)
+
 
 ###################
 # Private
@@ -67,6 +73,7 @@ def __get_model_inperiod(in_model, svc: BookAggregate) -> DistributionsViewModel
     model.splits = splits
 
     return model
+
 
 def __get_input_model() -> DistributionsInputModel:
     """ Parses user input into a data-transfer object (DTO) """
@@ -87,6 +94,7 @@ def __get_input_model() -> DistributionsInputModel:
 
     return model
 
+
 def __load_income_in_period(
         book: Book, account_fullnames: List[str], date_from: date, date_to: date):
     """ load income transactions in the given period """
@@ -103,6 +111,7 @@ def __load_income_in_period(
 
     return income_transactions
 
+
 def __get_accounts_by_name(book: Book, account_fullnames: List[str]) -> List[Account]:
     """ retrieves the account objects for the given full names """
     result = []
@@ -113,9 +122,11 @@ def __get_accounts_by_name(book: Book, account_fullnames: List[str]) -> List[Acc
 
     return result
 
+
 def __get_ids(accounts: List[Account]):
     """ extracts only the ids from the account list """
     return [o.guid for o in accounts]
+
 
 def __get_income_account_ids(book: Book, account_names: List[str]) -> List[str]:
     """ Loads all income account ids """
@@ -128,6 +139,7 @@ def __get_income_account_ids(book: Book, account_names: List[str]) -> List[str]:
 
     return ids
 
+
 def __get_children_ids(account: Account) -> List[str]:
     """ recursive function that loads ids from all child accounts in the tree """
     ids = []
@@ -139,6 +151,7 @@ def __get_children_ids(account: Account) -> List[str]:
         child_ids = __get_children_ids(child)
         ids += child_ids
     return ids
+
 
 def __load_all_income_for_account(account: Account, date_from: date, date_to: date):
     """ Loads all income in the account """
@@ -155,26 +168,29 @@ def __load_all_income_for_account(account: Account, date_from: date, date_to: da
 
     return result
 
+
 def __load_income_in_period_query(
-        book: Book, account_ids: List[hex], in_model) -> List[Split]:
+        book: Book, account_ids: List[hex], in_model: DistributionsInputModel) -> List[Split]:
     """ Load all data by using the query directly """
+    assert isinstance(in_model, DistributionsInputModel)
+    assert isinstance(in_model.date_from, datetime)
 
     date_from = in_model.date_from
     date_to = in_model.date_to
-    log(DEBUG, "fetching data for period %s - %s", date_from, date_to)
+    logging.debug(f"fetching data for period {date_from} - {date_to}")
 
     query = (book.query(Split)
              .join(Transaction)
              .join(Account)
-             .filter(Transaction.post_date >= date_from, Transaction.post_date <= date_to,
+             .filter(Transaction.post_date >= date_from.date(), Transaction.post_date <= date_to.date(),
                      Account.guid.in_(account_ids))
              .order_by(Transaction.post_date)
-            )
+             )
 
     if in_model.currency:
         query = (query
                  .join(Commodity)
                  .filter(Commodity.mnemonic == in_model.currency)
-                )
+                 )
 
     return query.all()

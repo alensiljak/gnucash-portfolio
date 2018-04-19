@@ -1,6 +1,8 @@
 """ Models for distributions report """
 
+from datetime import datetime
 from typing import List
+
 from gnucash_portfolio.lib import datetimeutils
 
 
@@ -13,7 +15,7 @@ class DistributionsInputModel:
         self.currency = ""
 
     @property
-    def date_from(self):
+    def date_from(self) -> datetime:
         """ extract from date """
         return datetimeutils.get_period_start(self.period)
 
