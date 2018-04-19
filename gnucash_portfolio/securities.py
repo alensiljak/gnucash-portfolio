@@ -5,34 +5,33 @@ Accounts should be only accounts that hold these commodities.
 """
 import datetime
 from decimal import Decimal
-from logging import DEBUG, log
 from typing import List
+import logging
 
+from piecash import Account, AccountType, Book, Commodity, Split, Transaction
 from sqlalchemy import desc
+from pricedb.app import PriceDbApplication
+from pricedb.model import PriceModel
 
-from gnucash_portfolio.accounts import \
-    AccountAggregate  # , AccountType # AccountsAggregate
+from gnucash_portfolio.accounts import AccountAggregate
 from gnucash_portfolio.currencies import CurrenciesAggregate
-from gnucash_portfolio.lib import datetimeutils  # , generic
 from gnucash_portfolio.lib.aggregatebase import AggregateBase
 from gnucash_portfolio.mappers.splitmapper import SplitMapper
 from gnucash_portfolio.model.split_model import SplitModel
-from piecash import (Account, AccountType, Book, Commodity, Price, Split,
-                     Transaction)
 
 
 class SecurityAggregate(AggregateBase):
     """ Stocks aggregate """
     def __init__(self, book: Book, security: Commodity):
         super(SecurityAggregate, self).__init__(book)
-        # self.book = book
         self.security = security
         # cache of holding accounts
         self.__holding_accounts = None
 
     def create_price(self):
         """ Create price for security """
-        pass
+        # pass
+        raise NotImplementedError()
 
     def get_avg_price(self):
         """ Returns the default avg. price """
@@ -46,8 +45,6 @@ class SecurityAggregate(AggregateBase):
         by averaging only the prices paid. Very simple first implementation.
         """
         avg_price = Decimal(0)
-
-        #return sum([sp.quantity for sp in self.splits]) * self.sign
 
         price_total = Decimal(0)
         price_count = 0
@@ -63,7 +60,6 @@ class SecurityAggregate(AggregateBase):
                     continue
 
                 price = split.value / split.quantity
-                #print(price)
                 price_count += 1
                 price_total += price
 
@@ -158,17 +154,13 @@ class SecurityAggregate(AggregateBase):
 
         return total_quantity
 
-    def get_last_available_price(self) -> Price:
-        """ Finds the last available price for security """
-        query = (
-            self.security.prices
-            .order_by(desc(Price.date))
-        )
-        last_price = query.first()
-        #return last_price.value
-        return last_price
+    def get_last_available_price(self) -> PriceModel:
+        """ Finds the last available price for security. Uses PriceDb. """
+        pricedb = PriceDbApplication()
+        result = pricedb.get_latest_price(self.security.namespace, self.security.mnemonic)
+        return result
 
-    def get_currency(self) -> Commodity:
+    def get_currency(self) -> str:
         """
         Reads the currency from the latest available price information,
         assuming that all the prices are in the same currency for any symbol.
@@ -177,6 +169,7 @@ class SecurityAggregate(AggregateBase):
         if not last_price:
             return None
 
+        # logging.debug(f"currency is {last_price.currency}")
         return last_price.currency
 
     def get_holding_accounts(self) -> List[Account]:
@@ -236,9 +229,19 @@ class SecurityAggregate(AggregateBase):
         # get_income_in_account_period
         pass
 
-    def get_prices(self) -> List[Price]:
+    def get_prices(self) -> List[PriceModel]:
         """ Returns all available prices for security """
-        return self.security.prices.order_by(Price.date)
+        # return self.security.prices.order_by(Price.date)
+        from pricedb.dal import Price
+
+        pricedb = PriceDbApplication()
+        repo = pricedb.get_price_repository()
+        query = (repo.query(Price)
+            .filter(Price.namespace == self.security.namespace)
+            .filter(Price.symbol == self.security.mnemonic)
+            .orderby_desc(Price.date)
+        )
+        return query.all()
 
     def get_quantity(self) -> Decimal:
         """

@@ -35,7 +35,7 @@
                 </div>
                 <div class="form-group col">
                     <label>Price ({{ model.currency }})</label>,
-                    <small class="float-right align-baseline">{% if model.price %}on {{ '{:%Y-%m-%d}'.format(model.price.date) }}{% endif %}</small>
+                    <small class="float-right align-baseline">{% if model.price %}on {{ '{:%Y-%m-%d}'.format(model.price.datetime) }}{% endif %}</small>
 
                     <input type="text" class="form-control text-right" readonly value="{{ model.price.value }}">
                 </div>

@@ -3,8 +3,10 @@ Portfolio
 - cash account balances per currency
 - portfolio value report
 """
+from pydatum import Datum
 from datetime import datetime #, timedelta
 from flask import Blueprint, request, render_template
+
 from gnucash_portfolio.lib import portfoliovalue, datetimeutils
 from gnucash_portfolio.bookaggregate import BookAggregate
 from gnucash_portfolio.securities import SecuritiesAggregate
@@ -36,8 +38,6 @@ def portfolio_value_post():
 
 def __get_model_for_portfolio_value(input_model: PortfolioValueInputModel):
     """ loads the data for portfolio value """
-    from pydatum import Datum
-
     result = PortfolioValueViewModel()
     result.filter = input_model
 

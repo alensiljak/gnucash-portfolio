@@ -125,6 +125,8 @@ def search_api():
 def __get_model_for_details(
         svc: BookAggregate, symbol: str) -> security_models.SecurityDetailsViewModel:
     """ Loads the model for security details """
+    from piecash import Commodity
+
     sec_agg = svc.securities.get_aggregate_for_symbol(symbol)
 
     model = security_models.SecurityDetailsViewModel()
@@ -134,8 +136,10 @@ def __get_model_for_details(
     # Quantity
     model.quantity = sec_agg.get_quantity()
     model.value = sec_agg.get_value()
-    if sec_agg.get_currency():
-        model.currency = sec_agg.get_currency().mnemonic
+    currency = sec_agg.get_currency()
+    if currency:
+        assert isinstance(currency, str)
+        model.currency = currency
     model.price = sec_agg.get_last_available_price()
 
     model.average_price = sec_agg.get_avg_price()
