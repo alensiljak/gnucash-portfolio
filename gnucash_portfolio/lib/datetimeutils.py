@@ -1,5 +1,6 @@
 """ Date/time utilities """
 import calendar
+import logging
 from datetime import date, datetime
 
 from pydatum import Datum
@@ -28,15 +29,15 @@ def get_period_end(period: str) -> datetime:
     return obj[1]
 
 def parse_period(period: str):
-    """ parses period from date range picker """
+    """ parses period from date range picker. The received values are full ISO date """
     period = period.split(" - ")
-    # date_from = datetime.strptime(period[0], "%Y-%m-%d").replace(hour=0, minute=0, second=0)
+
     date_from = Datum()
-    date_from.from_iso_date_string(period[0])
+    date_from.from_iso_long_date(period[0])
     date_from.start_of_day()
-    # date_to = datetime.strptime(period[1], "%Y-%m-%d").replace(hour=23, minute=59, second=59)
+
     date_to = Datum()
-    date_to.from_iso_date_string(period[1])
+    date_to.from_iso_long_date(period[1])
     date_to.end_of_day()
 
     return (date_from.value, date_to.value)

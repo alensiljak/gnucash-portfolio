@@ -54,8 +54,9 @@
             "type": "python",
             "request": "launch",
             "module": "flask",
+            "cwd": "${workspaceFolder}",
             "env": {
-                "FLASK_APP": "${workspaceFolder}/app.py"
+                "FLASK_APP": "${workspaceFolder}/app/run.py"
             },
             "args": [
                 "run",

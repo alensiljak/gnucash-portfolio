@@ -6,7 +6,7 @@ Account operations
 """
 try: import simplejson as json
 except ImportError: import json
-from logging import DEBUG, log
+import logging
 
 from flask import Blueprint, render_template, request
 
@@ -216,11 +216,9 @@ def api_transactions():
 
     # get parameters
     dateFromStr = request.args.get("dateFrom")
-    # dateFrom = datetimeutils.parse_iso_date(dateFromStr)
     dateFrom = Datum()
     dateFrom.from_iso_date_string(dateFromStr)
     dateToStr = request.args.get("dateTo")
-    # dateTo = datetimeutils.parse_iso_date(dateToStr)
     dateTo = Datum()
     dateTo.from_iso_date_string(dateToStr)
     account_id = request.args.get("account")
@@ -294,6 +292,8 @@ def __load_view_model_for_tx(
         input_model: AccountTransactionsInputModel
 ) -> AccountTransactionsViewModel():
     """ Loads the filtered data """
+    assert isinstance(input_model.period, str)
+
     model = AccountTransactionsViewModel()
     if not input_model.account_id:
         return model
@@ -302,10 +302,10 @@ def __load_view_model_for_tx(
 
     # parse periods
     period = datetimeutils.parse_period(input_model.period)
+
     date_from = period[0]
     date_to = period[1]
-    log(DEBUG, "got range: %s. Parsed to %s - %s",
-        input_model.period, date_from, date_to)
+    logging.debug(f"got range: {input_model.period}. Parsed to {date_from} - {date_to}")
 
     account = svc.accounts.get_by_id(input_model.account_id)
     model.start_balance = svc.accounts.get_account_aggregate(
