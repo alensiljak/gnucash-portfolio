@@ -174,20 +174,25 @@ def __load_income_in_period_query(
     """ Load all data by using the query directly """
     assert isinstance(in_model, DistributionsInputModel)
     assert isinstance(in_model.date_from, datetime)
+    assert isinstance(in_model.date_to, datetime)
 
-    date_from = in_model.date_from
-    date_to = in_model.date_to
-    logging.debug(f"fetching data for period {date_from} - {date_to}")
+    date_from = in_model.date_from.date()
+    date_to = in_model.date_to.date()
+
+    logging.debug(f"fetching data for period {date_from} - {date_to}, accounts: {account_ids}")
 
     query = (book.query(Split)
              .join(Transaction)
              .join(Account)
-             .filter(Transaction.post_date >= date_from.date(), Transaction.post_date <= date_to.date(),
-                     Account.guid.in_(account_ids))
+             .filter(Transaction.post_date >= date_from)
+             .filter(Transaction.post_date <= date_to)
+             .filter(Account.guid.in_(account_ids))
              .order_by(Transaction.post_date)
              )
 
     if in_model.currency:
+        assert isinstance(in_model.currency, str)
+
         query = (query
                  .join(Commodity)
                  .filter(Commodity.mnemonic == in_model.currency)
