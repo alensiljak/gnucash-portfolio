@@ -171,16 +171,18 @@ class AccountAggregate(AggregateBase):
         assert isinstance(date_to, datetime)
 
         # fix up the parameters as we need datetime
-        dt_from = Datum().from_datetime(date_from)
+        dt_from = Datum()
+        dt_from.from_datetime(date_from)
         dt_from.start_of_day()
-        dt_to = Datum().from_datetime(date_to)
+        dt_to = Datum()
+        dt_to.from_datetime(date_to)
         dt_to.end_of_day()
 
         query = (
             self.book.session.query(Transaction)
             .join(Split)
             .filter(Split.account_guid == self.account.guid)
-            .filter(Transaction.post_date >= dt_from, Transaction.post_date <= dt_to)
+            .filter(Transaction.post_date >= dt_from.date, Transaction.post_date <= dt_to.date)
             .order_by(Transaction.post_date)
         )
         return query.all()
