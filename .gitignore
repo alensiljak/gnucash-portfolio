@@ -3,12 +3,6 @@ gnucash_portfolio/data/alen.gnucash
 gnucash_portfolio/data/*.gnucash-journal
 config/settings.json
 
-# Node modules
-app/node_modules/*
-
-# Compiled web assets
-app/static/*
-
 #####################################################
 # Byte-compiled / optimized / DLL files
 __pycache__/
