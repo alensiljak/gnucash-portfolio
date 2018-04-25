@@ -10,13 +10,13 @@ to-do:
 # pylint: disable=invalid-name
 import sys
 import piecash
-from piecash import Commodity
 
 # Variables
 filename = sys.argv[1]
 #############################
 
 searchTerm = input("Please enter the search term:")
+
 
 def searchAccount(searchTerm, book):
     """Searches through account names"""
@@ -26,7 +26,7 @@ def searchAccount(searchTerm, book):
 
     # search
     for account in book.accounts:
-        #print(account.fullname)
+        # print(account.fullname)
         # name
         if searchTerm.lower() in account.fullname.lower():
             print(account.fullname)
@@ -35,6 +35,7 @@ def searchAccount(searchTerm, book):
     if not found:
         print("Search term not found in account names.")
     return
+
 
 with piecash.open_book(filename, open_if_lock=True) as book:
     searchAccount(searchTerm, book)

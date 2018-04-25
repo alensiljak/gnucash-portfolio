@@ -6,7 +6,6 @@ Accounts should be only accounts that hold these commodities.
 import datetime
 from decimal import Decimal
 from typing import List
-import logging
 
 from piecash import Account, AccountType, Book, Commodity, Split, Transaction
 from sqlalchemy import desc
@@ -16,7 +15,8 @@ from pricedb.model import PriceModel
 from gnucash_portfolio.accounts import AccountAggregate
 from gnucash_portfolio.currencies import CurrenciesAggregate
 from gnucash_portfolio.lib.aggregatebase import AggregateBase
-from gnucash_portfolio.mappers.splitmapper import SplitMapper
+# from gnucash_portfolio.mappers.splitmapper import SplitMapper
+from gnucash_portfolio.mappers import  splitmapper
 from gnucash_portfolio.model.split_model import SplitModel
 
 
@@ -63,7 +63,6 @@ class SecurityAggregate(AggregateBase):
                 price_count += 1
                 price_total += price
 
-        #print(price_total, price_count)
         if price_count:
             avg_price = price_total / price_count
         return avg_price
@@ -76,7 +75,7 @@ class SecurityAggregate(AggregateBase):
         """
         balance = self.get_quantity()
         if not balance:
-            return 0
+            return Decimal(0)
 
         paid = Decimal(0)
         accounts = self.get_holding_accounts()
@@ -113,7 +112,7 @@ class SecurityAggregate(AggregateBase):
             return available_splits
 
         for real_split in buy_splits:
-            split = SplitMapper().map_split(real_split, SplitModel())
+            split = splitmapper.map_split(real_split, SplitModel())
 
             if split.quantity < balance:
                 # take this split and reduce the balance.

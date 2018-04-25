@@ -1,4 +1,3 @@
-#!/usr/bin/python3
 """ GnuCash database operations """
 
 import os
@@ -21,7 +20,6 @@ class Database:
             self.__settings = None
             self.filename = self.__config.database_path
 
-
     @property
     def __config(self):
         """ settings instance """
@@ -30,13 +28,11 @@ class Database:
 
         return self.__settings
 
-
     def display_db_info(self):
         """Displays some basic info about the GnuCash book"""
         with self.open_book() as book:
             default_currency = book.default_currency
             print("Default currency is ", default_currency.mnemonic)
-
 
     def open_book(self, for_writing=False) -> piecash.Book:
         """
@@ -58,21 +54,21 @@ class Database:
 
         access_type = "read/write" if for_writing else "readonly"
         log(INFO, "Using %s in %s mode.", filename, access_type)
-        #file_path = path.relpath(self.filename)
+        # file_path = path.relpath(self.filename)
         file_path = path.abspath(filename)
 
         if not for_writing:
             book = piecash.open_book(file_path, open_if_lock=True)
         else:
             book = piecash.open_book(file_path, open_if_lock=True, readonly=False)
-        #book = create_book()
+        # book = create_book()
         return book
-
 
     def create_book(self):
         """Creates a new in-memory book"""
-        #piecash.create_book(filename)
+        # piecash.create_book(filename)
         return piecash.create_book()
+
 
 ############################################################
 def test():
@@ -82,6 +78,7 @@ def test():
 
     with database.open_book() as test_book:
         print(test_book.default_currency)
+
 
 # If run directly, just display some diagnostics data.
 if __name__ == "__main__":

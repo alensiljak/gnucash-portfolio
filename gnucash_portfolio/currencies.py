@@ -7,9 +7,8 @@ from decimal import Decimal
 from enum import Enum, auto
 from typing import List
 from sqlalchemy import desc
-#from sqlalchemy.sql.expression import exists
 from piecash import Book, Commodity, Price
-from gnucash_portfolio.model.price_model import PriceModel
+from pricedb import PriceModel
 
 
 class CommodityTypes(Enum):
@@ -17,8 +16,9 @@ class CommodityTypes(Enum):
     CURRENCY = auto()
 
 
-class CurrencyAggregate():
+class CurrencyAggregate:
     """ Service/aggregate for a single currency """
+
     def __init__(self, book: Book, currency: Commodity):
         """ constructor """
         self.book = book
@@ -28,9 +28,9 @@ class CurrencyAggregate():
         """ Fetches the latest available rate for the currency pair """
         query = (
             self.currency.prices
-            .filter(Price.commodity == self.currency,
-                    Price.currency == other)
-            )
+                .filter(Price.commodity == self.currency,
+                        Price.currency == other)
+        )
         return query.first()
 
     def get_latest_price(self) -> Price:
@@ -39,15 +39,16 @@ class CurrencyAggregate():
         # Ensure that the rate is against the default currency only.
         query = (
             self.currency.prices
-            .filter(Price.currency == default_currency)
-            .order_by(desc(Price.date))
+                .filter(Price.currency == default_currency)
+                .order_by(desc(Price.date))
         )
         latest_price = query.first()
         return latest_price
 
 
-class CurrenciesAggregate():
+class CurrenciesAggregate:
     """ Service/aggregate for currencies """
+
     def __init__(self, book: Book):
         """ constructor """
         self.book = book
@@ -58,7 +59,7 @@ class CurrenciesAggregate():
         """ returns the query only """
         return (
             self.book.session.query(Commodity)
-            .filter_by(namespace="CURRENCY")
+                .filter_by(namespace="CURRENCY")
         )
 
     @property
@@ -104,7 +105,7 @@ class CurrenciesAggregate():
         """ Returns currencies used in the book """
         query = (
             self.currencies_query
-            .order_by(Commodity.mnemonic)
+                .order_by(Commodity.mnemonic)
         )
         return query.all()
 
@@ -124,7 +125,7 @@ class CurrenciesAggregate():
 
         query = (
             self.currencies_query
-            .filter(Commodity.mnemonic == symbol)
+                .filter(Commodity.mnemonic == symbol)
         )
         return query.one()
 
@@ -142,8 +143,8 @@ class CurrenciesAggregate():
 
             # Do not import duplicate prices.
             # todo: if the price differs, update it!
-            #exists_query = exists(rates_query)
-            has_rate = currency.prices.filter(Price.date == rate.date.date()).first()
+            # exists_query = exists(rates_query)
+            has_rate = currency.prices.filter(Price.date == rate.datetime.date()).first()
             # has_rate = (
             #     self.book.session.query(Price)
             #     .filter(Price.date == rate.date.date())
@@ -151,7 +152,7 @@ class CurrenciesAggregate():
             # )
             if not has_rate:
                 log(INFO, "Creating entry for %s, %s, %s, %s",
-                    base_currency.mnemonic, currency.mnemonic, rate.date.date(), amount)
+                    base_currency.mnemonic, currency.mnemonic, rate.datetime.date(), amount)
                 # Save the price in the exchange currency, not the default.
                 # Invert the rate in that case.
                 inverted_rate = 1 / amount
@@ -159,7 +160,7 @@ class CurrenciesAggregate():
 
                 price = Price(commodity=currency,
                               currency=base_currency,
-                              date=rate.date.date(),
+                              date=rate.datetime.date(),
                               value=str(inverted_rate))
                 have_new_rates = True
 
@@ -211,10 +212,9 @@ class CurrenciesAggregate():
 
         root = winreg.OpenKey(
             winreg.HKEY_CURRENT_USER, r'SOFTWARE\GSettings\org\gnucash\general', 0, winreg.KEY_READ)
-        [Pathname, regtype] = (winreg.QueryValueEx(root, key))
-        #print(key, [Pathname, regtype])
+        [pathname, regtype] = (winreg.QueryValueEx(root, key))
         winreg.CloseKey(root)
-        return Pathname
+        return pathname
 
     def __get_locale_currency(self):
         if locale.getlocale() == (None, None):

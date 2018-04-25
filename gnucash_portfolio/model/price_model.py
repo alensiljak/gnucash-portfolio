@@ -5,7 +5,7 @@ from datetime import datetime
 from decimal import Decimal
 
 
-class PriceModel:
+class PriceModel_Deprecated:
     """ Price model """
     def __init__(self, symbol=None, currency=None, value: Decimal = None,
                  rate_date: datetime = None):
@@ -21,8 +21,6 @@ class PriceModel:
 
     def parse_euro_date(self, date_string: str):
         """ Parses dd/MM/yyyy dates """
-        #dateutil.parser.parse(date_string,)
-        #d = datetime.datetime.strptime( "2012-10-09T19:00:55Z", "%Y-%m-%dT%H:%M:%SZ")
         self.date = datetime.strptime(date_string, "%d/%m/%Y")
         return self.date
 
@@ -30,13 +28,12 @@ class PriceModel:
         """
         Parses the amount string.
         """
-        #self.value = float(value_string)
         self.value = Decimal(value_string)
         return self.value
 
     def parse(self, csv_row: str):
         """ Parses the .csv row into own values """
         self.date = self.parse_euro_date(csv_row[2])
-        self.name = csv_row[0]
+        self.symbol = csv_row[0]
         self.value = self.parse_value(csv_row[1])
         return self

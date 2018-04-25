@@ -1,6 +1,6 @@
 """ Prices """
 
-from logging import log, INFO, WARN
+import logging
 from typing import List
 from datetime import datetime
 from piecash import Book, Commodity, Price
@@ -36,16 +36,16 @@ class PricesAggregate:
         prices = PriceDbApplication()
         prices.get_prices_on(on_date.date().isoformat(), stock.namespace, stock.mnemonic)
 
-    def get_for_symbol(self, symbol: str) -> List[Price]:
-        # get commodity
-        stock = SecuritiesAggregate(self.book).get_by_symbol(symbol)
-        return stock.prices
+    # def get_for_symbol(self, symbol: str) -> List[Price]:
+    #     # get commodity
+    #     stock = SecuritiesAggregate(self.book).get_by_symbol(symbol)
+    #     return stock.prices
 
     def import_prices(self, prices: List[PriceModel]):
         """ Import prices (from csv) """
         result = {}
         for price in prices:
-            result[price.name] = self.import_price(price)
+            result[price.symbol] = self.import_price(price)
 
         return result
 
@@ -54,22 +54,22 @@ class PricesAggregate:
         # Handle yahoo-style symbols with extension.
         symbol = price.symbol
         if "." in symbol:
-            symbol = price.name.split(".")[0]
+            symbol = price.symbol.split(".")[0]
         stock = SecuritiesAggregate(self.book).get_by_symbol(symbol)
         # get_aggregate_for_symbol
 
         if stock is None:
-            log(WARN, "security %s not found in book.", price.name)
+            logging.warning("security %s not found in book.", price.symbol)
             return False
 
         # check if there is already a price for the date
-        existing_prices = stock.prices.filter(Price.date == price.date).all()
+        existing_prices = stock.prices.filter(Price.date == price.datetime.date()).all()
         if not existing_prices:
             # Create new price for the commodity (symbol).
             self.__create_price_for(stock, price)
         else:
-            log(WARN, "price already exists for %s on %s",
-                stock.mnemonic, price.date.strftime("%Y-%m-%d"))
+            logging.warning("price already exists for %s on %s",
+                            stock.mnemonic, price.datetime.strftime("%Y-%m-%d"))
 
             existing_price = existing_prices[0]
             # update price
@@ -82,22 +82,22 @@ class PricesAggregate:
 
     def __create_price_for(self, commodity: Commodity, price: PriceModel):
         """ Creates a new Price entry in the book, for the given commodity """
-        log(INFO, "Adding a new price for %s, %s, %s",
-            commodity.mnemonic, price.date.strftime("%Y-%m-%d"), price.value)
+        logging.info("Adding a new price for %s, %s, %s",
+                     commodity.mnemonic, price.datetime.strftime("%Y-%m-%d"), price.value)
 
         # safety check. Compare currencies.
         sec_svc = SecurityAggregate(self.book, commodity)
         currency = sec_svc.get_currency()
 
-        if currency.mnemonic != price.currency:
+        if currency != price.currency:
             raise ValueError(
                 "Requested currency does not match the currency previously used",
-                currency.mnemonic, price.currency)
+                currency, price.currency)
 
         # Description of the source field values:
         # https://www.gnucash.org/docs/v2.6/C/gnucash-help/tool-price.html
 
-        new_price = Price(commodity, currency, price.date, price.value,
+        new_price = Price(commodity, currency, price.datetime.date(), price.value,
                           source="Finance::Quote")
         commodity.prices.append(new_price)
 
@@ -105,6 +105,5 @@ class PricesAggregate:
 class PriceAggregate:
     """ handle individual price """
 
-    def __init__(self, book: Book, price: Price):
+    def __init__(self, price: PriceModel):
         self.price = price
-        self.book = book

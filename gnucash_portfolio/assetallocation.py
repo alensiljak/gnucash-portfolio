@@ -7,7 +7,6 @@ try: import simplejson as json
 except ImportError: import json
 import os
 from os import path
-from logging import log, DEBUG
 from piecash import Book, Commodity, Price
 from gnucash_portfolio.accounts import AccountAggregate, AccountsAggregate
 from gnucash_portfolio.securities import SecurityAggregate, SecuritiesAggregate

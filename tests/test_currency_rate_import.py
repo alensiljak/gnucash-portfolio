@@ -1,13 +1,11 @@
 """ Currency exchange rates import """
 
-from logging import log, DEBUG
 from decimal import Decimal
 try: import simplejson as json
 except ImportError: import json
 from gnucash_portfolio.bookaggregate import BookAggregate
-from gnucash_portfolio.lib.currencyrates import FixerioModelMapper
 from gnucash_portfolio.lib import datetimeutils
-from gnucash_portfolio.model.price_model import PriceModel
+from pricedb import PriceModel
 
 
 def test_parsing_fixerio_response():

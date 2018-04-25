@@ -1,13 +1,13 @@
 """ Parse CSV into prices and rates """
 
-from logging import log, DEBUG
 from typing import List
 import csv
-from gnucash_portfolio.model.price_model import PriceModel
+from pricedb import PriceModel
 
 
 class CsvPriceParser:
     """ Parses .csv into list of prices """
+
     def __init__(self, currency: str):
         self.currency = currency
 
@@ -26,7 +26,6 @@ class CsvPriceParser:
 
         return result
 
-
     def get_prices_from_csv(self, content: str) -> List[PriceModel]:
         """ Imports prices from CSV content. See data folder for a sample file/content. """
         lines = content.splitlines()
@@ -35,7 +34,6 @@ class CsvPriceParser:
         reader = csv.reader(lines)
         for row in reader:
             price = PriceModel().parse(row)
-            #log(DEBUG, "parsed price. date is %s", price.date)
             price.currency = self.currency
 
             prices.append(price)
