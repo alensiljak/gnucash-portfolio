@@ -3,10 +3,9 @@
 from logging import log, INFO, WARN
 from typing import List
 from datetime import datetime
-from sqlalchemy import desc
 from piecash import Book, Commodity, Price
-from gnucash_portfolio.model.price_model import PriceModel
 from gnucash_portfolio.securities import SecurityAggregate, SecuritiesAggregate
+from pricedb import PriceDbApplication, PriceModel
 
 
 class PricesAggregate:
@@ -15,22 +14,27 @@ class PricesAggregate:
     def __init__(self, book: Book):
         self.book = book
 
-    def get_price_as_of_query(self, stock: Commodity, on_date: datetime):
-        """ Gets the price for commodity on given date or last known before the date """
-        # query = (
-        #     self.book.session.query(Price)
-        #     .filter(Price.date <= on_date.date())
-        #     .filter(Price.commodity == stock)
-        #     .order_by(desc(Price.date))
-        # )
-        # return query
-        # todo from PriceDb import PriceDbApplication
+    # def get_price_as_of_query(self, stock: Commodity, on_date: datetime):
+    #     """ Gets the price for commodity on given date or last known before the date """
+    # query = (
+    #     self.book.session.query(Price)
+    #     .filter(Price.date <= on_date.date())
+    #     .filter(Price.commodity == stock)
+    #     .order_by(desc(Price.date))
+    # )
+    # return query
 
-        pass
+    def get_latest_price(self, security: Commodity) -> PriceModel:
+        """ Returns the latest available price for commodity """
+        prices = PriceDbApplication()
+        result = prices.get_latest_price(security.namespace, security.mnemonic)
+        return result
 
     def get_price_as_of(self, stock: Commodity, on_date: datetime):
         """ Gets the latest price on or before the given date. """
-        return self.get_price_as_of_query(stock, on_date).first()
+        # return self.get_price_as_of_query(stock, on_date).first()
+        prices = PriceDbApplication()
+        prices.get_prices_on(on_date.date().isoformat(), stock.namespace, stock.mnemonic)
 
     def get_for_symbol(self, symbol: str) -> List[Price]:
         # get commodity

@@ -1,14 +1,13 @@
 """
 Provides functions for Portfolio Value report
 """
-#from logging import log, DEBUG
 from datetime import date
-from typing import List
-from piecash import Book, Commodity, Price
+from piecash import Book, Commodity
 from gnucash_portfolio.actions import symbol_dividends
 from gnucash_portfolio.pricesaggregate import PricesAggregate
 from gnucash_portfolio.securities import SecurityAggregate
 from gnucash_portfolio.model.stock_model import StockViewModel
+from pricedb import PriceModel
 
 
 def get_stock_model_from(book: Book, commodity: Commodity, as_of_date: date):
@@ -30,14 +29,14 @@ def get_stock_model_from(book: Book, commodity: Commodity, as_of_date: date):
 
     # Last price
     price_svc = PricesAggregate(book)
-    last_price: Price = price_svc.get_price_as_of(commodity, as_of_date)
+    # last_price: Price = price_svc.get_price_as_of(commodity, as_of_date)
+    last_price: PriceModel = price_svc.get_latest_price(commodity)
     if last_price is not None:
         model.price = last_price.value
-    #print("last price", last_price.value, last_price.currency.mnemonic)
 
     # currency
     if model.price:
-        model.currency = last_price.currency.mnemonic
+        model.currency = last_price.currency
 
     # Cost
     model.cost = model.shares_num * model.avg_price
