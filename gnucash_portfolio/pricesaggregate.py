@@ -3,26 +3,30 @@
 from logging import log, INFO, WARN
 from typing import List
 from datetime import datetime
-from sqlalchemy import desc #, or_
+from sqlalchemy import desc
 from piecash import Book, Commodity, Price
 from gnucash_portfolio.model.price_model import PriceModel
 from gnucash_portfolio.securities import SecurityAggregate, SecuritiesAggregate
 
 
 class PricesAggregate:
-    """ handle price collections """
+    """ Handle price collections. Uses PriceDb library. """
+
     def __init__(self, book: Book):
         self.book = book
 
     def get_price_as_of_query(self, stock: Commodity, on_date: datetime):
         """ Gets the price for commodity on given date or last known before the date """
-        query = (
-            self.book.session.query(Price)
-            .filter(Price.date <= on_date.date())
-            .filter(Price.commodity == stock)
-            .order_by(desc(Price.date))
-        )
-        return query
+        # query = (
+        #     self.book.session.query(Price)
+        #     .filter(Price.date <= on_date.date())
+        #     .filter(Price.commodity == stock)
+        #     .order_by(desc(Price.date))
+        # )
+        # return query
+        # todo from PriceDb import PriceDbApplication
+
+        pass
 
     def get_price_as_of(self, stock: Commodity, on_date: datetime):
         """ Gets the latest price on or before the given date. """
@@ -43,7 +47,7 @@ class PricesAggregate:
 
     def import_price(self, price: PriceModel):
         """ Import individual price """
-                # Handle yahoo-style symbols with extension.
+        # Handle yahoo-style symbols with extension.
         symbol = price.symbol
         if "." in symbol:
             symbol = price.name.split(".")[0]
@@ -96,6 +100,7 @@ class PricesAggregate:
 
 class PriceAggregate:
     """ handle individual price """
+
     def __init__(self, book: Book, price: Price):
         self.price = price
         self.book = book
