@@ -144,7 +144,6 @@ class SecurityAggregate(AggregateBase):
         total_quantity = Decimal(0)
 
         accounts = self.get_holding_accounts()
-        # log(DEBUG, "accounts %s", accounts)
         for account in accounts:
             acct_svc = AccountAggregate(self.book, account)
             quantity = acct_svc.get_balance_on(on_date)
