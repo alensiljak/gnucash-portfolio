@@ -26,6 +26,8 @@ class PricesAggregate:
 
     def get_latest_price(self, security: Commodity) -> PriceModel:
         """ Returns the latest available price for commodity """
+        assert isinstance(security, Commodity)
+
         symbol = SecuritySymbol(security.namespace, security.mnemonic)
         prices = PriceDbApplication()
         result = prices.get_latest_price(symbol)
