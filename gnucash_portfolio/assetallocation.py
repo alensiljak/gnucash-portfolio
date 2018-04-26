@@ -3,8 +3,11 @@ Asset Allocation module. To be replaced by Asset-Allocation package.
 """
 from decimal import Decimal
 from typing import List
-try: import simplejson as json
-except ImportError: import json
+
+try:
+    import simplejson as json
+except ImportError:
+    import json
 import os
 from os import path
 from piecash import Book, Commodity, Price
@@ -15,6 +18,7 @@ from gnucash_portfolio.currencies import CurrencyAggregate
 
 class AssetBase:
     """Base class for asset group & class"""
+
     def __init__(self, json_node):
         self.data = json_node
         # reference to parent object
@@ -72,6 +76,7 @@ class AssetBase:
 
 class AssetGroup(AssetBase):
     """Group contains other groups or asset classes"""
+
     def __init__(self, json_node):
         super().__init__(json_node)
         self.classes = []
@@ -79,6 +84,7 @@ class AssetGroup(AssetBase):
 
 class AssetClass(AssetBase):
     """Asset Class contains stocks"""
+
     def __init__(self, json_node):
         super().__init__(json_node)
 
@@ -98,6 +104,7 @@ class AssetClass(AssetBase):
 
 class Stock:
     """Stock link"""
+
     def __init__(self, symbol: str):
         """Parse json node"""
         self.symbol = symbol
@@ -130,6 +137,7 @@ class Stock:
 
 class _AllocationLoader:
     """ Parses the allocation settings and loads the current allocation from database """
+
     def __init__(self, currency: Commodity, book: Book):
         self.currency = currency
         self.book = book
@@ -157,7 +165,7 @@ class _AllocationLoader:
 
     def load_asset_allocation_config(self) -> AssetGroup:
         """ Loads only the configuration from json """
-                # read asset allocation file
+        # read asset allocation file
         root_node = self.__load_asset_allocation_config_json()
         result = self.__parse_node(root_node)
         return result
@@ -295,7 +303,7 @@ class _AllocationLoader:
             # Values
             child.alloc_value = total * child.allocation / 100
             # Value is calculated during load.
-            #child.curr_value = total * child.curr_alloc / 100
+            # child.curr_value = total * child.curr_alloc / 100
             child.value_diff = child.curr_value - child.alloc_value
 
             # Threshold
@@ -306,7 +314,9 @@ class _AllocationLoader:
 
 
 class AssetAllocationAggregate():
-    """ The main service class """
+    """ No longer used!
+    The main service class """
+
     def __init__(self, book: Book):
         self.book = book
         self.root: AssetGroup = None

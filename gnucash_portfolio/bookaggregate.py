@@ -5,7 +5,6 @@ from gnucash_portfolio.lib.database import Database, Settings
 from gnucash_portfolio.currencies import CurrenciesAggregate
 from gnucash_portfolio.pricesaggregate import PricesAggregate
 from gnucash_portfolio.accounts import AccountsAggregate
-from gnucash_portfolio.assetallocation import AssetAllocationAggregate
 from gnucash_portfolio.scheduledtxaggregate import ScheduledTxsAggregate
 from gnucash_portfolio.securities import SecuritiesAggregate
 from gnucash_portfolio.transactionaggregate import TransactionsAggregate
@@ -23,7 +22,7 @@ class BookAggregate:
         self.__for_writing = for_writing
 
         # Aggregates
-        self.__asset_allocation: AssetAllocationAggregate = None
+        # self.__asset_allocation: AssetAllocationAggregate = None
         self.__currencies_aggregate: CurrenciesAggregate = None
         self.__accounts_aggregate: AccountsAggregate = None
         self.__prices_aggregate: PricesAggregate = None
@@ -37,19 +36,19 @@ class BookAggregate:
             self.__settings = settings
 
     def __enter__(self):
-        #self.book = Database().open_book()
+        # self.book = Database().open_book()
         return self
 
     def __exit__(self, exc_type, exc_value, traceback):
         if self.__book:
             self.__book.close()
 
-    @property
-    def asset_allocation(self) -> AssetAllocationAggregate:
-        """ Creates an Asset Allocation aggregate """
-        if not self.__asset_allocation:
-            self.__asset_allocation = AssetAllocationAggregate(self.book)
-        return self.__asset_allocation
+    # @property
+    # def asset_allocation(self) -> AssetAllocationAggregate:
+    #     """ Creates an Asset Allocation aggregate """
+    #     if not self.__asset_allocation:
+    #         self.__asset_allocation = AssetAllocationAggregate(self.book)
+    #     return self.__asset_allocation
 
     @property
     def book(self) -> Book:
