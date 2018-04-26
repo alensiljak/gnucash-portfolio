@@ -9,13 +9,11 @@ from typing import List
 
 from piecash import Account, AccountType, Book, Commodity, Split, Transaction
 from sqlalchemy import desc
-from pricedb.app import PriceDbApplication
-from pricedb.model import PriceModel
+from pricedb import PriceDbApplication, PriceModel, SecuritySymbol
 
 from gnucash_portfolio.accounts import AccountAggregate
 from gnucash_portfolio.currencies import CurrenciesAggregate
 from gnucash_portfolio.lib.aggregatebase import AggregateBase
-# from gnucash_portfolio.mappers.splitmapper import SplitMapper
 from gnucash_portfolio.mappers import  splitmapper
 from gnucash_portfolio.model.split_model import SplitModel
 
@@ -154,8 +152,9 @@ class SecurityAggregate(AggregateBase):
 
     def get_last_available_price(self) -> PriceModel:
         """ Finds the last available price for security. Uses PriceDb. """
-        pricedb = PriceDbApplication()
-        result = pricedb.get_latest_price(self.security.namespace, self.security.mnemonic)
+        price_db = PriceDbApplication()
+        symbol = SecuritySymbol(self.security.namespace, self.security.mnemonic)
+        result = price_db.get_latest_price(symbol)
         return result
 
     def get_currency(self) -> str:

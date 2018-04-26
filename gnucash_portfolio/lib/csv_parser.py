@@ -28,12 +28,20 @@ class CsvPriceParser:
 
     def get_prices_from_csv(self, content: str) -> List[PriceModel]:
         """ Imports prices from CSV content. See data folder for a sample file/content. """
+        from gnucash_portfolio.model.price_model import PriceModel_Csv
+
         lines = content.splitlines()
         prices = []
 
         reader = csv.reader(lines)
         for row in reader:
-            price = PriceModel().parse(row)
+            csv_price = PriceModel_Csv()
+            csv_price.parse(row)
+
+            price = PriceModel()
+            price.datetime = csv_price.date
+            price.symbol = csv_price.symbol
+            price.value = csv_price.value
             price.currency = self.currency
 
             prices.append(price)

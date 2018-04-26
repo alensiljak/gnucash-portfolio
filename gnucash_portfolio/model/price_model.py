@@ -5,7 +5,7 @@ from datetime import datetime
 from decimal import Decimal
 
 
-class PriceModel_Deprecated:
+class PriceModel_Csv:
     """ Price model """
     def __init__(self, symbol=None, currency=None, value: Decimal = None,
                  rate_date: datetime = None):

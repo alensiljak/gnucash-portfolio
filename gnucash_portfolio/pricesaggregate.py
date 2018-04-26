@@ -5,7 +5,7 @@ from typing import List
 from datetime import datetime
 from piecash import Book, Commodity, Price
 from gnucash_portfolio.securities import SecurityAggregate, SecuritiesAggregate
-from pricedb import PriceDbApplication, PriceModel
+from pricedb import PriceDbApplication, PriceModel, SecuritySymbol
 
 
 class PricesAggregate:
@@ -26,8 +26,9 @@ class PricesAggregate:
 
     def get_latest_price(self, security: Commodity) -> PriceModel:
         """ Returns the latest available price for commodity """
+        symbol = SecuritySymbol(security.namespace, security.mnemonic)
         prices = PriceDbApplication()
-        result = prices.get_latest_price(security.namespace, security.mnemonic)
+        result = prices.get_latest_price(symbol)
         return result
 
     def get_price_as_of(self, stock: Commodity, on_date: datetime):
