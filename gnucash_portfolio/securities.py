@@ -14,7 +14,7 @@ from pricedb import PriceDbApplication, PriceModel, SecuritySymbol
 from gnucash_portfolio.accounts import AccountAggregate
 from gnucash_portfolio.currencies import CurrenciesAggregate
 from gnucash_portfolio.lib.aggregatebase import AggregateBase
-from gnucash_portfolio.mappers import  splitmapper
+from gnucash_portfolio.mappers import splitmapper
 from gnucash_portfolio.model.split_model import SplitModel
 
 
