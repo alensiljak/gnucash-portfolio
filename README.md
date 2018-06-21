@@ -37,6 +37,10 @@ i.e.
 
 `pip install -e .`
 
+### Configuration
+
+Go to config directory and copy the config.json.template file into `config.json`. Adjust any values as needed. This file can also be edited by going to the Settings option in the web app (webgui).
+
 ## Testing
 
 See `tests` directory and documentation and tests there.
