@@ -320,7 +320,7 @@ class SecurityAggregate(AggregateBase):
     # Properties
 
     @property
-    def accounts(self):
+    def accounts(self) -> List[Account]:
         """ Returns the asset accounts in which the security is held """
         # use only Assets sub-accounts
         result = (
@@ -329,7 +329,7 @@ class SecurityAggregate(AggregateBase):
         return result
 
     @property
-    def full_symbol(self):
+    def full_symbol(self) -> str:
         """ Returns the full symbol (namespace + symbol) """
         return self.security.namespace + ":" + self.security.mnemonic
 
