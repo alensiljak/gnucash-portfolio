@@ -1,4 +1,3 @@
-#!/usr/bin/python3
 """
 Provides access to the settings file.
 """

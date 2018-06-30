@@ -6,8 +6,8 @@ from datetime import date, datetime
 from typing import List
 from decimal import Decimal
 
-from pydatum import Datum
 from piecash import Book, Account, Commodity, Split, Transaction, AccountType
+from pydatum import Datum
 from gnucash_portfolio.lib.aggregatebase import AggregateBase
 from gnucash_portfolio.currencies import CurrenciesAggregate
 
@@ -101,8 +101,6 @@ class AccountAggregate(AggregateBase):
 
     def get_start_balance(self, before: date) -> Decimal:
         """ Calculates account balance """
-        from pydatum import Datum
-
         assert isinstance(before, datetime)
 
         # create a new date without hours
@@ -206,8 +204,7 @@ class AccountsAggregate(AggregateBase):
     """ Handles account collections """
     def __init__(self, book: Book):
         super(AccountsAggregate, self).__init__(book)
-        #self.book = book
-        pass
+        #pass
 
     def find_by_name(self, term: str, include_placeholders: bool = False) -> List[Account]:
         """ Search for account by part of the name """
@@ -266,6 +263,25 @@ class AccountsAggregate(AggregateBase):
     def get_account_aggregate(self, account: Account) -> AccountAggregate:
         """ Returns account aggregate """
         return AccountAggregate(self.book, account)
+
+    def get_favourite_accounts(self) -> List[Account]:
+        """ Provides a list of favourite accounts """
+        from gnucash_portfolio.lib.settings import Settings
+
+        settings = Settings()
+        favourite_accts = settings.favourite_accounts
+        accounts = self.get_list(favourite_accts)
+        return accounts
+
+    def get_favourite_account_aggregates(self) -> List[AccountAggregate]:
+        """ Returns the list of aggregates for favourite accounts """
+        accounts = self.get_favourite_accounts()
+        aggregates = []
+        for account in accounts:
+            aggregate = self.get_account_aggregate(account)
+            aggregates.append(aggregate)
+
+        return aggregates
 
     def get_by_id(self, acct_id) -> Account:
         """ Loads an account entity """

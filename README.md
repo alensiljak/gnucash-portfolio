@@ -44,7 +44,7 @@ Go to config directory and copy the config.json.template file into `config.json`
 ## Testing
 
 See `tests` directory and documentation and tests there.
-Simply run 
+Simply run
 
 `pytest`
 
@@ -70,3 +70,17 @@ The basic idea here is to have GnuCash open a custom report, which runs a Python
 Gnucash_utilities project provides utilities that generate the Scheme links in the user profile directory. You need to create the Python scripts, which return the HTML output generated with Jinja templates (or any other).
 
 This approach has been abandoned due to the performance benefit of using the web app directly for all data input and output.
+
+# Distribution
+
+## Test Site
+
+```console
+python setup.py sdist upload -r test
+```
+
+## Production Site
+
+```console
+python setup.py sdist upload -r pypi
+```
