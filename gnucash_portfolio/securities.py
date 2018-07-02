@@ -31,7 +31,7 @@ class SecurityAggregate(AggregateBase):
         # pass
         raise NotImplementedError()
 
-    def get_avg_price(self):
+    def get_avg_price(self) -> Decimal:
         """ Returns the default avg. price """
         # Use statistical average of the price until fifo calculation is complete.
         # return self.get_avg_price_stat()
