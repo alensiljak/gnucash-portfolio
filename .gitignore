@@ -1,7 +1,7 @@
 # Ignore the settings file.
 gnucash_portfolio/data/alen.gnucash
 gnucash_portfolio/data/*.gnucash-journal
-config/settings.json
+gnucash_portfolio/config/settings.json
 
 #####################################################
 # Byte-compiled / optimized / DLL files

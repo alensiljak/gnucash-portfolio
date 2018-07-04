@@ -120,7 +120,7 @@ class Settings:
 
         template_filename = "settings.json.template"
         template_path = path.abspath(
-            path.join(__file__, "..", "..", "..", "config", template_filename))
+            path.join(__file__, "..", "..", "config", template_filename))
         settings_path = self.file_path
         shutil.copyfile(template_path, settings_path)
 
