@@ -40,7 +40,7 @@ setup(
     # For a discussion on single-sourcing the version across setup.py and the
     # project code, see
     # https://packaging.python.org/en/latest/single_source_version.html
-    version='1.0.2',  # Required
+    version='1.0.4',  # Required
 
     # This is a one-line description or tagline of what your project does. This
     # corresponds to the "Summary" metadata field:
@@ -148,10 +148,10 @@ setup(
     # package_data={  # Optional
     #     'sample': ['package_data.dat'],
     # },
-    package_data={
-        '': ['README.md'],
-        'config': ['settings.json.template']
-    },
+    # package_data={
+    #     '': ['README.md'],
+    #     'config': ['config/settings.json.template']
+    # },
 
     # Although 'package_data' is the preferred approach, in some case you may
     # need to place data files outside of your packages. See:
@@ -160,6 +160,7 @@ setup(
     # In this case, 'data_file' will be installed into '<sys.prefix>/my_data'
 
     # data_files=[('my_data', ['data/data_file'])],  # Optional
+    data_files=[('config', ['config/settings.json.template'])],
 
     # To provide executable scripts, use entry points in preference to the
     # "scripts" keyword. Entry points provide cross-platform support and allow
