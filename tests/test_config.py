@@ -8,4 +8,4 @@ def test_creation():
     settings = Settings()
     
     assert settings
-    assert settings.settings_file_exists()
+    assert settings.file_exists()

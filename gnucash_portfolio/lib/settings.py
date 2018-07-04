@@ -2,15 +2,19 @@
 Provides access to the settings file.
 The config file is created in user's directory if not found.
 """
-try: import simplejson as json
-except ImportError: import json
+try:
+    import simplejson as json
+except ImportError:
+    import json
 import pathlib
 from os import path
 from pprint import pprint
 from gnucash_portfolio.lib import fileutils
 
+
 class Settings:
     """Provides access to user settings from settings.json file."""
+
     def __init__(self, config=None):
         self.FILENAME = "gnucash_portfolio.json"
         # Content of the settings.json file. JSON object.
@@ -44,7 +48,7 @@ class Settings:
         cfg_path = self.file_path
         assert cfg_path
 
-        return path.isfile(cfg_path):
+        return path.isfile(cfg_path)
 
     def save(self):
         """ Saves the settings contents """
@@ -106,7 +110,7 @@ class Settings:
         Copy the template if it does not """
         if self.file_exists():
             return
-        
+
         # copy the template
         self.__copy_template()
 
@@ -115,7 +119,8 @@ class Settings:
         import shutil
 
         template_filename = "settings.json.template"
-        template_path = path.abspath(path.join(__file__, "..", "..", "..", "config", template_filename))
+        template_path = path.abspath(
+            path.join(__file__, "..", "..", "..", "config", template_filename))
         settings_path = self.file_path
         shutil.copyfile(template_path, settings_path)
 
@@ -123,7 +128,7 @@ class Settings:
 
     def __get_user_path(self) -> str:
         """ Returns the current user's home directory """
-        return os.path.expanduser("~")
+        return path.expanduser("~")
 
 
 ##################################################################
@@ -131,6 +136,7 @@ def test():
     """ test from console """
     config = Settings()
     config.show_settings()
+
 
 # If run directly, just display the settings file.
 if __name__ == "__main__":
