@@ -1,5 +1,6 @@
 """
 Provides access to the settings file.
+The config file is created in user's directory if not found.
 """
 try: import simplejson as json
 except ImportError: import json
@@ -90,6 +91,11 @@ class Settings:
         """ Checks if the settings file has been loaded and throws an exception if not """
         if not self.data:
             raise FileNotFoundError()
+
+    def __get_user_path(self) -> str:
+        """ Returns the current user's home directory """
+        return os.path.expanduser("~")
+
 
 ##################################################################
 def test():
