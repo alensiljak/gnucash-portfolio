@@ -1,0 +1,21 @@
+{
+    "currencies": [
+        "AUD",
+        "USD"
+    ],
+    "exchangeRates": "exchangeRates.csv",
+    "favourite_accounts": [
+        "adb62c06a458bef9c5fb3bdb337bc187",
+        "bea2c74ba626a65ed362beb0c9df350f",
+        "284af2c589d10b61e26dba7db2011272",
+        "c987f8994362b4ed6277a8e6a4c32f2f",
+        "18d40b29077e124fc3690ebe49997d13",
+        "d09e380d632841cdf867951c32ef5349",
+        "fdb72fa57f4a001b99bff3ab3e4e0812",
+        "2aa4cf403eeec9a1fe0bd4c2616923fe",
+        "8aec908b4da5ee161c518bf1307bdd12",
+		"b7df38d8a7a540878627230ca82d3c8e",
+		"7fe9995507b140f4985998e795ce4969"
+    ],
+    "gnucash.database": "Z:/Dropbox/Documents/GnuCash/alen.sql.gnucash"
+}
