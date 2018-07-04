@@ -1,2 +1,2 @@
 include README.md
-include config/settings.json.template
+include gnucash_portfolio/config/settings.json.template
