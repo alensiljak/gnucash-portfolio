@@ -113,3 +113,4 @@ ENV/
 
 # Test cache
 .pytest_cache
+/.vscode/settings.json
