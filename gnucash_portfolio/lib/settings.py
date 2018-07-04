@@ -12,10 +12,11 @@ from gnucash_portfolio.lib import fileutils
 class Settings:
     """Provides access to user settings from settings.json file."""
     def __init__(self, config=None):
-        self.FILENAME = "settings.json"
+        self.FILENAME = "gnucash_portfolio.json"
         # Content of the settings.json file. JSON object.
         self.data = config
 
+        self.__ensure_file_exists()
         if not config:
             self.__load_settings()
 
@@ -37,6 +38,13 @@ class Settings:
     def get_rates(self):
         """Returns the list of exchange rates from the settings"""
         return self.data["exchangeRates"]
+
+    def file_exists(self) -> bool:
+        """ Check if the settings file exists or not """
+        cfg_path = self.file_path
+        assert cfg_path
+
+        return path.isfile(cfg_path):
 
     def save(self):
         """ Saves the settings contents """
@@ -76,7 +84,8 @@ class Settings:
     @property
     def file_path(self) -> str:
         """ Settings file absolute path"""
-        file_path = path.abspath(path.join(__file__, "..", "..", "..", "config", self.FILENAME))
+        user_dir = self.__get_user_path()
+        file_path = path.abspath(path.join(user_dir, self.FILENAME))
         return file_path
 
     def dumps(self) -> str:
@@ -91,6 +100,26 @@ class Settings:
         """ Checks if the settings file has been loaded and throws an exception if not """
         if not self.data:
             raise FileNotFoundError()
+
+    def __ensure_file_exists(self):
+        """ Make sure that the config file exists. 
+        Copy the template if it does not """
+        if self.file_exists():
+            return
+        
+        # copy the template
+        self.__copy_template()
+
+    def __copy_template(self):
+        """ Copy the settings template into the user's directory """
+        import shutil
+
+        template_filename = "settings.json.template"
+        template_path = path.abspath(path.join(__file__, "..", "..", "..", "config", template_filename))
+        settings_path = self.file_path
+        shutil.copyfile(template_path, settings_path)
+
+        self.__ensure_file_exists()
 
     def __get_user_path(self) -> str:
         """ Returns the current user's home directory """
