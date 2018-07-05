@@ -10,7 +10,7 @@ from gnucash_portfolio.model.stock_model import StockViewModel
 from pricedb import PriceModel
 
 
-def get_stock_model_from(book: Book, commodity: Commodity, as_of_date: date):
+def get_stock_model_from(book: Book, commodity: Commodity, as_of_date: date) -> StockViewModel:
     """ Parses stock/commodity and returns the model for display """
 
     model = StockViewModel()
