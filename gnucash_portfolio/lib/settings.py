@@ -128,7 +128,9 @@ class Settings:
 
     def __get_user_path(self) -> str:
         """ Returns the current user's home directory """
-        return path.expanduser("~")
+        #return path.expanduser("~")
+        from pathlib import Path
+        return Path.home()
 
 
 ##################################################################

@@ -5,11 +5,14 @@ Useful for comparison of the report customization options with a backup file. If
 to use the same settings on multiple computers, the file needs to be synchronized manually.
 """
 import subprocess
-from os.path import expanduser
 from os import path
 
 def get_gnucash_dir():
-    home = expanduser("~")
+    # from os.path import expanduser
+    # home = expanduser("~")
+    from pathlib import Path
+    home = Path.home()
+
     return path.abspath(home + "/.gnucash/")
 
 def get_reports_settings_path():

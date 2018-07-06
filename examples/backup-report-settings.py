@@ -2,13 +2,15 @@
 Copies the current report settings from gnucash directory into this one.
 """
 import os
-from os.path import expanduser
-#from os import path
 from datetime import datetime
 from shutil import copyfile
 
 def get_gnucash_dir():
-    home = expanduser("~")
+    # from os.path import expanduser
+    # home = expanduser("~")
+    from pathlib import Path
+    home = Path.home()
+
     return os.path.abspath(home + "/.gnucash/")
 
 def get_reports_settings_path():

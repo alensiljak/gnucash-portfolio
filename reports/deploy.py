@@ -6,7 +6,8 @@ import os
 #import shutil
 import distutils
 from distutils import dir_util
-from os.path import expanduser
+# from os.path import expanduser
+from pathlib import Path
 from os import path
 
 # get all the report folders
@@ -20,8 +21,9 @@ for subdir in subdirs:
     #print(subdir)
     report_folders.append(subdir)
 
-# TODO copy to the destination
-home = expanduser("~")
+# copy to the destination
+#home = expanduser("~")
+home = Path.home()
 gnucash_dir = path.abspath(home + "/.gnucash/")
 
 for report_dir in report_folders:
