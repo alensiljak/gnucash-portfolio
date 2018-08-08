@@ -4,6 +4,7 @@ from pydatum import Datum
 from gnucash_portfolio import BookAggregate
 from gnucash_portfolio.lib import portfoliovalue, datetimeutils
 from gnucash_portfolio.reports.portfolio_models import PortfolioValueInputModel, PortfolioValueViewModel
+from gnucash_portfolio.model.stock_model import StockViewModel
 
 
 def run(input_model: PortfolioValueInputModel):
@@ -42,4 +43,4 @@ def __get_model_for_portfolio_value(input_model: PortfolioValueInputModel) -> Po
     return result
 
 if __name__ == "__main__":
-    run()
+    run(input_model=None)

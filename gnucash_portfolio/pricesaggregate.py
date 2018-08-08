@@ -4,7 +4,7 @@ import logging
 from typing import List
 from datetime import datetime
 from piecash import Book, Commodity, Price
-from gnucash_portfolio.securities import SecurityAggregate, SecuritiesAggregate
+from gnucash_portfolio.securitiesaggregate import SecurityAggregate, SecuritiesAggregate
 from pricedb import PriceDbApplication, PriceModel, SecuritySymbol
 
 

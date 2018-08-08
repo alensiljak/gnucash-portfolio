@@ -4,4 +4,4 @@ cls
 
 pylint gnucash_portfolio --output-format=colorized
 
-::pause
+pause

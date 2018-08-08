@@ -34,7 +34,6 @@ def searchAccount(searchTerm, book):
 
     if not found:
         print("Search term not found in account names.")
-    return
 
 
 with piecash.open_book(filename, open_if_lock=True) as book:

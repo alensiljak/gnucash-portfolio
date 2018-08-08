@@ -4,6 +4,7 @@ This should include all non-currency commodities.
 Accounts should be only accounts that hold these commodities.
 """
 import datetime
+import logging
 from decimal import Decimal
 from typing import List
 
@@ -19,7 +20,7 @@ from gnucash_portfolio.model.split_model import SplitModel
 
 
 class SecurityAggregate(AggregateBase):
-    """ Stocks aggregate """
+    """ Individual Stock aggregate """
     def __init__(self, book: Book, security: Commodity):
         super(SecurityAggregate, self).__init__(book)
         self.security = security
@@ -315,6 +316,12 @@ class SecurityAggregate(AggregateBase):
 
         result = amt_orig * rate.value
         return result
+
+    def get_return_of_capital(self) -> Decimal:
+        """ Fetches and adds all Return-of-Capital amounts.
+        These are the cash transactions that do not involve security amounts (0 value for shares). """
+        tx = self.get_splits_query().all()
+        logging.debug(tx)
 
     ######################
     # Properties

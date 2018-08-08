@@ -6,7 +6,7 @@ from gnucash_portfolio.currencies import CurrenciesAggregate
 from gnucash_portfolio.pricesaggregate import PricesAggregate
 from gnucash_portfolio.accounts import AccountsAggregate
 from gnucash_portfolio.scheduledtxaggregate import ScheduledTxsAggregate
-from gnucash_portfolio.securities import SecuritiesAggregate
+from gnucash_portfolio.securitiesaggregate import SecuritiesAggregate
 from gnucash_portfolio.transactionaggregate import TransactionsAggregate
 
 
@@ -22,7 +22,6 @@ class BookAggregate:
         self.__for_writing = for_writing
 
         # Aggregates
-        # self.__asset_allocation: AssetAllocationAggregate = None
         self.__currencies_aggregate: CurrenciesAggregate = None
         self.__accounts_aggregate: AccountsAggregate = None
         self.__prices_aggregate: PricesAggregate = None

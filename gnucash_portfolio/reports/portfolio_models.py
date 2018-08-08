@@ -1,6 +1,7 @@
 """ Models for Portfolio section """
 
 from datetime import datetime
+from typing import List
 #from dataclasses import dataclass
 from gnucash_portfolio.model.stock_model import StockViewModel
 
