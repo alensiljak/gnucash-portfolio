@@ -319,9 +319,21 @@ class SecurityAggregate(AggregateBase):
 
     def get_return_of_capital(self) -> Decimal:
         """ Fetches and adds all Return-of-Capital amounts.
-        These are the cash transactions that do not involve security amounts (0 value for shares). """
-        tx = self.get_splits_query().all()
-        logging.debug(tx)
+        These are the cash transactions that do not involve security amounts 
+        (0 value for shares). """
+        txs: List[Split] = self.get_splits_query().all()
+        roc_tx: List[Split] = []
+        sum = Decimal(0)
+
+        for tx in txs:
+            if tx.quantity == Decimal(0) and tx.value != Decimal(0):
+                # This is a return of capital transaction
+                roc_tx.append(tx)
+                sum += tx.value
+            #logging.debug(tx.quantity) 
+
+        # roc_tx is a list of transactions, should they be useful.
+        return sum
 
     ######################
     # Properties

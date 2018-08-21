@@ -2,7 +2,7 @@
 
 from pydatum import Datum
 from gnucash_portfolio import BookAggregate
-from gnucash_portfolio.lib import portfoliovalue, datetimeutils
+from gnucash_portfolio.lib import portfoliovalue
 from gnucash_portfolio.reports.portfolio_models import PortfolioValueInputModel, PortfolioValueViewModel
 from gnucash_portfolio.model.stock_model import StockViewModel
 

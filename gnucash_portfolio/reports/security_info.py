@@ -9,7 +9,9 @@ from gnucash_portfolio.model.stock_model import SecurityDetailsViewModel
 class SecurityInfoReport:
     """ Security Info report model """
     def __init__(self, svc: BookAggregate):
-        self._svc = svc
+        assert isinstance(svc, BookAggregate)
+        
+        self._svc: BookAggregate = svc
 
     def run(self, symbol: str) -> SecurityDetailsViewModel:
         """ Loads the model for security details """
@@ -63,8 +65,9 @@ class SecurityInfoReport:
         else:
             model.total_return_perc = 0
 
-        # load all accounts
+        # load all holding accounts
         model.accounts = sec_agg.accounts
+        # Income accounts
         model.income_accounts = sec_agg.get_income_accounts()
 
         # Load asset classes to which this security belongs.

@@ -28,3 +28,6 @@ def main(symbol: str):
         # Calculate average price.
         avg_price = sec_svc.get_avg_price()
         print("Average price:", avg_price)
+
+if __name__ == "__main__":
+    main("dvye")
