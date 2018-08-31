@@ -53,9 +53,10 @@ class SecurityInfoReport:
         else:
             model.income_perc = 0
         # income in the last 12 months
-        today = Datum()
-        last_year_date = today.subtract_months(12)
-        model.income_last_12m = sec_agg.get_income_in_period(last_year_date, today.value)
+        start = Datum()
+        start.subtract_months(12)
+        end = Datum()
+        model.income_last_12m = sec_agg.get_income_in_period(start, end)
         model.income_perc_last_12m = model.income_last_12m * 100 / model.total_paid
 
         # Return of Capital
