@@ -44,11 +44,15 @@ class SecurityDetailsViewModel:
         # Unrealized Profit/Loss
         self.profit_loss = None
         self.profit_loss_perc = None
+        
         # Income amount in currency
-        self.income = None
-        self.income_perc = None
+        self.income: Decimal = None
+        self.income_perc: Decimal = None
+        # Income for the last 12 months
+        self.income_last_12m: Decimal = None
         # Income % for the last 12 months
-        self.income_perc_last_12m = None
+        self.income_perc_last_12m: Decimal = None
+        
         # Total return = value diff + income
         self.total_return = None
         self.total_return_perc = None

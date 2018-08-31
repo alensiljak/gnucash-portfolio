@@ -1,7 +1,6 @@
 """ Security Info report
 Returns a model that can be used in any visualizer.
 """
-
 from gnucash_portfolio import BookAggregate
 from gnucash_portfolio.model.stock_model import SecurityDetailsViewModel
 
@@ -15,6 +14,8 @@ class SecurityInfoReport:
 
     def run(self, symbol: str) -> SecurityDetailsViewModel:
         """ Loads the model for security details """
+        from pydatum import Datum
+
         svc = self._svc
         sec_agg = svc.securities.get_aggregate_for_symbol(symbol)
 
@@ -44,6 +45,7 @@ class SecurityInfoReport:
             model.profit_loss_perc = 0
         if abs(model.value) < abs(model.total_paid):
             model.profit_loss_perc *= -1
+
         # Income
         model.income = sec_agg.get_income_total()
         if model.total_paid:
@@ -51,8 +53,10 @@ class SecurityInfoReport:
         else:
             model.income_perc = 0
         # income in the last 12 months
-        # income_last_year = sec_agg.get_income_total
-        # model.income_perc_last_12m = 0
+        today = Datum()
+        last_year_date = today.subtract_months(12)
+        model.income_last_12m = sec_agg.get_income_in_period(last_year_date, today.value)
+        model.income_perc_last_12m = model.income_last_12m * 100 / model.total_paid
 
         # Return of Capital
         roc = sec_agg.get_return_of_capital()

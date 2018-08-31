@@ -142,6 +142,23 @@ class AccountAggregate(AggregateBase):
             total += split.quantity * self.account.sign
         return total
 
+    def get_balance_in_period(self, start: Datum, end: Datum):
+        """
+        Calculates the balance for the given time period.
+        The balance is taken to be 0 at the beginning of the period and then all the 
+        transactions are added together until the end date/time.
+        """
+        assert isinstance(start, Datum)
+        assert isinstance(end, Datum)
+
+        total = Decimal(0)
+
+        splits = self.get_splits_in_period(start, end)
+
+        for split in splits:
+            total += split.quantity * self.account.sign
+        return total
+
     def get_splits_query(self):
         """ Returns all the splits in the account """
         query = (
@@ -157,6 +174,18 @@ class AccountAggregate(AggregateBase):
             .join(Transaction)
             .filter(Split.account == self.account,
                     Transaction.post_date <= date_to.date())
+        )
+        return query.all()
+
+    def get_splits_in_period(self, start: Datum, end: Datum) -> List[Split]:
+        """ returns splits only up to the given date """
+        query = (
+            self.book.session.query(Split)
+            .join(Transaction)
+            .filter(Split.account == self.account,
+                    Transaction.post_date >= start.value.date(),
+                    Transaction.post_date <= end.value.date()
+            )
         )
         return query.all()
 

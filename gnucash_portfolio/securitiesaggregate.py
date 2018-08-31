@@ -224,8 +224,14 @@ class SecurityAggregate(AggregateBase):
 
     def get_income_in_period(self, start: datetime, end: datetime) -> Decimal:
         """ Returns all income in the given period """
-        # get_income_in_account_period
-        pass
+        accounts = self.get_income_accounts()
+        income = Decimal(0)
+        for acct in accounts:
+            acc_agg = AccountAggregate(self.book, acct)
+            acc_bal = acc_agg.get_balance_in_period(start, end)
+            income += acc_bal
+
+        return income
 
     def get_prices(self) -> List[PriceModel]:
         """ Returns all available prices for security """
