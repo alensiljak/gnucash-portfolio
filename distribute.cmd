@@ -4,6 +4,7 @@
 :: For convenience, also use keyring. Configure credentials for the servers below.
 ::   `keyring set https://test.pypi.org/legacy/ your-username`
 :: [keyring support](https://twine.readthedocs.io/en/latest/#keyring-support).
+::@echo off
 
 :: Clean-up the destination
 del dist\*
