@@ -12,13 +12,13 @@ from pricedb import PriceModel
 
 def get_stock_model_from(book: Book, commodity: Commodity, as_of_date: date) -> StockViewModel:
     """ Parses stock/commodity and returns the model for display """
+    from pydatum import Datum
 
+    svc = SecurityAggregate(book, commodity)
     model = StockViewModel()
 
     model.exchange = commodity.namespace
     model.symbol = commodity.mnemonic
-
-    svc = SecurityAggregate(book, commodity)
 
     model.shares_num = svc.get_num_shares_on(as_of_date)
     # Ignore 0-balance
@@ -41,7 +41,7 @@ def get_stock_model_from(book: Book, commodity: Commodity, as_of_date: date) -> 
     # Cost
     model.cost = model.shares_num * model.avg_price
 
-    # Balance
+    # Balance (current value)
     if model.shares_num and model.price:
         model.balance = model.shares_num * model.price
 
@@ -59,5 +59,12 @@ def get_stock_model_from(book: Book, commodity: Commodity, as_of_date: date) -> 
     # Income
     income = symbol_dividends.get_dividend_sum_for_symbol(book, model.symbol)
     model.income = float(income)
+
+    #income_12m = symbol_dividends.
+    start = Datum()
+    start.subtract_months(12)
+    end = Datum()
+    model.income_last_12m = svc.get_income_in_period(start, end)
+    model.income_last_12m_perc = model.income_last_12m * 100 / model.balance
 
     return model

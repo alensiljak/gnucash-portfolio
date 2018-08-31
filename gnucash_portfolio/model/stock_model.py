@@ -20,6 +20,8 @@ class StockViewModel:
     gain_loss = None
     gain_loss_perc = None
     income: Decimal = None
+    income_last_12m: Decimal = None
+    income_last_12m_perc: Decimal = None
 
     def __repr__(self):
         result = f"<StockViewModel {self.exchange}:{self.symbol},{self.shares_num:,} @ "

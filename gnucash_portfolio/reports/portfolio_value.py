@@ -13,7 +13,8 @@ def run(input_model: PortfolioValueInputModel):
     return model
 
 
-def __get_model_for_portfolio_value(input_model: PortfolioValueInputModel) -> PortfolioValueViewModel:
+def __get_model_for_portfolio_value(input_model: PortfolioValueInputModel
+                                    ) -> PortfolioValueViewModel:
     """ loads the data for portfolio value """
     result = PortfolioValueViewModel()
     result.filter = input_model
