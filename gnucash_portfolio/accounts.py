@@ -266,6 +266,8 @@ class AccountsAggregate(AggregateBase):
         for account in all_accounts:
             if account.fullname == fullname:
                 return account
+        # else
+        return None
 
     def get_account_id_by_fullname(self, fullname: str) -> str:
         """ Locates the account by fullname """
