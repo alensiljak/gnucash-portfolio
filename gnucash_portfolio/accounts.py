@@ -179,6 +179,8 @@ class AccountAggregate(AggregateBase):
 
     def get_splits_in_period(self, start: Datum, end: Datum) -> List[Split]:
         """ returns splits only up to the given date """
+        from gnucash_portfolio.lib import generic
+
         query = (
             self.book.session.query(Split)
             .join(Transaction)
@@ -187,6 +189,7 @@ class AccountAggregate(AggregateBase):
                     Transaction.post_date <= end.value.date()
             )
         )
+        #sql = generic.get_sql(query)
         return query.all()
 
     def get_transactions(self, date_from: datetime, date_to: datetime) -> List[Transaction]:
