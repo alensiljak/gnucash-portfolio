@@ -189,7 +189,7 @@ class AccountAggregate(AggregateBase):
                     Transaction.post_date <= end.value.date()
             )
         )
-        #sql = generic.get_sql(query)
+        # sql = generic.get_sql(query)
         return query.all()
 
     def get_transactions(self, date_from: datetime, date_to: datetime) -> List[Transaction]:
@@ -357,3 +357,23 @@ class AccountsAggregate(AggregateBase):
             .filter(Account.type != AccountType.root.value)
         )
         return query
+
+    def search(self, name: str = None,
+               acc_type: str = None):
+        """ Search accounts by passing parameters.
+        name = exact name
+        name_part = part of name
+        parent_id = id of the parent account
+        type = account type
+        """
+        query = self.query
+
+        if name is not None:
+            query = query.filter(Account.name == name)
+
+        if acc_type is not None:
+            # account type is capitalized
+            acc_type = acc_type.upper()
+            query = query.filter(Account.type == acc_type)
+
+        return query.all()
