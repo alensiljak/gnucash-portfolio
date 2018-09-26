@@ -1,6 +1,6 @@
 
 from typing import List
-from pricedb.download.vanguard_au import VanguardAuDownloader
+#from pricedb.download.vanguard_au import VanguardAuDownloader
 
 
 def download_fund_prices(user_funds) -> List[str]:
@@ -8,11 +8,13 @@ def download_fund_prices(user_funds) -> List[str]:
     downloads, parses, and returns the price list
     """
     prices = []
-    agent = VanguardAuDownloader()
+    #agent = VanguardAuDownloader()
 
-    for symbol in user_funds:
-        price = agent.get_fund_info(symbol)
-        prices.append(price)
+    # for symbol in user_funds:
+    #     price = agent.get_fund_info(symbol)
+    #     prices.append(price)
+
+    raise NotImplementedError
 
     return prices
 
