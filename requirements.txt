@@ -1,6 +1,4 @@
 PriceDb
-Flask
-Flask-Assets
 piecash
 pylint
 pyScss
