@@ -2,8 +2,8 @@
     "version": "0.2.0",
     "configurations": [
         {
-            "name": "Python Experimental: Terminal (integrated)",
-            "type": "pythonExperimental",
+            "name": "Python: Terminal (integrated)",
+            "type": "python",
             "request": "launch",
             "program": "${file}",
             "console": "integratedTerminal"
