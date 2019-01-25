@@ -8,7 +8,8 @@ from gnucash_portfolio import BookAggregate
 from piecash import Account
 
 book = BookAggregate()
-favorites = book.accounts.get_favourite_accounts()
+fav_unsorted = book.accounts.get_favourite_accounts()
+favorites = sorted(fav_unsorted, key=lambda account: account.name)
 
 x: Account = None
 
