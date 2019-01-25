@@ -8,11 +8,17 @@ body {
 
 This project adds portfolio management functionality to a GnuCash book saved as an SQLite database.
 
-There is a gratification that comes from the sense of freedom, of having direct access to one's financial data and being able to retrieve any statistic or information one might want, and not depending on others for it.
+There is a gratification that comes from the sense of freedom, of having direct access to one's financial data and being able to retrieve any statistic or information one might want, and not depending on anyone else for it.
 
 The project consists of two major area: reports and operations.
 
-Retrieving currency exchange rates is a part of this suite.
+Retrieving currency exchange rates is also part of this suite.
+
+Several sub-projects emerged during development of the suite:
+
+- price database, for storage of security prices
+- price-quote, for online retrieval of current security prices
+- asset-allocation, for calculation and maintenance of asset allocation
 
 ---
 
