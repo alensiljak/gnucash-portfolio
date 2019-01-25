@@ -47,16 +47,3 @@ Some operations that are targeted:
 # Targets
 
 See the [issues list](https://github.com/MisterY/gnucash-portfolio/issues) on GitHub for up-to-date list of implemented and open issues and features.
-
-## Implemented
-
-- [x] download currency exchange rates
-- [x] import exchange rates into GnuCash file
-- [x] import .csv security prices into GnuCash file
-- [x] portfolio value report
-- [x] create a library of callable functions, to be used from the reports.
-- [x] list all dividends for security. This requires some conventions as to where to expect them since there is no direct linking between a commodity and the dividends/interest it earns. Search all accounts with the same name in the Income tree.
-- [x] site styling with scss. See [Theming](https://getbootstrap.com/docs/4.0/getting-started/theming/).
-
----
-
