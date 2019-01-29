@@ -50,9 +50,10 @@ def get_next_occurrence(tx: ScheduledTransaction) -> date:
     ref_date: datetime = ref_datum.value
 
     # today = datetimeutils.today_date()
-    today = Datum().today()
-    if ref_date > today:
-        ref_date = today
+    #today = Datum().today()
+    # skipped schedule
+    #if ref_date > today: 
+    #    ref_date = today
 
     ###########################################################
     # The code below mimics the function
