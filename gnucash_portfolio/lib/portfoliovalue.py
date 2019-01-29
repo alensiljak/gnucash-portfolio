@@ -33,6 +33,8 @@ def get_stock_model_from(book: Book, commodity: Commodity, as_of_date: date) -> 
     last_price: PriceModel = price_svc.get_latest_price(commodity)
     if last_price is not None:
         model.price = last_price.value
+    else:
+        model.price = 0
 
     # currency
     if model.price:
@@ -42,8 +44,10 @@ def get_stock_model_from(book: Book, commodity: Commodity, as_of_date: date) -> 
     model.cost = model.shares_num * model.avg_price
 
     # Balance (current value)
-    if model.shares_num and model.price:
+    if model.shares_num > 0 and model.price:
         model.balance = model.shares_num * model.price
+    else:
+        model.balance = 0
 
     # Gain/Loss
     model.gain_loss = model.balance - model.cost
@@ -65,6 +69,9 @@ def get_stock_model_from(book: Book, commodity: Commodity, as_of_date: date) -> 
     start.subtract_months(12)
     end = Datum()
     model.income_last_12m = svc.get_income_in_period(start, end)
-    model.income_last_12m_perc = model.income_last_12m * 100 / model.balance
+    if model.balance > 0:
+        model.income_last_12m_perc = model.income_last_12m * 100 / model.balance
+    else:
+        model.income_last_12m_perc = 0
 
     return model
