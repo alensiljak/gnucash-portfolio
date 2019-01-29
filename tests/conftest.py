@@ -80,6 +80,12 @@ class TestSettings(object):
 
 
 def create_test_data(svc: BookAggregate):
-    """ Create some data for in-memory database """
+    """
+    Create some data for in-memory database.
+    """
     cur = data_factory.create_currency("AUD")
     svc.book.session.add(cur)
+
+    # Add Scheduled transactions
+    #sch1 = data_factory.create_scheduled_tx()
+    #sch1.last_occur = 
