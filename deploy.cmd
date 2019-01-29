@@ -13,7 +13,7 @@ del /Q dist\*
 setup.py sdist bdist_wheel
 
 :: Deploy to test server.
-echo Deploying to test server =>
+echo Deploying to test server
 twine upload -u cicko --repository-url https://test.pypi.org/legacy/ dist/*
 
 echo About to deploy to Production!
