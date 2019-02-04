@@ -34,7 +34,6 @@ def __get_model_for_portfolio_value(input_model: PortfolioValueInputModel
             symbols = input_model.stock.split(",")
             stocks = stocks_svc.get_stocks(symbols)
         else:
-            # stocks = portfoliovalue.get_all_stocks(book)
             stocks = stocks_svc.get_all()
 
         for stock in stocks:
