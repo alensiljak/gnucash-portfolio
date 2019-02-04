@@ -16,6 +16,8 @@ def run(input_model: PortfolioValueInputModel):
 def __get_model_for_portfolio_value(input_model: PortfolioValueInputModel
                                     ) -> PortfolioValueViewModel:
     """ loads the data for portfolio value """
+    from piecash import Commodity
+
     result = PortfolioValueViewModel()
     result.filter = input_model
 

@@ -380,7 +380,7 @@ class SecuritiesAggregate(AggregateBase):
         """ Loads all non-currency commodities, assuming they are stocks. """
         query = (
             self.query
-            .order_by(Commodity.mnemonic)
+            .order_by(Commodity.namespace, Commodity.mnemonic)
         )
         return query.all()
 
@@ -422,7 +422,7 @@ class SecuritiesAggregate(AggregateBase):
         query = (
             self.query
             .filter(Commodity.mnemonic.in_(symbols))
-        )
+        ).order_by(Commodity.namespace, Commodity.mnemonic)
         return query.all()
 
     def get_aggregate(self, security: Commodity) -> SecurityAggregate:
