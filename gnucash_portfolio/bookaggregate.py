@@ -8,11 +8,11 @@ from gnucash_portfolio.accounts import AccountsAggregate
 from gnucash_portfolio.scheduledtxaggregate import ScheduledTxsAggregate
 from gnucash_portfolio.securitiesaggregate import SecuritiesAggregate
 from gnucash_portfolio.transactionaggregate import TransactionsAggregate
+from gnucash_portfolio.splitsaggregate import SplitsAggregate
 
 
 class BookAggregate:
     """ Encapsulates operations with GnuCash book """
-
     def __init__(self, settings: Settings = None,
                  for_writing=False):
         """
@@ -26,6 +26,7 @@ class BookAggregate:
         self.__accounts_aggregate: AccountsAggregate = None
         self.__prices_aggregate: PricesAggregate = None
         self.__scheduled_tx_aggregate: ScheduledTxsAggregate = None
+        self.__splits_aggregate: SplitsAggregate = None
         self.__securities_aggregate: SecuritiesAggregate = None
         self.__transactions_aggregate: TransactionsAggregate = None
 
@@ -113,11 +114,12 @@ class BookAggregate:
             self.__securities_aggregate = SecuritiesAggregate(self.book)
         return self.__securities_aggregate
 
-    # @property
-    # def splits(self):
-    #     ''' Splits '''
-    #     if not self.__splits_aggregate:
-    #         self.__splits_aggregate = Spl
+    @property
+    def splits(self):
+        ''' Splits '''
+        if not self.__splits_aggregate:
+            self.__splits_aggregate = SplitsAggregate(self.book)
+        return self.__splits_aggregate
 
     @property
     def transactions(self) -> TransactionsAggregate:
