@@ -113,6 +113,12 @@ class BookAggregate:
             self.__securities_aggregate = SecuritiesAggregate(self.book)
         return self.__securities_aggregate
 
+    # @property
+    # def splits(self):
+    #     ''' Splits '''
+    #     if not self.__splits_aggregate:
+    #         self.__splits_aggregate = Spl
+
     @property
     def transactions(self) -> TransactionsAggregate:
         """ Transactions aggregate """
