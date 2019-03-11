@@ -14,6 +14,7 @@ from gnucash_portfolio.currencies import CurrenciesAggregate
 
 class AccountAggregate(AggregateBase):
     """ Operations on single account """
+
     def __init__(self, book: Book, account: Account):
         super(AccountAggregate, self).__init__(book)
 
@@ -32,7 +33,8 @@ class AccountAggregate(AggregateBase):
         svc = CurrenciesAggregate(self.book)
 
         # get all child accounts in a list
-        cash_balances = self.load_cash_balances_with_children(root_account.fullname)
+        cash_balances = self.load_cash_balances_with_children(
+            root_account.fullname)
         # get the amounts
         for cur_symbol in cash_balances:
             # Currency symbol
@@ -145,7 +147,7 @@ class AccountAggregate(AggregateBase):
     def get_balance_in_period(self, start: Datum, end: Datum):
         """
         Calculates the balance for the given time period.
-        The balance is taken to be 0 at the beginning of the period and then all the 
+        The balance is taken to be 0 at the beginning of the period and then all the
         transactions are added together until the end date/time.
         """
         assert isinstance(start, Datum)
@@ -179,7 +181,7 @@ class AccountAggregate(AggregateBase):
 
     def get_splits_in_period(self, start: Datum, end: Datum) -> List[Split]:
         """ returns splits only up to the given date """
-        from gnucash_portfolio.lib import generic
+        # from gnucash_portfolio.lib import generic
 
         query = (
             self.book.session.query(Split)
@@ -187,7 +189,7 @@ class AccountAggregate(AggregateBase):
             .filter(Split.account == self.account,
                     Transaction.post_date >= start.value.date(),
                     Transaction.post_date <= end.value.date()
-            )
+                    )
         )
         # sql = generic.get_sql(query)
         return query.all()
@@ -221,8 +223,8 @@ class AccountAggregate(AggregateBase):
         """ Returns the whole tree of child accounts in a list """
         result = []
         # ignore placeholders ? - what if a brokerage account has cash/stocks division?
-        #if not account.placeholder:
-            #continue
+        # if not account.placeholder:
+        # continue
         result.append(account)
 
         for child in account.children:
@@ -234,9 +236,10 @@ class AccountAggregate(AggregateBase):
 
 class AccountsAggregate(AggregateBase):
     """ Handles account collections """
+
     def __init__(self, book: Book):
         super(AccountsAggregate, self).__init__(book)
-        #pass
+        # pass
 
     def find_by_name(self, term: str, include_placeholders: bool = False) -> List[Account]:
         """ Search for account by part of the name """
@@ -264,7 +267,7 @@ class AccountsAggregate(AggregateBase):
             self.book.session.query(Account)
         )
         # generic.get_sql()
-        #print(sql)
+        # print(sql)
         all_accounts = query.all()
         for account in all_accounts:
             if account.fullname == fullname:
@@ -323,7 +326,7 @@ class AccountsAggregate(AggregateBase):
 
     def get_by_name(self, name: str) -> List[Account]:
         """ Searches accounts by name """
-        #return self.query.filter(Account.name == name).all()
+        # return self.query.filter(Account.name == name).all()
         return self.get_by_name_from(self.book.root, name)
 
     def get_by_name_from(self, root: Account, name: str) -> List[Account]:
