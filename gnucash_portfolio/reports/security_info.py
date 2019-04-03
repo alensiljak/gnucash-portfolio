@@ -57,7 +57,10 @@ class SecurityInfoReport:
         start.subtract_months(12)
         end = Datum()
         model.income_last_12m = sec_agg.get_income_in_period(start, end)
-        model.income_perc_last_12m = model.income_last_12m * 100 / model.total_paid
+        if model.total_paid == 0:
+            model.income_perc_last_12m = 0
+        else:
+            model.income_perc_last_12m = model.income_last_12m * 100 / model.total_paid
 
         # Return of Capital
         roc = sec_agg.get_return_of_capital()
