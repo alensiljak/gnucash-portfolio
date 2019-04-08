@@ -16,11 +16,13 @@ def run(input_model: PortfolioValueInputModel):
 def __get_model_for_portfolio_value(input_model: PortfolioValueInputModel
                                     ) -> PortfolioValueViewModel:
     """ loads the data for portfolio value """
-    from piecash import Commodity
+    #from piecash import Commodity
+    from datetime import datetime
 
     result = PortfolioValueViewModel()
     result.filter = input_model
 
+    #assert isinstance(input_model.as_of_date, datetime)
     ref_datum = Datum()
     ref_datum.from_datetime(input_model.as_of_date)
     ref_date = ref_datum.end_of_day()
