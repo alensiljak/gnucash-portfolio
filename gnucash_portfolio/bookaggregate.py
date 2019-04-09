@@ -52,7 +52,7 @@ class BookAggregate:
 
     @property
     def book(self) -> Book:
-        """ GnuCash Book. Opens the book or creates an in-memory database, based on settings. """
+        """ GnuCash Book. Opens the book or creates an database, based on settings. """
         if not self.__book:
             # Create/open the book.
             book_uri = self.settings.database_path
