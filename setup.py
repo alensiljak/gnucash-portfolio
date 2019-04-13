@@ -21,31 +21,9 @@ with open(path.join(here, 'README.md'), encoding='utf-8') as f:
 # Fields marked as "Optional" may be commented out.
 
 setup(
-    # This is the name of your project. The first time you publish this
-    # package, this name will be registered for you. It will determine how
-    # users can install this project, e.g.:
-    #
-    # $ pip install sampleproject
-    #
-    # And where it will live on PyPI: https://pypi.org/project/sampleproject/
-    #
-    # There are some restrictions on what makes a valid project name
-    # specification here:
-    # https://packaging.python.org/specifications/core-metadata/#name
-    name='gnucash_portfolio',  # Required
-
-    # Versions should comply with PEP 440:
-    # https://www.python.org/dev/peps/pep-0440/
-    #
-    # For a discussion on single-sourcing the version across setup.py and the
-    # project code, see
-    # https://packaging.python.org/en/latest/single_source_version.html
-    version='1.6.1',  # Required
-
-    # This is a one-line description or tagline of what your project does. This
-    # corresponds to the "Summary" metadata field:
-    # https://packaging.python.org/specifications/core-metadata/#summary
-    description='Portfolio tools for GnuCash',  # Required
+    name='gnucash_portfolio',
+    version='1.6.2',
+    description='Portfolio tools for GnuCash',
 
     # This is an optional longer description of your project that represents
     # the body of text which users will see when they visit PyPI.

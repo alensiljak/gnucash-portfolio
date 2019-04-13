@@ -16,6 +16,7 @@ class PortfolioValueInputModel(): # pylint: disable=invalid-name
         today.today()
 
         self.as_of_date: datetime = today.value
+        # Only the stock symbols, without exchange, comma-separated.
         self.stock: str = ""
 
 

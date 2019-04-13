@@ -3,15 +3,17 @@ Provides functions for Portfolio Value report
 """
 from datetime import date
 from piecash import Book, Commodity
+from pricedb import PriceModel
+
 from gnucash_portfolio.actions import symbol_dividends
 from gnucash_portfolio.pricesaggregate import PricesAggregate
 from gnucash_portfolio.securitiesaggregate import SecurityAggregate
 from gnucash_portfolio.model.stock_model import StockViewModel
-from pricedb import PriceModel
 
 
 def get_stock_model_from(book: Book, commodity: Commodity, as_of_date: date) -> StockViewModel:
     """ Parses stock/commodity and returns the model for display """
+    from decimal import Decimal
     from pydatum import Datum
 
     svc = SecurityAggregate(book, commodity)
@@ -34,7 +36,7 @@ def get_stock_model_from(book: Book, commodity: Commodity, as_of_date: date) -> 
     if last_price is not None:
         model.price = last_price.value
     else:
-        model.price = 0
+        model.price = Decimal(0)
 
     # currency
     if model.price:
@@ -47,7 +49,7 @@ def get_stock_model_from(book: Book, commodity: Commodity, as_of_date: date) -> 
     if model.shares_num > 0 and model.price:
         model.balance = model.shares_num * model.price
     else:
-        model.balance = 0
+        model.balance = Decimal(0)
 
     # Gain/Loss
     model.gain_loss = model.balance - model.cost
@@ -69,9 +71,9 @@ def get_stock_model_from(book: Book, commodity: Commodity, as_of_date: date) -> 
     start.subtract_months(12)
     end = Datum()
     model.income_last_12m = svc.get_income_in_period(start, end)
-    if model.balance > 0:
+    if model.balance > 0 and model.income_last_12m > 0:
         model.income_last_12m_perc = model.income_last_12m * 100 / model.balance
     else:
-        model.income_last_12m_perc = 0
+        model.income_last_12m_perc = Decimal(0)
 
     return model
